@@ -269,6 +269,8 @@
     
       d3.selectAll('.tick line')
         .attr('x2', resizedWidthLessMargins);
+
+      yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
     }
 
     // Call the resize function whenever a resize event occurs
