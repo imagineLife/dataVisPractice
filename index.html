@@ -45,6 +45,8 @@
         border: 1px solid #6F257F;
         padding: 14px;
         text-align: center;
+        font-size: 20px;
+        font-family: sans-serif;
       }
 
     </style>
@@ -197,10 +199,10 @@
             })
             .on("mousemove", function(d){
             tooltipDiv
-              .style("left", d3.event.pageX - 50 + "px")
-              .style("top", d3.event.pageY - 90 + "px")
+              .style("left", d3.event.pageX - 75 + "px")
+              .style("top", d3.event.pageY - 120 + "px")
               .style("display", "inline-block")
-              .html((d.note) + "<br>"+ (d.count));
+              .html((d.note) + "<br>occurs "+ (d.count)+" times");
             })
             .on("mouseout", function(d){ tooltipDiv.style("display", "none");});;
 
