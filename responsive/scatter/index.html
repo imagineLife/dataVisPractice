@@ -135,7 +135,7 @@ Update CSS for svg-wrapping div
 	          .attrs({
 	          	'class': 'axis-label',
 		        'x' : -divHeightLessMargins / 2,
-		        'y' : -margin.left / 2,
+		        'y' : -margin.left / 1.5,
 		        'transform' : `rotate(-90)`
 		      })
 	          .style('text-anchor', 'middle')
@@ -285,7 +285,7 @@ Update CSS for svg-wrapping div
 			//Update yAxis Label
 			yAxisLabel.attrs({
 				'x' : -resizedHeightLessMargins / 2,
-				'y' : -margin.left / 2,
+				'y' : -margin.left / 1.5,
 			});
 
 			//update Bubbles
@@ -300,7 +300,7 @@ Update CSS for svg-wrapping div
         	colorLegendG
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
 
-     		// yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
+     		yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
 
 
 		}	  	
