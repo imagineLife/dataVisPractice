@@ -298,6 +298,9 @@ Update CSS for svg-wrapping div
 			d3.selectAll('.yLine')
         		.attr('x2', resizedWidthLessMargins);
 
+        	colorLegendG
+	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
+
      		// yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
 
 
