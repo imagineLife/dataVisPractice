@@ -52,7 +52,7 @@
     </style>
   </head>
   <body>
-    <label><input type="checkbox"> Sort values</label>
+    <label><input type="checkbox" class="sortBox"> Sort values</label>
     <div id ="chart"></svg>
     <script>
 
@@ -71,7 +71,7 @@
       let svg = d3.select(chartDiv).append("svg");
       let gObj = svg.append('g');
       let bars = gObj.selectAll('rect');
-
+      let checkBox = d3.select("input");
 
 //Tooltip
       let tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
