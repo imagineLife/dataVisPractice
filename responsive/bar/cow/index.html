@@ -45,7 +45,7 @@
         display: none;
         min-width: 80px;
         height: auto;
-        background: none repeat scroll 0 0 rgba(255,255,255,.5);
+        background: none repeat scroll 0 0 rgba(255,255,255,.7);
         border: 1px solid #6F257F;
         padding: 14px;
         text-align: center;
@@ -77,7 +77,7 @@
       const vars = {
         xLabel : 'War',
         yLabel : 'Number Of Deaths',
-        margin : { left: 125, right: 70, top: 20, bottom: 180 }
+        margin : { left: 100, right: 70, top: 20, bottom: 180 }
       };
 
       const xValFromData = d => d.WarName;
@@ -225,7 +225,9 @@
               .style("left", d3.event.pageX - 150 +  "px")
               .style("top", d3.event.pageY - 150 + "px")
               .style("display", "inline-block")
-              .html("The <b>"+(d.WarName) + "</b> war <br>had <b>"+ (d.TotalDeaths)+"</b> deaths in <b>"+(d.TotalDays)+"</b> days");
+              .html(`The <b>${d.WarName}</b> war<br>`+
+                `had <b>${d.TotalDeaths}</b> deaths<br>`+
+                `in <b>${d.TotalDays}</b> days.`);
             })
             .on("mouseout", function(d){ tooltipDiv.style("display", "none");});;
 
