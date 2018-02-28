@@ -54,12 +54,12 @@
       }
       .sortBox{
         height: 50px;
-        line-height: 50px;
+        line-height: 25px;
         position: relative;
         z-index: 100;
         width: auto;
         display: block;
-        margin: 0 auto;
+        margin: 15px auto;
         text-align: center;
       }
 
@@ -67,7 +67,8 @@
   </head>
   <body>
     <label class="sortBox">
-      <input type="checkbox">Sort values by Name or Length in days
+      <input type="checkbox">Sort bars by <b>Number of Deaths Per War</b> <br>
+      or <b>Length of the War in days</b>
     </label>
     <div id ="chart"></svg>
     <script>
@@ -184,7 +185,7 @@
   
         data.sort((a, b) => b.TotalDeaths - a.TotalDeaths);
 
-        first5 = data.slice(2,11);
+        first5 = data.slice(2,13);
 
         /*
          xScale Assignment 
