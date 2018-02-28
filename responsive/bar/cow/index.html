@@ -67,7 +67,7 @@
   </head>
   <body>
     <label class="sortBox">
-      <input type="checkbox">Sort values
+      <input type="checkbox">Sort values by Name or Length in days
     </label>
     <div id ="chart"></svg>
     <script>
@@ -186,22 +186,20 @@
 
         first5 = data.slice(2,11);
 
-        console.log('first 5 ->',first5);
-
-  /*
-   xScale Assignment 
-    DOMAIN = data
-    RANGE = pixel-length, missing here, in resize
-  */
+        /*
+         xScale Assignment 
+          DOMAIN = data
+          RANGE = pixel-length, missing here, in resize
+        */
 
        xScale
           .domain(first5.map(xValFromData))
 
-  /*
-   yScale Assignment 
-    DOMAIN = data
-    RANGE = pixel-length, missing here, in resize
-  */
+        /*
+         yScale Assignment 
+          DOMAIN = data
+          RANGE = pixel-length, missing here, in resize
+        */
         yScale
           .domain([0, d3.max(first5, yValFromData)])
           .nice(yTicks);
@@ -223,10 +221,10 @@
             })
             .on("mousemove", function(d){
             tooltipDiv
-              .style("left", d3.event.pageX - 75 + "px")
-              .style("top", d3.event.pageY - 120 + "px")
+              .style("left", d3.event.pageX - 150 +  "px")
+              .style("top", d3.event.pageY - 150 + "px")
               .style("display", "inline-block")
-              .html("The <b>"+(d.WarName) + "</b> war had<br><b>"+ (d.TotalDeaths)+"</b> deaths");
+              .html("The <b>"+(d.WarName) + "</b> war <br>had <b>"+ (d.TotalDeaths)+"</b> deaths in <b>"+(d.TotalDays)+"</b> days");
             })
             .on("mouseout", function(d){ tooltipDiv.style("display", "none");});;
 
@@ -244,7 +242,41 @@
 
           })
         
-        yAxisG.call(yAxis)
+        yAxisG.call(yAxis);
+
+        d3.select("input").on("change", change);
+
+        /*
+        Sort onClick function
+        */
+        function change() {
+
+          // Copy-on-write since tweens are evaluated after a delay.
+          var x0 = xScale.domain(first5.sort(this.checked
+              ? function(a, b) { 
+                  return b.TotalDays - a.TotalDays; 
+                }
+              : function(a, b) { return d3.descending(a.TotalDeaths, b.TotalDeaths); })
+              .map(function(d) { return d.WarName; }))
+              .copy();
+
+          svg.selectAll(".barClass")
+              .sort(function(a, b) { return x0(a.WarName) - x0(b.WarName); });
+
+          var transition = svg.transition().duration(500),
+              delay = function(d, i) { return i * 50; };
+
+          transition.selectAll(".barClass")
+              .delay(delay)
+              .attr("x", function(d) { return x0(d.WarName); });
+
+          transition.select(".xAxisClass")
+              .call(xAxis)
+            .selectAll("g")
+              .delay(delay);
+        }
+
+
       });
 
 
@@ -311,11 +343,7 @@
       yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
     }
 
-    checkBox.on("change", sortChart);
 
-    function sortChart(){
-      console.log('beginning sortChart function!');
-    }
     // Call the resize function whenever a resize event occurs
     d3.select(window).on('resize', resize);
 
