@@ -7,23 +7,8 @@
     <script src="../../../../d3-selection-multi.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> -->
     <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
    <style>
-      body {
-        margin: 0px;
-      }
-
-      body *{
-        font-family: sans-serif;
-      }
-
-      #chart {
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-      }
-
       .domain {
         display: none;
       }
@@ -70,7 +55,7 @@
       <input type="checkbox">Sort bars by <b>Number of Deaths Per War</b> <br>
       or <b>Length of the War in days</b>
     </label>
-    <div id ="chart"></svg>
+    <div id ="chartDiv"></svg>
     <script>
 
 // Build Variables
@@ -84,7 +69,7 @@
       const yValFromData = d => +d.TotalDeaths;
 
 // D3 select The elements & convert to vars
-      let chartDiv = document.getElementById("chart");
+      let chartDiv = document.getElementById("chartDiv");
       let svg = d3.select(chartDiv).append("svg");
       let gObj = svg.append('g');
       let bars = gObj.selectAll('rect');
