@@ -12,6 +12,10 @@
         margin: 0px;
       }
 
+      body *{
+        font-family: sans-serif;
+      }
+
       #chart {
         position: absolute;
         left: 0px;
@@ -48,11 +52,23 @@
         font-size: 20px;
         font-family: sans-serif;
       }
+      .sortBox{
+        height: 50px;
+        line-height: 50px;
+        position: relative;
+        z-index: 100;
+        width: auto;
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+      }
 
     </style>
   </head>
   <body>
-    <label><input type="checkbox" class="sortBox"> Sort values</label>
+    <label class="sortBox">
+      <input type="checkbox">Sort values
+    </label>
     <div id ="chart"></svg>
     <script>
 
@@ -295,6 +311,11 @@
       yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
     }
 
+    checkBox.on("change", sortChart);
+
+    function sortChart(){
+      console.log('beginning sortChart function!');
+    }
     // Call the resize function whenever a resize event occurs
     d3.select(window).on('resize', resize);
 
