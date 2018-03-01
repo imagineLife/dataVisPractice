@@ -118,7 +118,7 @@
 
 	      const yAxis = d3.axisLeft()
 	        .scale(yScale)
-	        .ticks(5)
+	        .ticks(Math.max(divHeightLessMargins/80, 2))
 	        .tickPadding(15)
 	        .tickSize(-divWidthLessMargins);
 
