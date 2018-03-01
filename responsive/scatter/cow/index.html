@@ -9,20 +9,23 @@
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
 		<title>Responsive Sizing</title>
 	</head>
-
+	<style>
+		
+	</style>
 	<body>
 		<div id="chartDiv"></div>
 	</body>    
 	<script>
 	      
-	      const xLabel = 'Starting Beat';
-	      const yLabel = 'Duration (in beats)';
+	      const xLabel = 'Year';
+	      const yLabel = 'Total Days';
 
-	      const xValue = d => d.startedBeat;
-	      const yValue = d => d.noteDuration;
+	      const xValue = d => d.Date;
+	      const yValue = d => d.TotalDays;
 
-	      const colorValue = d => d.chordTone;
-	      const colorLabel = 'Chord Tone';
+	      // const colorValue = d => d.TotalDeaths;
+	      const colorValue = () => 'steelblue';
+	      const colorLabel = 'Total Days';
 	      
 	      const margin = { 
 	      	left: 140, 
@@ -40,7 +43,7 @@
 	      const gObj = svgObj.append('g').attr('class','gWrapper');
 
 //Setup Scales
-	      const xScale = d3.scaleLinear();
+	      const xScale = d3.scaleTime();
 	      const yScale = d3.scaleLinear();
 	      const colorScale = d3.scaleOrdinal()
 	        .range(d3.schemeCategory10);
@@ -127,26 +130,13 @@
 	        .shape('circle');
 
 	      const parseData = d => {
-	      	d.noteID = +d.noteID;
-	        d.chorusNumber = +d.chorusNumber;
-	        d.sectionNumber = +d.sectionNumber;
-	        d.measureNumber = +d.measureNumber;
-	        d.chordType = +d.chordType;
-	        d.downBeat = +d.downBeat;
-	        d.chordTone = +d.chordTone;
-	        d.startedBeat = +d.startedBeat;
-	        d.noteDuration = +d.noteDuration;
-	        d.triad = +d.triad;
-	        d.halfStepsMoved = +d.halfStepsMoved;
-	        d.directionMoved = +d.directionMoved;
-	        d.diatonic = +d.diatonic;
-	        d.intervalFromChordRoot = +d.intervalFromChordRoot;
-	        if(d.chordTone == 0){
-	        	d.chordTone = "No"
-	        }else{
-	        	d.chordTone = 'Yes'
-	        }
-	        return d;
+	      	d.WarNum = +d.WarNum;
+	      	d.TotalDeaths = +d.TotalDeaths;
+	      	d.TotalDays = +d.TotalDays;
+	      	let parsedDate = d3.timeParse("%m-%e-%Y");
+	      	d.Date = parsedDate(d.StartDate);
+	      	console.log(d.Date);
+	      	return d;
 	      };
 
 	    function buildChart(obj){
@@ -177,6 +167,18 @@
 	        		'class':'xLine',
 	        		'stroke-dasharray': '1, 5'
 	        	});
+
+	      xAxisG.selectAll('.tick text')
+	          .attrs({
+	            'transform': 'rotate(-45)',
+	            'text-anchor': 'end',
+	            'alignment-baseline':'middle',
+	            'x': -5,
+	            'y': 15,
+	            'dy':0
+
+	          })
+	          
 	        yAxisG.call(yAxis)
 				.selectAll('.tick line').attrs({
 	        		'class':'yLine',
