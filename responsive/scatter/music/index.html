@@ -262,7 +262,10 @@
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
 
      		yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
-
+			yAxisG.selectAll('.tick line').attrs({
+	        		'class':'yLine',
+	        		'stroke-dasharray': '1, 5'
+	        	});
 
 		}	  	
 
