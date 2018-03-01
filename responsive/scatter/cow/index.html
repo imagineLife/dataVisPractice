@@ -7,11 +7,9 @@
 		<script src="../../../d3-selection-multi.min.js"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
-		<title>Responsive Sizing</title>
+		<title>Responsive C.O.W Scatter</title>
 	</head>
-	<style>
-		
-	</style>
+
 	<body>
 		<div id="chartDiv"></div>
 	</body>    
@@ -55,7 +53,6 @@
 //get css-computed dimensions
 	      const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
 	      const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
-	      // console.log('chart dimensions ->',divWidthLessMargins,'x',divHeightLessMargins);
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
@@ -135,7 +132,7 @@
 	      	d.TotalDays = +d.TotalDays;
 	      	let parsedDate = d3.timeParse("%m-%e-%Y");
 	      	d.Date = parsedDate(d.StartDate);
-	      	console.log(d.Date);
+	      	// console.log(d.Date);
 	      	return d;
 	      };
 
@@ -176,9 +173,8 @@
 	            'x': -5,
 	            'y': 15,
 	            'dy':0
-
 	          })
-	          
+
 	        yAxisG.call(yAxis)
 				.selectAll('.tick line').attrs({
 	        		'class':'yLine',
@@ -199,13 +195,10 @@
 
 //2. Build fn
 		let resize = () => {
-			// console.log('resizing here');
     		
     		// Extract the width and height that was computed by CSS.
       		let resizedFnWidth = chartDiv.clientWidth;
       		let resizedFnHeight = chartDiv.clientHeight;
-
-      		// console.log('resized dimensions ->',resizedFnWidth,'x',resizedFnHeight);
 
       		//set svg dimension based on resizing attrs
       		svgObj.attrs({
