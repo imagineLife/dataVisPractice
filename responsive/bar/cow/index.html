@@ -37,6 +37,13 @@
         text-align: center;
         color: white;
       }
+      label{
+        font-size: 18px;
+        cursor: pointer;
+      }
+      label:hover{
+        font-size:20px;
+      }
 
     </style>
   </head>
@@ -160,7 +167,7 @@
   
         data.sort((a, b) => b.TotalDeaths - a.TotalDeaths);
 
-        first5 = data.slice(2,13);
+        first5 = data.slice(2,14);
 
         /*
          xScale Assignment 
