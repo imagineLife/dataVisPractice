@@ -45,6 +45,8 @@
 	      const yScale = d3.scaleLinear();
 	      const colorScale = d3.scaleOrdinal()
 	        .range(d3.schemeCategory10);
+	      // const radiusScale = d3.scaleLinear();
+	      
 
 // Extract the DIV width and height that was computed by CSS.
       let cssDivWidth = chartDiv.clientWidth;
@@ -127,12 +129,15 @@
 	        .shape('circle');
 
 	      const parseData = d => {
+	      	// if (d.WarName.includes("World")){
+	      	// 	return
+	      	// }
 	      	d.WarNum = +d.WarNum;
 	      	d.TotalDeaths = +d.TotalDeaths;
 	      	d.TotalDays = +d.TotalDays;
 	      	let parsedDate = d3.timeParse("%m-%e-%Y");
 	      	d.Date = parsedDate(d.StartDate);
-	      	// console.log(d.Date);
+	      	// console.log(d);
 	      	return d;
 	      };
 
