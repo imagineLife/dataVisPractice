@@ -107,16 +107,20 @@
 	        .scale(yScale)
 	        .ticks(5)
 	        .tickPadding(15)
+			.tickFormat(d3.format('.1s'))
 	        .tickSize(-divWidthLessMargins);
 
 	      const line = d3.line()
 	      	.x(d => xScale( xValue(d) ))
 	      	.y(d => yScale( yValue(d) ))
 
-	      const parseData = d => {	
+	      const parseData = d => {
 	      	d.population = +d.population;
+	      	// let format = d3.format("%s");
+	      	// d.formPop = format(d.population);
 	      	let parsedDate = d3.timeParse("%Y");
 	      	d.year = parsedDate(d.year);
+	      	// console.log('d.formPop ->',d.formPop);
 	      	return d;
 	      };
 
