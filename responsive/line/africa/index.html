@@ -16,28 +16,21 @@
 	<script>
 	      
 	      const xLabel = 'Year';
-	      const yLabel = 'Total Days';
+	      const yLabel = 'Population';
 
 	      const xValue = d => d.year;
 	      const yValue = d => d.population;
-
-	      // const colorValue = d => d.TotalDeaths;
-	      const colorValue = () => 'steelblue';
-	      const colorLabel = 'Total Days';
-	      
+   
 	      const margin = { 
-	      	left: 140, 
-	      	right: 200,
+	      	left: 260, 
+	      	right: 50,
 	      	top: 20,
 	      	bottom: 120
 	      };
 
 //Select/Create div, svg, g
 	      const chartDiv = document.getElementById('chartDiv'); 	      
-	      const svgObj = d3.select(chartDiv).append("svg").attrs({
-	      	// "class":obj.svgClass,
-	      	"border": '2px solid green'
-	      });
+	      const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
 	      const gObj = svgObj.append('g').attr('class','gWrapper');
 
 //Setup Scales
@@ -104,14 +97,6 @@
 	          .style('text-anchor', 'middle')
 	          .text(yLabel);
 
-	      colorLegendG.append('text')
-	          .attrs({
-	          	'class': 'legend-label',
-	          	'x': -3,
-	          	'y': -40
-	          })
-	          .text(colorLabel);
-
 //Build Axis elements
 	      const xAxis = d3.axisBottom()
 	        .scale(xScale)
@@ -124,11 +109,11 @@
 	        .tickPadding(15)
 	        .tickSize(-divWidthLessMargins);
 
-	      const colorLegend = d3.legendColor()
-	        .scale(colorScale)
-	        .shape('circle');
+	      const line = d3.line()
+	      	.x(d => xScale( xValue(d) ))
+	      	.y(d => yScale( yValue(d) ))
 
-	      const parseData = d => {
+	      const parseData = d => {	
 	      	d.population = +d.population;
 	      	let parsedDate = d3.timeParse("%Y");
 	      	d.year = parsedDate(d.year);
@@ -147,16 +132,12 @@
 	          .range([divHeightLessMargins, margin.top])
 	          .nice();
 
-	        gObj.selectAll('circle').data(data)
-	          .enter().append('circle')
-	            .attrs({
-	            	'cx': d => xScale(xValue(d)),
-	            	'cy': d => yScale(yValue(d)),
-	            	'fill': d => colorScale(colorValue(d)),
-	            	'fill-opacity': 0.3,
-	            	'r': 17,
-	            	'class':'circle'
-	            });
+	        gObj.append('path')
+	        	.attrs({
+	        		'd': line(data),
+	        		'stroke':'steelblue',
+	        		'fill':'none'
+	        	});
 
 	        xAxisG.call(xAxis)
 	        	.selectAll('.tick line').attrs({
@@ -179,9 +160,7 @@
 	        		'class':'yLine',
 	        		'stroke-dasharray': '1, 5'
 	        	});
-	        colorLegendG.call(colorLegend)
-	          .selectAll('.cell text')
-	            .attr('dy', '0.1em');
+
 	      });
 
 	  	}
