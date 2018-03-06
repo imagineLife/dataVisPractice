@@ -18,8 +18,8 @@
 	      const xLabel = 'Year';
 	      const yLabel = 'Total Days';
 
-	      const xValue = d => d.Date;
-	      const yValue = d => d.TotalDays;
+	      const xValue = d => d.year;
+	      const yValue = d => d.population;
 
 	      // const colorValue = d => d.TotalDeaths;
 	      const colorValue = () => 'steelblue';
@@ -129,15 +129,9 @@
 	        .shape('circle');
 
 	      const parseData = d => {
-	      	// if (d.WarName.includes("World")){
-	      	// 	return
-	      	// }
-	      	d.WarNum = +d.WarNum;
-	      	d.TotalDeaths = +d.TotalDeaths;
-	      	d.TotalDays = +d.TotalDays;
-	      	let parsedDate = d3.timeParse("%m-%e-%Y");
-	      	d.Date = parsedDate(d.StartDate);
-	      	// console.log(d);
+	      	d.population = +d.population;
+	      	let parsedDate = d3.timeParse("%Y");
+	      	d.year = parsedDate(d.year);
 	      	return d;
 	      };
 
