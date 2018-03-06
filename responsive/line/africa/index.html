@@ -113,6 +113,7 @@
 	      const line = d3.line()
 	      	.x(d => xScale( xValue(d) ))
 	      	.y(d => yScale( yValue(d) ))
+	      	.curve(d3.curveBasis)
 
 	      const parseData = d => {
 	      	d.population = +d.population;
@@ -196,6 +197,12 @@
       		xScale.range([0, resizedWidthLessMargins]);
       		yScale.range([resizedHeightLessMargins, margin.top]);
 
+
+      		line
+	      		.x(d => xScale( xValue(d) ))
+		      	.y(d => yScale( yValue(d) ))
+		      	.curve(d3.curveBasis);
+      		
       		//Update the X-AXIS
 			xAxisG
 				.attrs({
@@ -226,24 +233,9 @@
 				'y' : -margin.left / 1.5,
 			});
 
-			//update Bubbles
-			d3.selectAll('.circle').attrs({
-            	'cx': d => xScale(xValue(d)),
-            	'cy': d => yScale(yValue(d))
-			});
-
+			//update yLines
 			d3.selectAll('.yLine')
         		.attr('x2', resizedWidthLessMargins);
-
-        	colorLegendG
-	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
-
-     		// yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
-     		// 	.attrs({
-	      //   		'class':'yLine',
-	      //   		'stroke-dasharray': '1, 5'
-	      //   	});
-
 
 		}	  	
 
