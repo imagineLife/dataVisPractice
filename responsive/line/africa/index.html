@@ -3,9 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
-		<script src="../../../d3.v4.min.js"></script>
-		<script src="../../../d3-selection-multi.min.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+		<!-- <script src="../../../d3.v4.min.js"></script> -->
+		<!-- <script src="../../../d3-selection-multi.min.js"></script> -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
+    	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
 		<title>Responsive C.O.W Scatter</title>
 	</head>
@@ -22,42 +23,38 @@
 	      const yValue = d => d.population;
    
 	      const margin = { 
-	      	left: 260, 
+	      	left: 140, 
 	      	right: 50,
-	      	top: 20,
+	      	top: 50,
 	      	bottom: 120
 	      };
 
-//Select/Create div, svg, g
-	      const chartDiv = document.getElementById('chartDiv'); 	      
+	//Select/Create div, svg, g
+	      const chartDiv = document.getElementById('chartDiv');     
 	      const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
 	      const gObj = svgObj.append('g').attr('class','gWrapper');
 
-//Setup Scales
+	//Setup Scales
 	      const xScale = d3.scaleTime();
 	      const yScale = d3.scaleLinear();
-	      const colorScale = d3.scaleOrdinal()
-	        .range(d3.schemeCategory10);
-	      // const radiusScale = d3.scaleLinear();
-	      
 
-// Extract the DIV width and height that was computed by CSS.
-      let cssDivWidth = chartDiv.clientWidth;
-      let cssDivHeight = chartDiv.clientHeight;
+	// Extract the DIV width and height that was computed by CSS.
+	      let parentDivWidth = chartDiv.clientWidth;
+	      let parentDivHeight = chartDiv.clientHeight;
 
-//get css-computed dimensions
-	      const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
-	      const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
+	//get css-computed dimensions
+	      const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
+	      const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
 
-//set svg height & width from div computed dimensions
-//NOTE: can be the divLessMargins, for 'padding' effect
-      svgObj.attrs({
-        "width" : cssDivWidth,
-        "height" : cssDivHeight
-      });
+	//set svg height & width from div computed dimensions
+	//NOTE: can be the divLessMargins, for 'padding' effect
+	      svgObj.attrs({
+	        "width" : parentDivWidth,
+	        "height" : parentDivHeight
+	      });
 
-//translate the gWrapper
-      gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+	//translate the gWrapper
+	      gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
 //Build Axis Groups
 	      const xAxisG = gObj.append('g')
@@ -70,9 +67,6 @@
 	      		'class': 'axis y',
 	      		// 'transform': `rotate(-90)`
 	      	});
-	      const colorLegendG = gObj.append('g')
-	          .attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
-
       
 //set placeholder for axis labels      
       let xAxisLabel = xAxisG.append('text');
@@ -110,7 +104,7 @@
 			.tickFormat(d3.format('.1s'))
 	        .tickSize(-divWidthLessMargins);
 
-	      const line = d3.line()
+	      const lineObj = d3.line()
 	      	.x(d => xScale( xValue(d) ))
 	      	.y(d => yScale( yValue(d) ))
 	      	.curve(d3.curveBasis)
@@ -121,7 +115,6 @@
 	      	// d.formPop = format(d.population);
 	      	let parsedDate = d3.timeParse("%Y");
 	      	d.year = parsedDate(d.year);
-	      	// console.log('d.formPop ->',d.formPop);
 	      	return d;
 	      };
 
@@ -137,12 +130,14 @@
 	          .range([divHeightLessMargins, margin.top])
 	          .nice();
 
-	        gObj.append('path')
-	        	.attrs({
-	        		'd': line(data),
-	        		'stroke':'steelblue',
-	        		'fill':'none'
-	        	});
+        	gObj.append('path')
+	            .attrs({
+	            	'fill': 'none',
+	            	'stroke': 'steelblue',
+	            	'stroke-width': 4,
+	            	'class': 'path',
+	            	'd': lineObj(data)
+	            });
 
 	        xAxisG.call(xAxis)
 	        	.selectAll('.tick line').attrs({
@@ -197,11 +192,15 @@
       		xScale.range([0, resizedWidthLessMargins]);
       		yScale.range([resizedHeightLessMargins, margin.top]);
 
+		    //Update the line
+		    let grabbedLine = document.getElementsByClassName('path')[0];
+		    console.log('gObj ->',gObj);
+		    // console.log('grabbedLine ->',grabbedLine);
 
-      		line
-	      		.x(d => xScale( xValue(d) ))
-		      	.y(d => yScale( yValue(d) ))
-		      	.curve(d3.curveBasis);
+
+			// d3.selectAll(grabbedLine)
+			// 	.attr("d", d => lineObj(d)); 
+
       		
       		//Update the X-AXIS
 			xAxisG
@@ -215,8 +214,7 @@
 			//Update the X-AXIS LABEL
 			xAxisLabel
 				.attrs({
-				  'x' : resizedWidthLessMargins / 2,
-				  // 'y' : resizedFnHeight * .17
+				  'x' : resizedWidthLessMargins / 2
 				})
 
 			//Update the Y-AXIS
