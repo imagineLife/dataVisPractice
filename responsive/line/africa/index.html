@@ -1,245 +1,241 @@
-</!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<!-- <script src="../../../d3.v4.min.js"></script> -->
-		<!-- <script src="../../../d3-selection-multi.min.js"></script> -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
-    	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="../../dark.css">
-		<title>Responsive C.O.W Scatter</title>
-	</head>
-
-	<body>
-		<div id="chartDiv"></div>
-	</body>    
+<head>
+	<title>Responsive Line</title>
+	<meta charset="utf-8">
+	<meta content="width=device-width" name="viewport">
+	<!-- <script src="../../../d3.v4.min.js"></script> -->
+	<!-- <script src="../../../d3-selection-multi.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> 
+	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../dark.css">
+</head>
+<body>
+	<div id="chartDiv"></div>
 	<script>
-	      
-	      const xLabel = 'Year';
-	      const yLabel = 'Population';
+	         
+		const xLabel = 'Year';
+		const yLabel = 'Population';
 
-	      const xValue = d => d.year;
-	      const yValue = d => d.population;
-   
-	      const margin = { 
-	      	left: 140, 
-	      	right: 50,
-	      	top: 50,
-	      	bottom: 120
-	      };
+		const xValue = d => d.year;
+		const yValue = d => d.population;
 
-	//Select/Create div, svg, g
-	      const chartDiv = document.getElementById('chartDiv');     
-	      const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
-	      const gObj = svgObj.append('g').attr('class','gWrapper');
+		const margin = { 
+			left: 140, 
+			right: 50,
+			top: 50,
+			bottom: 120
+		};
 
-	//Setup Scales
-	      const xScale = d3.scaleTime();
-	      const yScale = d3.scaleLinear();
+		//Select/Create div, svg, g
+		const chartDiv = document.getElementById('chartDiv');     
+		const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
+		const gObj = svgObj.append('g').attr('class','gWrapper');
 
-	// Extract the DIV width and height that was computed by CSS.
-	      let parentDivWidth = chartDiv.clientWidth;
-	      let parentDivHeight = chartDiv.clientHeight;
+		//Setup Scales
+		const xScale = d3.scaleTime();
+		const yScale = d3.scaleLinear();
 
-	//get css-computed dimensions
-	      const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
-	      const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
+		// Extract the DIV width and height that was computed by CSS.
+		let parentDivWidth = chartDiv.clientWidth;
+		let parentDivHeight = chartDiv.clientHeight;
 
-	//set svg height & width from div computed dimensions
-	//NOTE: can be the divLessMargins, for 'padding' effect
-	      svgObj.attrs({
-	        "width" : parentDivWidth,
-	        "height" : parentDivHeight
-	      });
+		//get css-computed dimensions
+		const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
+		const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
 
-	//translate the gWrapper
-	      gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+		//set svg height & width from div computed dimensions
+		//NOTE: can be the divLessMargins, for 'padding' effect
+		svgObj.attrs({
+			"width" : parentDivWidth,
+			"height" : parentDivHeight
+		});
 
-//Build Axis Groups
-	      const xAxisG = gObj.append('g')
-	          .attrs({
-	          	'transform': `translate(0, ${divHeightLessMargins})`,
-	          	'class':'axis x'
-	          });
-	      const yAxisG = gObj.append('g')
-	      	.attrs({
-	      		'class': 'axis y',
-	      		// 'transform': `rotate(-90)`
-	      	});
-      
-//set placeholder for axis labels      
-      let xAxisLabel = xAxisG.append('text');
-      let yAxisLabel = yAxisG.append('text');
-      
-//set attrs for axis labels      
-      	xAxisLabel
-	          .attrs({
-	          	'class': 'axis-label',
-				'x': (divWidthLessMargins / 2),
-	          	'y': '100'
-	          })
-	          .text(xLabel);
+		//translate the gWrapper
+		gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
-	    yAxisLabel
-	          .attrs({
-	          	'class': 'axis-label',
-		        'x' : -divHeightLessMargins / 2,
-		        'y' : -margin.left / 1.5,
-		        'transform' : `rotate(-90)`
-		      })
-	          .style('text-anchor', 'middle')
-	          .text(yLabel);
+		//Build Axis Groups
+		const xAxisG = gObj.append('g')
+		 .attrs({
+		   'transform': `translate(0, ${divHeightLessMargins})`,
+		   'class':'axis x'
+		 });
 
-//Build Axis elements
-	      const xAxis = d3.axisBottom()
-	        .scale(xScale)
-	        .tickPadding(15)
-	        .tickSize(-divWidthLessMargins);
+		const yAxisG = gObj.append('g')
+		.attrs({
+		   'class': 'axis y'
+		});
 
-	      const yAxis = d3.axisLeft()
-	        .scale(yScale)
-	        .ticks(5)
-	        .tickPadding(15)
+		//set placeholder for axis labels      
+		let xAxisLabel = xAxisG.append('text');
+		let yAxisLabel = yAxisG.append('text');
+
+		//set attrs for axis labels      
+		xAxisLabel
+		 .attrs({
+		   'class': 'axis-label',
+		   'x': (divWidthLessMargins / 2),
+		   'y': '100'
+		 })
+		 .text(xLabel);
+
+		yAxisLabel
+		 .attrs({
+		   'class': 'axis-label',
+		   'x' : -divHeightLessMargins / 2,
+		   'y' : -margin.left / 1.5,
+		   'transform' : `rotate(-90)`
+		 })
+		 .style('text-anchor', 'middle')
+		 .text(yLabel);
+
+		//Build Axis elements
+		const xAxis = d3.axisBottom()
+			.scale(xScale)
+			.tickPadding(15)
+			.tickSize(-divWidthLessMargins);
+
+		const yAxis = d3.axisLeft()
+			.scale(yScale)
+			.ticks(5)
+			.tickPadding(15)
 			.tickFormat(d3.format('.1s'))
-	        .tickSize(-divWidthLessMargins);
+			.tickSize(-divWidthLessMargins);
 
-	      const lineObj = d3.line()
-	      	.x(d => xScale( xValue(d) ))
-	      	.y(d => yScale( yValue(d) ))
-	      	.curve(d3.curveBasis)
+		const lineObj = d3.line()
+			.x(d => xScale( xValue(d) ))
+			.y(d => yScale( yValue(d) ))
+			.curve(d3.curveBasis)
 
-	      const parseData = d => {
-	      	d.population = +d.population;
-	      	// let format = d3.format("%s");
-	      	// d.formPop = format(d.population);
-	      	let parsedDate = d3.timeParse("%Y");
-	      	d.year = parsedDate(d.year);
-	      	return d;
-	      };
+		const parseData = d => {
+			d.population = +d.population;
+			let parsedDate = d3.timeParse("%Y");
+			d.year = parsedDate(d.year);
+			return d;
+		};
 
-	    function buildChart(obj){
+	       function buildChart(obj){
 
-	      d3.csv(obj.dataFile, parseData, data => {
-	        xScale
-	          .domain(d3.extent(data, xValue))
-	          .range([0, divWidthLessMargins]);
+	         d3.csv(obj.dataFile, parseData, data => {
+	           xScale
+	             .domain(d3.extent(data, xValue))
+	             .range([0, divWidthLessMargins]);
 
-	        yScale
-	          .domain(d3.extent(data, yValue))
-	          .range([divHeightLessMargins, margin.top])
-	          .nice();
+	           yScale
+	             .domain(d3.extent(data, yValue))
+	             .range([divHeightLessMargins, margin.top])
+	             .nice();
 
-        	gObj.append('path')
-	            .attrs({
-	            	'fill': 'none',
-	            	'stroke': 'steelblue',
-	            	'stroke-width': 4,
-	            	'class': 'path',
-	            	'd': lineObj(data)
-	            });
+	           gObj.append('path')
+	               .attrs({
+	                   'fill': 'none',
+	                   'stroke': 'steelblue',
+	                   'stroke-width': 4,
+	                   'class': 'path',
+	                   'd': lineObj(data)
+	               });
 
-	        xAxisG.call(xAxis)
-	        	.selectAll('.tick line').attrs({
-	        		'class':'xLine',
-	        		'stroke-dasharray': '1, 5'
-	        	});
+	           xAxisG.call(xAxis)
+	               .selectAll('.tick line').attrs({
+	                   'class':'xLine',
+	                   'stroke-dasharray': '1, 5'
+	               });
 
-	      xAxisG.selectAll('.tick text')
-	          .attrs({
-	            'transform': 'rotate(-45)',
-	            'text-anchor': 'end',
-	            'alignment-baseline':'middle',
-	            'x': -5,
-	            'y': 15,
-	            'dy':0
-	          })
+	         xAxisG.selectAll('.tick text')
+	             .attrs({
+	               'transform': 'rotate(-45)',
+	               'text-anchor': 'end',
+	               'alignment-baseline':'middle',
+	               'x': -5,
+	               'y': 15,
+	               'dy':0
+	             })
 
-	        yAxisG.call(yAxis)
-				.selectAll('.tick line').attrs({
-	        		'class':'yLine',
-	        		'stroke-dasharray': '1, 5'
-	        	});
+	           yAxisG.call(yAxis)
+	               .selectAll('.tick line').attrs({
+	                   'class':'yLine',
+	                   'stroke-dasharray': '1, 5'
+	               });
 
-	      });
+	         });
 
-	  	}
+	       }
 
-	  	let AllChartObj = {
-	  		svgClass: '.svgWrapper',
-	  		dataFile:'data.csv'
-	  	}
-	  	buildChart(AllChartObj);
+	       let AllChartObj = {
+	           svgClass: '.svgWrapper',
+	           dataFile:'data.csv'
+	       }
+	       buildChart(AllChartObj);
 
-//2. Build fn
-		let resize = () => {
-    		
-    		// Extract the width and height that was computed by CSS.
-      		let resizedFnWidth = chartDiv.clientWidth;
-      		let resizedFnHeight = chartDiv.clientHeight;
+	//2. Build fn
+	       let resize = () => {
+	           
+	           // Extract the width and height that was computed by CSS.
+	           let resizedFnWidth = chartDiv.clientWidth;
+	           let resizedFnHeight = chartDiv.clientHeight;
 
-      		//set svg dimension based on resizing attrs
-      		svgObj.attrs({
-		        "width" : resizedFnWidth,
-		        "height" : resizedFnHeight
-	        });
+	           //set svg dimension based on resizing attrs
+	           svgObj.attrs({
+	               "width" : resizedFnWidth,
+	               "height" : resizedFnHeight
+	           });
 
-	        //calc resized dimensions less margins
-	        let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-      		let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
+	           //calc resized dimensions less margins
+	           let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
+	           let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
-      		//update scale ranges
-      		xScale.range([0, resizedWidthLessMargins]);
-      		yScale.range([resizedHeightLessMargins, margin.top]);
+	           //update scale ranges
+	           xScale.range([0, resizedWidthLessMargins]);
+	           yScale.range([resizedHeightLessMargins, margin.top]);
 
-		    //Update the line
-		    let grabbedLine = document.getElementsByClassName('path')[0];
-		    console.log('gObj ->',gObj);
-		    // console.log('grabbedLine ->',grabbedLine);
+	           //Update the line
+	           let grabbedLine = d3.selectAll('path.path');
+	           console.log('grabbedLine ->',grabbedLine);
 
+	           // d3.selectAll(grabbedLine)
+	               // grabbedLine.attr("d", d => lineObj(d)); 
+	             	// grabbedLine.attr('d', lineObj);
+	            gObj.append('path')
+					.attr('d', d => lineObj(d));
+	           
+	           //Update the X-AXIS
+	           xAxisG
+	               .attrs({
+	                   'transform': `translate(0, ${resizedHeightLessMargins})`,
+	                   'x' : divWidthLessMargins / 2,
+	                   'y' : resizedFnHeight * .1,
+	               })
+	               .call(xAxis);
 
-			// d3.selectAll(grabbedLine)
-			// 	.attr("d", d => lineObj(d)); 
+	           //Update the X-AXIS LABEL
+	           xAxisLabel
+	               .attrs({
+	                 'x' : resizedWidthLessMargins / 2
+	               })
 
-      		
-      		//Update the X-AXIS
-			xAxisG
-				.attrs({
-				    'transform': `translate(0, ${resizedHeightLessMargins})`,
-				    'x' : divWidthLessMargins / 2,
-				    'y' : resizedFnHeight * .1,
-				})
-				.call(xAxis);
+	           //Update the Y-AXIS
+	           yAxisG
+	               .attrs({
+	                   'x' : -resizedHeightLessMargins / 2,
+	                   'y' : -margin.left / 2,
+	               })
+	               .call(yAxis);
 
-			//Update the X-AXIS LABEL
-			xAxisLabel
-				.attrs({
-				  'x' : resizedWidthLessMargins / 2
-				})
+	           //Update yAxis Label
+	           yAxisLabel.attrs({
+	               'x' : -resizedHeightLessMargins / 2,
+	               'y' : -margin.left / 1.5,
+	           });
 
-			//Update the Y-AXIS
-			yAxisG
-				.attrs({
-				    'x' : -resizedHeightLessMargins / 2,
-				    'y' : -margin.left / 2,
-				})
-				.call(yAxis);
+	           //update yLines
+	           d3.selectAll('.yLine')
+	               .attr('x2', resizedWidthLessMargins);
 
-			//Update yAxis Label
-			yAxisLabel.attrs({
-				'x' : -resizedHeightLessMargins / 2,
-				'y' : -margin.left / 1.5,
-			});
+	       }       
 
-			//update yLines
-			d3.selectAll('.yLine')
-        		.attr('x2', resizedWidthLessMargins);
-
-		}	  	
-
-//1. Add Resise listener & fn call
-	  	d3.select(window).on('resize',resize);
-	  	// resize();
-	    </script>
-
+	//1. Add Resise listener & fn call
+	       d3.select(window).on('resize',resize);
+	       // resize();
+	</script>
+</body>
 </html>
