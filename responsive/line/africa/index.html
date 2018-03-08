@@ -93,7 +93,7 @@
 		const xAxis = d3.axisBottom()
 			.scale(xScale)
 			.tickPadding(15)
-			.tickSize(-divWidthLessMargins);
+			.tickSize(-divHeightLessMargins);
 
 		const yAxis = d3.axisLeft()
 			.scale(yScale)
@@ -189,14 +189,7 @@
 	           yScale.range([resizedHeightLessMargins, margin.top]);
 
 	           //Update the line
-	           let grabbedLine = d3.selectAll('path.path');
-	           console.log('grabbedLine ->',grabbedLine);
 
-	           // d3.selectAll(grabbedLine)
-	               // grabbedLine.attr("d", d => lineObj(d)); 
-	             	// grabbedLine.attr('d', lineObj);
-	            gObj.append('path')
-					.attr('d', d => lineObj(d));
 	           
 	           //Update the X-AXIS
 	           xAxisG
@@ -234,7 +227,7 @@
 	       }       
 
 	//1. Add Resise listener & fn call
-	       d3.select(window).on('resize',resize);
+	       window.addEventListener("resize", resize);
 	       // resize();
 	</script>
 </body>
