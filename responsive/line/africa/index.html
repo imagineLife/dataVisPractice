@@ -99,13 +99,22 @@
 			.scale(yScale)
 			.ticks(5)
 			.tickPadding(15)
-			.tickFormat(d3.format('.1s'))
+			.tickFormat(d3.format('.2s'))
 			.tickSize(-divWidthLessMargins);
 
 		const lineObj = d3.line()
 			.x(d => xScale( xValue(d) ))
 			.y(d => yScale( yValue(d) ))
 			.curve(d3.curveBasis)
+
+
+		let line = gObj.append('path')
+			.attrs({
+			   'fill': 'none',
+			   'stroke': 'steelblue',
+			   'stroke-width': 4,
+			   'class': 'path'
+			});
 
 		const parseData = d => {
 			d.population = +d.population;
@@ -126,14 +135,7 @@
 	             .range([divHeightLessMargins, margin.top])
 	             .nice();
 
-	           gObj.append('path')
-	               .attrs({
-	                   'fill': 'none',
-	                   'stroke': 'steelblue',
-	                   'stroke-width': 4,
-	                   'class': 'path',
-	                   'd': lineObj(data)
-	               });
+	           line .attr('d', lineObj(data) );
 
 	           xAxisG.call(xAxis)
 	               .selectAll('.tick line').attrs({
@@ -223,12 +225,14 @@
 	           //update yLines
 	           d3.selectAll('.yLine')
 	               .attr('x2', resizedWidthLessMargins);
+	           
+	           //update Line
+			   line.attr("d", d => lineObj(d));
 
 	       }       
 
-	//1. Add Resise listener & fn call
+	//Add Resise listener & fn call
 	       window.addEventListener("resize", resize);
-	       // resize();
 	</script>
 </body>
 </html>
