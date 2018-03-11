@@ -202,7 +202,7 @@
 	               .attrs({
 	                   'transform': `translate(0, ${resizedHeightLessMargins})`,
 	                   'x' : divWidthLessMargins / 2,
-	                   'y' : resizedFnHeight * .1,
+	                   'y' : resizedHeightLessMargins * .1,
 	               })
 	               .call(xAxis);
 
@@ -230,7 +230,10 @@
 	           d3.selectAll('.yLine')
 	               .attr('x2', resizedWidthLessMargins);
 	           
-	           //update Line
+	           d3.selectAll('.xLine')
+	               .attr('y2', -resizedHeightLessMargins);
+			   
+			   //update Line
 			   line.attr("d", lineObj(parsedData));
 
 	       }       
