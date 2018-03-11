@@ -123,9 +123,13 @@
 			return d;
 		};
 
+		let parsedData;
+
 	       function buildChart(obj){
 
 	         d3.csv(obj.dataFile, parseData, data => {
+	           parsedData = data;
+
 	           xScale
 	             .domain(d3.extent(data, xValue))
 	             .range([0, divWidthLessMargins]);
@@ -135,7 +139,7 @@
 	             .range([divHeightLessMargins, margin.top])
 	             .nice();
 
-	           line .attr('d', lineObj(data) );
+	           line.attr('d', lineObj(data) );
 
 	           xAxisG.call(xAxis)
 	               .selectAll('.tick line').attrs({
@@ -227,7 +231,7 @@
 	               .attr('x2', resizedWidthLessMargins);
 	           
 	           //update Line
-			   line.attr("d", d => lineObj(d));
+			   line.attr("d", lineObj(parsedData));
 
 	       }       
 
