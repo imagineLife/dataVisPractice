@@ -136,9 +136,13 @@
 	        let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
       		let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
-
         	colorLegendG
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
+
+	        arcFunc.outerRadius(resizedWidthLessMargins/2);
+
+	        pieG.selectAll('path')
+	        	.attr('d', arcFunc)
 
 		}	  	
 
