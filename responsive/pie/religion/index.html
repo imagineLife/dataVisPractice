@@ -86,13 +86,15 @@
 			return d;
 		};
 
+		let arcs;
+
 		function buildChart(obj){
 
 			d3.csv(obj.dataFile, parseData, data => {
 				
 				colorScale.domain(data.map(colorValue));
 				
-				const arcs = d3PieFunc(data);
+				arcs = d3PieFunc(data);
 
 				pieG.selectAll('path')
 					.data(arcs)
