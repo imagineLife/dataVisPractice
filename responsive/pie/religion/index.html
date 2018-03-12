@@ -46,7 +46,7 @@
 
 		const d3PieFunc = d3.pie().value(pieValue);
 		const pieG = gObj.append('g')
-			.attr('transform', `(translate(${divWidthLessMargins}/2), (${divHeightLessMargins}/2))`);
+			.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
 
 		//set svg height & width from div computed dimensions
 		//NOTE: can be the divLessMargins, for 'padding' effect
@@ -83,7 +83,7 @@
 
 			d3.csv(obj.dataFile, parseData, data => {
 
-				const arcs = pie(data);
+				const arcs = d3PieFunc(data);
 
 				colorLegendG.call(colorLegend)
 					.selectAll('.cell text')
