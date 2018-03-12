@@ -34,6 +34,8 @@
 	      });
 	      const gObj = svgObj.append('g').attr('class','gWrapper');
 
+	      const pieG = gObj.append('g')
+	      	.attr('transform', `translate(${divWidthLessMargins}/2, ${divHeightLessMargins}/2)`);
 //Setup Scales
 	      const colorScale = d3.scaleOrdinal()
 	        .range(d3.schemeCategory10);
@@ -81,16 +83,7 @@
 
 	      d3.csv(obj.dataFile, parseData, data => {
 
-	        gObj.selectAll('circle').data(data)
-	          .enter().append('circle')
-	            .attrs({
-	            	'cx': divWidthLessMargins/2,
-	            	'cy': divHeightLessMargins/2,
-	            	'fill': d => colorScale(colorValue(d)),
-	            	'fill-opacity': 0.3,
-	            	'r': divWidthLessMargins * .5,
-	            	'class':'circle'
-	            });
+	        const arcs = pie(data);
 
 	        colorLegendG.call(colorLegend)
 	          .selectAll('.cell text')
