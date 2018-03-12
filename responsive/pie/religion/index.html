@@ -15,92 +15,93 @@
 	</body>    
 	<script>
 
-	      // const colorValue = d => d.TotalDeaths;
-	      const colorValue = d => d.religion;
-	      const colorLabel = 'Religion';
-	      
-	      const margin = { 
-	      	left: 20, 
-	      	right: 250,
-	      	top: 40,
-	      	bottom: 40
-	      };
+		// const colorValue = d => d.TotalDeaths;
+		const colorValue = d => d.religion;
+		const pieValue = d => d.population;
+		const colorLabel = 'Religion';
 
-//Select/Create div, svg, g
-	      const chartDiv = document.getElementById('chartDiv'); 	      
-	      const svgObj = d3.select(chartDiv).append("svg").attrs({
-	      	// "class":obj.svgClass,
-	      	"border": '2px solid green'
-	      });
-	      const gObj = svgObj.append('g').attr('class','gWrapper');
+		const margin = { 
+			left: 20, 
+			right: 250,
+			top: 40,
+			bottom: 40
+		};
 
-	      const pieG = gObj.append('g')
-	      	.attr('transform', `translate(${divWidthLessMargins}/2, ${divHeightLessMargins}/2)`);
-//Setup Scales
-	      const colorScale = d3.scaleOrdinal()
-	        .range(d3.schemeCategory10);
+		//Select/Create div, svg, g
+		const chartDiv = document.getElementById('chartDiv'); 	      
+		const svgObj = d3.select(chartDiv).append("svg").attr('border', '2px solid green');
+		const gObj = svgObj.append('g').attr('class','gWrapper');
 
-// Extract the DIV width and height that was computed by CSS.
-      let cssDivWidth = chartDiv.clientWidth;
-      let cssDivHeight = chartDiv.clientHeight;
+		//Setup Scales
+		const colorScale = d3.scaleOrdinal()
+			.range(d3.schemeCategory10);
 
-//get css-computed dimensions
-	      const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
-	      const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
+		// Extract the DIV width and height that was computed by CSS.
+		let cssDivWidth = chartDiv.clientWidth;
+		let cssDivHeight = chartDiv.clientHeight;
 
-//set svg height & width from div computed dimensions
-//NOTE: can be the divLessMargins, for 'padding' effect
-      svgObj.attrs({
-        "width" : cssDivWidth,
-        "height" : cssDivHeight
-      });
+		//get css-computed dimensions
+		const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
+		const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
 
-//translate the gWrapper
-      gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+		const d3PieFunc = d3.pie().value(pieValue);
+		const pieG = gObj.append('g')
+			.attr('transform', `(translate(${divWidthLessMargins}/2), (${divHeightLessMargins}/2))`);
 
-//Build Axis Groups
-	      const colorLegendG = gObj.append('g')
-	          .attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
+		//set svg height & width from div computed dimensions
+		//NOTE: can be the divLessMargins, for 'padding' effect
+		svgObj.attrs({
+			"width" : cssDivWidth,
+			"height" : cssDivHeight
+		});
 
-	      colorLegendG.append('text')
-	          .attrs({
-	          	'class': 'legend-label',
-	          	'x': -3,
-	          	'y': -40
-	          })
-	          .text(colorLabel);
+		//translate the gWrapper
+		gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
-	      const colorLegend = d3.legendColor()
-	        .scale(colorScale)
-	        .shape('circle');
+		//Build Axis Groups
+		const colorLegendG = gObj.append('g')
+			.attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
 
-	      const parseData = d => {
-	      	d.population = +d.population;
-	      	return d;
-	      };
+		colorLegendG.append('text')
+		.attrs({
+			'class': 'legend-label',
+			'x': -3,
+			'y': -40
+		})
+		.text(colorLabel);
 
-	    function buildChart(obj){
+		const colorLegend = d3.legendColor()
+			.scale(colorScale)
+			.shape('circle');
 
-	      d3.csv(obj.dataFile, parseData, data => {
+		const parseData = d => {
+			d.population = +d.population;
+			return d;
+		};
 
-	        const arcs = pie(data);
+		function buildChart(obj){
 
-	        colorLegendG.call(colorLegend)
-	          .selectAll('.cell text')
-	            .attr('dy', '0.1em');
-	      });
+			d3.csv(obj.dataFile, parseData, data => {
 
-	  	}
+				const arcs = pie(data);
 
-	  	let AllChartObj = {
-	  		svgClass: '.svgWrapper',
-	  		dataFile:'data.csv'
-	  	}
-	  	buildChart(AllChartObj);
+				colorLegendG.call(colorLegend)
+					.selectAll('.cell text')
+					.attr('dy', '0.1em');
+				});
 
-//2. Build fn
+		}
+
+		let AllChartObj = {
+			svgClass: '.svgWrapper',
+			dataFile:'data.csv'
+		}
+
+		buildChart(AllChartObj);
+
+		//2. Build fn
 		let resize = () => {
-    		
+		
     		// Extract the width and height that was computed by CSS.
       		let resizedFnWidth = chartDiv.clientWidth;
       		let resizedFnHeight = chartDiv.clientHeight;
@@ -116,16 +117,8 @@
       		let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
 
-			//update Bubbles
-			// d3.selectAll('.circle').attrs({
-   //          	'cx': d => xScale(xValue(d)),
-   //          	'cy': d => yScale(yValue(d))
-			// });
-
-
         	colorLegendG
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
-
 
 		}	  	
 
