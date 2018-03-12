@@ -15,9 +15,8 @@
 	</body>    
 	<script>
 
-		// const colorValue = d => d.TotalDeaths;
-		const colorValue = d => d.religion;
 		const pieValue = d => d.population;
+		const colorValue = d => d.religion;
 		const colorLabel = 'Religion';
 
 		const margin = { 
@@ -30,11 +29,6 @@
 		//Select/Create div, svg, g
 		const chartDiv = document.getElementById('chartDiv'); 	      
 		const svgObj = d3.select(chartDiv).append("svg").attr('border', '2px solid green');
-		const gObj = svgObj.append('g').attr('class','gWrapper');
-
-		//Setup Scales
-		const colorScale = d3.scaleOrdinal()
-			.range(d3.schemeCategory10);
 
 		// Extract the DIV width and height that was computed by CSS.
 		let cssDivWidth = chartDiv.clientWidth;
@@ -50,9 +44,15 @@
 			.innerRadius(0)
 			.outerRadius(divHeightLessMargins/2);
 
+		const gObj = svgObj.append('g').attr('class','gWrapper');
+
 		//setup pie G element
 		const pieG = gObj.append('g')
 			.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
+
+		//Build Axis Groups
+		const colorLegendG = gObj.append('g')
+			.attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
 
 		//set svg height & width from div computed dimensions
 		//NOTE: can be the divLessMargins, for 'padding' effect
@@ -64,9 +64,6 @@
 		//translate the gWrapper
 		gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
-		//Build Axis Groups
-		const colorLegendG = gObj.append('g')
-			.attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
 
 		colorLegendG.append('text')
 		.attrs({
@@ -75,6 +72,10 @@
 			'y': -40
 		})
 		.text(colorLabel);
+
+		//Setup Scales
+		const colorScale = d3.scaleOrdinal()
+			.range(d3.schemeCategory10);
 
 		const colorLegend = d3.legendColor()
 			.scale(colorScale)
@@ -88,8 +89,19 @@
 		function buildChart(obj){
 
 			d3.csv(obj.dataFile, parseData, data => {
-
+				
+				colorScale.domain(data.map(colorValue));
+				
 				const arcs = d3PieFunc(data);
+
+				pieG.selectAll('path')
+					.data(arcs)
+					.enter()
+					.append('path')
+					.attrs({
+						'd': arcFunc,
+						'fill': d => colorScale(colorValue(d.data))
+					});
 
 				colorLegendG.call(colorLegend)
 					.selectAll('.cell text')
