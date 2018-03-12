@@ -42,7 +42,7 @@
 		const d3PieFunc = d3.pie().value(pieValue);
 		const arcFunc = d3.arc()
 			.innerRadius(0)
-			.outerRadius(divHeightLessMargins/2);
+			.outerRadius( (divWidthLessMargins/2) * .8);
 
 		const gObj = svgObj.append('g').attr('class','gWrapper');
 
@@ -139,8 +139,10 @@
         	colorLegendG
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
 
-	        arcFunc.outerRadius(resizedWidthLessMargins/2);
+	        arcFunc.outerRadius( (resizedWidthLessMargins/2) * .8 );
 
+	        pieG
+				.attr('transform', `translate(${resizedWidthLessMargins/2}, ${resizedHeightLessMargins/2 })`);
 	        pieG.selectAll('path')
 	        	.attr('d', arcFunc)
 
