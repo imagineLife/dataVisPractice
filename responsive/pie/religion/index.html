@@ -84,11 +84,11 @@
 	        gObj.selectAll('circle').data(data)
 	          .enter().append('circle')
 	            .attrs({
-	            	// 'cx': d => xScale(xValue(d)),
-	            	// 'cy': d => yScale(yValue(d)),
+	            	'cx': divWidthLessMargins/2,
+	            	'cy': divHeightLessMargins/2,
 	            	'fill': d => colorScale(colorValue(d)),
 	            	'fill-opacity': 0.3,
-	            	'r': 17,
+	            	'r': divWidthLessMargins * .5,
 	            	'class':'circle'
 	            });
 
