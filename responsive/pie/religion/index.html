@@ -44,7 +44,13 @@
 		const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
 		const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
 
+		//pie & arc functions
 		const d3PieFunc = d3.pie().value(pieValue);
+		const arcFunc = d3.arc()
+			.innerRadius(0)
+			.outerRadius(divHeightLessMargins/2);
+
+		//setup pie G element
 		const pieG = gObj.append('g')
 			.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
 
