@@ -52,7 +52,10 @@
 
 		//Build Axis Groups
 		const colorLegendG = gObj.append('g')
-			.attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
+			.attrs({
+				'transform': `translate(${divWidthLessMargins + 60}, 150)`,
+				'class':'pieLegend'
+			});
 
 		//set svg height & width from div computed dimensions
 		//NOTE: can be the divLessMargins, for 'padding' effect
