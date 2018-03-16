@@ -490,10 +490,6 @@ section:nth-child(even) {
   transition: .5s ease;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7)); }
 
-/*
-.container:hover .overlay {
-  opacity: 1; 
-}*/
 .text {
   color: white;
   font-size: 20px;
@@ -501,5 +497,12 @@ section:nth-child(even) {
   bottom: 15%;
   width: 100%;
   margin: 0 auto; }
+
+@media only screen and (min-width: 340px) {
+  .overlay {
+    opacity: 0; }
+
+  .container:hover .overlay {
+    opacity: 1; } }
 
 /*# sourceMappingURL=main.css.map */
