@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>StackedBar</title>
+    <script src="../../../../d3.v4.min.js"></script>
+    <script src="../../../../d3-selection-multi.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+  </head>
+  <style type="text/css">
+    .toolTip {
+      position: absolute;
+      display: none;
+      min-width: 80px;
+      height: auto;
+      background: none repeat scroll 0 0 rgba(255,255,255,.7);
+      padding: 14px;
+      text-align: center;
+      font-size: 20px;
+      font-family: sans-serif;
+    }
+  </style>
+  <body>
+
+  <div id="stackedbars">
+    <svg id="stacked" width="600" height="500"></svg></div>
+  </body>
+  <script>
+
+  var rawData = [
+    {
+      "pop3": 30
+    },
+    {
+      "pop2": 20
+    },
+    {
+      "pop5": 50
+    },
+    {
+      "pop4": 40
+    },
+    {
+      "pop1": 10
+    },
+    {
+      "pop6": 60
+    }
+  ];
+
+
+//1. re-parse data
+  //  will result in a single array of objects
+  var data = rawData.reduce(function(acc, cur) {
+    // console.log('acc ->,',acc,' cur ->',cur);
+    for (var key in cur) {
+        acc[0][key] = cur[key];
+    }
+      return acc
+    }, [{}]
+  );
+  console.log('data  after parsing ->',data);
+
+//2. decalre margin, width, height
+  var margin = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    },
+    width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+//3. isolate data from parsed data
+  //capture the number of keys in the dataset
+  let dataToUse = data[0];
+  // console.log('dataToUse ->',dataToUse);
+
+  let numberOfKeysInData = Object.keys(dataToUse).length;
+  // console.log('numberOfKeysInData ->',numberOfKeysInData);
+
+
+//4. get keys array from data using d3 magic
+  let keysArr = d3.keys(data[0]);
+  //console.log('keys array is ->',keysArr);
+
+
+//5. build d3 stack object
+  var stack = d3.stack().keys(keysArr).order(d3.stackOrderNone)
+    .offset(d3.stackOffsetNone);
+    console.log('stack(data)', stack(data));
+
+
+//6. calculate total height of bar
+  BarTotalVal = d3.max(stack(data), function(layer) {
+    return d3.max(layer, function(d) {
+  //    console.log('layer--->', layer)
+      var x = d[0],
+        y = d[1];
+      return y;
+    });
+  });
+
+//7.build x & y scales
+  // copied xScale, as I want to flip the bar 90 degrees
+  let yScale = d3.scaleLinear()
+    .domain([0, BarTotalVal])
+    .range([0, width]);
+
+  var xScale = d3.scaleLinear()
+    .domain([0, BarTotalVal])
+    .range([0, width]);
+  /* console.log("xScale1 ->",xScale(50)); */
+
+
+//8. set color array for bars
+  var colors = ["red", "green", "blue", "black",'orange','yellow','purple'];
+
+
+//9. set d3 stacked data to var
+  var d3StackedData = stack(data);
+   // console.log('d3StackedData ->',d3StackedData); 
+
+//10. build svg var
+  //set dimensions from above
+  var svg = d3.select("svg")
+    .attrs({
+      "width" : width + margin.left + margin.right,
+      "height" : height + margin.top + margin.bottom
+    })
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  //build individualBars
+  var individualBar = svg.selectAll(".individualBar")
+    .data(d3StackedData)
+    .enter().append("g")
+    .attr("class", "individualBar")
+    .style("fill", function(d, i) {
+      return colors[i];
+    })
+    .on("mousemove", function(d){
+    tooltipDiv
+      .style("left", d3.event.pageX - 75 + "px")
+      .style("top", d3.event.pageY - 120 + "px")
+      .style("display", "inline-block")
+      .html(`${d.key}: ${d.index}`);
+    })
+    .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
+
+  //build rect obj
+  var rect = individualBar.selectAll("rect")
+    .data(function(d,i) {
+      
+      // console.log('rect d ->',d);
+      //returns...
+      /*
+        [Array(2), key: "pop1", index: 0]
+        0 : (2) [0, 20, data: {…}]
+        index : 0
+        key : "pop1"
+        length : 1
+        __proto__ : Array(0)
+      */
+
+      return d;
+    })
+    .enter();
+
+  rect.append("rect")
+    .attrs({
+      "x" : (d) => { return width / 2 },
+      "y" : (d) => { return yScale( d[0] ) },
+      "height": (d) => { return height - yScale( d[1] - yScale( d[0]) ) },
+      "width" : 80
+    });
+
+  //Tooltip
+  let tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
+
+  </script>
+  </body>
+
+</html>
