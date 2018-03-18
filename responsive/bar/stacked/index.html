@@ -52,6 +52,9 @@
   let chartDiv = document.getElementById("chartDiv");
 
   let svg = d3.select(chartDiv).append("svg");
+
+  let gObj = svg.append('g');
+
   //2. decalre margin, width, height
   var margin = {
       top: 0,
@@ -59,8 +62,8 @@
       bottom: 0,
       left: 0
     },
-    width = 500 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = chartDiv.clientWidth,
+    height = chartDiv.clientHeight;
 
   // Extract the width and height of chartDiv wrapper that was calculated by css
   let resizedWidth = chartDiv.clientWidth;
@@ -81,7 +84,7 @@
       return acc
     }, [{}]
   );
-  console.log('data  after parsing ->',data);
+  // console.log('data  after parsing ->',data);
 
 //3. isolate data from parsed data
   //capture the number of keys in the dataset
@@ -100,7 +103,7 @@
 //5. build d3 stack object
   var stack = d3.stack().keys(keysArr).order(d3.stackOrderNone)
     .offset(d3.stackOffsetNone);
-    console.log('stack(data)', stack(data));
+    // console.log('stack(data)', stack(data));
 
 
 //6. calculate total height of bar
@@ -117,7 +120,7 @@
   // copied xScale, as I want to flip the bar 90 degrees
   let yScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
-    .range([0, width]);
+    .range([0, height]);
 
   var xScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
@@ -140,8 +143,9 @@
     .attrs({
       "width" : width + margin.left + margin.right,
       "height" : height + margin.top + margin.bottom
-    })
-    .append("g")
+    });
+    
+    gObj
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //build individualBars
