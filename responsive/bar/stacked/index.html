@@ -23,9 +23,7 @@
     }
   </style>
   <body>
-
-  <div id="chartDiv">
-    <svg id="stacked" width="600" height="500"></svg></div>
+    <div id="chartDiv"></div>
   </body>
   <script>
 
@@ -53,6 +51,7 @@
   //Put div wrapper in var
   let chartDiv = document.getElementById("chartDiv");
 
+  let svg = d3.select(chartDiv).append("svg");
   //2. decalre margin, width, height
   var margin = {
       top: 0,
@@ -70,6 +69,7 @@
   //make vars that equal width & heigh less margins
   const widthLessMargins = resizedWidth - margin.left - margin.right;
   const heightLessMargins = resizedHeight - margin.top - margin.bottom;
+
 
   //1. re-parse data
   //  will result in a single array of objects
@@ -135,7 +135,8 @@
 
 //10. build svg var
   //set dimensions from above
-  var svg = d3.select("svg")
+  // var svg = d3.select("svg")
+    svg
     .attrs({
       "width" : width + margin.left + margin.right,
       "height" : height + margin.top + margin.bottom
