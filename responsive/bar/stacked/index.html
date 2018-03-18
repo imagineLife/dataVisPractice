@@ -149,7 +149,7 @@
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //build individualBars
-  var individualBar = svg.selectAll(".individualBar")
+  var individualBar = gObj.selectAll(".individualBar")
     .data(d3StackedData)
     .enter().append("g")
     .attr("class", "individualBar")
