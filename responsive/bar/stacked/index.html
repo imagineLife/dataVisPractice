@@ -57,9 +57,9 @@
 
   //2. decalre margin, width, height
   var margin = {
-      top: 0,
+      top: 30,
       right: 0,
-      bottom: 0,
+      bottom: 30,
       left: 0
     },
     width = chartDiv.clientWidth,
@@ -186,10 +186,10 @@
 
   rect.append("rect")
     .attrs({
-      "x" : (d) => { return width / 2 },
+      "x" : (d) => { return width / 2 - ((width * .35) / 2) },
       "y" : (d) => { return yScale( d[0] ) },
-      "height": (d) => { return height - yScale( d[1] - yScale( d[0]) ) },
-      "width" : 80
+      "height": (d) => { return heightLessMargins - yScale( d[1] - yScale( d[0]) ) },
+      "width" : width * .35
     });
 
   //Tooltip
