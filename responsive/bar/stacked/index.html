@@ -61,9 +61,7 @@
       right: 0,
       bottom: 30,
       left: 0
-    },
-    width = chartDiv.clientWidth,
-    height = chartDiv.clientHeight;
+    };
 
   // Extract the width and height of chartDiv wrapper that was calculated by css
   let resizedWidth = chartDiv.clientWidth;
@@ -72,7 +70,6 @@
   //make vars that equal width & heigh less margins
   const widthLessMargins = resizedWidth - margin.left - margin.right;
   const heightLessMargins = resizedHeight - margin.top - margin.bottom;
-
 
   //1. re-parse data
   //  will result in a single array of objects
@@ -120,16 +117,16 @@
   // copied xScale, as I want to flip the bar 90 degrees
   let yScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
-    .range([0, height]);
+    .range([0, resizedHeight]);
 
   var xScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
-    .range([0, width]);
+    .range([0, resizedWidth]);
   /* console.log("xScale1 ->",xScale(50)); */
 
 
 //8. set color array for bars
-  var colors = ["red", "green", "blue", "black",'orange','yellow','purple'];
+  var colors = ["red", "green", "blue", "black",'orange','yellow'];
 
 
 //9. set d3 stacked data to var
@@ -141,8 +138,8 @@
   // var svg = d3.select("svg")
     svg
     .attrs({
-      "width" : width + margin.left + margin.right,
-      "height" : height + margin.top + margin.bottom
+      "width" : resizedWidth,
+      "height" : resizedHeight
     });
     
     gObj
@@ -161,7 +158,7 @@
       .style("left", d3.event.pageX - 75 + "px")
       .style("top", d3.event.pageY - 120 + "px")
       .style("display", "inline-block")
-      .html(`${d.key}: ${d.index}`);
+      .html(`${d.key}: ${d[0][1] - d[0][0]}`);
     })
     .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
 
@@ -186,10 +183,11 @@
 
   rect.append("rect")
     .attrs({
-      "x" : (d) => { return width / 2 - ((width * .35) / 2) },
-      "y" : (d) => { return yScale( d[0] ) },
-      "height": (d) => { return heightLessMargins - yScale( d[1] - yScale( d[0]) ) },
-      "width" : width * .35
+      "x" : (d) =>  resizedWidth / 2 - ((resizedWidth * .35) / 2),
+      "y" : (d) => {
+        return yScale( d[0] ) },
+      "height": d => heightLessMargins - yScale( d[1] - yScale( d[0]) ) ,
+      "width" : resizedWidth * .35
     });
 
   //Tooltip
