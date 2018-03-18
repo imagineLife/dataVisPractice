@@ -50,8 +50,14 @@
     }
   ];
 
+  //Put div wrapper in var
+  let chartDiv = document.getElementById("chartDiv");
 
-//1. re-parse data
+  // Extract the width and height of chartDiv wrapper that was calculated by css
+  let resizedWidth = chartDiv.clientWidth;
+  let resizedHeight = chartDiv.clientHeight;
+
+  //1. re-parse data
   //  will result in a single array of objects
   var data = rawData.reduce(function(acc, cur) {
     // console.log('acc ->,',acc,' cur ->',cur);
@@ -63,7 +69,7 @@
   );
   console.log('data  after parsing ->',data);
 
-//2. decalre margin, width, height
+  //2. decalre margin, width, height
   var margin = {
       top: 0,
       right: 0,
