@@ -74,13 +74,11 @@
   //1. re-parse data
   //  will result in a single array of objects
   var data = rawData.reduce(function(acc, cur) {
-    // console.log('acc ->,',acc,' cur ->',cur);
     for (var key in cur) {
         acc[0][key] = cur[key];
     }
       return acc
     }, [{}] );
-  console.log('data  after parsing ->',data);
 
 //3. isolate data from parsed data
   //capture the number of keys in the dataset
@@ -121,11 +119,8 @@
   var xScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
     .range([resizedWidth, 0]);
-  /* console.log("xScale1 ->",xScale(50)); */
 
-
-//8. set color array for bars
-  // var colors = ["red", "green", "blue", "black",'orange','yellow'];
+//8. set colors for bars
   const colorScale = d3.scaleOrdinal()
       .range(d3.schemeCategory10);
 
@@ -133,15 +128,14 @@
   var d3StackedData = stack(data);
    // console.log('d3StackedData ->',d3StackedData); 
 
-//10. build svg var
-  //set dimensions from above
-  // var svg = d3.select("svg")
+    //10. build svg var
     svg
     .attrs({
       "width" : resizedWidth,
       "height" : resizedHeight
     });
     
+    //build gObject
     gObj
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -191,7 +185,7 @@
       'class': 'myRectClass'
     });
 
-  //Tooltip
+  //Build Tooltip
   let tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
 
   let resize = () => {
@@ -205,21 +199,17 @@
     });
 
     let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-    // console.log('resizedWidthLessMargins ->',resizedWidthLessMargins);
     let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
     //Update scale RANGES
     xScale.range([resizedWidthLessMargins, 0]);
     yScale.range([0, resizedHeightLessMargins]);
 
-    console.log('adjusted middle is ',resizedWidthLessMargins / 2 - ((resizedWidthLessMargins * .35) / 2));
     //Update Bars
     d3.selectAll('.myRectClass').attrs({
       'x' : resizedWidthLessMargins / 2 - ((resizedWidthLessMargins * .35) / 2),
-      'y' : (d) => yScale( d[0] ),
-      'height': (d) => {
-        return resizedHeightLessMargins - yScale( d[1] - yScale( d[0]) ) 
-      },
+      'y' : d => yScale( d[0] ),
+      'height': d => resizedHeightLessMargins - yScale( d[1] - yScale( d[0]) ),
       'width' : resizedWidthLessMargins * .35
     });
 
