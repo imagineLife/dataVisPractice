@@ -104,8 +104,8 @@
 			.tickSize(-divWidthLessMargins);
 
 		const d3LineObj = d3.line()
-			.x(d => xScale( xScale(d.measure) ))
-			.y(d => yScale( yScale(d.cts) ))
+			.x(d => xScale( xScale(xValue) ))
+			.y(d => yScale( yScale(yValue) ))
 			.curve(d3.curveBasis)
 
 
@@ -155,8 +155,8 @@
 
 				yScale
 				 .domain([
-				 	d3.min( noteCounts, note => d3.min(note.values, d => d.cts) ),
-				 	d3.max(noteCounts, note => d3.max(note.values, d => d.cts) )
+				 	d3.min( noteCounts, note => d3.min(note.values, yValue) ),
+				 	d3.max(noteCounts, note => d3.max(note.values, yValue) )
 				 ])
 				 .range([divHeightLessMargins, margin.top])
 				 .nice();
