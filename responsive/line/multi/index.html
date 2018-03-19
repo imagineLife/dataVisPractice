@@ -35,6 +35,7 @@
 		//Setup Scales
 		const xScale = d3.scaleLinear();
 		const yScale = d3.scaleLinear();
+		const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
 		// Extract the DIV width and height that was computed by CSS.
 		let parentDivWidth = chartDiv.clientWidth;
@@ -103,8 +104,8 @@
 			.tickSize(-divWidthLessMargins);
 
 		const lineObj = d3.line()
-			.x(d => xScale( xValue(d) ))
-			.y(d => yScale( yValue(d) ))
+			.x(d => xScale( xValue(d.measure) ))
+			.y(d => yScale( yValue(d.cts) ))
 			.curve(d3.curveBasis)
 
 
@@ -138,7 +139,10 @@
 					return {
 					  id: id,
 					  values: data.map(function(d) {
-					    return {measure: d.measure, cts: d[id]};
+					    return {
+					    	measure: d.measure,
+					    	cts: d[id]
+					    };
 					  })
 					};
 				});
