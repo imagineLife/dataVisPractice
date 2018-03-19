@@ -123,47 +123,65 @@
 			return d;
 		};
 
-		let parsedData;
+		let parsedData, noteCounts;
 
         function buildChart(obj){
 
-         d3.csv(obj.dataFile, parseData, data => {
-           parsedData = data;
+			d3.csv(obj.dataFile, parseData, data => {
+				parsedData = data;
 
-           xScale
-             .domain(d3.extent(data, xValue))
-             .range([0, divWidthLessMargins]);
+				/*
+					noteCounts collects & Parses, in this case,
+					hen & shaw's values & build a new data set
+				*/
+				noteCounts = data.columns.slice(1).map(function(id) {
+					return {
+					  id: id,
+					  values: data.map(function(d) {
+					    return {measure: d.measure, cts: d[id]};
+					  })
+					};
+				});
 
-           yScale
-             .domain(d3.extent(data, yValue))
-             .range([divHeightLessMargins, margin.top])
-             .nice();
+				// console.log('noteCounts ->',noteCounts);
 
-           line.attr('d', lineObj(data) );
+				xScale
+				 .domain(d3.extent(data, d => d.measure))
+				 .range([0, divWidthLessMargins]);
 
-           xAxisG.call(xAxis)
-               .selectAll('.tick line').attrs({
-                   'class':'xLine',
-                   'stroke-dasharray': '1, 5'
-               });
+				yScale
+				 .domain([
+				 	d3.min( noteCounts, note => d3.min(note.values, d => d.cts) ),
+				 	d3.max(noteCounts, note => d3.max(note.values, d => d.cts) )
+				 ])
+				 .range([divHeightLessMargins, margin.top])
+				 .nice();
 
-         xAxisG.selectAll('.tick text')
-             .attrs({
-               'transform': 'rotate(-45)',
-               'text-anchor': 'end',
-               'alignment-baseline':'middle',
-               'x': -5,
-               'y': 15,
-               'dy':0
-             })
+				line.attr('d', lineObj(data) );
 
-           yAxisG.call(yAxis)
-               .selectAll('.tick line').attrs({
-                   'class':'yLine',
-                   'stroke-dasharray': '1, 5'
-               });
+				xAxisG.call(xAxis)
+				   .selectAll('.tick line').attrs({
+				       'class':'xLine',
+				       'stroke-dasharray': '1, 5'
+				   });
 
-           });
+				xAxisG.selectAll('.tick text')
+				 .attrs({
+				   'transform': 'rotate(-45)',
+				   'text-anchor': 'end',
+				   'alignment-baseline':'middle',
+				   'x': -5,
+				   'y': 15,
+				   'dy':0
+				 })
+
+				yAxisG.call(yAxis)
+				   .selectAll('.tick line').attrs({
+				       'class':'yLine',
+				       'stroke-dasharray': '1, 5'
+				   });
+
+            });
 
         }
 
