@@ -18,7 +18,7 @@
 		const yLabel = 'Number of NonChordTones';
 
 		const xValue = d => d.measure;
-		const yValue = d => d.population;
+		const yValue = d => d.cts;
 
 		const margin = { 
 			left: 140, 
@@ -103,9 +103,9 @@
 			.tickFormat(d3.format('.2s'))
 			.tickSize(-divWidthLessMargins);
 
-		const lineObj = d3.line()
-			.x(d => xScale( xValue(d.measure) ))
-			.y(d => yScale( yValue(d.cts) ))
+		const d3LineObj = d3.line()
+			.x(d => xScale( xScale(d.measure) ))
+			.y(d => yScale( yScale(d.cts) ))
 			.curve(d3.curveBasis)
 
 
@@ -163,7 +163,7 @@
 
 				 colorScale.domain( noteCounts.map( note => note.id ) );
 
-				line.attr('d', lineObj(data) );
+				line.attr('d', d3LineObj(data) );
 
 				xAxisG.call(xAxis)
 				   .selectAll('.tick line').attrs({
@@ -258,7 +258,7 @@
 	               .attr('y2', -resizedHeightLessMargins);
 			   
 			   //update Line
-			   line.attr("d", lineObj(parsedData));
+			   line.attr("d", d3LineObj(parsedData));
 
 	       }       
 
