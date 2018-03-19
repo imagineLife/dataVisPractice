@@ -30,10 +30,10 @@
 	let gObj = svgObj.append("g").attr('class','gWrapper');
 
 	let margin = {
-		top: 20,
-		right: 80,
-		bottom: 30,
-		left: 50
+		top: 50,
+		right: 100,
+		bottom: 60,
+		left: 70
 	};
 	
 	// Extract the DIV width and height that was computed by CSS.
@@ -56,14 +56,14 @@
 
 	var parseTime = d3.timeParse("%Y%m%d");
 
-	var x = d3.scaleLinear().range([0, divWidthLessMargins]),
-	    y = d3.scaleLinear().range([divHeightLessMargins, 0]),
-	    z = d3.scaleOrdinal(d3.schemeCategory10);
+	var xScale = d3.scaleLinear().range([0, divWidthLessMargins]),
+	    yScale = d3.scaleLinear().range([divHeightLessMargins, 0]),
+	    colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
 	var line = d3.line()
 	    .curve(d3.curveBasis)
-	    .x(function(d) { return x(d.measure); })
-	    .y(function(d) { return y(d.ncts); });
+	    .x(function(d) { return xScale(d.measure); })
+	    .y(function(d) { return yScale(d.ncts); });
 
 	d3.csv("data.csv", type, function(error, data) {
 	  if (error) throw error;
@@ -77,24 +77,23 @@
 	    };
 	  });
 
-	  x.domain(d3.extent(data, function(d) { return d.measure; }));
+	  xScale.domain(d3.extent(data, function(d) { return d.measure; }));
 
-	  console.log('d3Max chordTones, values',d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); }));
-	  y.domain([
+	  yScale.domain([
 	    d3.min(chordTones, function(c) { return d3.min(c.values, function(d) { return d.ncts; }); }),
 	    d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); })
 	  ]);
 
-	  z.domain(chordTones.map(function(c) { return c.id; }));
+	  colorScale.domain( chordTones.map( c => c.id ) );
 
 	  gObj.append("g")
 	      .attr("class", "axis axis--x")
 	      .attr("transform", "translate(0," + divHeightLessMargins + ")")
-	      .call(d3.axisBottom(x));
+	      .call(d3.axisBottom(xScale));
 
 	  gObj.append("g")
 	      .attr("class", "axis axis--y")
-	      .call(d3.axisLeft(y))
+	      .call(d3.axisLeft(yScale))
 	    .append("text")
 	      .attr("transform", "rotate(-90)")
 	      .attr("y", 6)
@@ -110,15 +109,17 @@
 	  city.append("path")
 	      .attr("class", "line")
 	      .attr("d", function(d) { return line(d.values); })
-	      .style("stroke", function(d) { return z(d.id); });
+	      .style("stroke", function(d) { return colorScale(d.id); });
 
 	  city.append("text")
 	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-	      .attr("transform", function(d) { return "translate(" + x(d.value.measure) + "," + y(d.value.ncts) + ")"; })
+	      .attr("transform", function(d) { return "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")"; })
 	      .attr("x", 3)
 	      .attr("dy", "0.35em")
 	      .style("font", "10px sans-serif")
-	      .text(function(d) { return d.id; });
+	      .text(d => { 
+	      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
+	      });
 	});
 
 	function type(d, columns) {
