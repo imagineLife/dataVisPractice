@@ -13,7 +13,8 @@
 <body>
 	<div id="chartDiv"></div>
 	<script>
-	         
+		let parsedData, noteCounts;
+
 		const xLabel = 'Measure Count';
 		const yLabel = 'Number of NonChordTones';
 
@@ -117,6 +118,22 @@
 			   'class': 'path'
 			});
 
+
+		  let noteVar = gObj.selectAll(".noteVar");
+
+		  noteVar.append("path")
+		      .attr("class", "line")
+		      .attr("d", function(d) { return line(d.values); })
+		      .style("stroke", function(d) { return z(d.id); });
+
+		  // noteVar.append("text")
+		  //     .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+		  //     .attr("transform", function(d) { return "translate(" + x(d.value.measure) + "," + y(d.value.cts) + ")"; })
+		  //     .attr("x", 3)
+		  //     .attr("dy", "0.35em")
+		  //     .style("font", "10px sans-serif")
+		  //     .text(function(d) { return d.id; });
+
 		const parseData = d => {
 			d.measure = +d.measure;
 			d.hen = +d.hen;
@@ -124,7 +141,6 @@
 			return d;
 		};
 
-		let parsedData, noteCounts;
 
         function buildChart(obj){
 
@@ -147,7 +163,12 @@
 					};
 				});
 
-				// console.log('noteCounts ->',noteCounts);
+				console.log('noteCounts ->',noteCounts);
+
+				noteVar
+					.data(noteCounts)
+				    .enter().append("g")
+				    .attr("class", "noteVar");
 
 				xScale
 				 .domain(d3.extent(data, d => d.measure))
@@ -163,7 +184,7 @@
 
 				 colorScale.domain( noteCounts.map( note => note.id ) );
 
-				line.attr('d', d3LineObj(data) );
+				// line.attr('d', d3LineObj(data) );
 
 				xAxisG.call(xAxis)
 				   .selectAll('.tick line').attrs({
@@ -194,7 +215,8 @@
        let AllChartObj = {
            svgClass: '.svgWrapper',
            dataFile:'data.csv'
-       }
+       };
+
        buildChart(AllChartObj);
 
 	//2. Build fn
