@@ -14,10 +14,10 @@
 	<div id="chartDiv"></div>
 	<script>
 	         
-		const xLabel = 'Year';
-		const yLabel = 'Population';
+		const xLabel = 'Measure Count';
+		const yLabel = 'Number of NonChordTones';
 
-		const xValue = d => d.year;
+		const xValue = d => d.measure;
 		const yValue = d => d.population;
 
 		const margin = { 
@@ -33,7 +33,7 @@
 		const gObj = svgObj.append('g').attr('class','gWrapper');
 
 		//Setup Scales
-		const xScale = d3.scaleTime();
+		const xScale = d3.scaleLinear();
 		const yScale = d3.scaleLinear();
 
 		// Extract the DIV width and height that was computed by CSS.
@@ -120,58 +120,59 @@
 			d.measure = +d.measure;
 			d.hen = +d.hen;
 			d.shaw = +d.shaw;
+			console.log('parseData ->',d);
 			return d;
 		};
 
 		let parsedData;
 
-	       function buildChart(obj){
+        function buildChart(obj){
 
-	         d3.csv(obj.dataFile, parseData, data => {
-	           parsedData = data;
+         d3.csv(obj.dataFile, parseData, data => {
+           parsedData = data;
 
-	           xScale
-	             .domain(d3.extent(data, xValue))
-	             .range([0, divWidthLessMargins]);
+           xScale
+             .domain(d3.extent(data, xValue))
+             .range([0, divWidthLessMargins]);
 
-	           yScale
-	             .domain(d3.extent(data, yValue))
-	             .range([divHeightLessMargins, margin.top])
-	             .nice();
+           yScale
+             .domain(d3.extent(data, yValue))
+             .range([divHeightLessMargins, margin.top])
+             .nice();
 
-	           line.attr('d', lineObj(data) );
+           line.attr('d', lineObj(data) );
 
-	           xAxisG.call(xAxis)
-	               .selectAll('.tick line').attrs({
-	                   'class':'xLine',
-	                   'stroke-dasharray': '1, 5'
-	               });
+           xAxisG.call(xAxis)
+               .selectAll('.tick line').attrs({
+                   'class':'xLine',
+                   'stroke-dasharray': '1, 5'
+               });
 
-	         xAxisG.selectAll('.tick text')
-	             .attrs({
-	               'transform': 'rotate(-45)',
-	               'text-anchor': 'end',
-	               'alignment-baseline':'middle',
-	               'x': -5,
-	               'y': 15,
-	               'dy':0
-	             })
+         xAxisG.selectAll('.tick text')
+             .attrs({
+               'transform': 'rotate(-45)',
+               'text-anchor': 'end',
+               'alignment-baseline':'middle',
+               'x': -5,
+               'y': 15,
+               'dy':0
+             })
 
-	           yAxisG.call(yAxis)
-	               .selectAll('.tick line').attrs({
-	                   'class':'yLine',
-	                   'stroke-dasharray': '1, 5'
-	               });
+           yAxisG.call(yAxis)
+               .selectAll('.tick line').attrs({
+                   'class':'yLine',
+                   'stroke-dasharray': '1, 5'
+               });
 
-	         });
+           });
 
-	       }
+        }
 
-	       let AllChartObj = {
-	           svgClass: '.svgWrapper',
-	           dataFile:'data.csv'
-	       }
-	       buildChart(AllChartObj);
+       let AllChartObj = {
+           svgClass: '.svgWrapper',
+           dataFile:'data.csv'
+       }
+       buildChart(AllChartObj);
 
 	//2. Build fn
 	       let resize = () => {
@@ -239,7 +240,7 @@
 	       }       
 
 	//Add Resise listener & fn call
-	       window.addEventListener("resize", resize);
+	       // window.addEventListener("resize", resize);
 	</script>
 </body>
 </html>
