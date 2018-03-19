@@ -10,282 +10,130 @@
 	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../dark.css">
 </head>
+<style>
+	.line {
+	  fill: none;
+	  stroke-width: 3px;
+	}
+</style>
 <body>
 	<div id="chartDiv"></div>
 	<script>
-		let parsedData, noteCounts;
 
-		const xLabel = 'Measure Count';
-		const yLabel = 'Number of NonChordTones';
+	const chartDiv = document.getElementById('chartDiv');     
+	let svgObj = d3.select(chartDiv).append("svg");
+	let gObj = svgObj.append("g").attr('class','gWrapper');
 
-		const xValue = d => d.measure;
-		const yValue = d => d.cts;
+	let margin = {
+		top: 50,
+		right: 100,
+		bottom: 60,
+		left: 70
+	};
+	
+	// Extract the DIV width and height that was computed by CSS.
+	let parentDivWidth = chartDiv.clientWidth;
+	let parentDivHeight = chartDiv.clientHeight;
 
-		const margin = { 
-			left: 140, 
-			right: 50,
-			top: 50,
-			bottom: 120
-		};
+	//get css-computed dimensions
+	const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
+	const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
 
-		//Select/Create div, svg, g
-		const chartDiv = document.getElementById('chartDiv');     
-		const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
-		const gObj = svgObj.append('g').attr('class','gWrapper');
+	//set svg height & width from div computed dimensions
+	//NOTE: can be the divLessMargins, for 'padding' effect
+	svgObj.attrs({
+		"width" : parentDivWidth,
+		"height" : parentDivHeight
+	});	
 
-		//Setup Scales
-		const xScale = d3.scaleLinear();
-		const yScale = d3.scaleLinear();
-		const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+	//translate the gWrapper
+	gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
-		// Extract the DIV width and height that was computed by CSS.
-		let parentDivWidth = chartDiv.clientWidth;
-		let parentDivHeight = chartDiv.clientHeight;
+	var parseTime = d3.timeParse("%Y%m%d");
 
-		//get css-computed dimensions
-		const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
-		const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
+	var xScale = d3.scaleLinear().range([0, divWidthLessMargins]),
+	    yScale = d3.scaleLinear().range([divHeightLessMargins, 0]),
+	    colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-		//set svg height & width from div computed dimensions
-		//NOTE: can be the divLessMargins, for 'padding' effect
-		svgObj.attrs({
-			"width" : parentDivWidth,
-			"height" : parentDivHeight
-		});
+	var line = d3.line()
+	    .curve(d3.curveBasis)
+	    .x(function(d) { return xScale(d.measure); })
+	    .y(function(d) { return yScale(d.ncts); });
 
-		//translate the gWrapper
-		gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+	d3.csv("data.csv", type, function(error, data) {
+	  if (error) throw error;
 
-		//Build Axis Groups
-		const xAxisG = gObj.append('g')
-		 .attrs({
-		   'transform': `translate(0, ${divHeightLessMargins})`,
-		   'class':'axis x'
-		 });
+	  var chordTones = data.columns.slice(1).map(function(id) {
+	    return {
+	      id: id,
+	      values: data.map(function(d) {
+	        return {measure: d.measure, ncts: d[id]};
+	      })
+	    };
+	  });
 
-		const yAxisG = gObj.append('g')
-		.attrs({
-		   'class': 'axis y'
-		});
+	  xScale.domain(d3.extent(data, function(d) { return d.measure; }));
 
-		//set placeholder for axis labels      
-		let xAxisLabel = xAxisG.append('text');
-		let yAxisLabel = yAxisG.append('text');
+	  yScale.domain([
+	    d3.min(chordTones, function(c) { return d3.min(c.values, function(d) { return d.ncts; }); }),
+	    d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); })
+	  ]);
 
-		//set attrs for axis labels      
-		xAxisLabel
-		 .attrs({
-		   'class': 'axis-label',
-		   'x': (divWidthLessMargins / 2),
-		   'y': '100'
-		 })
-		 .text(xLabel);
-
-		yAxisLabel
-		 .attrs({
-		   'class': 'axis-label',
-		   'x' : -divHeightLessMargins / 2,
-		   'y' : -margin.left / 1.5,
-		   'transform' : `rotate(-90)`
-		 })
-		 .style('text-anchor', 'middle')
-		 .text(yLabel);
-
-		//Build Axis elements
-		const xAxis = d3.axisBottom()
-			.scale(xScale)
-			.tickPadding(15)
-			.tickSize(-divHeightLessMargins);
-
-		const yAxis = d3.axisLeft()
-			.scale(yScale)
-			.ticks(5)
-			.tickPadding(15)
-			.tickFormat(d3.format('.2s'))
-			.tickSize(-divWidthLessMargins);
-
-		const d3LineObj = d3.line()
-			.x(d => xScale( xScale(xValue) ))
-			.y(d => yScale( yScale(yValue) ))
-			.curve(d3.curveBasis)
+	  colorScale.domain( chordTones.map( c => c.id ) );
 
 
-		let line = gObj.append('path')
-			.attrs({
-			   'fill': 'none',
-			   'stroke': 'steelblue',
-			   'stroke-width': 4,
-			   'class': 'path'
-			});
+	  const xAxisG = gObj.append("g")
+	      .attrs({
+	      	"class": "axis axis--x",
+	      	"transform": "translate(0," + divHeightLessMargins + ")"
+	      })
+	      .call(d3.axisBottom(xScale));
 
+	  const yAxisG = gObj.append("g")
+	      .attr("class", "axis axis--y")
+	      .call(d3.axisLeft(yScale))
+	    .append("text")
+	      .attrs({
+	      	"transform": "rotate(-90)",
+	      	"y": 6,
+	      	"dy": "0.71em",
+	      	"fill": "#000"
+	      })
+	      .text("Note Count");
 
-		  let noteVar = gObj.selectAll(".noteVar");
+	  var city = gObj.selectAll(".city")
+	    .data(chordTones)
+	    .enter().append("g")
+	      .attr("class", "city");
 
-		  noteVar.append("path")
-		      .attr("class", "line")
-		      .attr("d", function(d) { return line(d.values); })
-		      .style("stroke", function(d) { return z(d.id); });
+	  city.append("path")
+	      .attrs({
+	      	"class": "line",
+	      	"d": function(d) { return line(d.values); }
+	      })
+	      .style("stroke", function(d) { return colorScale(d.id); });
 
-		  // noteVar.append("text")
-		  //     .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-		  //     .attr("transform", function(d) { return "translate(" + x(d.value.measure) + "," + y(d.value.cts) + ")"; })
-		  //     .attr("x", 3)
-		  //     .attr("dy", "0.35em")
-		  //     .style("font", "10px sans-serif")
-		  //     .text(function(d) { return d.id; });
+	  city.append("text")
+	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+	      .attrs({
+	      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
+	      	"x": 3,
+	      	"dy": "0.35em"
+	      })
+	      .style("font", "10px sans-serif")
+	      .text(d => { 
+	      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
+	      });
+	});
 
-		const parseData = d => {
-			d.measure = +d.measure;
-			d.hen = +d.hen;
-			d.shaw = +d.shaw;
-			return d;
-		};
+	function type(d, columns) {
+	  d.hen = +d.hen;
+	  d.shaw = +d.shaw;
+	  d.measure = +d.measure;
+	  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+	  return d;
+	}
 
-
-        function buildChart(obj){
-
-			d3.csv(obj.dataFile, parseData, data => {
-				parsedData = data;
-
-				/*
-					noteCounts collects & Parses, in this case,
-					hen & shaw's values & build a new data set
-				*/
-				noteCounts = data.columns.slice(1).map(function(id) {
-					return {
-					  id: id,
-					  values: data.map(function(d) {
-					    return {
-					    	measure: d.measure,
-					    	cts: d[id]
-					    };
-					  })
-					};
-				});
-
-				console.log('noteCounts ->',noteCounts);
-
-				noteVar
-					.data(noteCounts)
-				    .enter().append("g")
-				    .attr("class", "noteVar");
-
-				xScale
-				 .domain(d3.extent(data, d => d.measure))
-				 .range([0, divWidthLessMargins]);
-
-				yScale
-				 .domain([
-				 	d3.min( noteCounts, note => d3.min(note.values, yValue) ),
-				 	d3.max(noteCounts, note => d3.max(note.values, yValue) )
-				 ])
-				 .range([divHeightLessMargins, margin.top])
-				 .nice();
-
-				 colorScale.domain( noteCounts.map( note => note.id ) );
-
-				// line.attr('d', d3LineObj(data) );
-
-				xAxisG.call(xAxis)
-				   .selectAll('.tick line').attrs({
-				       'class':'xLine',
-				       'stroke-dasharray': '1, 5'
-				   });
-
-				xAxisG.selectAll('.tick text')
-				 .attrs({
-				   'transform': 'rotate(-45)',
-				   'text-anchor': 'end',
-				   'alignment-baseline':'middle',
-				   'x': -5,
-				   'y': 15,
-				   'dy':0
-				 })
-
-				yAxisG.call(yAxis)
-				   .selectAll('.tick line').attrs({
-				       'class':'yLine',
-				       'stroke-dasharray': '1, 5'
-				   });
-
-            });
-
-        }
-
-       let AllChartObj = {
-           svgClass: '.svgWrapper',
-           dataFile:'data.csv'
-       };
-
-       buildChart(AllChartObj);
-
-	//2. Build fn
-	       let resize = () => {
-	           
-	           // Extract the width and height that was computed by CSS.
-	           let resizedFnWidth = chartDiv.clientWidth;
-	           let resizedFnHeight = chartDiv.clientHeight;
-
-	           //set svg dimension based on resizing attrs
-	           svgObj.attrs({
-	               "width" : resizedFnWidth,
-	               "height" : resizedFnHeight
-	           });
-
-	           //calc resized dimensions less margins
-	           let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-	           let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
-
-	           //update scale ranges
-	           xScale.range([0, resizedWidthLessMargins]);
-	           yScale.range([resizedHeightLessMargins, margin.top]);
-
-	           //Update the line
-
-	           
-	           //Update the X-AXIS
-	           xAxisG
-	               .attrs({
-	                   'transform': `translate(0, ${resizedHeightLessMargins})`,
-	                   'x' : divWidthLessMargins / 2,
-	                   'y' : resizedHeightLessMargins * .1,
-	               })
-	               .call(xAxis);
-
-	           //Update the X-AXIS LABEL
-	           xAxisLabel
-	               .attrs({
-	                 'x' : resizedWidthLessMargins / 2
-	               })
-
-	           //Update the Y-AXIS
-	           yAxisG
-	               .attrs({
-	                   'x' : -resizedHeightLessMargins / 2,
-	                   'y' : -margin.left / 2,
-	               })
-	               .call(yAxis);
-
-	           //Update yAxis Label
-	           yAxisLabel.attrs({
-	               'x' : -resizedHeightLessMargins / 2,
-	               'y' : -margin.left / 1.5,
-	           });
-
-	           //update yLines
-	           d3.selectAll('.yLine')
-	               .attr('x2', resizedWidthLessMargins);
-	           
-	           d3.selectAll('.xLine')
-	               .attr('y2', -resizedHeightLessMargins);
-			   
-			   //update Line
-			   line.attr("d", d3LineObj(parsedData));
-
-	       }       
-
-	//Add Resise listener & fn call
-	       // window.addEventListener("resize", resize);
 	</script>
 </body>
 </html>
