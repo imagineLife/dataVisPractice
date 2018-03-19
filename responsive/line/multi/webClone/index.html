@@ -87,18 +87,22 @@
 	  colorScale.domain( chordTones.map( c => c.id ) );
 
 	  gObj.append("g")
-	      .attr("class", "axis axis--x")
-	      .attr("transform", "translate(0," + divHeightLessMargins + ")")
+	      .attrs({
+	      	"class": "axis axis--x",
+	      	"transform": "translate(0," + divHeightLessMargins + ")"
+	      })
 	      .call(d3.axisBottom(xScale));
 
 	  gObj.append("g")
 	      .attr("class", "axis axis--y")
 	      .call(d3.axisLeft(yScale))
 	    .append("text")
-	      .attr("transform", "rotate(-90)")
-	      .attr("y", 6)
-	      .attr("dy", "0.71em")
-	      .attr("fill", "#000")
+	      .attrs({
+	      	"transform": "rotate(-90)",
+	      	"y": 6,
+	      	"dy": "0.71em",
+	      	"fill": "#000"
+	      })
 	      .text("Note Count");
 
 	  var city = gObj.selectAll(".city")
@@ -107,15 +111,19 @@
 	      .attr("class", "city");
 
 	  city.append("path")
-	      .attr("class", "line")
-	      .attr("d", function(d) { return line(d.values); })
+	      .attrs({
+	      	"class": "line",
+	      	"d": function(d) { return line(d.values); }
+	      })
 	      .style("stroke", function(d) { return colorScale(d.id); });
 
 	  city.append("text")
 	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-	      .attr("transform", function(d) { return "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")"; })
-	      .attr("x", 3)
-	      .attr("dy", "0.35em")
+	      .attrs({
+	      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
+	      	"x": 3,
+	      	"dy": "0.35em"
+	      })
 	      .style("font", "10px sans-serif")
 	      .text(d => { 
 	      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
