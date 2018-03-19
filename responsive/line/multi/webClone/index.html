@@ -51,6 +51,9 @@
 		"height" : parentDivHeight
 	});	
 
+	//translate the gWrapper
+	gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+
 	var parseTime = d3.timeParse("%Y%m%d");
 
 	var x = d3.scaleLinear().range([0, divWidthLessMargins]),
