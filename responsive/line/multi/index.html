@@ -161,6 +161,8 @@
 				 .range([divHeightLessMargins, margin.top])
 				 .nice();
 
+				 colorScale.domain( noteCounts.map( note => note.id ) );
+
 				line.attr('d', lineObj(data) );
 
 				xAxisG.call(xAxis)
