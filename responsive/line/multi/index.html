@@ -205,7 +205,8 @@
 	      .attrs({
 	      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
 	      	"x": 3,
-	      	"dy": "0.35em"
+	      	"dy": "0.35em",
+	      	"class":'lineLabel'
 	      })
 	      .style("font", "18px sans-serif")
 	      .style("stroke", function(d) { return colorScale(d.id); })
@@ -276,6 +277,11 @@
 	   svgObj
 	   	.selectAll('.line')
 	   	.attr("d", function(d) { return d3LineObj(d.values); });
+
+	  svgObj
+	  	.selectAll('.lineLabel')
+	  	.attr("transform", d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")");
+
 	}
 	//Add Resise listener & fn call
 	window.addEventListener("resize", resize);
