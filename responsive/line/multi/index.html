@@ -273,7 +273,9 @@
 		   .attr('y2', -resizedHeightLessMargins);
 
 	   //update Line
-	   line.attr("d", d3LineObj(parsedData));
+	   svgObj
+	   	.selectAll('.line')
+	   	.attr("d", function(d) { return d3LineObj(d.values); });
 	}
 	//Add Resise listener & fn call
 	window.addEventListener("resize", resize);
