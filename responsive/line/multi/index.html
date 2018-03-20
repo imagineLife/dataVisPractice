@@ -20,16 +20,25 @@
 	<div id="chartDiv"></div>
 	<script>
 
-	const chartDiv = document.getElementById('chartDiv');     
-	let svgObj = d3.select(chartDiv).append("svg");
-	let gObj = svgObj.append("g").attr('class','gWrapper');
+	let chordTones;
+
+	const xValue = d => d.measure;
+	const yValue = d => d.ncts;
 
 	let margin = {
 		top: 50,
 		right: 100,
 		bottom: 60,
-		left: 70
+		left: 120
 	};
+
+	const chartDiv = document.getElementById('chartDiv');     
+	let svgObj = d3.select(chartDiv).append("svg");
+	let gObj = svgObj.append("g").attr('class','gWrapper');
+
+	const xScale = d3.scaleLinear();
+	const yScale = d3.scaleLinear();
+	const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 	
 	// Extract the DIV width and height that was computed by CSS.
 	let parentDivWidth = chartDiv.clientWidth;
@@ -49,59 +58,136 @@
 	//translate the gWrapper
 	gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
+	const xAxisG = gObj.append("g")
+	  .attrs({
+	  	"class": "axis axis--x",
+	  	"transform": "translate(0," + divHeightLessMargins + ")"
+	  });
+	  // .call(d3.axisBottom(xScale));
+
+	const yAxisG = gObj.append("g")
+	  .attr("class", "axis axis--y");
+	  // .call(d3.axisLeft(yScale))
+	// .append("text")
+	//   .attrs({
+	//   	"transform": "rotate(-90)",
+	//   	"y": 6,
+	//   	"dy": "0.71em",
+	//   	"fill": "#000"
+	//   })
+	//   .text("Note Count");
+
+	//set placeholder for axis labels      
+	let xAxisLabel = xAxisG.append('text');
+	let yAxisLabel = yAxisG.append('text');
+
+	//set attrs for axis labels      
+	xAxisLabel
+	 .attrs({
+	   'class': 'axis-label',
+	   'x': (divWidthLessMargins / 2),
+	   'y': '100'
+	 })
+	 .text('xLabel');
+
+	yAxisLabel
+	 .attrs({
+	   'class': 'axis-label',
+	   'x' : -divHeightLessMargins / 2,
+	   'y' : -margin.left / 1.35,
+	   'transform' : `rotate(-90)`
+	 })
+	 .style('text-anchor', 'middle')
+	 .text('yLabel');
+
+	//Build Axis elements
+	const xAxis = d3.axisBottom()
+		.scale(xScale)
+		.tickPadding(15)
+		.tickSize(-divHeightLessMargins);
+
+	const yAxis = d3.axisLeft()
+		.scale(yScale)
+		.ticks(5)
+		.tickPadding(15)
+		.tickFormat(d3.format('.2s'))
+		.tickSize(-divWidthLessMargins);
+
 	var parseTime = d3.timeParse("%Y%m%d");
 
-	var xScale = d3.scaleLinear().range([0, divWidthLessMargins]),
-	    yScale = d3.scaleLinear().range([divHeightLessMargins, 0]),
-	    colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
 	var d3LineObj = d3.line()
-	    .curve(d3.curveBasis)
+	    .curve(d3.curveMonotoneX)
 	    .x(function(d) { return xScale(d.measure); })
 	    .y(function(d) { return yScale(d.ncts); });
 
-	let chordTones;
+	// let line = musicLine.append("path")
+	// 	.attrs({
+	// 		"class": "line",
+	// 		"d": function(d) { return d3LineObj(d.values); }
+	// 	})
+	// 	.style("stroke", function(d) { return colorScale(d.id); });
 
-	d3.csv("data.csv", type, function(error, data) {
+	function parseData(d, columns) {
+	  d.hen = +d.hen;
+	  d.shaw = +d.shaw;
+	  d.measure = +d.measure;
+	  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+	  return d;
+	}
+
+
+
+	d3.csv("data.csv", parseData, function(error, data) {
 	  if (error) throw error;
-
 
 	  chordTones = data.columns.slice(1).map(function(id) {
 	    return {
 	      id: id,
 	      values: data.map(function(d) {
-	        return {measure: d.measure, ncts: d[id]};
+	        return {
+	        	measure: d.measure,
+	        	ncts: d[id]
+	        }
 	      })
 	    };
 	  });
+	  // console.log('chordTones is ->',chordTones);
 
-	  xScale.domain(d3.extent(data, function(d) { return d.measure; }));
+	  xScale
+		.domain(d3.extent(data, function(d) { return d.measure; }))
+		.range([0, divWidthLessMargins]);
 
 	  yScale.domain([
 	    d3.min(chordTones, function(c) { return d3.min(c.values, function(d) { return d.ncts; }); }),
 	    d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); })
-	  ]);
+	  	])
+		.range([divHeightLessMargins, margin.top]);
+		// .nice();
 
 	  colorScale.domain( chordTones.map( c => c.id ) );
 
-	  const xAxisG = gObj.append("g")
-	      .attrs({
-	      	"class": "axis axis--x",
-	      	"transform": "translate(0," + divHeightLessMargins + ")"
-	      })
-	      .call(d3.axisBottom(xScale));
+	  xAxisG.call(xAxis)
+		  .selectAll('.tick line').attrs({
+	           'class':'xLine',
+	           'stroke-dasharray': '1, 5'
+	       });
 
-	  const yAxisG = gObj.append("g")
-	      .attr("class", "axis axis--y")
-	      .call(d3.axisLeft(yScale))
-	    .append("text")
-	      .attrs({
-	      	"transform": "rotate(-90)",
-	      	"y": 6,
-	      	"dy": "0.71em",
-	      	"fill": "#000"
-	      })
-	      .text("Note Count");
+	//Rotates xAxis ticks
+     // xAxisG.selectAll('.tick text')
+     // .attrs({
+     //   'transform': 'rotate(-45)',
+     //   'text-anchor': 'end',
+     //   'alignment-baseline':'middle',
+     //   'x': -5,
+     //   'y': 15,
+     //   'dy':0
+     // })
+
+      yAxisG.call(yAxis)
+       .selectAll('.tick line').attrs({
+           'class':'yLine',
+           'stroke-dasharray': '1, 5'
+       });
 
 	  var musicLine = gObj.selectAll(".musicLine")
 	    .data(chordTones)
@@ -109,11 +195,12 @@
 	      .attr("class", "musicLine");
 
 	  let line = musicLine.append("path")
-	      .attrs({
-	      	"class": "line",
-	      	"d": function(d) { return d3LineObj(d.values); }
-	      })
-	      .style("stroke", function(d) { return colorScale(d.id); });
+		.attrs({
+			"class": "line",
+			"d": function(d) { return d3LineObj(d.values); }
+		})
+		.style("stroke", function(d) { return colorScale(d.id); });
+
 
 	  musicLine.append("text")
 	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
@@ -122,19 +209,14 @@
 	      	"x": 3,
 	      	"dy": "0.35em"
 	      })
-	      .style("font", "10px sans-serif")
+	      .style("font", "18px sans-serif")
+	      .style("stroke", function(d) { return colorScale(d.id); })
+	      .style("fill", function(d) { return colorScale(d.id); })
 	      .text(d => { 
 	      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
-	      });
+	      })
+	      
 	});
-
-	function type(d, columns) {
-	  d.hen = +d.hen;
-	  d.shaw = +d.shaw;
-	  d.measure = +d.measure;
-	  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
-	  return d;
-	}
 
 	let resize = () => {
 
