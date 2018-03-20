@@ -120,12 +120,8 @@
 	    .x(function(d) { return xScale(d.measure); })
 	    .y(function(d) { return yScale(d.ncts); });
 
-	// let line = musicLine.append("path")
-	// 	.attrs({
-	// 		"class": "line",
-	// 		"d": function(d) { return d3LineObj(d.values); }
-	// 	})
-	// 	.style("stroke", function(d) { return colorScale(d.id); });
+	// let line = gMusicLine.append("path")
+	// 	.attr("class", "line")
 
 	function parseData(d, columns) {
 	  d.hen = +d.hen;
@@ -189,12 +185,14 @@
            'stroke-dasharray': '1, 5'
        });
 
-	  var musicLine = gObj.selectAll(".musicLine")
+	  var gMusicLine = gObj.selectAll(".musicLine")
 	    .data(chordTones)
 	    .enter().append("g")
-	      .attr("class", "musicLine");
+	      .attr("class", "gMusicLine");
 
-	  let line = musicLine.append("path")
+	  console.log('gMusicLine ->',gMusicLine);
+
+	  let line = gMusicLine.append("path")
 		.attrs({
 			"class": "line",
 			"d": function(d) { return d3LineObj(d.values); }
@@ -202,7 +200,7 @@
 		.style("stroke", function(d) { return colorScale(d.id); });
 
 
-	  musicLine.append("text")
+	  gMusicLine.append("text")
 	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
 	      .attrs({
 	      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
@@ -275,7 +273,7 @@
 		   .attr('y2', -resizedHeightLessMargins);
 
 	   //update Line
-	   // line.attr("d", d3LineObj(parsedData));
+	   line.attr("d", d3LineObj(parsedData));
 	}
 	//Add Resise listener & fn call
 	window.addEventListener("resize", resize);
