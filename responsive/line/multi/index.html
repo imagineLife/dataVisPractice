@@ -113,9 +113,9 @@
 		.tickFormat(d3.format('.2s'))
 		.tickSize(-divWidthLessMargins);
 
-	var parseTime = d3.timeParse("%Y%m%d");
+	let parseTime = d3.timeParse("%Y%m%d");
 
-	var d3LineObj = d3.line()
+	let d3LineObj = d3.line()
 	    .curve(d3.curveMonotoneX)
 	    .x(function(d) { return xScale(d.measure); })
 	    .y(function(d) { return yScale(d.ncts); });
@@ -127,7 +127,7 @@
 	  d.hen = +d.hen;
 	  d.shaw = +d.shaw;
 	  d.measure = +d.measure;
-	  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+	  for (let i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
 	  return d;
 	}
 
@@ -185,7 +185,7 @@
            'stroke-dasharray': '1, 5'
        });
 
-	  var gMusicLine = gObj.selectAll(".musicLine")
+	  let gMusicLine = gObj.selectAll(".musicLine")
 	    .data(chordTones)
 	    .enter().append("g")
 	      .attr("class", "gMusicLine");
