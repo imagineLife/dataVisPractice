@@ -132,90 +132,87 @@
 	}
 
 
+	function buildChart(obj){
+		d3.csv(obj.dataFile, parseData, function(error, data) {
+		  if (error) throw error;
 
-	d3.csv("data.csv", parseData, function(error, data) {
-	  if (error) throw error;
+		  chordTones = data.columns.slice(1).map(function(id) {
+		    return {
+		      id: id,
+		      values: data.map(function(d) {
+		        return {
+		        	measure: d.measure,
+		        	ncts: d[id]
+		        }
+		      })
+		    };
+		  });
+		  // console.log('chordTones is ->',chordTones);
 
-	  chordTones = data.columns.slice(1).map(function(id) {
-	    return {
-	      id: id,
-	      values: data.map(function(d) {
-	        return {
-	        	measure: d.measure,
-	        	ncts: d[id]
-	        }
-	      })
-	    };
-	  });
-	  // console.log('chordTones is ->',chordTones);
+		  xScale
+			.domain(d3.extent(data, function(d) { return d.measure; }))
+			.range([0, divWidthLessMargins]);
 
-	  xScale
-		.domain(d3.extent(data, function(d) { return d.measure; }))
-		.range([0, divWidthLessMargins]);
+		  yScale.domain([
+		    d3.min(chordTones, function(c) { return d3.min(c.values, function(d) { return d.ncts; }); }),
+		    d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); })
+		  	])
+			.range([divHeightLessMargins, margin.top]);
+			// .nice();
 
-	  yScale.domain([
-	    d3.min(chordTones, function(c) { return d3.min(c.values, function(d) { return d.ncts; }); }),
-	    d3.max(chordTones, function(c) { return d3.max(c.values, function(d) { return d.ncts; }); })
-	  	])
-		.range([divHeightLessMargins, margin.top]);
-		// .nice();
+		  colorScale.domain( chordTones.map( c => c.id ) );
 
-	  colorScale.domain( chordTones.map( c => c.id ) );
+		  xAxisG.call(xAxis)
+			  .selectAll('.tick line').attrs({
+		           'class':'xLine',
+		           'stroke-dasharray': '1, 5'
+		       });
 
-	  xAxisG.call(xAxis)
-		  .selectAll('.tick line').attrs({
-	           'class':'xLine',
+	      yAxisG.call(yAxis)
+	       .selectAll('.tick line').attrs({
+	           'class':'yLine',
 	           'stroke-dasharray': '1, 5'
 	       });
 
-	//Rotates xAxis ticks
-     // xAxisG.selectAll('.tick text')
-     // .attrs({
-     //   'transform': 'rotate(-45)',
-     //   'text-anchor': 'end',
-     //   'alignment-baseline':'middle',
-     //   'x': -5,
-     //   'y': 15,
-     //   'dy':0
-     // })
+		  let gMusicLine = gObj.selectAll(".musicLine")
+		    .data(chordTones)
+		    .enter().append("g")
+		      .attr("class", "gMusicLine");
 
-      yAxisG.call(yAxis)
-       .selectAll('.tick line').attrs({
-           'class':'yLine',
-           'stroke-dasharray': '1, 5'
-       });
+		  console.log('gMusicLine ->',gMusicLine);
 
-	  let gMusicLine = gObj.selectAll(".musicLine")
-	    .data(chordTones)
-	    .enter().append("g")
-	      .attr("class", "gMusicLine");
-
-	  console.log('gMusicLine ->',gMusicLine);
-
-	  let line = gMusicLine.append("path")
-		.attrs({
-			"class": "line",
-			"d": function(d) { return d3LineObj(d.values); }
-		})
-		.style("stroke", function(d) { return colorScale(d.id); });
+		  let line = gMusicLine.append("path")
+			.attrs({
+				"class": "line",
+				"d": function(d) { return d3LineObj(d.values); }
+			})
+			.style("stroke", function(d) { return colorScale(d.id); });
 
 
-	  gMusicLine.append("text")
-	      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-	      .attrs({
-	      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
-	      	"x": 3,
-	      	"dy": "0.35em",
-	      	"class":'lineLabel'
-	      })
-	      .style("font", "18px sans-serif")
-	      .style("stroke", function(d) { return colorScale(d.id); })
-	      .style("fill", function(d) { return colorScale(d.id); })
-	      .text(d => { 
-	      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
-	      })
+		  gMusicLine.append("text")
+		      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+		      .attrs({
+		      	"transform": d => "translate(" + xScale(d.value.measure) + "," + yScale(d.value.ncts) + ")",
+		      	"x": 3,
+		      	"dy": "0.35em",
+		      	"class":'lineLabel'
+		      })
+		      .style("font", "18px sans-serif")
+		      .style("stroke", function(d) { return colorScale(d.id); })
+		      .style("fill", function(d) { return colorScale(d.id); })
+		      .text(d => { 
+		      	return (d.id == 'hen' ? "Joe Henderson" : "Woody Shaw" ) 
+		      })
 
-	});
+		});
+	};
+
+	let ChartObj = {
+		svgClass : '.svgWrapper',
+		dataFile : 'data.csv' 
+	}
+
+	buildChart(ChartObj);
 
 	let resize = () => {
 
