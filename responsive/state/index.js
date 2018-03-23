@@ -1,6 +1,6 @@
 
 // color 
-var income_domain = [35000, 62000, 95000, 130000, 170000, 200000, 250000]
+var income_domain = [35000, 62000, 85000, 115000, 160000, 190000, 225000]
 var income_color = d3.scaleThreshold()
     .domain(income_domain)
     .range(d3.schemeGreens[7]);
@@ -38,21 +38,21 @@ function ready(error, data) {
     if (error) throw error;
 
     // new york topojson
-    var new_york = topojson.feature(data, {
+    var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.townLayer.geometries
     });
 
     // projection and path
     var projection = d3.geoAlbersUsa()
-        .fitExtent([[20, 20], [460, 580]], new_york);;
+        .fitExtent([[20, 20], [700, 580]], connecticut);;
 
     var geoPath = d3.geoPath()
         .projection(projection);
 
     // draw new york map and bind income data
     d3.select("svg.income").selectAll("path")
-        .data(new_york.features)
+        .data(connecticut.features)
         .enter()
         .append("path")
         .attr("d", geoPath)
@@ -82,7 +82,7 @@ function ready(error, data) {
 
     // // draw new york map and bind poverty data
     // d3.select("svg.poverty").selectAll("path")
-    //     .data(new_york.features)
+    //     .data(connecticut.features)
     //     .enter()
     //     .append("path")
     //     .attr("d", geoPath)
