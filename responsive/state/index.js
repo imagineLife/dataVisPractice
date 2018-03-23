@@ -1,20 +1,20 @@
 
 // color 
-var income_domain = [30000, 62000, 95000, 130000, 170000, 200000, 250000]
+var income_domain = [35000, 62000, 95000, 130000, 170000, 200000, 250000]
 var income_color = d3.scaleThreshold()
     .domain(income_domain)
     .range(d3.schemeGreens[7]);
 
-var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-var poverty_color = d3.scaleThreshold()
-    .domain(poverty_domain)
-    .range(d3.schemeReds[4]);
+// var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+// var poverty_color = d3.scaleThreshold()
+//     .domain(poverty_domain)
+//     .range(d3.schemeReds[4]);
 
 // incomeData 
 var incomeData = d3.map();
 
 // povertyData 
-var povertyData = d3.map();
+// var povertyData = d3.map();
 
 
 // asynchronous tasks, load topojson maps and data
