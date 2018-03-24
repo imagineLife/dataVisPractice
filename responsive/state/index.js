@@ -34,16 +34,16 @@ d3.queue()
             incomeData.set(d.id, +d.income); 
         }
         switch(true){
-            case (d.income < 69999):
+            case (d.income < 49999):
                 colorRatio["level1"]++;
                 break;
-            case (d.income > 50000 && d.income< 79999):
+            case (d.income > 50000 && d.income< 99999):
                 colorRatio["level2"]++;
                 break;
-            case (d.income > 80000 && d.income< 127999):
+            case (d.income > 100000 && d.income< 149000):
                 colorRatio["level3"]++;
                 break;
-            case (d.income> 128000 && d.income< 198999):
+            case (d.income> 150000 && d.income< 199999):
                 colorRatio["level4"]++;
                 break;
             default:
