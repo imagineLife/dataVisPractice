@@ -1,9 +1,9 @@
 
 // color 
-var income_domain = [35000, 62000, 85000, 115000, 160000, 190000, 225000]
+var income_domain = [50000,100000,150000,200000]
 var income_color = d3.scaleThreshold()
     .domain(income_domain)
-    .range(d3.schemeGreens[7]);
+    .range(d3.schemeGreens[5]);
 
 // var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
 // var poverty_color = d3.scaleThreshold()
@@ -16,6 +16,13 @@ var incomeData = d3.map();
 // povertyData 
 // var povertyData = d3.map();
 
+let colorRatio = {
+    "level1": 0,
+    "level2": 0,
+    "level3": 0,
+    "level4": 0,
+    "level5": 0
+}
 
 // asynchronous tasks, load topojson maps and data
 d3.queue()
@@ -26,7 +33,23 @@ d3.queue()
         } else {
             incomeData.set(d.id, +d.income); 
         }
-        
+        switch(true){
+            case (d.income < 69999):
+                colorRatio["level1"]++;
+                break;
+            case (d.income > 50000 && d.income< 79999):
+                colorRatio["level2"]++;
+                break;
+            case (d.income > 80000 && d.income< 127999):
+                colorRatio["level3"]++;
+                break;
+            case (d.income> 128000 && d.income< 198999):
+                colorRatio["level4"]++;
+                break;
+            default:
+                colorRatio["level5"]++;
+                break;
+        };
     })
     .await(ready);
 
@@ -34,6 +57,7 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
+    console.log(colorRatio)
 
     if (error) throw error;
 
@@ -45,7 +69,7 @@ function ready(error, data) {
 
     // projection and path
     var projection = d3.geoAlbersUsa()
-        .fitExtent([[20, 20], [700, 580]], connecticut);;
+        .fitExtent([[20, 20], [700, 580]], connecticut);
 
     var geoPath = d3.geoPath()
         .projection(projection);
