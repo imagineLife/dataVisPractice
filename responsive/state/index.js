@@ -57,7 +57,7 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
-    console.log(colorRatio)
+    // console.log(colorRatio)
 
     if (error) throw error;
 
@@ -81,9 +81,9 @@ function ready(error, data) {
         .append("path")
         .attr("d", geoPath)
         .attr("fill", "white")
-        .transition().duration(1500)
+        .transition().duration(100)
         .delay(function(d, i) {
-            return i * 3; 
+            return i * 2; 
         })
         .ease(d3.easeLinear)
         .attr("fill", function(d) { 
