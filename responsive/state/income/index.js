@@ -1,9 +1,12 @@
 
 // color 
 var income_domain = [50000,100000,150000,200000]
-var income_color = d3.scaleThreshold()
-    .domain(income_domain)
-    .range(d3.schemeGreens[5]);
+// var income_color = d3.scaleThreshold()
+//     .domain(income_domain)
+//     .range(d3.schemeGreens[5]);
+
+var income_color = d3.scaleSequential(d3.interpolateGreens)
+    .domain([36000,250000])
 
 // var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
 // var poverty_color = d3.scaleThreshold()
@@ -50,6 +53,8 @@ d3.queue()
                 colorRatio["level5"]++;
                 break;
         };
+
+        console.log('incomeData ->',incomeData);
     })
     .await(ready);
 
