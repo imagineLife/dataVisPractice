@@ -1,9 +1,15 @@
 
 // color 
-var income_domain = [50000,100000,150000,200000]
+let lvl = {
+    "one":150,
+    "two":400,
+    "three":1000,
+    "four":25000
+}
+var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 var income_color = d3.scaleThreshold()
     .domain(income_domain)
-    .range(d3.schemeGreens[5]);
+    .range(d3.schemeReds[5]);
 
 // var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
 // var poverty_color = d3.scaleThreshold()
@@ -34,16 +40,16 @@ d3.queue()
             incomeData.set(d.id, +d.income); 
         }
         switch(true){
-            case (d.income < 49999):
+            case (d.income < (lvl.one - 1)):
                 colorRatio["level1"]++;
                 break;
-            case (d.income > 50000 && d.income< 99999):
+            case (d.income >= lvl.one && d.income< (lvl.two - 1)):
                 colorRatio["level2"]++;
                 break;
-            case (d.income > 100000 && d.income< 149000):
+            case (d.income >= lvl.two && d.income < (lvl.three - 1)):
                 colorRatio["level3"]++;
                 break;
-            case (d.income> 150000 && d.income< 199999):
+            case (d.income >= lvl.three && d.income < (lvl.four - 1)):
                 colorRatio["level4"]++;
                 break;
             default:
@@ -57,7 +63,7 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
-    // console.log(colorRatio)
+    console.log(colorRatio)
 
     if (error) throw error;
 
@@ -101,7 +107,7 @@ function ready(error, data) {
     d3.select("svg.income").selectAll("path")
         .append("title")
         .text(function(d) {
-            return d.properties.NAME10;//d.income = incomeData.get(d.properties.GEOID);
+            return d.properties.NAME10;
         });
 
     // // draw new york map and bind poverty data
