@@ -21,6 +21,10 @@
   });
 
   function sizeChange() {
-      d3.select("g").attr("transform", "scale(" + $("#container").width()/900 + ")");
+      d3
+        .select("g")
+        .attr("transform", "scale(" + $("#container")
+        .width()/900 + ")");
+     
       $("svg").height($("#container").width()*0.618);
   }
