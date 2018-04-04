@@ -1,10 +1,10 @@
 
 // color 
 let lvl = {
-    "one":150,
-    "two":400,
-    "three":1000,
-    "four":25000
+    "one":5,
+    "two":10,
+    "three":15,
+    "four":20
 }
 var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 var income_color = d3.scaleThreshold()
@@ -34,28 +34,29 @@ let colorRatio = {
 d3.queue()
     .defer(d3.json, "CTstate.json")
     .defer(d3.csv, "data.csv", function(d) { 
-        if (isNaN(d.income)) {
+        if (isNaN(d.percentBelowPoverty)) {
             incomeData.set(d.id, 0); 
         } else {
-            incomeData.set(d.id, +d.income); 
+            incomeData.set(d.id, +d.percentBelowPoverty); 
         }
         switch(true){
-            case (d.income < (lvl.one - 1)):
+            case (d.percentBelowPoverty < (lvl.one - .1)):
                 colorRatio["level1"]++;
                 break;
-            case (d.income >= lvl.one && d.income< (lvl.two - 1)):
+            case (d.percentBelowPoverty >= lvl.one && d.percentBelowPoverty< (lvl.two - .1)):
                 colorRatio["level2"]++;
                 break;
-            case (d.income >= lvl.two && d.income < (lvl.three - 1)):
+            case (d.percentBelowPoverty >= lvl.two && d.percentBelowPoverty < (lvl.three - .1)):
                 colorRatio["level3"]++;
                 break;
-            case (d.income >= lvl.three && d.income < (lvl.four - 1)):
+            case (d.percentBelowPoverty >= lvl.three && d.percentBelowPoverty < (lvl.four - .1)):
                 colorRatio["level4"]++;
                 break;
             default:
                 colorRatio["level5"]++;
                 break;
         };
+
     })
     .await(ready);
 
@@ -63,6 +64,7 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
+    console.log('data in ready ->',data);
     console.log(colorRatio)
 
     if (error) throw error;
@@ -107,33 +109,9 @@ function ready(error, data) {
     d3.select("svg.income").selectAll("path")
         .append("title")
         .text(function(d) {
+            // console.log('d title ->',d)
             return d.properties.NAME10;
         });
 
-    // // draw new york map and bind poverty data
-    // d3.select("svg.poverty").selectAll("path")
-    //     .data(connecticut.features)
-    //     .enter()
-    //     .append("path")
-    //     .attr("d", geoPath)
-    //     .attr("fill", "white")
-    //     .transition().duration(2000)
-    //     .delay(function(d, i) {
-    //         return i * 5; 
-    //     })
-    //     .ease(d3.easeLinear)
-    //     .attr("fill", function(d) { 
-    //         var value = povertyData.get(d.properties.GEOID);
-    //         return (value != 0 ? poverty_color(value) : "lightblue");  
-
-    //     })
-    //     .attr("class", "counties-poverty");
-        
-    // // title
-    // d3.select("svg.poverty").selectAll("path")
-    //     .append("title")
-    //     .text(function(d) {
-    //         return d.income = incomeData.get(d.properties.GEOID);
-    //     });
 }
 
