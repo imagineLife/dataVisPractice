@@ -69,7 +69,7 @@ function ready(error, data) {
 
     if (error) throw error;
 
-    // new york topojson
+    // connecticut topojson
     var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.townLayer.geometries
@@ -82,7 +82,7 @@ function ready(error, data) {
     var geoPath = d3.geoPath()
         .projection(projection);
 
-    // draw new york map and bind income data
+    // draw connecticut map and bind income data
     d3.select("svg.income").selectAll("path")
         .data(connecticut.features)
         .enter()
