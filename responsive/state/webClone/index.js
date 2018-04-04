@@ -10,6 +10,7 @@
   var svg = d3.select("#container")
     .append("svg")
     .attr("width", "100%")
+    .attr("class", 'svgClass')
         .append("g");
   
   d3.json("data.json", function(error, us) {
