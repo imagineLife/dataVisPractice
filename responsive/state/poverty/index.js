@@ -57,8 +57,8 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
-    console.log('data in await ready ->',data);
-    console.log(colorRatio)
+    //NOTE: this 'data' is the CTstate 'data'
+    //      NOT the data.csv 'data'
 
     if (error) throw error;
 
