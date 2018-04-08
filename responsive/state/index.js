@@ -61,7 +61,7 @@ function ready(error, data) {
 
     if (error) throw error;
 
-    // new york topojson
+    // Connecticut topojson
     var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.townLayer.geometries
@@ -74,7 +74,7 @@ function ready(error, data) {
     var geoPath = d3.geoPath()
         .projection(projection);
 
-    // draw new york map and bind income data
+    // draw Connecticut map and bind income data
     d3.select("svg.income").selectAll("path")
         .data(connecticut.features)
         .enter()
@@ -104,7 +104,7 @@ function ready(error, data) {
             return d.properties.NAME10;//d.income = incomeData.get(d.properties.GEOID);
         });
 
-    // // draw new york map and bind poverty data
+    // // draw Connecticut map and bind poverty data
     // d3.select("svg.poverty").selectAll("path")
     //     .data(connecticut.features)
     //     .enter()
