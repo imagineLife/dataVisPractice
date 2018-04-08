@@ -5,16 +5,8 @@ var income_color = d3.scaleThreshold()
     .domain(income_domain)
     .range(d3.schemeGreens[5]);
 
-// var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-// var poverty_color = d3.scaleThreshold()
-//     .domain(poverty_domain)
-//     .range(d3.schemeReds[4]);
-
 // incomeData 
 var incomeData = d3.map();
-
-// povertyData 
-// var povertyData = d3.map();
 
 let colorRatio = {
     "level1": 0,
@@ -57,7 +49,6 @@ d3.queue()
 
 // callback function  
 function ready(error, data) {
-    // console.log(colorRatio)
 
     if (error) throw error;
 
@@ -87,7 +78,6 @@ function ready(error, data) {
         })
         .ease(d3.easeLinear)
         .attr("fill", function(d) { 
-            // console.log('fill d ->',d);
             var townGeoID = incomeData.get(d.properties.GEOID10);
             return (
                 townGeoID != 0 ?
