@@ -1,13 +1,13 @@
   d3.select(window)
         .on("resize", sizeChange);
 
-  var projection = d3.geo.albersUsa()
+  const projection = d3.geo.albersUsa()
     .scale(1100);
 
-  var path = d3.geo.path()
+  const path = d3.geo.path()
     .projection(projection);
 
-  var svg = d3.select("#container")
+  const svg = d3.select("#container")
     .append("svg")
     .attr("width", "100%")
     .attr("class", 'svgClass')
@@ -15,10 +15,10 @@
   
   d3.json("data.json", function(error, us) {
 
-    // var america = topojson.feature(us, {
-    //     type: "FeautreCollection",
-    //     geometries: us.objects
-    // });
+    const america = topojson.feature(us, {
+        type: "FeautreCollection",
+        geometries: us.objects
+    });
 
 
     svg.selectAll(".states")
