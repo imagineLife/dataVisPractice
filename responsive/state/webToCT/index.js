@@ -15,7 +15,7 @@
     });
 
     const projection = d3.geoAlbersUsa()
-      .fitExtent([[20, 20], [700, 580]], ct);
+      .fitExtent([[0,0], [900, 550]], ct);
 
     const path = d3.geoPath()
       .projection(projection);
@@ -28,10 +28,11 @@
   });
 
   function sizeChange() {
-      // d3
-      //   .select("g")
-      //   .attr("transform", "scale(" + $("#container")
-      //   .width()/00 + ")");
+      d3
+        .select("g")
+        .attr('transform', 'translate(100,50)')
+        .attr("transform", "scale(" + $("#container")
+        .width()/900 + ")");
      
       $("svg").height($("#container").width()*0.618);
   }
