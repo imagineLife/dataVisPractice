@@ -1,12 +1,6 @@
   d3.select(window)
         .on("resize", sizeChange);
 
-  const projection = d3.geo.albersUsa()
-    .scale(1100);
-
-  const path = d3.geo.path()
-    .projection(projection);
-
   const svg = d3.select("#container")
     .append("svg")
     .attr("width", "100%")
@@ -14,6 +8,12 @@
         .append("g");
   
   d3.json("data.json", function(error, ctData) {
+
+    const projection = d3.geo.albersUsa()
+      .scale(1100);
+
+    const path = d3.geo.path()
+      .projection(projection);
 
     const ct = topojson.feature(ctData, {
         type: "GeometryCollection",
