@@ -9,16 +9,16 @@
   
   d3.json("data.json", function(error, ctData) {
 
-    const projection = d3.geo.albersUsa()
-      .scale(1100);
-
-    const path = d3.geo.path()
-      .projection(projection);
-
     const ct = topojson.feature(ctData, {
         type: "GeometryCollection",
         geometries: ctData.objects.townLayer.geometries
     });
+
+    const projection = d3.geoAlbersUsa()
+      .fitExtent([[20, 20], [700, 580]], ct);
+
+    const path = d3.geoPath()
+      .projection(projection);
 
     svg.selectAll(".towns")
     .data(ct.features)
