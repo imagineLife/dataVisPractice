@@ -13,16 +13,15 @@
     .attr("class", 'svgClass')
         .append("g");
   
-  d3.json("data.json", function(error, us) {
+  d3.json("data.json", function(error, USData) {
 
-    const america = topojson.feature(us, {
-        type: "FeautreCollection",
-        geometries: us.objects
+    const america = topojson.feature(USData, {
+        type: "GeometryCollection",
+        geometries: USData.objects.states.geometries
     });
 
-
     svg.selectAll(".states")
-    .data(topojson.feature(us, us.objects.states).features)
+    .data(america.features)
    .enter().append("path")
     .attr("class", "states")
     .attr("d", path);
