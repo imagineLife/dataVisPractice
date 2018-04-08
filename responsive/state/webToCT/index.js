@@ -20,18 +20,18 @@
         geometries: ctData.objects.townLayer.geometries
     });
 
-    svg.selectAll(".states")
+    svg.selectAll(".towns")
     .data(ct.features)
    .enter().append("path")
-    .attr("class", "states")
+    .attr("class", "towns")
     .attr("d", path);
   });
 
   function sizeChange() {
-      d3
-        .select("g")
-        .attr("transform", "scale(" + $("#container")
-        .width()/900 + ")");
+      // d3
+      //   .select("g")
+      //   .attr("transform", "scale(" + $("#container")
+      //   .width()/00 + ")");
      
       $("svg").height($("#container").width()*0.618);
   }
