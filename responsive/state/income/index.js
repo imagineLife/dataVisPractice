@@ -102,7 +102,7 @@ function ready(error, data) {
             return (
                 townGeoID != 0 ?
                 income_color(townGeoID) : 
-                "lightblue");  
+                "none");  
 
         });
     
