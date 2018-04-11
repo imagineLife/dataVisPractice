@@ -15,9 +15,6 @@ var income_color = d3.scaleSequential(d3.interpolateGreens)
 // incomeData 
 var incomeData = d3.map();
 
-// povertyData 
-// var povertyData = d3.map();
-
 let colorRatio = {
     "level1": 0,
     "level2": 0,
@@ -88,7 +85,6 @@ function ready(error, data) {
         })
         .ease(d3.easeLinear)
         .attr("fill", function(d) { 
-            // console.log('fill d ->',d);
             var townGeoID = incomeData.get(d.properties.GEOID10);
             return (
                 townGeoID != 0 ?
@@ -102,33 +98,7 @@ function ready(error, data) {
     d3.select("svg.income").selectAll("path")
         .append("title")
         .text(function(d) {
-            return d.properties.NAME10;//d.income = incomeData.get(d.properties.GEOID);
+            return d.properties.NAME10;
         });
-
-    // // draw connecticut map and bind poverty data
-    // d3.select("svg.poverty").selectAll("path")
-    //     .data(connecticut.features)
-    //     .enter()
-    //     .append("path")
-    //     .attr("d", geoPath)
-    //     .attr("fill", "white")
-    //     .transition().duration(2000)
-    //     .delay(function(d, i) {
-    //         return i * 5; 
-    //     })
-    //     .ease(d3.easeLinear)
-    //     .attr("fill", function(d) { 
-    //         var value = povertyData.get(d.properties.GEOID);
-    //         return (value != 0 ? poverty_color(value) : "lightblue");  
-
-    //     })
-    //     .attr("class", "counties-poverty");
-        
-    // // title
-    // d3.select("svg.poverty").selectAll("path")
-    //     .append("title")
-    //     .text(function(d) {
-    //         return d.income = incomeData.get(d.properties.GEOID);
-    //     });
 }
 
