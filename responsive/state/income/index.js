@@ -1,19 +1,23 @@
-
 // color 
-var income_domain = [50000,100000,150000,200000]
+let lvl = {
+    "one":5,
+    "two":10,
+    "three":15,
+    "four":20
+}
+
+var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
+
+//categorical coloring option
 // var income_color = d3.scaleThreshold()
 //     .domain(income_domain)
-//     .range(d3.schemeGreens[5]);
+//     .range(d3.schemeReds[5]);
 
 var income_color = d3.scaleSequential(d3.interpolateGreens)
-    .domain([0,260000])
-// var poverty_domain = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-// var poverty_color = d3.scaleThreshold()
-//     .domain(poverty_domain)
-//     .range(d3.schemeReds[4]);
+    .domain([31375,260000])
 
-// incomeData 
 var incomeData = d3.map();
+
 
 let colorRatio = {
     "level1": 0,
@@ -22,6 +26,7 @@ let colorRatio = {
     "level4": 0,
     "level5": 0
 }
+
 
 // asynchronous tasks, load topojson maps and data
 d3.queue()
@@ -33,16 +38,16 @@ d3.queue()
             incomeData.set(d.id, +d.income); 
         }
         switch(true){
-            case (d.income < 49999):
+            case (d.income < (lvl.one - .1)):
                 colorRatio["level1"]++;
                 break;
-            case (d.income > 50000 && d.income< 99999):
+            case (d.income >= lvl.one && d.income< (lvl.two - .1)):
                 colorRatio["level2"]++;
                 break;
-            case (d.income > 100000 && d.income< 149000):
+            case (d.income >= lvl.two && d.income < (lvl.three - .1)):
                 colorRatio["level3"]++;
                 break;
-            case (d.income> 150000 && d.income< 199999):
+            case (d.income >= lvl.three && d.income < (lvl.four - .1)):
                 colorRatio["level4"]++;
                 break;
             default:
@@ -54,9 +59,17 @@ d3.queue()
     .await(ready);
 
 
-// await callback function  
-function ready(error, data) {
+d3.select(window)
+      .on("resize", sizeChange);
 
+const svg = d3.select("#container")
+  .append("svg")
+  .attr("width", "100%")
+  .attr("class", 'income')
+      .append("g");
+
+
+function ready(error, data) {
     if (error) throw error;
 
     // connecticut topojson
@@ -67,23 +80,23 @@ function ready(error, data) {
 
     // projection and path
     var projection = d3.geoAlbersUsa()
-        .fitExtent([[20, 20], [700, 580]], connecticut);
+        .fitExtent([[0,0], [900, 550]], connecticut);
 
     var geoPath = d3.geoPath()
         .projection(projection);
 
     // draw connecticut map and bind income data
-    d3.select("svg.income").selectAll("path")
+    svg.selectAll(".towns")
         .data(connecticut.features)
-        .enter()
-        .append("path")
+        .enter().append("path")
+        .attr("class", "towns")        
         .attr("d", geoPath)
-        .attr("fill", "white")
-        .transition().duration(100)
-        .delay(function(d, i) {
-            return i * 2; 
-        })
-        .ease(d3.easeLinear)
+        // .attr("fill", "white")
+        // .transition().duration(100)
+        // .delay(function(d, i) {
+        //     return i * 2; 
+        // })
+        // .ease(d3.easeLinear)
         .attr("fill", function(d) { 
             var townGeoID = incomeData.get(d.properties.GEOID10);
             return (
@@ -91,8 +104,7 @@ function ready(error, data) {
                 income_color(townGeoID) : 
                 "lightblue");  
 
-        })
-        .attr("class", "counties-income");
+        });
     
     // title
     d3.select("svg.income").selectAll("path")
@@ -100,5 +112,15 @@ function ready(error, data) {
         .text(function(d) {
             return d.properties.NAME10;
         });
+
 }
 
+function sizeChange() {
+    d3
+      .select("g")
+      .attr('transform', 'translate(100,50)')
+      .attr("transform", "scale(" + $("#container")
+      .width()/900 + ")");
+   
+    $("svg").height($("#container").width()*0.618);
+}
