@@ -7,6 +7,8 @@ let lvl = {
 }
 
 var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
+
+//categorical coloring option
 // var income_color = d3.scaleThreshold()
 //     .domain(income_domain)
 //     .range(d3.schemeReds[5]);
@@ -66,22 +68,8 @@ const svg = d3.select("#container")
   .attr("class", 'income')
       .append("g");
 
-// d3.json("data.json", function(error, ctData) {
 
-
-//   svg.selectAll(".towns")
-//   .data(ct.features)
-//  .enter().append("path")
-//   .attr("class", "towns")
-//   .attr("d", path);
-// });
-
-
-// callback function  
 function ready(error, data) {
-    //NOTE: this 'data' is the CTstate 'data'
-    //      NOT the data.csv 'data'
-
     if (error) throw error;
 
     // connecticut topojson
