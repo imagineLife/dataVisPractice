@@ -7,9 +7,12 @@ let lvl = {
 }
 
 var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
-var income_color = d3.scaleThreshold()
-    .domain(income_domain)
-    .range(d3.schemeReds[5]);
+// var income_color = d3.scaleThreshold()
+//     .domain(income_domain)
+//     .range(d3.schemeReds[5]);
+
+var income_color = d3.scaleSequential(d3.interpolateReds)
+    .domain([.5,31.9])
 
 var incomeData = d3.map();
 
