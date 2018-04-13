@@ -490,7 +490,7 @@ body p {
 h1 {
   line-height: 1.2;
   font-size: calc(26px + 1.6vw);
-  margin: 0;
+  margin: 1.5em 0;
   font-weight: bold;
   display: inline-block; }
 
