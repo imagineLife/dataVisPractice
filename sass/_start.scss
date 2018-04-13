@@ -450,6 +450,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body p{
+  line-height: calc(1.5em + .2vw);
+  word-break: break-word;
+}
+
+.mainHeader{
+  height: 90px;
+  background: gray; 
+}
+
 .postHeader{
   margin: 0 0 1em 0;
 }
@@ -499,6 +509,14 @@ h1{
     font-size: 1.5em;
     -webkit-margin-before: 0.83em;
     -webkit-margin-after: 0.83em;
+}
+
+ul{
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
 }
 
 @media (max-width: 1024px){
