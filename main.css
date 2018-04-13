@@ -451,10 +451,11 @@ figcaption, figure, main {
 body {
   font-family: "Open Sans", sans-serif;
   font-size: calc(18px + .25vw);
+  letter-spacing: -.25px;
   color: #333;
-  overflow: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "onum" 1; }
 
 article {
   padding-top: calc(.5em + 3vw); }
@@ -462,6 +463,16 @@ article {
 body p {
   line-height: calc(1.5em + .2vw);
   word-break: break-word; }
+
+figure {
+  margin: 1em 0; }
+
+p {
+  display: block;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px; }
 
 .mainHeader {
   height: 90px;
@@ -500,6 +511,9 @@ body p {
   content: '#';
   color: #61140f;
   margin-right: .25em;
+  font-size: .8em; }
+
+.postAuthorDescription {
   font-size: .8em; }
 
 h1 {
