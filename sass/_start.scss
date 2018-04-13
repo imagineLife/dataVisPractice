@@ -441,10 +441,50 @@ template {
 
 body {
   font-family: "Open Sans", sans-serif;
-  font-size: 20px;
-  color: #444;
-  text-align: left;
-  line-height: 1.5; 
+  font-size: calc(18px + .25vw);
+  font-feature-settings: "onum" 1;
+  letter-spacing: -.25px;
+  color: #333;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.postHeader{
+  margin: 0 0 1em 0;
+}
+
+.postMeta{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin: 1em 0;
+}
+
+.postMeta li{
+  float: left;
+  -ms-font-feature-settings: "smcp" 1,"c2sc" 1;
+  -o-font-feature-settings: "smcp" 1,"c2sc" 1;
+  font-feature-settings: "smcp" 1,"c2sc" 1;
+  letter-spacing: 1px;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  background-position: center 72%;
+  font-size: .9em;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  padding: 0;
+  margin: 0;
+  margin-right: 0;
+}
+
+.postMeta li>time {
+    margin-right: -.25em;
+}
+
+.postMeta time{
+  color: #666;
+  font-size: inherit;
 }
 
 h1{
