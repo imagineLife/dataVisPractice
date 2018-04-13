@@ -439,15 +439,28 @@ template {
 [hidden] {
   display: none; }
 
+main{
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+  padding: 0 1em;
+}
+
+figcaption, figure, main {
+    display: block;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   font-size: calc(18px + .25vw);
-  font-feature-settings: "onum" 1;
-  letter-spacing: -.25px;
   color: #333;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+article{
+  padding-top: calc(.5em + 3vw);
 }
 
 body p{
@@ -464,30 +477,6 @@ body p{
   margin: 0 0 1em 0;
 }
 
-.postMeta{
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  margin: 1em 0;
-}
-
-.postMeta li{
-  float: left;
-  -ms-font-feature-settings: "smcp" 1,"c2sc" 1;
-  -o-font-feature-settings: "smcp" 1,"c2sc" 1;
-  font-feature-settings: "smcp" 1,"c2sc" 1;
-  letter-spacing: 1px;
-  font-variant: small-caps;
-  text-transform: lowercase;
-  background-position: center 72%;
-  font-size: .9em;
-  letter-spacing: 1px;
-  text-transform: lowercase;
-  padding: 0;
-  margin: 0;
-  margin-right: 0;
-}
-
 .postMeta li>time {
     margin-right: -.25em;
 }
@@ -501,27 +490,8 @@ h1{
   line-height: 1.2;
   font-size: calc(26px + 1.6vw);
   margin: 0;
-  -webkit-margin-end: 0px;
   font-weight: bold;
+  display: block;
 }
 
-:-webkit-any(article,aside,nav,section) h1 {
-    font-size: 1.5em;
-    -webkit-margin-before: 0.83em;
-    -webkit-margin-after: 0.83em;
-}
 
-ul{
-  -webkit-margin-before: 1em;
-  -webkit-margin-after: 1em;
-  -webkit-margin-start: 0px;
-  -webkit-margin-end: 0px;
-  -webkit-padding-start: 40px;
-}
-
-@media (max-width: 1024px){
-  .col {
-      width: 100%!important;
-      padding: 0 1em;
-  }
-}
