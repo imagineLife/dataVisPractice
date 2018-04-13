@@ -499,6 +499,22 @@ body p{
   font-size: inherit;
 }
 
+.postTag{
+  font-size: calc(.8em + .35vw);
+  font-weight: 700;
+  margin-right: .75em;
+  display: inline-block;
+  white-space: nowrap;
+  color: #2da2c5;
+}
+
+.postTag::before {
+    content: '#';
+    color: #61140f;
+    margin-right: .25em;
+    font-size: .8em;
+}
+
 h1{
   line-height: 1.2;
   font-size: calc(26px + 1.6vw);
