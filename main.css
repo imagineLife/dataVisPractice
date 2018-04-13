@@ -470,6 +470,16 @@ body p {
 .postHeader {
   margin: 0 0 1em 0; }
 
+.postMeta {
+  list-style: none;
+  padding: 0;
+  margin: 1em 0; }
+
+.postMeta li {
+  float: left;
+  font-size: .9em;
+  text-transform: uppercase; }
+
 .postMeta li > time {
   margin-right: -.25em; }
 
@@ -482,6 +492,6 @@ h1 {
   font-size: calc(26px + 1.6vw);
   margin: 0;
   font-weight: bold;
-  display: block; }
+  display: inline-block; }
 
 /*# sourceMappingURL=main.css.map */
