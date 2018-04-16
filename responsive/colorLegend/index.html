@@ -36,7 +36,7 @@
     <script>
 
 
-    // D3 select The elements & convert to vars
+      // D3 select The elements & convert to vars
       let chartDiv = document.getElementById("legend1");
       let svgObj = d3.select(chartDiv).append("svg");
       let gObj = svgObj.append('g');
@@ -55,12 +55,15 @@
 
       // create continuous color legend
       function continuous(selector_id, colorscale) {
+        const selection = selector_id ? selector_id : chartDiv;
+        const colorScale = colorscale ? colorscale :  greenColorScale;
+
         console.log('running fn!');
-        var legendheight = 200,
+        const legendheight = 200,
             legendwidth = 80,
             margin = {top: 10, right: 60, bottom: 10, left: 2};
 
-        var canvasObj = d3.select(selector_id)
+        var canvasObj = d3.select(selection)
           .style("height", resizedHeight + "px")
           .style("width", legendwidth + "px")
           // .style("position", "relative")
@@ -81,13 +84,13 @@
 
         var legendscale = d3.scaleLinear()
           .range([1, resizedHeight - margin.top - margin.bottom])
-          .domain(colorscale.domain());
+          .domain(colorScale.domain());
 
         // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
         var image = canvasContext.createImageData(1, resizedHeight);
         
         d3.range(resizedHeight).forEach(function(i) {
-          var c = d3.rgb(colorscale(legendscale.invert(i)));
+          var c = d3.rgb(colorScale(legendscale.invert(i)));
           image.data[4*i] = c.r;
           image.data[4*i + 1] = c.g;
           image.data[4*i + 2] = c.b;
@@ -119,6 +122,12 @@
           .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
           .call(legendaxis);
       };
+
+      function resize(){
+        console.log('resizing!');
+      }
+          // Call the resize function whenever a resize event occurs
+    d3.select(window).on('resize', resize);
 
     </script>
   </body>
