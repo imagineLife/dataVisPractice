@@ -33,96 +33,96 @@
   </style>
   <body>
     <div id="legend1"></div>
-  </body>
-  <script>
+    <script>
 
 
-  // D3 select The elements & convert to vars
-    let chartDiv = document.getElementById("legend1");
-    let svgObj = d3.select(chartDiv).append("svg");
-    let gObj = svgObj.append('g');
-    let bars = gObj.selectAll('rect');
+    // D3 select The elements & convert to vars
+      let chartDiv = document.getElementById("legend1");
+      let svgObj = d3.select(chartDiv).append("svg");
+      let gObj = svgObj.append('g');
+      let bars = gObj.selectAll('rect');
 
-    // Extract the width and height that was computed by CSS.
-    let resizedWidth = chartDiv.clientWidth;
-    let resizedHeight = chartDiv.clientHeight;
-    console.log('resized ->',resizedHeight,'x',resizedWidth)
+      // Extract the width and height that was computed by CSS.
+      let resizedWidth = chartDiv.clientWidth;
+      let resizedHeight = chartDiv.clientHeight;
+      console.log('resized ->',resizedHeight,'x',resizedWidth)
 
-    var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
-      .domain([0, 20]);
+      var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
+        .domain([0, 20]);
 
-    continuous(chartDiv, greenColorScale);
-
-
-    // create continuous color legend
-    function continuous(selector_id, colorscale) {
-      var legendheight = 200,
-          legendwidth = 80,
-          margin = {top: 10, right: 60, bottom: 10, left: 2};
-
-      var canvasObj = d3.select(selector_id)
-        .style("height", resizedHeight + "px")
-        .style("width", legendwidth + "px")
-        // .style("position", "relative")
-        .append("canvas")
-        .attrs({
-          "height": legendheight - margin.top - margin.bottom,
-          "width": 1
-        })
-        .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
-        .style("width", (legendwidth - margin.left - margin.right) + "px")
-        .style("border", "1px solid #000")
-        .style("position", "absolute")
-        .style("top", (margin.top) + "px")
-        .style("left", (margin.left) + "px")
-        .node();
-
-      var canvasContext = canvasObj.getContext("2d");
-
-      var legendscale = d3.scaleLinear()
-        .range([1, legendheight - margin.top - margin.bottom])
-        .domain(colorscale.domain());
-
-      // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-      var image = canvasContext.createImageData(1, legendheight);
-      
-      d3.range(legendheight).forEach(function(i) {
-        var c = d3.rgb(colorscale(legendscale.invert(i)));
-        image.data[4*i] = c.r;
-        image.data[4*i + 1] = c.g;
-        image.data[4*i + 2] = c.b;
-        image.data[4*i + 3] = 255;
-      });
-
-      canvasContext.putImageData(image, 0, 0);
+      continuous(chartDiv, greenColorScale);
 
 
-      var legendaxis = d3.axisRight()
-        .scale(legendscale)
-        .tickSize(6)
-        .ticks(8);
+      // create continuous color legend
+      function continuous(selector_id, colorscale) {
+        console.log('running fn!');
+        var legendheight = 200,
+            legendwidth = 80,
+            margin = {top: 10, right: 60, bottom: 10, left: 2};
 
-//SVG for the labeling
-      // var svg = d3.select(selector_id)
-      //   .append("svg")
-      svgObj
-        .attrs({
-          "height": (legendheight) + "px",
-          "width": (legendwidth) + "px",
-          "class":'svgClass'
-        })
-        .style("position", "absolute")
-        .style("left", "0px")
-        .style("top", "0px")
+        var canvasObj = d3.select(selector_id)
+          .style("height", resizedHeight + "px")
+          .style("width", legendwidth + "px")
+          // .style("position", "relative")
+          .append("canvas")
+          .attrs({
+            "height": legendheight - margin.top - margin.bottom,
+            "width": 1
+          })
+          .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
+          .style("width", (legendwidth - margin.left - margin.right) + "px")
+          .style("border", "1px solid #000")
+          .style("position", "absolute")
+          .style("top", (margin.top) + "px")
+          .style("left", (margin.left) + "px")
+          .node();
 
-      svgObj
-        .append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
-        .call(legendaxis);
-    };
+        var canvasContext = canvasObj.getContext("2d");
 
-  </script>
+        var legendscale = d3.scaleLinear()
+          .range([1, legendheight - margin.top - margin.bottom])
+          .domain(colorscale.domain());
+
+        // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+        var image = canvasContext.createImageData(1, legendheight);
+        
+        d3.range(legendheight).forEach(function(i) {
+          var c = d3.rgb(colorscale(legendscale.invert(i)));
+          image.data[4*i] = c.r;
+          image.data[4*i + 1] = c.g;
+          image.data[4*i + 2] = c.b;
+          image.data[4*i + 3] = 255;
+        });
+
+        canvasContext.putImageData(image, 0, 0);
+
+
+        var legendaxis = d3.axisRight()
+          .scale(legendscale)
+          .tickSize(6)
+          .ticks(8);
+
+        //SVG for the labeling
+        // var svg = d3.select(selector_id)
+        //   .append("svg")
+        svgObj
+          .attrs({
+            "height": (legendheight) + "px",
+            "width": (legendwidth) + "px",
+            "class":'svgClass'
+          })
+          .style("position", "absolute")
+          .style("left", "0px")
+          .style("top", "0px")
+
+        svgObj
+          .append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+          .call(legendaxis);
+      };
+
+    </script>
   </body>
 
 </html>
