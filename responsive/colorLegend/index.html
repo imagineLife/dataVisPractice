@@ -13,10 +13,21 @@
   <style type="text/css">
     body{
       margin:30px;
+      outline: 2px solid steelblue;
     }
+
+    #legend1{
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      outline: 2px solid mediumorchid;
+    }
+
   </style>
   <body>
-    <div id="legend1" style="display: inline-block"></div>
+    <div id="legend1"></div>
   </body>
   <script>
 
@@ -75,22 +86,22 @@
         .ticks(8);
 
 //SVG for the labeling
-      // var svg = d3.select(selector_id)
-      //   .append("svg")
-      //   .attrs({
-      //     "height": (legendheight) + "px",
-      //     "width": (legendwidth) + "px",
-      //     "class":'svgClass'
-      //   })
-      //   .style("position", "absolute")
-      //   .style("left", "0px")
-      //   .style("top", "0px")
+      var svg = d3.select(selector_id)
+        .append("svg")
+        .attrs({
+          "height": (legendheight) + "px",
+          "width": (legendwidth) + "px",
+          "class":'svgClass'
+        })
+        .style("position", "absolute")
+        .style("left", "0px")
+        .style("top", "0px")
 
-      // svg
-      //   .append("g")
-      //   .attr("class", "axis")
-      //   .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
-      //   .call(legendaxis);
+      svg
+        .append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+        .call(legendaxis);
     };
 
   </script>
