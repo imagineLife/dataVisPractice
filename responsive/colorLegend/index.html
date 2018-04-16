@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>StackedBar</title>
+    <title>Continous Color Legend</title>
     <script src="../../../../d3.v4.min.js"></script>
     <script src="../../../../d3-selection-multi.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
@@ -20,10 +20,10 @@
   </body>
   <script>
 
-    var colorScale1 = d3.scaleSequential(d3.interpolateGreens)
+    var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
       .domain([0, 20]);
 
-    continuous("#legend1", colorScale1);
+    continuous("#legend1", greenColorScale);
 
 
     // create continuous color legend
@@ -32,7 +32,7 @@
           legendwidth = 80,
           margin = {top: 10, right: 60, bottom: 10, left: 2};
 
-      var canvas = d3.select(selector_id)
+      var canvasObj = d3.select(selector_id)
         .style("height", legendheight + "px")
         .style("width", legendwidth + "px")
         .style("position", "relative")
@@ -49,7 +49,7 @@
         .style("left", (margin.left) + "px")
         .node();
 
-      var canvasContext = canvas.getContext("2d");
+      var canvasContext = canvasObj.getContext("2d");
 
       var legendscale = d3.scaleLinear()
         .range([1, legendheight - margin.top - margin.bottom])
@@ -57,6 +57,7 @@
 
       // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
       var image = canvasContext.createImageData(1, legendheight);
+      
       d3.range(legendheight).forEach(function(i) {
         var c = d3.rgb(colorscale(legendscale.invert(i)));
         image.data[4*i] = c.r;
@@ -64,6 +65,7 @@
         image.data[4*i + 2] = c.b;
         image.data[4*i + 3] = 255;
       });
+
       canvasContext.putImageData(image, 0, 0);
 
 
@@ -72,21 +74,23 @@
         .tickSize(6)
         .ticks(8);
 
-      var svg = d3.select(selector_id)
-        .append("svg")
-        .attrs({
-          "height": (legendheight) + "px",
-          "width": (legendwidth) + "px"
-        })
-        .style("position", "absolute")
-        .style("left", "0px")
-        .style("top", "0px")
+//SVG for the labeling
+      // var svg = d3.select(selector_id)
+      //   .append("svg")
+      //   .attrs({
+      //     "height": (legendheight) + "px",
+      //     "width": (legendwidth) + "px",
+      //     "class":'svgClass'
+      //   })
+      //   .style("position", "absolute")
+      //   .style("left", "0px")
+      //   .style("top", "0px")
 
-      svg
-        .append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
-        .call(legendaxis);
+      // svg
+      //   .append("g")
+      //   .attr("class", "axis")
+      //   .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+      //   .call(legendaxis);
     };
 
   </script>
