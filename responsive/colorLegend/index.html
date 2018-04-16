@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Continous Color Legend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../../../../d3.v4.min.js"></script>
     <script src="../../../../d3-selection-multi.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
@@ -10,14 +11,9 @@
     <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="../dark.css"> -->
   </head>
-  <style type="text/css">
+  <style>
     body{
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      bottom: 0px;
-      margin:15px;
+      margin:0px;
       outline: 2px solid steelblue;
     }
 
@@ -27,25 +23,24 @@
       right: 0px;
       top: 0px;
       bottom: 0px;
-      outline: 2px solid mediumorchid;
     }
 
   </style>
   <body>
-    <div id="legend1"></div>
+    <div id = "legend1"></div>
     <script>
 
 
       // D3 select The elements & convert to vars
       let chartDiv = document.getElementById("legend1");
-      let svgObj = d3.select(chartDiv).append("svg");
-      let gObj = svgObj.append('g');
-      let bars = gObj.selectAll('rect');
+      const svgObj = d3.select(chartDiv).append("svg");
+      const gObj = svgObj.append('g');
+      const bars = gObj.selectAll('rect');
 
+      const margin = {top: 10, right: 60, bottom: 10, left: 2};
       // Extract the width and height that was computed by CSS.
       let resizedWidth = chartDiv.clientWidth;
       let resizedHeight = chartDiv.clientHeight;
-      console.log('resized ->',resizedHeight,'x',resizedWidth)
 
       var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
         .domain([0, 20]);
@@ -60,12 +55,11 @@
 
         console.log('running fn!');
         const legendheight = 200,
-            legendwidth = 80,
-            margin = {top: 10, right: 60, bottom: 10, left: 2};
+            legendwidth = 80;
 
         var canvasObj = d3.select(selection)
-          .style("height", resizedHeight + "px")
-          .style("width", legendwidth + "px")
+          // .style("height", resizedHeight + "px")
+          // .style("width", legendwidth + "px")
           // .style("position", "relative")
           .append("canvas")
           .attrs({
@@ -115,6 +109,7 @@
           .style("position", "absolute")
           .style("left", "0px")
           .style("top", "0px")
+          .style("border", "3px solid mediumorchid")
 
         svgObj
           .append("g")
@@ -123,8 +118,13 @@
           .call(legendaxis);
       };
 
-      function resize(){
-        console.log('resizing!');
+      let resize = () => {
+        // console.log('resizing!');
+        let resizedFnHeight = chartDiv.clientHeight;
+        console.log('resizedFnHeight ->',resizedFnHeight);
+        // console.log('chartDiv ->',chartDiv);
+        
+        svgObj.attr("height", resizedFnHeight);
       }
           // Call the resize function whenever a resize event occurs
     d3.select(window).on('resize', resize);
