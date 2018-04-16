@@ -28,12 +28,14 @@
           "width": width,
           "height": height
         })
-        .append("g")
+
+    const gObj = svg
+        .append("g");
 
     const colorScale = d3.scaleSequential(d3.interpolateGreens)
         .domain([0, width])
 
-    const bars = svg.selectAll(".bars")
+    const bars = gObj.selectAll(".bars")
         .data(d3.range(width), (d) =>  d )
       .enter().append("rect")
         .attrs({
