@@ -43,6 +43,11 @@
     let gObj = svgObj.append('g');
     let bars = gObj.selectAll('rect');
 
+    // Extract the width and height that was computed by CSS.
+    let resizedWidth = chartDiv.clientWidth;
+    let resizedHeight = chartDiv.clientHeight;
+    console.log('resized ->',resizedHeight,'x',resizedWidth)
+
     var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
       .domain([0, 20]);
 
@@ -51,7 +56,6 @@
 
     // create continuous color legend
     function continuous(selector_id, colorscale) {
-      console.log('cont fn selector_id ->',selector_id);
       var legendheight = 200,
           legendwidth = 80,
           margin = {top: 10, right: 60, bottom: 10, left: 2};
