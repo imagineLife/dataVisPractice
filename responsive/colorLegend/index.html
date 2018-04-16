@@ -12,7 +12,12 @@
   </head>
   <style type="text/css">
     body{
-      margin:30px;
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      margin:15px;
       outline: 2px solid steelblue;
     }
 
@@ -31,14 +36,22 @@
   </body>
   <script>
 
+
+  // D3 select The elements & convert to vars
+    let chartDiv = document.getElementById("legend1");
+    let svgObj = d3.select(chartDiv).append("svg");
+    let gObj = svgObj.append('g');
+    let bars = gObj.selectAll('rect');
+
     var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
       .domain([0, 20]);
 
-    continuous("#legend1", greenColorScale);
+    continuous(chartDiv, greenColorScale);
 
 
     // create continuous color legend
     function continuous(selector_id, colorscale) {
+      console.log('cont fn selector_id ->',selector_id);
       var legendheight = 200,
           legendwidth = 80,
           margin = {top: 10, right: 60, bottom: 10, left: 2};
@@ -46,7 +59,7 @@
       var canvasObj = d3.select(selector_id)
         .style("height", legendheight + "px")
         .style("width", legendwidth + "px")
-        .style("position", "relative")
+        // .style("position", "relative")
         .append("canvas")
         .attrs({
           "height": legendheight - margin.top - margin.bottom,
@@ -86,8 +99,9 @@
         .ticks(8);
 
 //SVG for the labeling
-      var svg = d3.select(selector_id)
-        .append("svg")
+      // var svg = d3.select(selector_id)
+      //   .append("svg")
+      svgObj
         .attrs({
           "height": (legendheight) + "px",
           "width": (legendwidth) + "px",
@@ -97,7 +111,7 @@
         .style("left", "0px")
         .style("top", "0px")
 
-      svg
+      svgObj
         .append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
