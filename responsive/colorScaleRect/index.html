@@ -17,7 +17,6 @@
   </style>
   <body>
   </body>
-
   <script>
 
     const width = 960,
@@ -35,16 +34,16 @@
         .domain([0, width])
 
     const bars = svg.selectAll(".bars")
-        .data(d3.range(width), function(d) { return d; })
+        .data(d3.range(width), (d) =>  d )
       .enter().append("rect")
         .attrs({
           "class": "bars",
-          "x": function(d, i) { return i; },
+          "x": (d, i)  =>  i,
           "y": 0,
           "height": height,
           "width": 1
         })
-        .style("fill", function(d, i ) { return colorScale(d); })
+        .style("fill", (d, i ) =>  colorScale(d) )
 
   </script>
   </body>
