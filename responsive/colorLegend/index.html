@@ -61,15 +61,15 @@
           margin = {top: 10, right: 60, bottom: 10, left: 2};
 
       var canvasObj = d3.select(selector_id)
-        .style("height", legendheight + "px")
-        .style("width", legendwidth + "px")
+        .style("height", resizedHeight + "px")
+        .style("width", resizedWidth + "px")
         // .style("position", "relative")
         .append("canvas")
         .attrs({
           "height": legendheight - margin.top - margin.bottom,
           "width": 1
         })
-        .style("height", (legendheight - margin.top - margin.bottom) + "px")
+        .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
         .style("width", (legendwidth - margin.left - margin.right) + "px")
         .style("border", "1px solid #000")
         .style("position", "absolute")
