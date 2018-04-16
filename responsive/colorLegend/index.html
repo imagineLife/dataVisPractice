@@ -66,7 +66,7 @@
           // .style("position", "relative")
           .append("canvas")
           .attrs({
-            "height": legendheight - margin.top - margin.bottom,
+            "height": resizedHeight - margin.top - margin.bottom,
             "width": 1
           })
           .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
@@ -80,13 +80,13 @@
         var canvasContext = canvasObj.getContext("2d");
 
         var legendscale = d3.scaleLinear()
-          .range([1, legendheight - margin.top - margin.bottom])
+          .range([1, resizedHeight - margin.top - margin.bottom])
           .domain(colorscale.domain());
 
         // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-        var image = canvasContext.createImageData(1, legendheight);
+        var image = canvasContext.createImageData(1, resizedHeight);
         
-        d3.range(legendheight).forEach(function(i) {
+        d3.range(resizedHeight).forEach(function(i) {
           var c = d3.rgb(colorscale(legendscale.invert(i)));
           image.data[4*i] = c.r;
           image.data[4*i + 1] = c.g;
@@ -107,7 +107,7 @@
         //   .append("svg")
         svgObj
           .attrs({
-            "height": (legendheight) + "px",
+            "height": (resizedHeight) + "px",
             "width": (legendwidth) + "px",
             "class":'svgClass'
           })
