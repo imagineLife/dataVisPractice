@@ -49,14 +49,14 @@
         .style("left", (margin.left) + "px")
         .node();
 
-      var ctx = canvas.getContext("2d");
+      var canvasContext = canvas.getContext("2d");
 
       var legendscale = d3.scaleLinear()
         .range([1, legendheight - margin.top - margin.bottom])
         .domain(colorscale.domain());
 
       // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-      var image = ctx.createImageData(1, legendheight);
+      var image = canvasContext.createImageData(1, legendheight);
       d3.range(legendheight).forEach(function(i) {
         var c = d3.rgb(colorscale(legendscale.invert(i)));
         image.data[4*i] = c.r;
@@ -64,16 +64,8 @@
         image.data[4*i + 2] = c.b;
         image.data[4*i + 3] = 255;
       });
-      ctx.putImageData(image, 0, 0);
+      canvasContext.putImageData(image, 0, 0);
 
-      // A simpler way to do the above, but possibly slower. keep in mind the legend width is stretched because the width attr of the canvas is 1
-      // See http://stackoverflow.com/questions/4899799/whats-the-best-way-to-set-a-single-pixel-in-an-html5-canvas
-      /*
-      d3.range(legendheight).forEach(function(i) {
-        ctx.fillStyle = colorscale(legendscale.invert(i));
-        ctx.fillRect(0,i,1,1);
-      });
-      */
 
       var legendaxis = d3.axisRight()
         .scale(legendscale)

@@ -24,6 +24,12 @@
   </body>
   <script>
 
+/*
+PROBLEM:
+  when width is shorter (on refresh with a narrower window)
+  the color gamut cuts-off the entirety of the spectrum
+*/
+
     const width = 960,
         height = 30;
 
@@ -32,7 +38,37 @@
     const chartDiv =  document.getElementById("chart");
     const svg = d3.select(chartDiv).append("svg")
 
-    
+    const gObj = svg.append("g");
+
+    const bars = gObj.selectAll(".bars");
+
+    const colorScale = d3.scaleSequential(d3.interpolateGreens)
+        .domain([0, width]);
+
+
+  // Extract the width and height that was computed by CSS.
+    let resizedWidth = chartDiv.clientWidth;
+    let resizedHeight = chartDiv.clientHeight;
+
+    const widthLessMargins = resizedWidth - margin.left - margin.right;
+    const heightLessMargins = resizedHeight - margin.top - margin.bottom;
+
+//set svg height & width
+    svg.attrs({
+      "width" : resizedWidth,
+      "height" : resizedHeight
+    });
+
+    bars.data(d3.range(width), (d) =>  d )
+      .enter().append("rect")
+        .attrs({
+          "class": "bars",
+          "x": (d, i)  =>  i,
+          "y": 0,
+          "height": height,
+          "width": 1
+        })
+        .style("fill", (d, i ) =>  colorScale(d) )
 
   </script>
   </body>
