@@ -5,6 +5,7 @@
     <title>StackedBar</title>
     <script src="../../../../d3.v4.min.js"></script>
     <script src="../../../../d3-selection-multi.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> -->
     <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="../dark.css"> -->
@@ -19,23 +20,10 @@
   </body>
   <script>
 
-    var colorScale1 = d3.scaleSequential(d3.interpolatePlasma)
+    var colorScale1 = d3.scaleSequential(d3.interpolateGreens)
       .domain([0, 20]);
-    var colorScale2 = d3.scaleSequential(d3.interpolateViridis)
-      .domain([0, 1000]);
-    var colorScale3 = d3.scaleSequential(d3.interpolateRainbow)
-      .domain([0, 90]);
-    var colorScale4 = d3.scaleSequential(d3.interpolateGnBu)
-      .domain([0, 0.2]);
-    var colorScale5 = d3.scaleSequential(d3.interpolatePRGn)
-      .domain([-5, 5]);
 
     continuous("#legend1", colorScale1);
-    // continuous("#legend2", colorScale2);
-    // continuous("#legend3", colorScale3);
-    // continuous("#legend4", colorScale4);
-    // continuous("#legend5", colorScale5);
-
 
 
     // create continuous color legend
@@ -49,8 +37,10 @@
         .style("width", legendwidth + "px")
         .style("position", "relative")
         .append("canvas")
-        .attr("height", legendheight - margin.top - margin.bottom)
-        .attr("width", 1)
+        .attrs({
+          "height": legendheight - margin.top - margin.bottom,
+          "width": 1
+        })
         .style("height", (legendheight - margin.top - margin.bottom) + "px")
         .style("width", (legendwidth - margin.left - margin.right) + "px")
         .style("border", "1px solid #000")
@@ -92,8 +82,10 @@
 
       var svg = d3.select(selector_id)
         .append("svg")
-        .attr("height", (legendheight) + "px")
-        .attr("width", (legendwidth) + "px")
+        .attrs({
+          "height": (legendheight) + "px",
+          "width": (legendwidth) + "px"
+        })
         .style("position", "absolute")
         .style("left", "0px")
         .style("top", "0px")
