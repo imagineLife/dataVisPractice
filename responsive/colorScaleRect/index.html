@@ -20,26 +20,38 @@
     }
   </style>
   <body>
+    <div id ="chart"></div>
   </body>
   <script>
 
     const width = 960,
         height = 30;
 
-    const svg = d3.select("body")
-        .append("svg")
-        .attrs({
-          "width": width,
-          "height": height
-        })
+    const margin = { left: 25, right: 25, top: 40, bottom: 110 };
 
-    const gObj = svg
-        .append("g");
+    const chartDiv =  document.getElementById("chart");
+    const svg = d3.select(chartDiv).append("svg")
+
+    const gObj = svg.append("g");
 
     const bars = gObj.selectAll(".bars");
 
     const colorScale = d3.scaleSequential(d3.interpolateGreens)
-        .domain([0, width])
+        .domain([0, width]);
+
+
+  // Extract the width and height that was computed by CSS.
+    let resizedWidth = chartDiv.clientWidth;
+    let resizedHeight = chartDiv.clientHeight;
+
+    const widthLessMargins = resizedWidth - margin.left - margin.right;
+    const heightLessMargins = resizedHeight - margin.top - margin.bottom;
+
+//set svg height & width
+    svg.attrs({
+      "width" : resizedWidth,
+      "height" : resizedHeight
+    });
 
     bars.data(d3.range(width), (d) =>  d )
       .enter().append("rect")
