@@ -142,11 +142,11 @@ d3.csv("data.csv", type, function(error, data) {
 
 function type(d, i, columns) {
   //columns are the column header row
-  console.log('d ->',d);
+
   for (i = 1, t = 0; i < columns.length; ++i){
     t += d[columns[i]] = +d[columns[i]];
   }
-  console.log('t is ->',t);
+  
   d.totalOfThisCategory = t;
   return d;
 }
