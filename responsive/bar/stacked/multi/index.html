@@ -30,12 +30,18 @@
 <script src="../../../../d3-selection-multi.min.js"></script>
 <script>
 
+  // Build Variables
+  const vars = {
+    xLabel : 'Note Name',
+    yLabel : 'Number Of Notes',
+    margin : { left: 125, right: 70, top: 40, bottom: 110 }
+  };
+
   const chartDiv = document.getElementById("chart");
   const svgObj = d3.select(chartDiv).append("svg");
-  const margin = {top: 20, right: 180, bottom: 30, left: 40};
-  const width = +600 - margin.left - margin.right;
-  const height = +500 - margin.top - margin.bottom;
-  const  gObj = svgObj.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  const width = +600 - vars.margin.left - vars.margin.right;
+  const height = +500 - vars.margin.top - vars.margin.bottom;
+  const  gObj = svgObj.append("g").attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
   // Extract the width and height that was computed by CSS.
   let resizedWidth = chartDiv.clientWidth;
