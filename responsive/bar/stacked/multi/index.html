@@ -1,172 +1,165 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MultiStackedBar</title>
-<style>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MultiStackedBar</title>
+    <style>
+      #chart {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart">
+      <h1>Segments</h1>
+    </div>
+  </body>
+  <script src="//d3js.org/d3.v4.min.js"></script>
+  <script src="../../../../d3-selection-multi.min.js"></script>
+  <script>
 
-.bar {
-  fill: steelblue;
-}
+    // Build Variables
+    const vars = {
+      xLabel : 'Note Name',
+      yLabel : 'Number Of Notes',
+      margin : { left: 125, right: 70, top: 40, bottom: 110 }
+    };
 
-.axis path {
-  /*display: none;*/
-}
-
-#chart {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-}
-
-</style>
-<body>
-  <div id="chart">
-    <h1>Segments</h1>
-  </div>
-</body>
-<script src="//d3js.org/d3.v4.min.js"></script>
-<script src="../../../../d3-selection-multi.min.js"></script>
-<script>
-
-  // Build Variables
-  const vars = {
-    xLabel : 'Note Name',
-    yLabel : 'Number Of Notes',
-    margin : { left: 125, right: 70, top: 40, bottom: 110 }
-  };
-
-  const chartDiv = document.getElementById("chart");
-  const svgObj = d3.select(chartDiv).append("svg");
-  const width = +600 - vars.margin.left - vars.margin.right;
-  const height = +500 - vars.margin.top - vars.margin.bottom;
-  const  gObj = svgObj.append("g").attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
-
-  // Extract the width and height that was computed by CSS.
-  let resizedWidth = chartDiv.clientWidth;
-  let resizedHeight = chartDiv.clientHeight;
-
-  //set svg height & width
-  svgObj.attrs({
-    "width" : resizedWidth,
-    "height" : resizedHeight
-  });
-
-
-  var xScale = d3.scaleBand()
-      .rangeRound([0, width])
-      .padding(0.3)
-      .align(0.3);
-
-  var yScale = d3.scaleLinear()
-      .rangeRound([height, 0]);
-
-  var z = d3.scaleOrdinal(d3.schemeCategory20);
-      // .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-  var stack = d3.stack();
-
-  d3.csv("data.csv", type, function(error, data) {
-    if (error) throw error;
-
-    data.sort(function(a, b) { return b.totalOfThisCategory - a.totalOfThisCategory; });
-
-    xScale.domain(data.map(function(d) { return d.ethnicity; }));
-    yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
-    z.domain(data.columns.slice(1));
-
-    gObj.selectAll(".serie")
-      .data(stack.keys(data.columns.slice(1))(data))
-      .enter().append("g")
-        .attrs({
-          "class": "serie",
-          "fill": function(d) { return z(d.key); }
-        })
-      .selectAll("rect")
-      .data(function(d) { return d; })
-      .enter().append("rect")
-        .attrs({
-          "x": function(d) { return xScale(d.data.ethnicity); },
-          "y": function(d) { return yScale(d[1]); },
-          "height": function(d) { return yScale(d[0]) - yScale(d[1]); },
-          "width": xScale.bandwidth()
-        });
-
-    const xAxisG = gObj.append("g")
-        .attrs({
-          "class": "axis axis--x",
-          "transform": "translate(0," + height + ")"
-        })
-        .call(d3.axisBottom(xScale));
-
-    const yAxisG = gObj.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(yScale).ticks(10, "s"))
-      .append("text")
-        .attrs({
-          "x": 2,
-          "y": yScale(yScale.ticks(10).pop()),
-          "dy": "0.35em",
-          "text-anchor": "start",
-          "fill": "#000"
-        })
-        .text("Population");
-
-    // var legend = gObj.selectAll(".legend")
-    //   .data(data.columns.slice(1).reverse())
-    //   .enter().append("g")
-    //     .attrs({
-    //       "class": "legend",
-    //       "transform": function(d, i) { return "translate(0," + i * 20 + ")"; }
-    //     })
-    //     .style("font", "10px sans-serif");
-
-    // legend.append("rect")
-    //     .attrs({
-    //       "x": width + 18,
-    //       "width": 18,
-    //       "height": 18,
-    //       "fill": z
-    //     })
-
-    // legend.append("text")
-    //     .attrs({
-    //       "x": width + 44,
-    //       "y": 9,
-    //       "dy": ".35em",
-    //       "text-anchor": "start"
-    //     })
-    //     .text(function(d) { return d; });
-  });
-
-  function type(d, i, columns) {
-    //columns are the column header row
-
-    for (i = 1, t = 0; i < columns.length; ++i){
-      t += d[columns[i]] = +d[columns[i]];
-    }
-
-    d.totalOfThisCategory = t;
-    return d;
-  }
-
-  let resize = () => {
-    console.log('resizing!');
+    const chartDiv = document.getElementById("chart");
+    const svgObj = d3.select(chartDiv).append("svg");
+    const width = +600 - vars.margin.left - vars.margin.right;
+    const height = +500 - vars.margin.top - vars.margin.bottom;
+    const  gObj = svgObj.append("g").attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
     // Extract the width and height that was computed by CSS.
-    let resizedFnWidth = chartDiv.clientWidth;
-    let resizedFnHeight = chartDiv.clientHeight;
+    let resizedWidth = chartDiv.clientWidth;
+    let resizedHeight = chartDiv.clientHeight;
 
+    //set svg height & width
     svgObj.attrs({
-      "width" : resizedFnWidth,
-      "height" : resizedFnHeight
+      "width" : resizedWidth,
+      "height" : resizedHeight
     });
-  }
 
-  d3.select(window).on('resize',resize);
 
-  resize();
-</script>
-</body>
+    var xScale = d3.scaleBand()
+        .rangeRound([0, width])
+        .padding(0.3)
+        .align(0.3);
+
+    var yScale = d3.scaleLinear()
+        .rangeRound([height, 0]);
+
+    var z = d3.scaleOrdinal(d3.schemeCategory20);
+        // .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+    var stack = d3.stack();
+
+    d3.csv("data.csv", type, function(error, data) {
+      if (error) throw error;
+
+      data.sort(function(a, b) { return b.totalOfThisCategory - a.totalOfThisCategory; });
+
+      xScale.domain(data.map(function(d) { return d.ethnicity; }));
+      yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
+      z.domain(data.columns.slice(1));
+
+      gObj.selectAll(".serie")
+        .data(stack.keys(data.columns.slice(1))(data))
+        .enter().append("g")
+          .attrs({
+            "class": "serie",
+            "fill": function(d) { return z(d.key); }
+          })
+        .selectAll("rect")
+        .data(function(d) { return d; })
+        .enter().append("rect")
+          .attrs({
+            "x": function(d) { return xScale(d.data.ethnicity); },
+            "y": function(d) { return yScale(d[1]); },
+            "height": function(d) { return yScale(d[0]) - yScale(d[1]); },
+            "width": xScale.bandwidth()
+          });
+
+      const xAxisG = gObj.append("g")
+          .attrs({
+            "class": "axis axis--x",
+            "transform": "translate(0," + height + ")"
+          })
+          .call(d3.axisBottom(xScale));
+
+      const yAxisG = gObj.append("g")
+          .attr("class", "axis axis--y")
+          .call(d3.axisLeft(yScale).ticks(10, "s"))
+        .append("text")
+          .attrs({
+            "x": 2,
+            "y": yScale(yScale.ticks(10).pop()),
+            "dy": "0.35em",
+            "text-anchor": "start",
+            "fill": "#000"
+          })
+          .text("Population");
+
+      // var legend = gObj.selectAll(".legend")
+      //   .data(data.columns.slice(1).reverse())
+      //   .enter().append("g")
+      //     .attrs({
+      //       "class": "legend",
+      //       "transform": function(d, i) { return "translate(0," + i * 20 + ")"; }
+      //     })
+      //     .style("font", "10px sans-serif");
+
+      // legend.append("rect")
+      //     .attrs({
+      //       "x": width + 18,
+      //       "width": 18,
+      //       "height": 18,
+      //       "fill": z
+      //     })
+
+      // legend.append("text")
+      //     .attrs({
+      //       "x": width + 44,
+      //       "y": 9,
+      //       "dy": ".35em",
+      //       "text-anchor": "start"
+      //     })
+      //     .text(function(d) { return d; });
+    });
+
+    function type(d, i, columns) {
+      //columns are the column header row
+
+      for (i = 1, t = 0; i < columns.length; ++i){
+        t += d[columns[i]] = +d[columns[i]];
+      }
+
+      d.totalOfThisCategory = t;
+      return d;
+    }
+
+    let resize = () => {
+      console.log('resizing!');
+
+      // Extract the width and height that was computed by CSS.
+      let resizedFnWidth = chartDiv.clientWidth;
+      let resizedFnHeight = chartDiv.clientHeight;
+
+      svgObj.attrs({
+        "width" : resizedFnWidth,
+        "height" : resizedFnHeight
+      });
+    }
+
+    d3.select(window).on('resize',resize);
+
+    resize();
+  </script>
+  </body>
 </html>
