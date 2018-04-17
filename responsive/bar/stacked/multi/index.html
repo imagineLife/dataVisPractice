@@ -35,7 +35,7 @@
   const margin = {top: 20, right: 180, bottom: 30, left: 40};
   const width = +600 - margin.left - margin.right;
   const height = +500 - margin.top - margin.bottom;
-  const  g = svgObj.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  const  gObj = svgObj.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // Extract the width and height that was computed by CSS.
   let resizedWidth = chartDiv.clientWidth;
@@ -70,7 +70,7 @@ d3.csv("data.csv", type, function(error, data) {
   yScale.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
   z.domain(data.columns.slice(1));
 
-  g.selectAll(".serie")
+  gObj.selectAll(".serie")
     .data(stack.keys(data.columns.slice(1))(data))
     .enter().append("g")
       .attrs({
@@ -87,14 +87,14 @@ d3.csv("data.csv", type, function(error, data) {
         "width": xScale.bandwidth()
       }),
 
-  g.append("g")
+  gObj.append("g")
       .attrs({
         "class": "axis axis--x",
         "transform": "translate(0," + height + ")"
       })
       .call(d3.axisBottom(xScale));
 
-  g.append("g")
+  gObj.append("g")
       .attr("class", "axis axis--y")
       .call(d3.axisLeft(yScale).ticks(10, "s"))
     .append("text")
@@ -107,7 +107,7 @@ d3.csv("data.csv", type, function(error, data) {
       })
       .text("Population");
 
-  var legend = g.selectAll(".legend")
+  var legend = gObj.selectAll(".legend")
     .data(data.columns.slice(1).reverse())
     .enter().append("g")
       .attrs({
