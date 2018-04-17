@@ -113,31 +113,31 @@ d3.csv("data.csv", type, function(error, data) {
       })
       .text("Population");
 
-  var legend = gObj.selectAll(".legend")
-    .data(data.columns.slice(1).reverse())
-    .enter().append("g")
-      .attrs({
-        "class": "legend",
-        "transform": function(d, i) { return "translate(0," + i * 20 + ")"; }
-      })
-      .style("font", "10px sans-serif");
+  // var legend = gObj.selectAll(".legend")
+  //   .data(data.columns.slice(1).reverse())
+  //   .enter().append("g")
+  //     .attrs({
+  //       "class": "legend",
+  //       "transform": function(d, i) { return "translate(0," + i * 20 + ")"; }
+  //     })
+  //     .style("font", "10px sans-serif");
 
-  legend.append("rect")
-      .attrs({
-        "x": width + 18,
-        "width": 18,
-        "height": 18,
-        "fill": z
-      })
+  // legend.append("rect")
+  //     .attrs({
+  //       "x": width + 18,
+  //       "width": 18,
+  //       "height": 18,
+  //       "fill": z
+  //     })
 
-  legend.append("text")
-      .attrs({
-        "x": width + 44,
-        "y": 9,
-        "dy": ".35em",
-        "text-anchor": "start"
-      })
-      .text(function(d) { return d; });
+  // legend.append("text")
+  //     .attrs({
+  //       "x": width + 44,
+  //       "y": 9,
+  //       "dy": ".35em",
+  //       "text-anchor": "start"
+  //     })
+  //     .text(function(d) { return d; });
 });
 
 function type(d, i, columns) {
