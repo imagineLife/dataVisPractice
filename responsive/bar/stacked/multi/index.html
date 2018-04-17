@@ -70,10 +70,10 @@ var stack = d3.stack();
 d3.csv("data.csv", type, function(error, data) {
   if (error) throw error;
 
-  data.sort(function(a, b) { return b.total - a.total; });
+  data.sort(function(a, b) { return b.totalOfThisCategory - a.totalOfThisCategory; });
 
   xScale.domain(data.map(function(d) { return d.ethnicity; }));
-  yScale.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
   z.domain(data.columns.slice(1));
 
   gObj.selectAll(".serie")
@@ -141,8 +141,13 @@ d3.csv("data.csv", type, function(error, data) {
 });
 
 function type(d, i, columns) {
-  for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
-  d.total = t;
+  //columns are the column header row
+  console.log('d ->',d);
+  for (i = 1, t = 0; i < columns.length; ++i){
+    t += d[columns[i]] = +d[columns[i]];
+  }
+  console.log('t is ->',t);
+  d.totalOfThisCategory = t;
   return d;
 }
 </script>
