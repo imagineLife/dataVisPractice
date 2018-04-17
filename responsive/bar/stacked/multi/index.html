@@ -36,6 +36,13 @@
     const height = +500 - vars.margin.top - vars.margin.bottom;
     const gObj = svgObj.append("g");
 
+    //build d3 scales
+    const xScale = d3.scaleBand()
+        .padding(0.3)
+        .align(0.3);
+    const yScale = d3.scaleLinear();
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+
     // Extract the width and height that was computed by CSS.
     let resizedWidth = chartDiv.clientWidth;
     let resizedHeight = chartDiv.clientHeight;
@@ -53,12 +60,6 @@
     const yAxisG = gObj.append("g")
       .attr("class", "axis axis--y");
 
-    //build d3 scales
-    const xScale = d3.scaleBand()
-        .padding(0.3)
-        .align(0.3);
-    const yScale = d3.scaleLinear();
-    const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
     //set svg height & width
     svgObj.attrs({
