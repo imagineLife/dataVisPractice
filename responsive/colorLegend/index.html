@@ -49,6 +49,9 @@
       var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
         .domain([0, 20]);
 
+      // let canvasObj = d3.select(chartDiv)
+      //   .append("canvas");
+
       continuous(chartDiv, greenColorScale);
 
 
@@ -62,13 +65,11 @@
             legendwidth = 80;
 
         var canvasObj = d3.select(selection)
-          // .style("height", resizedHeight + "px")
-          // .style("width", legendwidth + "px")
-          // .style("position", "relative")
           .append("canvas")
           .attrs({
             "height": resizedHeight - margin.top - margin.bottom,
-            "width": 1
+            "width": 1,
+            "class": 'canvasClass'
           })
           .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
           .style("width", (legendwidth - margin.left - margin.right) + "px")
@@ -78,7 +79,10 @@
           .style("left", (margin.left) + "px")
           .node();
 
+          console.log('canvasObj -->',canvasObj);
+
         var canvasContext = canvasObj.getContext("2d");
+        console.log("canvasContext ->",canvasContext);
 
         var legendscale = d3.scaleLinear()
           .range([1, resizedHeight - margin.top - margin.bottom])
@@ -123,12 +127,19 @@
       };
 
       let resize = () => {
-        // console.log('resizing!');
+
+        //resize the svg
         let resizedFnHeight = chartDiv.clientHeight;
-        
-        svgObj.attr("height", resizedFnHeight);
+        svgObj.attr("height", resizedFnHeight  - margin.top - margin.bottom);
+
+        //resize the canvas
+        let canvas = d3.select('.canvasClass');
+        console.log('canvas ->',canvas);
+        canvas.attr('height', resizedFnHeight - margin.top - margin.bottom);
+
       }
-          // Call the resize function whenever a resize event occurs
+    
+    // Call the resize function whenever a resize event occurs
     d3.select(window).on('resize', resize);
 
     </script>
