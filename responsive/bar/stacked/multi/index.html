@@ -118,7 +118,8 @@
             "x": (d) => xScale(d.data.ethnicity),
             "y": (d) => yScale(d[1]),
             "height": (d) => yScale(d[0]) - yScale(d[1]),
-            "width": xScale.bandwidth()
+            "width": xScale.bandwidth(),
+            "class":'singleRect'
           });
 
       xAxisG
@@ -194,6 +195,13 @@
 
       //set yScale
       yScale.rangeRound([resizedHeightLessMargins, vars.margin.top]);
+
+      d3.selectAll('.singleRect').attrs({
+        "x": (d) => xScale(d.data.ethnicity),
+        "y": (d) => yScale(d[1]),
+        "height": (d) => yScale(d[0]) - yScale(d[1]),
+        "width": xScale.bandwidth()
+      })
 
       //Update the X-AXIS
       xAxisG
