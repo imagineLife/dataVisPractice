@@ -49,15 +49,12 @@
 
 
     var xScale = d3.scaleBand()
-        // .rangeRound([0, width])
         .padding(0.3)
         .align(0.3);
 
     var yScale = d3.scaleLinear()
-        .rangeRound([height, 0]);
 
     var z = d3.scaleOrdinal(d3.schemeCategory20);
-        // .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     var stack = d3.stack();
 
@@ -160,7 +157,11 @@
         "height" : resizedFnHeight
       });
     
+      //set xScale
       xScale.rangeRound([0, resizedWidthLessMargins])
+
+      //set yScale
+      yScale.rangeRound([resizedHeightLessMargins, vars.margin.top]);
 
     }
 
