@@ -35,7 +35,8 @@
     const width = +600 - vars.margin.left - vars.margin.right;
     const height = +500 - vars.margin.top - vars.margin.bottom;
     const gObj = svgObj.append("g");
-    const xAxisG = gObj.append("g")
+    const xAxisG = gObj.append("g");
+    const yAxisG = gObj.append("g")
 
     // Extract the width and height that was computed by CSS.
     let resizedWidth = chartDiv.clientWidth;
@@ -93,7 +94,7 @@
         })
         .call(d3.axisBottom(xScale));
 
-      const yAxisG = gObj.append("g")
+        yAxisG
           .attr("class", "axis axis--y")
           .call(d3.axisLeft(yScale).ticks(10, "s"))
         .append("text")
