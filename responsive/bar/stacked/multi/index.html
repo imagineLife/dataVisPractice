@@ -27,9 +27,10 @@
     const vars = {
       xLabel : 'Note Name',
       yLabel : 'Number Of Notes',
-      margin : { left: 125, right: 70, top: 40, bottom: 110 }
+      margin : { left: 25, right: 70, top: 40, bottom: 110 }
     };
 
+    //Add nodes to D3 selections
     const chartDiv = document.getElementById("chart");
     const svgObj = d3.select(chartDiv).append("svg");
     const width = +600 - vars.margin.left - vars.margin.right;
@@ -48,7 +49,7 @@
 
 
     var xScale = d3.scaleBand()
-        .rangeRound([0, width])
+        // .rangeRound([0, width])
         .padding(0.3)
         .align(0.3);
 
@@ -151,10 +152,16 @@
       let resizedFnWidth = chartDiv.clientWidth;
       let resizedFnHeight = chartDiv.clientHeight;
 
+      let resizedWidthLessMargins = resizedFnWidth - vars.margin.left - vars.margin.right;
+      let resizedHeightLessMargins = resizedFnHeight - vars.margin.top - vars.margin.bottom;
+
       svgObj.attrs({
         "width" : resizedFnWidth,
         "height" : resizedFnHeight
       });
+    
+      xScale.rangeRound([0, resizedWidthLessMargins])
+
     }
 
     d3.select(window).on('resize',resize);
