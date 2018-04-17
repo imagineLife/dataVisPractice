@@ -43,6 +43,7 @@
     //calcualte dimensions less margins
     let heightLessMargins = resizedHeight - vars.margin.top - vars.margin.bottom;
 
+    //declare axis g vars
     const xAxisG = gObj.append("g")
       .attrs({
         "class": "axis axis--x",
@@ -53,11 +54,11 @@
       .attr("class", "axis axis--y");
 
     //build d3 scales
-    var xScale = d3.scaleBand()
+    const xScale = d3.scaleBand()
         .padding(0.3)
         .align(0.3);
-    var yScale = d3.scaleLinear();
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+    const yScale = d3.scaleLinear();
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
     //set svg height & width
     svgObj.attrs({
@@ -68,7 +69,7 @@
     //transform the g obj
     gObj.attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
-    var stack = d3.stack();
+    const stack = d3.stack();
 
     d3.csv("data.csv", type, function(error, data) {
       if (error) throw error;
@@ -111,7 +112,7 @@
           })
           .text("Population");
 
-      // var legend = gObj.selectAll(".legend")
+      // const legend = gObj.selectAll(".legend")
       //   .data(data.columns.slice(1).reverse())
       //   .enter().append("g")
       //     .attrs({
