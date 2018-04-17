@@ -15,11 +15,10 @@
     </style>
   </head>
   <body>
-    <div id="chart">
-      <h1>Segments</h1>
-    </div>
+    <div id="chart"></div>
   </body>
-  <script src="//d3js.org/d3.v4.min.js"></script>
+  <!-- <script src="//d3js.org/d3.v4.min.js"></script> -->
+  <script src="../../../../d3.v4.min.js"></script>
   <script src="../../../../d3-selection-multi.min.js"></script>
   <script>
 
@@ -41,6 +40,8 @@
     let resizedWidth = chartDiv.clientWidth;
     let resizedHeight = chartDiv.clientHeight;
 
+    let heightLessMargins = resizedHeight - vars.margin.top - vars.margin.bottom;
+
     var xScale = d3.scaleBand()
         .padding(0.3)
         .align(0.3);
@@ -53,7 +54,7 @@
       "height" : resizedHeight
     });
 
-    //move the g obj
+    //transform the g obj
     gObj.attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
     var stack = d3.stack();
@@ -87,7 +88,7 @@
       const xAxisG = gObj.append("g")
           .attrs({
             "class": "axis axis--x",
-            "transform": "translate(0," + height + ")"
+            "transform": "translate(0," + heightLessMargins + ")"
           })
           .call(d3.axisBottom(xScale));
 
