@@ -91,16 +91,16 @@
           "y": function(d) { return yScale(d[1]); },
           "height": function(d) { return yScale(d[0]) - yScale(d[1]); },
           "width": xScale.bandwidth()
-        }),
+        });
 
-    gObj.append("g")
+    const xAxisG = gObj.append("g")
         .attrs({
           "class": "axis axis--x",
           "transform": "translate(0," + height + ")"
         })
         .call(d3.axisBottom(xScale));
 
-    gObj.append("g")
+    const yAxisG = gObj.append("g")
         .attr("class", "axis axis--y")
         .call(d3.axisLeft(yScale).ticks(10, "s"))
       .append("text")
