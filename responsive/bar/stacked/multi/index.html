@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
 .bar {
@@ -10,9 +11,17 @@
   /*display: none;*/
 }
 
+#chart {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
 </style>
 <body>
-  <div id="stackedbars">
+  <div id="chart">
     <h1>Segments</h1>
   </div>
 </body>
@@ -20,15 +29,23 @@
 <script src="../../../../d3-selection-multi.min.js"></script>
 <script>
 
-  const chartDiv = document.getElementById("stackedbars");
-  const svgObj = d3.select(chartDiv).append("svg").attrs({
-    "height": 500,
-    "width": 600
-  });
+  const chartDiv = document.getElementById("chart");
+  const svgObj = d3.select(chartDiv).append("svg");
   const margin = {top: 20, right: 180, bottom: 30, left: 40};
   const width = +600 - margin.left - margin.right;
   const height = +500 - margin.top - margin.bottom;
   const  g = svgObj.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Extract the width and height that was computed by CSS.
+  let resizedWidth = chartDiv.clientWidth;
+  let resizedHeight = chartDiv.clientHeight;
+
+  //set svg height & width
+  svgObj.attrs({
+    "width" : resizedWidth,
+    "height" : resizedHeight
+  });
+
 
 var x = d3.scaleBand()
     .rangeRound([0, width])
