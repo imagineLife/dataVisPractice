@@ -54,7 +54,7 @@
 
     var yScale = d3.scaleLinear()
 
-    var z = d3.scaleOrdinal(d3.schemeCategory20);
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
     var stack = d3.stack();
 
@@ -65,14 +65,14 @@
 
       xScale.domain(data.map(function(d) { return d.ethnicity; }));
       yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
-      z.domain(data.columns.slice(1));
+      colorScale.domain(data.columns.slice(1));
 
       gObj.selectAll(".serie")
         .data(stack.keys(data.columns.slice(1))(data))
         .enter().append("g")
           .attrs({
             "class": "serie",
-            "fill": function(d) { return z(d.key); }
+            "fill": function(d) { return colorScale(d.key); }
           })
         .selectAll("rect")
         .data(function(d) { return d; })
