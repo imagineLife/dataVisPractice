@@ -104,11 +104,11 @@
       yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
       colorScale.domain(data.columns.slice(1));
 
-      gObj.selectAll(".serie")
+      gObj.selectAll(".seriesClass")
         .data(stack.keys(data.columns.slice(1))(data))
         .enter().append("g")
           .attrs({
-            "class": "serie",
+            "class": "seriesClass",
             "fill": function(d) { return colorScale(d.key); }
           })
         .selectAll("rect")
@@ -200,7 +200,7 @@
       xAxisG
         .attrs({
             'transform': `translate(0, ${resizedHeightLessMargins})`,
-            'x' : widthLessMargins / 2,
+            'x' : resizedWidthLessMargins / 2,
             'y' : resizedHeight * .1,
         })
         .call(xAxisD3);
@@ -212,6 +212,9 @@
             'y' : -vars.margin.left / 2,
         })
         .call(yAxisD3);
+
+      d3.selectAll('.tick line')
+        .attr('x2', resizedWidthLessMargins);
 
     }
 
