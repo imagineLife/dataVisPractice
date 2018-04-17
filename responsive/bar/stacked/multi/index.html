@@ -205,6 +205,14 @@
         })
         .call(xAxisD3);
 
+      //Update the Y-AXIS
+      yAxisG
+        .attrs({
+            'x' : -resizedHeightLessMargins / 2,
+            'y' : -vars.margin.left / 2,
+        })
+        .call(yAxisD3);
+
     }
 
     d3.select(window).on('resize',resize);
