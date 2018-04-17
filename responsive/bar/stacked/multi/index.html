@@ -12,6 +12,9 @@
         top: 0px;
         bottom: 0px;
       }
+      .tick line {
+        stroke: #C0C0BB;
+      }    
     </style>
   </head>
   <body>
@@ -49,6 +52,8 @@
 
     //calcualte dimensions less margins
     let heightLessMargins = resizedHeight - vars.margin.top - vars.margin.bottom;
+    let widthLessMargins = resizedWidth - vars.margin.left - vars.margin.right;
+
 
     //declare axis g vars
     const xAxisG = gObj.append("g")
@@ -71,6 +76,21 @@
     gObj.attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
     const stack = d3.stack();
+
+
+    // X-AXIS & Y-AXIS
+    //via D3
+    const xAxisD3 = d3.axisBottom()
+      .scale(xScale)
+      .tickPadding(15)
+      .tickSize(-heightLessMargins);
+
+    const yAxisD3 = d3.axisLeft()
+      .scale(yScale)
+      .ticks(10) //yTicks as 10 later, perhaps
+      .tickPadding(15)
+      // .tickFormat(10, "s")
+      .tickSize(-widthLessMargins);
 
     d3.csv("data.csv", type, function(error, data) {
       if (error) throw error;
@@ -99,10 +119,11 @@
           });
 
       xAxisG
-        .call(d3.axisBottom(xScale));
+        .call(xAxisD3)
+        .selectAll('.tick line').remove();
 
         yAxisG
-          .call(d3.axisLeft(yScale).ticks(10, "s"))
+          .call(yAxisD3)
         .append("text")
           .attrs({
             "x": 2,
