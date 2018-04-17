@@ -14,18 +14,21 @@
 <body>
   <div id="stackedbars">
     <h1>Segments</h1>
-    <svg id="stacked" width="600" height="500"></svg>
   </div>
 </body>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script src="../../../../d3-selection-multi.min.js"></script>
 <script>
 
-var svg = d3.select("#stacked"),
-    margin = {top: 20, right: 180, bottom: 30, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  const chartDiv = document.getElementById("stackedbars");
+  const svgObj = d3.select(chartDiv).append("svg").attrs({
+    "height": 500,
+    "width": 600
+  });
+  const margin = {top: 20, right: 180, bottom: 30, left: 40};
+  const width = +600 - margin.left - margin.right;
+  const height = +500 - margin.top - margin.bottom;
+  const  g = svgObj.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var x = d3.scaleBand()
     .rangeRound([0, width])
