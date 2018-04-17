@@ -95,13 +95,13 @@
       // .tickFormat(10, "s")
       .tickSize(-widthLessMargins);
 
-    d3.csv("data.csv", type, function(error, data) {
+    d3.csv("data.csv", type, (error, data) => {
       if (error) throw error;
 
-      data.sort(function(a, b) { return b.totalOfThisCategory - a.totalOfThisCategory; });
+      data.sort((a, b) =>  b.totalOfThisCategory - a.totalOfThisCategory );
 
-      xScale.domain(data.map(function(d) { return d.ethnicity; }));
-      yScale.domain([0, d3.max(data, function(d) { return d.totalOfThisCategory; })]).nice();
+      xScale.domain(data.map((d) =>  d.ethnicity));
+      yScale.domain([0, d3.max(data, (d) => d.totalOfThisCategory )]).nice();
       colorScale.domain(data.columns.slice(1));
 
       gObj.selectAll(".seriesClass")
@@ -109,15 +109,15 @@
         .enter().append("g")
           .attrs({
             "class": "seriesClass",
-            "fill": function(d) { return colorScale(d.key); }
+            "fill": (d) => colorScale(d.key)
           })
         .selectAll("rect")
-        .data(function(d) { return d; })
+        .data((d) => d )
         .enter().append("rect")
           .attrs({
-            "x": function(d) { return xScale(d.data.ethnicity); },
-            "y": function(d) { return yScale(d[1]); },
-            "height": function(d) { return yScale(d[0]) - yScale(d[1]); },
+            "x": (d) => xScale(d.data.ethnicity),
+            "y": (d) => yScale(d[1]),
+            "height": (d) => yScale(d[0]) - yScale(d[1]),
             "width": xScale.bandwidth()
           });
 
@@ -181,7 +181,6 @@
       // Extract the width and height that was computed by CSS.
       let resizedFnWidth = chartDiv.clientWidth;
       let resizedFnHeight = chartDiv.clientHeight;
-
       let resizedWidthLessMargins = resizedFnWidth - vars.margin.left - vars.margin.right;
       let resizedHeightLessMargins = resizedFnHeight - vars.margin.top - vars.margin.bottom;
 
