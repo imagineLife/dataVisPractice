@@ -196,6 +196,15 @@
       //set yScale
       yScale.rangeRound([resizedHeightLessMargins, vars.margin.top]);
 
+      //Update the X-AXIS
+      xAxisG
+        .attrs({
+            'transform': `translate(0, ${resizedHeightLessMargins})`,
+            'x' : widthLessMargins / 2,
+            'y' : resizedHeight * .1,
+        })
+        .call(xAxisD3);
+
     }
 
     d3.select(window).on('resize',resize);
