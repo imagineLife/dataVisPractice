@@ -27,7 +27,7 @@
     const vars = {
       xLabel : 'Note Name',
       yLabel : 'Number Of Notes',
-      margin : { left: 25, right: 70, top: 40, bottom: 110 }
+      margin : { left: 50, right: 70, top: 40, bottom: 110 }
     };
 
     //Add nodes to D3 selections
@@ -35,11 +35,17 @@
     const svgObj = d3.select(chartDiv).append("svg");
     const width = +600 - vars.margin.left - vars.margin.right;
     const height = +500 - vars.margin.top - vars.margin.bottom;
-    const  gObj = svgObj.append("g").attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
+    const gObj = svgObj.append("g");
 
     // Extract the width and height that was computed by CSS.
     let resizedWidth = chartDiv.clientWidth;
     let resizedHeight = chartDiv.clientHeight;
+
+    var xScale = d3.scaleBand()
+        .padding(0.3)
+        .align(0.3);
+    var yScale = d3.scaleLinear();
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
     //set svg height & width
     svgObj.attrs({
@@ -47,14 +53,8 @@
       "height" : resizedHeight
     });
 
-
-    var xScale = d3.scaleBand()
-        .padding(0.3)
-        .align(0.3);
-
-    var yScale = d3.scaleLinear()
-
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+    //move the g obj
+    gObj.attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
     var stack = d3.stack();
 
