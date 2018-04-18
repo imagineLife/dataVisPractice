@@ -100,7 +100,7 @@
 
       data.sort((a, b) =>  b.totalOfThisCategory - a.totalOfThisCategory );
 
-      xScale.domain(data.map((d) =>  d.ethnicity));
+      xScale.domain(data.map((d) =>  d.geo));
       yScale.domain([0, d3.max(data, (d) => d.totalOfThisCategory )]).nice();
       colorScale.domain(data.columns.slice(1));
 
@@ -115,7 +115,7 @@
         .data((d) => d )
         .enter().append("rect")
           .attrs({
-            "x": (d) => xScale(d.data.ethnicity),
+            "x": (d) => xScale(d.data.geo),
             "y": (d) => yScale(d[1]),
             "height": (d) => yScale(d[0]) - yScale(d[1]),
             "width": xScale.bandwidth(),
@@ -197,7 +197,7 @@
       yScale.rangeRound([resizedHeightLessMargins, vars.margin.top]);
 
       d3.selectAll('.singleRect').attrs({
-        "x": (d) => xScale(d.data.ethnicity),
+        "x": (d) => xScale(d.data.geo),
         "y": (d) => yScale(d[1]),
         "height": (d) => yScale(d[0]) - yScale(d[1]),
         "width": xScale.bandwidth()
