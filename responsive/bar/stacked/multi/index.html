@@ -35,7 +35,7 @@
 
     // Build Variables
     const vars = {
-      xLabel : 'Note Name',
+      xLabel : 'City',
       yLabel : 'Population',
       margin : { left: 120, right: 70, top: 40, bottom: 110 },
     };
@@ -73,8 +73,17 @@
     const yAxisG = gObj.append("g")
       .attr("class", "axis axis--y");
 
-    //axis title
+    //axis titles
     let yAxisLabel = yAxisG.append('text');
+    let xAxisLabel = xAxisG.append('text');
+
+    xAxisLabel
+      .attrs({
+        'class' :'x axis-label',
+        'x' : widthLessMargins / 2,
+        'y' : resizedHeight * .1
+      })
+      .text(vars.xLabel);
 
     yAxisLabel.attrs({
       'class' : 'y axis-label',
@@ -235,6 +244,13 @@
             'y' : -vars.margin.left / 2,
         })
         .call(yAxisD3);
+
+      //Update the X-AXIS LABEL
+      xAxisLabel
+        .attrs({
+          'x' : resizedWidthLessMargins / 2,
+          'y' : resizedHeight * .1
+        })
 
       //Update yAxis Label
       yAxisLabel.attrs({
