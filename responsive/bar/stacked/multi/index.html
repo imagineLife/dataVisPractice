@@ -188,7 +188,18 @@
             "text-anchor": "start",
             "fill": "#000"
           });
-          // .text("Population");
+
+        //tilt x-Axis Labels
+        xAxisG.selectAll('.tick text')
+          .attrs({
+            'transform': 'rotate(-45)',
+            'text-anchor': 'end',
+            'alignment-baseline':'middle',
+            'x': -5,
+            'y': 15,
+            'dy':0
+
+          })
 
       // const legend = gObj.selectAll(".legend")
       //   .data(data.columns.slice(1).reverse())
