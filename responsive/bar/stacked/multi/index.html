@@ -17,7 +17,12 @@
       }
       .tick line {
         stroke: #C0C0BB;
-      }    
+      }
+      .axis-label {
+        fill: #635F5D;
+        font-size: 20pt;
+        font-family: sans-serif;
+      }
     </style>
   </head>
   <body>
@@ -31,8 +36,8 @@
     // Build Variables
     const vars = {
       xLabel : 'Note Name',
-      yLabel : 'Number Of Notes',
-      margin : { left: 120, right: 70, top: 40, bottom: 110 }
+      yLabel : 'Population',
+      margin : { left: 120, right: 70, top: 40, bottom: 110 },
     };
 
     //Add nodes to D3 selections
@@ -68,6 +73,17 @@
     const yAxisG = gObj.append("g")
       .attr("class", "axis axis--y");
 
+    //axis title
+    let yAxisLabel = yAxisG.append('text');
+
+    yAxisLabel.attrs({
+      'class' : 'y axis-label',
+      'x' : -heightLessMargins / 2,
+      'y' : -vars.margin.left / 1.75,
+      'transform' : `rotate(-90)`
+    })
+    .style('text-anchor', 'middle')
+    .text(vars.yLabel);
 
     //set svg height & width
     svgObj.attrs({
@@ -135,8 +151,8 @@
             "dy": "0.35em",
             "text-anchor": "start",
             "fill": "#000"
-          })
-          .text("Population");
+          });
+          // .text("Population");
 
       // const legend = gObj.selectAll(".legend")
       //   .data(data.columns.slice(1).reverse())
