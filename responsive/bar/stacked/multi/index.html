@@ -236,6 +236,12 @@
         })
         .call(yAxisD3);
 
+      //Update yAxis Label
+      yAxisLabel.attrs({
+        'x' : -resizedHeightLessMargins / 2,
+        'y' : -vars.margin.left / 1.75,
+      });
+
       d3.selectAll('.tick line')
         .attr('x2', resizedWidthLessMargins);
 
