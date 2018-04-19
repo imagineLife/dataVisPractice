@@ -23,6 +23,17 @@
         font-size: 20pt;
         font-family: sans-serif;
       }
+      .toolTip {
+        position: absolute;
+        display: none;
+        min-width: 80px;
+        height: auto;
+        background: none repeat scroll 0 0 rgba(255,255,255,.7);
+        padding: 14px;
+        text-align: center;
+        font-size: 20px;
+        font-family: sans-serif;
+      }      
     </style>
   </head>
   <body>
@@ -46,6 +57,9 @@
     const width = +600 - vars.margin.left - vars.margin.right;
     const height = +500 - vars.margin.top - vars.margin.bottom;
     const gObj = svgObj.append("g");
+
+    //Tooltip
+    const tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
 
     //build d3 scales
     const xScale = d3.scaleBand()
@@ -145,7 +159,20 @@
             "height": (d) => yScale(d[0]) - yScale(d[1]),
             "width": xScale.bandwidth(),
             "class":'singleRect'
-          });
+          })
+          .on("mousemove", function(d){
+            const rectData = d.data,
+              rectVal = d[1] - d[0];
+            let rectKey = filterObj(rectData, rectVal);
+            tooltipDiv
+              .style("left", d3.event.pageX - 150 +  "px")
+              .style("top", d3.event.pageY - 150 + "px")
+              .style("display", "inline-block")
+              .html(`<b>${d.data.geo}</b><br>`+
+                `Age Range: <b>${rectKey}</b><br>`+
+                `Population: <b>${rectVal}</b>`);
+          })
+          .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
 
       xAxisG
         .call(xAxisD3)
@@ -190,6 +217,14 @@
       //     .text(function(d) { return d; });
     });
 
+    function filterObj(obj, val){
+      let result = "";
+      for (key in obj){
+        if(obj[key] == val) result = key;
+      }
+      return result
+    }
+
     function type(d, i, columns) {
       //columns are the column header row
 
@@ -202,7 +237,6 @@
     }
 
     let resize = () => {
-      console.log('resizing!');
 
       // Extract the width and height that was computed by CSS.
       let resizedFnWidth = chartDiv.clientWidth;
