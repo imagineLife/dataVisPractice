@@ -66,7 +66,7 @@
         var canvasObj = d3.select(selection)
           .append("canvas")
           .attrs({
-            "height": 50 - margin.top - margin.bottom,
+            // "height": 50 - margin.top - margin.bottom,
             "width": 1,
             "class": 'canvasClass'
           })
@@ -82,13 +82,13 @@
 
         var legendscale = d3.scaleLinear()
           // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
-          .range([resizedHeight - margin.top - margin.bottom, 1])
+          .range([resizedWidth - margin.left - margin.right, 1])
           .domain(colorScale.domain());
 
         // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-        var image = canvasContext.createImageData(1, resizedHeight);
+        var image = canvasContext.createImageData(resizedWidth - margin.left - margin.right, 1);
         
-        d3.range(resizedHeight).forEach(function(i) {
+        d3.range(resizedWidth).forEach(function(i) {
           var c = d3.rgb(colorScale(legendscale.invert(i)));
           image.data[4*i] = c.r;
           image.data[4*i + 1] = c.g;
@@ -99,7 +99,7 @@
         canvasContext.putImageData(image, 0, 0);
 
 
-        var legendaxis = d3.axisRight()
+        var legendaxis = d3.axisBottom()
           .scale(legendscale)
           .tickSize(6)
           .ticks(8);
