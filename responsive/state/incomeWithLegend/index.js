@@ -62,7 +62,7 @@ d3.queue()
 d3.select(window)
       .on("resize", sizeChange);
 
-const svg = d3.select("#container")
+const svg = d3.select("#stateContainer")
   .append("svg")
   .attr("width", "100%")
   .attr("class", 'income')
@@ -119,8 +119,8 @@ function sizeChange() {
     d3
       .select("g")
       .attr('transform', 'translate(100,50)')
-      .attr("transform", "scale(" + $("#container")
+      .attr("transform", "scale(" + $("#stateContainer")
       .width()/900 + ")");
    
-    $("svg").height($("#container").width()*0.7);
+    $("svg").height($("#stateContainer").width()*0.7);
 }
