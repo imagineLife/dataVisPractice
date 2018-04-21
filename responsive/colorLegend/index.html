@@ -85,7 +85,8 @@
         console.log("canvasContext ->",canvasContext);
 
         var legendscale = d3.scaleLinear()
-          .range([1, resizedHeight - margin.top - margin.bottom])
+          // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+          .range([resizedHeight - margin.top - margin.bottom, 1])
           .domain(colorScale.domain());
 
         // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
