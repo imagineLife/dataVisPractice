@@ -10,17 +10,32 @@
     <link rel="stylesheet" type="text/css" href="../../dark.css">
     <title>Responsive CT Towns</title>
     <style type="text/css">
+      *{
+        box-sizing: border-box;
+      }
+      div{
+        border:5px solid black;
+        border-radius: 5px;        
+      }
       #stateContainer {
         margin:1%;
         width: 80%;
-        border:5px solid black;
-        border-radius: 5px;
+      }
+      #legendContainer {
+        margin:1%;
+        width: 14%;
+      }
+      .dataWrapper > *{
+        display: inline-block;
       }
     </style>
   </head>
   <body onload="sizeChange()">
 
-    <div id="stateContainer"></div>
+    <div class="dataWrapper">
+      <div id="stateContainer"></div>
+      <div id="legendContainer"></div>
+    </div>  
 
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
     <script type="text/javascript" src="index.js"></script>
