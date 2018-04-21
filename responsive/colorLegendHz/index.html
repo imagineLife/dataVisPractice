@@ -60,7 +60,6 @@
         const selection = selector_id ? selector_id : chartDiv;
         const colorScale = colorscale ? colorscale :  greenColorScale;
 
-        console.log('running fn!');
         const legendheight = 200,
             legendwidth = 80;
 
@@ -79,10 +78,7 @@
           .style("left", (margin.left) + "px")
           .node();
 
-          console.log('canvasObj -->',canvasObj);
-
         var canvasContext = canvasObj.getContext("2d");
-        console.log("canvasContext ->",canvasContext);
 
         var legendscale = d3.scaleLinear()
           // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
@@ -135,7 +131,6 @@
 
         //resize the canvas
         let canvas = d3.select('.canvasClass');
-        console.log('canvas ->',canvas);
         canvas.attr('height', resizedFnHeight - margin.top - margin.bottom);
 
       }
