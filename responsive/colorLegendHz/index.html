@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Continous Color Legend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../../../d3.v4.min.js"></script>
+    <script src="../../../../d3-selection-multi.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../dark.css"> -->
+  </head>
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+
+    body{
+      margin:0px;
+      outline: 2px solid steelblue;
+    }
+
+    #legend1{
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+    }
+
+  </style>
+  <body>
+    <div id = "legend1"></div>
+    <script>
+
+
+      // D3 select The elements & convert to vars
+      let chartDiv = document.getElementById("legend1");
+      const svgObj = d3.select(chartDiv).append("svg");
+      const gObj = svgObj.append('g');
+      const bars = gObj.selectAll('rect');
+
+      const margin = {top: 10, right: 60, bottom: 10, left: 2};
+      // Extract the width and height that was computed by CSS.
+      let resizedWidth = chartDiv.clientWidth;
+      let resizedHeight = chartDiv.clientHeight;
+
+      var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
+        .domain([0, 20]);
+
+      // let canvasObj = d3.select(chartDiv)
+      //   .append("canvas");
+
+      continuous(chartDiv, greenColorScale);
+
+
+      // create continuous color legend
+      function continuous(selector_id, colorscale) {
+        const selection = selector_id ? selector_id : chartDiv;
+        const colorScale = colorscale ? colorscale :  greenColorScale;
+
+        console.log('running fn!');
+        const legendheight = 200,
+            legendwidth = 80;
+
+        var canvasObj = d3.select(selection)
+          .append("canvas")
+          .attrs({
+            "height": resizedHeight - margin.top - margin.bottom,
+            "width": 1,
+            "class": 'canvasClass'
+          })
+          .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
+          .style("width", (legendwidth - margin.left - margin.right) + "px")
+          .style("border", "1px solid #000")
+          .style("position", "absolute")
+          .style("top", (margin.top) + "px")
+          .style("left", (margin.left) + "px")
+          .node();
+
+          console.log('canvasObj -->',canvasObj);
+
+        var canvasContext = canvasObj.getContext("2d");
+        console.log("canvasContext ->",canvasContext);
+
+        var legendscale = d3.scaleLinear()
+          // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+          .range([resizedHeight - margin.top - margin.bottom, 1])
+          .domain(colorScale.domain());
+
+        // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+        var image = canvasContext.createImageData(1, resizedHeight);
+        
+        d3.range(resizedHeight).forEach(function(i) {
+          var c = d3.rgb(colorScale(legendscale.invert(i)));
+          image.data[4*i] = c.r;
+          image.data[4*i + 1] = c.g;
+          image.data[4*i + 2] = c.b;
+          image.data[4*i + 3] = 255;
+        });
+
+        canvasContext.putImageData(image, 0, 0);
+
+
+        var legendaxis = d3.axisRight()
+          .scale(legendscale)
+          .tickSize(6)
+          .ticks(8);
+
+        //SVG for the labeling
+        svgObj
+          .attrs({
+            "height": (resizedHeight) + "px",
+            "width": (legendwidth) + "px",
+            "class":'svgClass'
+          })
+          .style("position", "absolute")
+          .style("left", "0px")
+          .style("top", "0px")
+          .style("border", "3px solid mediumorchid")
+
+        svgObj
+          .append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+          .call(legendaxis);
+      };
+
+      let resize = () => {
+
+        //resize the svg
+        let resizedFnHeight = chartDiv.clientHeight;
+        svgObj.attr("height", resizedFnHeight  - margin.top - margin.bottom);
+
+        //resize the canvas
+        let canvas = d3.select('.canvasClass');
+        console.log('canvas ->',canvas);
+        canvas.attr('height', resizedFnHeight - margin.top - margin.bottom);
+
+      }
+    
+    // Call the resize function whenever a resize event occurs
+    d3.select(window).on('resize', resize);
+
+    </script>
+  </body>
+
+</html>
