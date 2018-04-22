@@ -124,3 +124,90 @@ function sizeChange() {
    
     d3.select('svg').attr('height',stateContainer.clientWidth*0.8);
 }
+
+// D3 select The elements & convert to vars
+let legendDiv = document.getElementById("legendContainer");
+const svgObj = d3.select(legendDiv).append("svg");
+const gObj = svgObj.append('g');
+const bars = gObj.selectAll('rect');
+
+const margin = {top: 10, right: 60, bottom: 10, left: 2};
+// Extract the width and height that was computed by CSS.
+let resizedWidth = legendDiv.clientWidth;
+let resizedHeight = legendDiv.clientHeight;
+
+var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
+.domain([0, 20]);
+
+continuous(legendDiv, greenColorScale);
+
+// create continuous color legend
+function continuous(selector_id, colorscale) {
+const selection = selector_id ? selector_id : legendDiv;
+const colorScale = colorscale ? colorscale :  greenColorScale;
+
+console.log('running fn!');
+const legendheight = 200,
+    legendwidth = 80;
+
+var canvasObj = d3.select(selection)
+  .append("canvas")
+  .attrs({
+    "height": resizedHeight - margin.top - margin.bottom,
+    "width": 1,
+    "class": 'canvasClass'
+  })
+  .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
+  .style("width", (legendwidth - margin.left - margin.right) + "px")
+  .style("border", "1px solid #000")
+  .style("position", "absolute")
+  .style("top", (margin.top) + "px")
+  .style("left", (margin.left) + "px")
+  .node();
+
+  console.log('canvasObj -->',canvasObj);
+
+var canvasContext = canvasObj.getContext("2d");
+console.log("canvasContext ->",canvasContext);
+
+var legendscale = d3.scaleLinear()
+  // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+  .range([resizedHeight - margin.top - margin.bottom, 1])
+  .domain(colorScale.domain());
+
+// image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+var image = canvasContext.createImageData(1, resizedHeight);
+
+d3.range(resizedHeight).forEach(function(i) {
+  var c = d3.rgb(colorScale(legendscale.invert(i)));
+  image.data[4*i] = c.r;
+  image.data[4*i + 1] = c.g;
+  image.data[4*i + 2] = c.b;
+  image.data[4*i + 3] = 255;
+});
+
+canvasContext.putImageData(image, 0, 0);
+
+
+var legendaxis = d3.axisRight()
+  .scale(legendscale)
+  .tickSize(6)
+  .ticks(8);
+
+//SVG for the labeling
+svgObj
+  .attrs({
+    "height": (resizedHeight) + "px",
+    "width": (legendwidth) + "px",
+    "class":'svgClass'
+  })
+  .style("position", "absolute")
+  .style("left", "0px")
+  .style("top", "0px")
+
+svgObj
+  .append("g")
+  .attr("class", "axis")
+  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+  .call(legendaxis);
+};

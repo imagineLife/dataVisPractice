@@ -2,8 +2,8 @@
   box-sizing: border-box;
 }
 div{
-  border:3px solid black;
-  border-radius: 15px;
+  border:1px solid black;
+  border-radius: 10px;
 }
 #parentWrapper{
   /*text-align: center;*/
@@ -22,4 +22,7 @@ div{
   min-height:255px ;
   position: absolute; 
   bottom:0;
+}
+.tick text, .legendCells text{
+  font-size: 12px;
 }
