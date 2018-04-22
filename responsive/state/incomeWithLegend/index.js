@@ -62,7 +62,7 @@ d3.queue()
 d3.select(window)
       .on("resize", sizeChange);
 
-const svg = d3.select("#stateContainer")
+const svgObj = d3.select("#stateContainer")
   .append("svg")
   .attr("width", "100%")
   .attr("class", 'income')
@@ -86,7 +86,7 @@ function ready(error, data) {
         .projection(projection);
 
     // draw connecticut map and bind income data
-    svg.selectAll(".towns")
+    svgObj.selectAll(".towns")
         .data(connecticut.features)
         .enter().append("path")
         .attr("class", "towns")        
@@ -116,11 +116,12 @@ function ready(error, data) {
 }
 
 function sizeChange() {
+    const stateContainer = document.getElementById('stateContainer');
+    
     d3
       .select("g")
       .attr('transform', 'translate(100,50)')
-      .attr("transform", "scale(" + $("#stateContainer")
-      .width()/900 + ")");
+      .attr("transform", "scale(" + stateContainer.clientWidth/900 + ")");
    
-    $("svg").height($("#stateContainer").width()*0.7);
+    svgObj.attr("height", stateContainer.clientWidth*0.7);
 }
