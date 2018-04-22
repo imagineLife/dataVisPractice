@@ -14,12 +14,12 @@ div{
   display: inline-block;
 }
 #stateContainer {
-  width: 75%;
+  width: 80%;
   min-height:225px;
 }
 #legendContainer {
-  width: 50px;
-  min-height:225px ;
+  width: 20%;
+  min-height:255px ;
   position: absolute; 
   bottom:0;
 }
