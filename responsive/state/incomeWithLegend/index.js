@@ -128,8 +128,6 @@ function sizeChange() {
 // D3 select The elements & convert to vars
 let legendDiv = document.getElementById("legendContainer");
 const svgObj = d3.select(legendDiv).append("svg");
-const gObj = svgObj.append('g');
-const bars = gObj.selectAll('rect');
 
 const margin = {top: 10, right: 60, bottom: 10, left: 2};
 // Extract the width and height that was computed by CSS.
