@@ -7,6 +7,7 @@
     <script src="../../../d3-selection-multi.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
     <script src="https://d3js.org/topojson.v2.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="../../normalizeReset.css">
     <link rel="stylesheet" type="text/css" href="../../dark.css">
     <title>Responsive CT Towns</title>
     <style type="text/css">
@@ -14,29 +15,37 @@
         box-sizing: border-box;
       }
       div{
-        border:5px solid black;
-        border-radius: 5px;        
+        border:3px solid black;
+        border-radius: 15px;
+      }
+      #parentWrapper{
+        /*text-align: center;*/
+        overflow: hidden;
+        position: relative;
+      }
+      #stateContainer, #legendContainer{
+        display: inline-block;
       }
       #stateContainer {
-        margin:1%;
         width: 80%;
+        min-height:300px;
       }
       #legendContainer {
-        margin:1%;
-        width: 14%;
-      }
-      .dataWrapper > *{
-        display: inline-block;
+        width: 50px;
+        min-height:300px ;
+         position: absolute; 
+        bottom:0;
       }
     </style>
   </head>
   <body onload="sizeChange()">
 
-    <div class="dataWrapper">
+    <div id="parentWrapper">
       <div id="stateContainer"></div>
       <div id="legendContainer"></div>
     </div>  
 
+<!-- get rid of jquery ASAP -->
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
     <script type="text/javascript" src="index.js"></script>
   
