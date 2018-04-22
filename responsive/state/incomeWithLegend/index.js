@@ -80,7 +80,7 @@ function ready(error, data) {
 
     // projection and path
     var projection = d3.geoAlbersUsa()
-        .fitExtent([[0,0], [950, 600]], connecticut);
+        .fitExtent([[0,0], [750, 625]], connecticut);
 
     var geoPath = d3.geoPath()
         .projection(projection);
@@ -120,7 +120,6 @@ function sizeChange() {
     
     d3
       .select("g")
-      .attr('transform', 'translate(100,50)')
       .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
     d3.select('svg').attr('height',stateContainer.clientWidth*0.8);
