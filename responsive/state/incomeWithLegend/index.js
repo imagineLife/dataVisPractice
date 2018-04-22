@@ -137,7 +137,7 @@ let resizedWidth = legendDiv.clientWidth;
 let resizedHeight = legendDiv.clientHeight;
 
 var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
-.domain([0, 20]);
+.domain([31375,260000]);
 
 continuous(legendDiv, greenColorScale);
 
