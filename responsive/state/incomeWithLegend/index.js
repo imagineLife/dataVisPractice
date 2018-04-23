@@ -62,7 +62,7 @@ d3.queue()
 d3.select(window)
       .on("resize", sizeChange);
 
-const svg = d3.select("#stateContainer")
+const svg = d3.select("#stateImage")
   .append("svg")
   .attr("width", "100%")
   .attr("class", 'income')
@@ -116,7 +116,7 @@ function ready(error, data) {
 }
 
 function sizeChange() {
-    const stateContainer = document.getElementById('stateContainer');
+    const stateContainer = document.getElementById('stateImage');
     
     d3
       .select("g")

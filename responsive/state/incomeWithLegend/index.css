@@ -10,10 +10,10 @@ div{
   overflow: hidden;
   position: relative;
 }
-#stateContainer, #legendContainer{
+#stateImage, #legendContainer{
   display: inline-block;
 }
-#stateContainer {
+#stateImage {
   width: 80%;
   min-height:225px;
 }
@@ -42,6 +42,6 @@ i{
   font-style: italic;
 }
 
-.stateWrapper{
+.visuals{
   margin: 50px auto;
 }
