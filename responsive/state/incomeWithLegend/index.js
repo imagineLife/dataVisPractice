@@ -144,7 +144,6 @@ function continuous(selector_id, colorscale) {
 const selection = selector_id ? selector_id : legendDiv;
 const colorScale = colorscale ? colorscale :  greenColorScale;
 
-console.log('running fn!');
 const legendheight = 200,
     legendwidth = 80;
 
@@ -162,11 +161,8 @@ var canvasObj = d3.select(selection)
   .style("top", (margin.top) + "px")
   .style("left", (margin.left) + "px")
   .node();
-
-  console.log('canvasObj -->',canvasObj);
-
+  
 var canvasContext = canvasObj.getContext("2d");
-console.log("canvasContext ->",canvasContext);
 
 var legendscale = d3.scaleLinear()
   // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
