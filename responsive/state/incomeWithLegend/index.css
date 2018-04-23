@@ -19,9 +19,8 @@ div{
 }
 #legendContainer {
   width: 20%;
-  min-height:245px;
-  position: absolute; 
-  bottom:0;
+  min-height:240px;
+  position: absolute;
 }
 .tick text, .legendCells text{
   font-size: 16px;
@@ -41,4 +40,8 @@ small{
 
 i{
   font-style: italic;
+}
+
+.stateWrapper{
+  margin: 50px auto;
 }
