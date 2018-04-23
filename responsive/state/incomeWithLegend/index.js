@@ -14,7 +14,7 @@ var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 //     .range(d3.schemeReds[5]);
 
 var income_color = d3.scaleSequential(d3.interpolateGreens)
-    .domain([31375,260000])
+    .domain([31375,251000])
 
 var incomeData = d3.map();
 
@@ -135,7 +135,7 @@ let resizedWidth = legendDiv.clientWidth;
 let resizedHeight = legendDiv.clientHeight;
 
 var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
-.domain([31375,260000]);
+.domain([31375,251000]);
 
 continuous(legendDiv, greenColorScale);
 

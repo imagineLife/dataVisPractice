@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 div{
-  border:1px solid black;
+  /*border:1px solid black;*/
   border-radius: 10px;
 }
 #parentWrapper{
@@ -19,7 +19,7 @@ div{
 }
 #legendContainer {
   width: 20%;
-  min-height:255px ;
+  min-height:240px ;
   position: absolute; 
   bottom:0;
 }
