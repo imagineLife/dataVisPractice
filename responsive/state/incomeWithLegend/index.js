@@ -189,9 +189,9 @@ canvasContext.putImageData(image, 0, 0);
 
 var legendaxis = d3.axisRight()
   .scale(legendscale)
-  .tickSize(6)
+  .tickSize(2) //size of tick mark, not text
   .tickFormat(d3.format(".2s"))
-  .ticks(8);
+  .ticks(3);
 
 //SVG for the labeling
 svgObj
