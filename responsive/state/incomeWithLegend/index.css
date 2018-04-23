@@ -26,3 +26,14 @@ div{
 .tick text, .legendCells text{
   font-size: 16px;
 }
+.stateTitle{
+  font-size: 2em;
+}
+
+.stateTitle small{
+  font-size: .5em;
+}
+
+i{
+  font-style: italic;
+}
