@@ -10,6 +10,11 @@ div{
   overflow: hidden;
   position: relative;
 }
+
+.visualHeader{
+  margin-bottom: 20px;
+}
+
 #stateImage, #legendContainer{
   display: block;
 }
