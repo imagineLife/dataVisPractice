@@ -150,7 +150,7 @@ const legendheight = 275,
 var canvasObj = d3.select(selection)
   .append("canvas")
   .attrs({
-    // "height": resizedHeight,// - margin.top - margin.bottom,
+    "height": resizedHeight,// - margin.top - margin.bottom,
     "width": 1,
     "class": 'canvasClass'
   })
