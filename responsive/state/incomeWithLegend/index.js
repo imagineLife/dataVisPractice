@@ -129,7 +129,7 @@ function sizeChange() {
 let legendDiv = document.getElementById("legendContainer");
 const svgObj = d3.select(legendDiv).append("svg");
 
-const margin = {top: 20, right: 60, bottom: 10, left: 2};
+const margin = {top: 10, right: 60, bottom: 10, left: 2};
 // Extract the width and height that was computed by CSS.
 let resizedWidth = legendDiv.clientWidth;
 let resizedHeight = legendDiv.clientHeight;
@@ -161,7 +161,7 @@ var canvasObj = d3.select(selection)
   .style("top", (margin.top) + "px")
   .style("left", (margin.left) + "px")
   .node();
-  
+
 var canvasContext = canvasObj.getContext("2d");
 
 var legendscale = d3.scaleLinear()
