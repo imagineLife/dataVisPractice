@@ -202,6 +202,6 @@ svgObj
 svgObj
   .append("g")
   .attr("class", "axis")
-  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")")// + (margin.top) + ")")
+  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",2"+")")// + (margin.top) + ")")
   .call(legendaxis);
 };
