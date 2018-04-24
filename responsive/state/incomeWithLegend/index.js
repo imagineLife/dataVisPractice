@@ -150,11 +150,11 @@ const legendheight = 275,
 var canvasObj = d3.select(selection)
   .append("canvas")
   .attrs({
-    "height": resizedHeight - margin.top - margin.bottom,
+    "height": resizedHeight,// - margin.top - margin.bottom,
     "width": 1,
     "class": 'canvasClass'
   })
-  .style("height", (resizedHeight - margin.top - margin.bottom) + "px")
+  .style("height", (resizedHeight)+ "px")
   .style("width", (legendwidth - margin.left - margin.right) + "px")
   .style("border", "1px solid #000")
   .style("top", (margin.top) + "px")
@@ -197,11 +197,11 @@ svgObj
   })
   .style("position", "absolute")
   .style("left", "0px")
-  .style("top", "0px")
+  .style("bottom", "0px")
 
 svgObj
   .append("g")
   .attr("class", "axis")
-  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")")// + (margin.top) + ")")
   .call(legendaxis);
 };
