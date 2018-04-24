@@ -14,13 +14,10 @@ div{
   display: inline-block;
 }
 #stateImage {
-  width: 80%;
   min-height:225px;
 }
 #legendContainer {
-  width: 20%;
   min-height:240px;
-  position: absolute;
 }
 .tick text, .legendCells text{
   font-size: 16px;
@@ -42,6 +39,18 @@ i{
   font-style: italic;
 }
 
-.visuals{
-  margin: 50px auto;
+.visual{
+  display: inline-block;
+}
+
+.visual h2{
+  display: inline;
+}
+
+.stateWrapper{
+  width: 80%;
+}
+
+.legendWrapper{
+  width:20%;
 }
