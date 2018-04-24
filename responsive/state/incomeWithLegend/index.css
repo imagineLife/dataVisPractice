@@ -1,5 +1,6 @@
 *{
   box-sizing: border-box;
+  color: white;
 }
 div{
   border:1px solid black;
@@ -54,10 +55,10 @@ i{
 }
 
 .stateWrapper{
-  width: 80%;
+  width: 75%;
 }
 
 .legendWrapper{
-  position: absolute;
-  width:20%;
+  position: relative;
+  width:23%;
 }
