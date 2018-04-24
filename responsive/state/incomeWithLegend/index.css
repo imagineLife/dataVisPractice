@@ -11,7 +11,7 @@ div{
   position: relative;
 }
 #stateImage, #legendContainer{
-  display: inline-block;
+  display: block;
 }
 #stateImage {
   min-height:225px;
@@ -39,12 +39,12 @@ i{
   font-style: italic;
 }
 
-.visual{
+.group{
   display: inline-block;
 }
 
-.visual h2{
-  display: inline;
+.group h2{
+  text-align: center;
 }
 
 .stateWrapper{
@@ -52,5 +52,6 @@ i{
 }
 
 .legendWrapper{
+  position: absolute;
   width:20%;
 }
