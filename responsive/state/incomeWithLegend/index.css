@@ -2,6 +2,7 @@
   box-sizing: border-box;
   color: white;
 }
+
 div{
   border:1px solid black;
   border-radius: 10px;
@@ -28,6 +29,7 @@ div{
   font-size: 2.2em;
   font-weight: 800;
   text-align: center;
+  line-height: 1.3em;
 }
 
 small{
