@@ -228,6 +228,14 @@ function ready(error, data) {
 
     */
 
+   //xScale Assignment 
+  barXScale
+    .domain(["Max","Min"]);
+
+  barYScale
+    .domain([minIncome,maxIncome])
+    .nice(yTicks);
+
 
 
 }
