@@ -29,6 +29,11 @@ h2{
   margin: 10px auto;
 }
 
+.textSection h2{
+  display: inline-block;
+  border-bottom: 8px solid #2ecc71;
+}
+
 h3{
   display: inline-block;
   font-size:1.2em;
