@@ -90,20 +90,35 @@ const barXScale = d3.scaleBand()
 const yScale = d3.scaleLinear();
 const yTicks = 5;  
 
-// Extract the width and height that was computed by CSS.
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
 
 const widthLessMargins = resizedBarWidth - barVars.margin.left - barVars.margin.right;
 const heightLessMargins = resizedBarHeight - barVars.margin.top - barVars.margin.bottom;
 
-//set svg height & width
+//set barSVG height & width
 barSVG.attrs({
   "width" : resizedBarWidth,
   "height" : resizedBarHeight
 });
 
+//attach a g to the svg
+barGObj.attr('transform', `translate(${barVars.margin.left},${barVars.margin.top})`);
 
+//attach another g as xAxisG to the 'parent' g
+const xAxisG = barGObj.append('g')
+    .attrs({
+      'transform': `translate(0, ${heightLessMargins})`,
+      'class': 'xAxisClass'
+
+    });
+
+//attach another g as yAxisG to the 'parent' g
+const yAxisG = barGObj.append('g')
+  .style('class', 'yAxisClass');
+
+let xAxisLabel = xAxisG.append('text');
+let yAxisLabel = yAxisG.append('text');    
 
 function ready(error, data) {
     if (error) throw error;
