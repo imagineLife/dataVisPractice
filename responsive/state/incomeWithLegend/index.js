@@ -6,17 +6,17 @@ let lvl = {
     "four":20
 }
 
-var income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
+const income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 
 //categorical coloring option
-// var income_color = d3.scaleThreshold()
+// const income_color = d3.scaleThreshold()
 //     .domain(income_domain)
 //     .range(d3.schemeReds[5]);
 
-var income_color = d3.scaleSequential(d3.interpolateGreens)
+const income_color = d3.scaleSequential(d3.interpolateGreens)
     .domain([36100,251000])
 
-var incomeData = d3.map();
+const incomeData = d3.map();
 
 
 let colorRatio = {
@@ -73,16 +73,16 @@ function ready(error, data) {
     if (error) throw error;
 
     // connecticut topojson
-    var connecticut = topojson.feature(data, {
+    const connecticut = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.townLayer.geometries
     });
 
     // projection and path
-    var projection = d3.geoAlbersUsa()
+    const projection = d3.geoAlbersUsa()
         .fitExtent([[0,0], [750, 625]], connecticut);
 
-    var geoPath = d3.geoPath()
+    const geoPath = d3.geoPath()
         .projection(projection);
 
     // draw connecticut map and bind income data
@@ -98,7 +98,7 @@ function ready(error, data) {
         // })
         // .ease(d3.easeLinear)
         .attr("fill", function(d) { 
-            var townGeoID = incomeData.get(d.properties.GEOID10);
+            const townGeoID = incomeData.get(d.properties.GEOID10);
             return (
                 townGeoID != 0 ?
                 income_color(townGeoID) : 
@@ -125,16 +125,15 @@ function sizeChange() {
     d3.select('svg').attr('height',stateContainer.clientWidth*0.8);
 }
 
-// D3 select The elements & convert to vars
+// D3 select The elements & convert to consts
 let legendDiv = document.getElementById("legendContainer");
 const svgObj = d3.select(legendDiv).append("svg");
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
-// Extract the width and height that was computed by CSS.
 let resizedWidth = legendDiv.clientWidth;
 let resizedHeight = legendDiv.clientHeight;
 
-var greenColorScale = d3.scaleSequential(d3.interpolateGreens)
+const greenColorScale = d3.scaleSequential(d3.interpolateGreens)
 .domain([31375,251000]);
 
 continuous(legendDiv, greenColorScale);
@@ -147,7 +146,7 @@ function continuous(selector_id, colorscale) {
   const legendheight = 275,
       legendwidth = 80;
 
-  var canvasObj = d3.select(selection)
+  const canvasObj = d3.select(selection)
     .append("canvas")
     .attrs({
       "height": resizedHeight,// - margin.top - margin.bottom,
@@ -161,18 +160,18 @@ function continuous(selector_id, colorscale) {
     .style("left", (margin.left) + "px")
     .node();
 
-  var canvasContext = canvasObj.getContext("2d");
+  const canvasContext = canvasObj.getContext("2d");
 
-  var legendscale = d3.scaleLinear()
+  const legendscale = d3.scaleLinear()
     // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
     .range([resizedHeight - margin.top - margin.bottom, 1])
     .domain(colorScale.domain());
 
   // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-  var image = canvasContext.createImageData(1, resizedHeight);
+  const image = canvasContext.createImageData(1, resizedHeight);
 
   d3.range(resizedHeight).forEach(function(i) {
-    var c = d3.rgb(colorScale(legendscale.invert(i)));
+    const c = d3.rgb(colorScale(legendscale.invert(i)));
     image.data[4*i] = c.r;
     image.data[4*i + 1] = c.g;
     image.data[4*i + 2] = c.b;
@@ -182,7 +181,7 @@ function continuous(selector_id, colorscale) {
   canvasContext.putImageData(image, 0, 0);
 
 
-  var legendaxis = d3.axisRight()
+  const legendaxis = d3.axisRight()
     .scale(legendscale)
     .tickSize(2) //size of tick mark, not text
     .tickFormat((d) =>{
