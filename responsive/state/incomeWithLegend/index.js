@@ -74,6 +74,37 @@ const barSVG = d3.select(barDiv).append("svg");
 const barGObj = barSVG.append('g');
 const bars = barGObj.selectAll('rect');
 
+// Build Variables
+const barVars = {
+  xLabel : 'Note Name',
+  yLabel : 'Number Of Notes',
+  margin : { left: 125, right: 70, top: 40, bottom: 110 }
+};
+
+//Bar Chart X-Scale, horizontalScale
+const barXScale = d3.scaleBand()
+  .paddingInner(0.3)
+  .paddingOuter(0.2);
+
+//Bar Y-Scale, verticalScale
+const yScale = d3.scaleLinear();
+const yTicks = 5;  
+
+// Extract the width and height that was computed by CSS.
+let resizedBarWidth = barDiv.clientWidth;
+let resizedBarHeight = barDiv.clientHeight;
+
+const widthLessMargins = resizedBarWidth - barVars.margin.left - barVars.margin.right;
+const heightLessMargins = resizedBarHeight - barVars.margin.top - barVars.margin.bottom;
+
+//set svg height & width
+barSVG.attrs({
+  "width" : resizedBarWidth,
+  "height" : resizedBarHeight
+});
+
+
+
 function ready(error, data) {
     if (error) throw error;
 
