@@ -62,7 +62,7 @@ d3.queue()
 d3.select(window)
       .on("resize", sizeChange);
 
-const svg = d3.select("#stateImage")
+const stateSVG = d3.select("#stateImage")
   .append("svg")
   .attr("width", "100%")
   .attr("class", 'income')
@@ -86,7 +86,7 @@ function ready(error, data) {
         .projection(projection);
 
     // draw connecticut map and bind income data
-    svg.selectAll(".towns")
+    stateSVG.selectAll(".towns")
         .data(connecticut.features)
         .enter().append("path")
         .attr("class", "towns")        
@@ -113,6 +113,7 @@ function ready(error, data) {
             return d.properties.NAME10;
         });
 
+    //puts income vals into arr
     const incomeDataArr = [];
     for(const val in incomeData){
       let curVal = incomeData[val];
@@ -121,9 +122,19 @@ function ready(error, data) {
       }
     }
 
-    const dataMin = d3.min(incomeDataArr);
-    const dataMax = d3.max(incomeDataArr);
-    console.log('dataMin->',dataMin,' dataMax->',dataMax);
+    //gets min/max income vals into vars
+    const minIncome = d3.min(incomeDataArr);
+    const maxIncome = d3.max(incomeDataArr);
+
+
+    /*
+
+    Bar Chart Below here
+
+    */
+
+
+
 }
 
 function sizeChange() {
