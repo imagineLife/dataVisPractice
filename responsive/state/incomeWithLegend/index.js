@@ -141,70 +141,70 @@ continuous(legendDiv, greenColorScale);
 
 // create continuous color legend
 function continuous(selector_id, colorscale) {
-const selection = selector_id ? selector_id : legendDiv;
-const colorScale = colorscale ? colorscale :  greenColorScale;
+  const selection = selector_id ? selector_id : legendDiv;
+  const colorScale = colorscale ? colorscale :  greenColorScale;
 
-const legendheight = 275,
-    legendwidth = 80;
+  const legendheight = 275,
+      legendwidth = 80;
 
-var canvasObj = d3.select(selection)
-  .append("canvas")
-  .attrs({
-    "height": resizedHeight,// - margin.top - margin.bottom,
-    "width": 1,
-    "class": 'canvasClass'
-  })
-  .style("height", (resizedHeight - margin.top - margin.bottom)+ "px")
-  .style("width", (legendwidth - margin.left - margin.right) + "px")
-  .style("border", "1px solid #000")
-  .style("top", (margin.top) + "px")
-  .style("left", (margin.left) + "px")
-  .node();
+  var canvasObj = d3.select(selection)
+    .append("canvas")
+    .attrs({
+      "height": resizedHeight,// - margin.top - margin.bottom,
+      "width": 1,
+      "class": 'canvasClass'
+    })
+    .style("height", (resizedHeight - margin.top - margin.bottom)+ "px")
+    .style("width", (legendwidth - margin.left - margin.right) + "px")
+    .style("border", "1px solid #000")
+    .style("top", (margin.top) + "px")
+    .style("left", (margin.left) + "px")
+    .node();
 
-var canvasContext = canvasObj.getContext("2d");
+  var canvasContext = canvasObj.getContext("2d");
 
-var legendscale = d3.scaleLinear()
-  // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
-  .range([resizedHeight - margin.top - margin.bottom, 1])
-  .domain(colorScale.domain());
+  var legendscale = d3.scaleLinear()
+    // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+    .range([resizedHeight - margin.top - margin.bottom, 1])
+    .domain(colorScale.domain());
 
-// image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-var image = canvasContext.createImageData(1, resizedHeight);
+  // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+  var image = canvasContext.createImageData(1, resizedHeight);
 
-d3.range(resizedHeight).forEach(function(i) {
-  var c = d3.rgb(colorScale(legendscale.invert(i)));
-  image.data[4*i] = c.r;
-  image.data[4*i + 1] = c.g;
-  image.data[4*i + 2] = c.b;
-  image.data[4*i + 3] = 255;
-});
+  d3.range(resizedHeight).forEach(function(i) {
+    var c = d3.rgb(colorScale(legendscale.invert(i)));
+    image.data[4*i] = c.r;
+    image.data[4*i + 1] = c.g;
+    image.data[4*i + 2] = c.b;
+    image.data[4*i + 3] = 255;
+  });
 
-canvasContext.putImageData(image, 0, 0);
+  canvasContext.putImageData(image, 0, 0);
 
 
-var legendaxis = d3.axisRight()
-  .scale(legendscale)
-  .tickSize(2) //size of tick mark, not text
-  .tickFormat((d) =>{
-    let f = d3.format(".2s");
-    return (`${f(d)}$`)
-  })
-  .ticks(3);
+  var legendaxis = d3.axisRight()
+    .scale(legendscale)
+    .tickSize(2) //size of tick mark, not text
+    .tickFormat((d) =>{
+      let f = d3.format(".2s");
+      return (`${f(d)}$`)
+    })
+    .ticks(3);
 
-//SVG for the labeling
-svgObj
-  .attrs({
-    "height": (resizedHeight) + "px",
-    "width": (legendwidth) + "px",
-    "class":'svgClass'
-  })
-  .style("position", "absolute")
-  .style("left", "0px")
-  .style("bottom", "0px")
+  //SVG for the labeling
+  svgObj
+    .attrs({
+      "height": (resizedHeight) + "px",
+      "width": (legendwidth) + "px",
+      "class":'svgClass'
+    })
+    .style("position", "absolute")
+    .style("left", "0px")
+    .style("bottom", "0px")
 
-svgObj
-  .append("g")
-  .attr("class", "axis")
-  .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")")// + (margin.top) + ")")
-  .call(legendaxis);
+  svgObj
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")")// + (margin.top) + ")")
+    .call(legendaxis);
 };
