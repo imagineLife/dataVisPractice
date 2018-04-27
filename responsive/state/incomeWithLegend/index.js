@@ -76,9 +76,9 @@ const bars = barGObj.selectAll('rect');
 
 // Build Variables
 const barVars = {
-  xLabel : 'Note Name',
-  yLabel : 'Number Of Notes',
-  margin : { left: 125, right: 70, top: 40, bottom: 110 }
+  xLabel : 'Extent of Data',
+  yLabel : 'Average Household Income in $',
+  margin : { left: 50, right: 20, top: 20, bottom: 50 }
 };
 
 //Bar Chart X-Scale, horizontalScale
@@ -87,7 +87,7 @@ const barXScale = d3.scaleBand()
   .paddingOuter(0.2);
 
 //Bar Y-Scale, verticalScale
-const yScale = d3.scaleLinear();
+const barYScale = d3.scaleLinear();
 const yTicks = 5;  
 
 let resizedBarWidth = barDiv.clientWidth;
@@ -103,14 +103,16 @@ barSVG.attrs({
 });
 
 //attach a g to the svg
-barGObj.attr('transform', `translate(${barVars.margin.left},${barVars.margin.top})`);
+barGObj.attrs({
+  'transform':`translate(${barVars.margin.left},${barVars.margin.top})`,
+  'class': 'gWrapper'
+});
 
 //attach another g as xAxisG to the 'parent' g
 const xAxisG = barGObj.append('g')
     .attrs({
       'transform': `translate(0, ${heightLessMargins})`,
       'class': 'xAxisClass'
-
     });
 
 //attach another g as yAxisG to the 'parent' g
@@ -118,7 +120,49 @@ const yAxisG = barGObj.append('g')
   .style('class', 'yAxisClass');
 
 let xAxisLabel = xAxisG.append('text');
-let yAxisLabel = yAxisG.append('text');    
+let yAxisLabel = yAxisG.append('text');
+
+/* add to the xAxis & yAxis
+  text, class, & x/y placement
+
+  TRANSFORM the Axis Text
+*/
+xAxisLabel
+    .attrs({
+      'class' :'x axis-label',
+      'x' : widthLessMargins / 2,
+      'y' : resizedBarWidth * .1
+    })
+    .text(barVars.xLabel);
+
+
+  yAxisLabel.attrs({
+      'class' : 'y axis-label',
+      'x' : -heightLessMargins / 2,
+      'y' : -barVars.margin.left / 1.75,
+      'transform' : `rotate(-90)`
+    })
+    .style('text-anchor', 'middle')
+    .text(barVars.yLabel);
+
+
+// X-AXIS
+//via D3
+const d3xAxis = d3.axisBottom()
+  .scale(barXScale)
+  .tickPadding(15)
+  .tickSize(-heightLessMargins);
+
+
+
+// Y-AXIS
+//via D3
+const d3yAxis = d3.axisLeft()
+  .scale(barYScale)
+  .ticks(yTicks)
+  .tickPadding(15)
+  // .tickFormat(d3.format('.0s'))
+  .tickSize(-widthLessMargins); 
 
 function ready(error, data) {
     if (error) throw error;
