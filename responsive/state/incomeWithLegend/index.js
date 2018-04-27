@@ -113,6 +113,17 @@ function ready(error, data) {
             return d.properties.NAME10;
         });
 
+    const incomeDataArr = [];
+    for(const val in incomeData){
+      let curVal = incomeData[val];
+      if(Number.isInteger(curVal) && curVal > 0){
+        incomeDataArr.push(curVal);
+      }
+    }
+
+    const dataMin = d3.min(incomeDataArr);
+    const dataMax = d3.max(incomeDataArr);
+    console.log('dataMin->',dataMin,' dataMax->',dataMax);
 }
 
 function sizeChange() {
