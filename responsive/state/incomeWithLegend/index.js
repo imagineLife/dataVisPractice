@@ -68,6 +68,11 @@ const stateSVG = d3.select("#stateImage")
   .attr("class", 'income')
       .append("g");
 
+// D3 select The elements & convert to vars
+const barDiv = document.getElementById("rangeBar");
+const barSVG = d3.select(barDiv).append("svg");
+const barGObj = barSVG.append('g');
+const bars = barGObj.selectAll('rect');
 
 function ready(error, data) {
     if (error) throw error;
