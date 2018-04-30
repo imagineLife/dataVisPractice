@@ -27,47 +27,6 @@ let colorRatio = {
     "level5": 0
 }
 
-let incomeDataObj = {};
-
-// asynchronous tasks, load topojson maps and data
-d3.queue()
-    .defer(d3.json, "CTstate.json")
-    .defer(d3.csv, "data.csv", function(d) { 
-        if (isNaN(d.income)) {
-            incomeData.set(d.id, 0); 
-        } else {
-            incomeData.set(d.id, +d.income); 
-        }
-        switch(true){
-            case (d.income < (lvl.one - .1)):
-                colorRatio["level1"]++;
-                break;
-            case (d.income >= lvl.one && d.income< (lvl.two - .1)):
-                colorRatio["level2"]++;
-                break;
-            case (d.income >= lvl.two && d.income < (lvl.three - .1)):
-                colorRatio["level3"]++;
-                break;
-            case (d.income >= lvl.three && d.income < (lvl.four - .1)):
-                colorRatio["level4"]++;
-                break;
-            default:
-                colorRatio["level5"]++;
-                break;
-        };
-
-    })
-    .await(ready);
-
-
-d3.select(window)
-      .on("resize", sizeChange);
-
-const stateSVG = d3.select("#stateImage")
-  .append("svg")
-  .attr("width", "100%")
-  .attr("class", 'income')
-      .append("g");
 
 // D3 select The elements & convert to vars
 const barDiv = document.getElementById("rangeBar");
@@ -164,6 +123,47 @@ const d3yAxis = d3.axisLeft()
   .tickPadding(15)
   // .tickFormat(d3.format('.0s'))
   .tickSize(-widthLessMargins); 
+
+// asynchronous tasks, load topojson maps and data
+d3.queue()
+    .defer(d3.json, "CTstate.json")
+    .defer(d3.csv, "data.csv", function(d) { 
+      if (isNaN(d.income)) {
+          incomeData.set(d.id, 0); 
+      } else {
+          incomeData.set(d.id, +d.income); 
+      }
+      switch(true){
+          case (d.income < (lvl.one - .1)):
+              colorRatio["level1"]++;
+              break;
+          case (d.income >= lvl.one && d.income< (lvl.two - .1)):
+              colorRatio["level2"]++;
+              break;
+          case (d.income >= lvl.two && d.income < (lvl.three - .1)):
+              colorRatio["level3"]++;
+              break;
+          case (d.income >= lvl.three && d.income < (lvl.four - .1)):
+              colorRatio["level4"]++;
+              break;
+          default:
+              colorRatio["level5"]++;
+              break;
+      };
+      console.log('d ->',d);
+      return d;
+    })
+    .await(ready);
+
+
+d3.select(window)
+      .on("resize", sizeChange);
+
+const stateSVG = d3.select("#stateImage")
+  .append("svg")
+  .attr("width", "100%")
+  .attr("class", 'income')
+      .append("g");
 
 function ready(error, data) {
     if (error) throw error;
