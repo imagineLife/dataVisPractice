@@ -27,16 +27,21 @@ let colorRatio = {
     "level5": 0
 }
 
+/*
+
+  Bar Chart
+
+*/
 
 // D3 select The elements & convert to vars
-const barDiv = document.getElementById("rangeBar");
+let barDiv = document.getElementById("rangeBar");
 const barSVG = d3.select(barDiv).append("svg");
 const barGObj = barSVG.append('g');
 const bars = barGObj.selectAll('rect');
 
 // Build Variables
 const barVars = {
-  xLabel : 'Extent of Data',
+  xLabel : 'Min. & Max. Town Incomes',
   yLabel : 'Average Household Income in $',
   margin : { left: 50, right: 20, top: 20, bottom: 50 }
 };
@@ -46,7 +51,7 @@ const barXScale = d3.scaleBand()
   .paddingInner(0.3)
   .paddingOuter(0.2);
 
-//Bar Y-Scale, verticalScale
+// //Bar Y-Scale, verticalScale
 const barYScale = d3.scaleLinear();
 const yTicks = 5;  
 
@@ -55,105 +60,85 @@ let resizedBarHeight = barDiv.clientHeight;
 
 const widthLessMargins = resizedBarWidth - barVars.margin.left - barVars.margin.right;
 const heightLessMargins = resizedBarHeight - barVars.margin.top - barVars.margin.bottom;
-
+// console.log('widthLessMargins ->',widthLessMargins)
 //set barSVG height & width
 barSVG.attrs({
   "width" : resizedBarWidth,
   "height" : resizedBarHeight
 });
 
-//attach a g to the svg
+// //attach a g to the svg
 barGObj.attrs({
   'transform':`translate(${barVars.margin.left},${barVars.margin.top})`,
   'class': 'gWrapper'
 });
 
-//attach another g as xAxisG to the 'parent' g
+// //attach another g as xAxisG to the 'parent' g
 const xAxisG = barGObj.append('g')
     .attrs({
       'transform': `translate(0, ${heightLessMargins})`,
       'class': 'xAxisClass'
     });
 
-//attach another g as yAxisG to the 'parent' g
-const yAxisG = barGObj.append('g')
-  .style('class', 'yAxisClass');
+// //attach another g as yAxisG to the 'parent' g
+// const yAxisG = barGObj.append('g')
+//   .style('class', 'yAxisClass');
 
-let xAxisLabel = xAxisG.append('text');
-let yAxisLabel = yAxisG.append('text');
+// let xAxisLabel = xAxisG.append('text');
+// let yAxisLabel = yAxisG.append('text');
 
-/* add to the xAxis & yAxis
-  text, class, & x/y placement
-
-  TRANSFORM the Axis Text
-*/
-xAxisLabel
-    .attrs({
-      'class' :'x axis-label',
-      'x' : widthLessMargins / 2,
-      'y' : resizedBarWidth * .1
-    })
-    .text(barVars.xLabel);
+// /* transform the Axis Text */
+// xAxisLabel
+//     .attrs({
+//       'class' :'x axis-label',
+//       'x' : widthLessMargins / 2,
+//       'y' : resizedBarWidth * .1
+//     })
+//     .text(barVars.xLabel);   
 
 
-  yAxisLabel.attrs({
-      'class' : 'y axis-label',
-      'x' : -heightLessMargins / 2,
-      'y' : -barVars.margin.left / 1.75,
-      'transform' : `rotate(-90)`
-    })
-    .style('text-anchor', 'middle')
-    .text(barVars.yLabel);
+// yAxisLabel.attrs({
+//     'class' : 'y axis-label',
+//     'x' : -heightLessMargins / 2,
+//     'y' : -barVars.margin.left / 1.75,
+//     'transform' : `rotate(-90)`
+//   })
+//   .style('text-anchor', 'middle')
+//   .text(barVars.yLabel);
 
 
-// X-AXIS
-//via D3
-const d3xAxis = d3.axisBottom()
-  .scale(barXScale)
-  .tickPadding(15)
-  .tickSize(-heightLessMargins);
-
-
-
-// Y-AXIS
-//via D3
-const d3yAxis = d3.axisLeft()
-  .scale(barYScale)
-  .ticks(yTicks)
-  .tickPadding(15)
-  // .tickFormat(d3.format('.0s'))
-  .tickSize(-widthLessMargins); 
 
 // asynchronous tasks, load topojson maps and data
 d3.queue()
-    .defer(d3.json, "CTstate.json")
-    .defer(d3.csv, "data.csv", function(d) { 
-      if (isNaN(d.income)) {
-          incomeData.set(d.id, 0); 
-      } else {
-          incomeData.set(d.id, +d.income); 
-      }
-      switch(true){
-          case (d.income < (lvl.one - .1)):
-              colorRatio["level1"]++;
-              break;
-          case (d.income >= lvl.one && d.income< (lvl.two - .1)):
-              colorRatio["level2"]++;
-              break;
-          case (d.income >= lvl.two && d.income < (lvl.three - .1)):
-              colorRatio["level3"]++;
-              break;
-          case (d.income >= lvl.three && d.income < (lvl.four - .1)):
-              colorRatio["level4"]++;
-              break;
-          default:
-              colorRatio["level5"]++;
-              break;
-      };
-      console.log('d ->',d);
-      return d;
-    })
-    .await(ready);
+  .defer(d3.json, "CTstate.json")
+  .defer(d3.csv, "data.csv", function(d) { 
+    if (isNaN(d.income)) {
+        incomeData.set(d.id, 0); 
+    } else {
+        incomeData.set(d.id, +d.income)
+    }
+    switch(true){
+        case (d.income < (lvl.one - .1)):
+            colorRatio["level1"]++;
+            break;
+        case (d.income >= lvl.one && d.income< (lvl.two - .1)):
+            colorRatio["level2"]++;
+            break;
+        case (d.income >= lvl.two && d.income < (lvl.three - .1)):
+            colorRatio["level3"]++;
+            break;
+        case (d.income >= lvl.three && d.income < (lvl.four - .1)):
+            colorRatio["level4"]++;
+            break;
+        default:
+            colorRatio["level5"]++;
+            break;
+    };
+
+    return d;
+
+  })
+  .await(ready);
 
 
 d3.select(window)
@@ -167,6 +152,49 @@ const stateSVG = d3.select("#stateImage")
 
 function ready(error, data) {
     if (error) throw error;
+
+
+    //puts income vals into arr
+    const incomeDataArr = [];
+    for(const val in incomeData){
+      let curVal = incomeData[val];
+      if(Number.isInteger(curVal) && curVal > 0){
+        incomeDataArr.push(curVal);
+      }
+    }
+      let incomeExtent = (d3.extent(incomeDataArr))
+
+    /*
+
+    BarChart
+
+    
+    */
+    
+    // X-AXIS
+    //via D3
+    const d3xAxis = d3.axisBottom()
+      .scale(barXScale)
+      .tickPadding(15)
+      .tickSize(-heightLessMargins);
+
+    barXScale
+      .domain(['Min', 'Max'])
+      .range([0,widthLessMargins]);
+
+      xAxisG.call(d3xAxis)
+        .selectAll('.tick line').remove(); 
+
+    // Y-AXIS
+    //via D3
+    const d3yAxis = d3.axisLeft()
+      .scale(barYScale)
+      .ticks(yTicks)
+      .tickPadding(15)
+      // .tickFormat(d3.format('.0s'))
+      .tickSize(-widthLessMargins); 
+
+    barYScale.domain([0, incomeExtent[1]]);
 
     // connecticut topojson
     const connecticut = topojson.feature(data, {
@@ -185,21 +213,17 @@ function ready(error, data) {
     stateSVG.selectAll(".towns")
         .data(connecticut.features)
         .enter().append("path")
-        .attr("class", "towns")        
-        .attr("d", geoPath)
-        // .attr("fill", "white")
-        // .transition().duration(100)
-        // .delay(function(d, i) {
-        //     return i * 2; 
-        // })
-        // .ease(d3.easeLinear)
-        .attr("fill", function(d) { 
+        .attrs({
+          "class": "towns",        
+          "d": geoPath,
+          "fill": (d) => { 
             const townGeoID = incomeData.get(d.properties.GEOID10);
             return (
                 townGeoID != 0 ?
                 income_color(townGeoID) : 
-                "none");  
-
+                "none"
+                )
+          }
         });
     
     // title
@@ -208,37 +232,6 @@ function ready(error, data) {
         .text(function(d) {
             return d.properties.NAME10;
         });
-
-    //puts income vals into arr
-    const incomeDataArr = [];
-    for(const val in incomeData){
-      let curVal = incomeData[val];
-      if(Number.isInteger(curVal) && curVal > 0){
-        incomeDataArr.push(curVal);
-      }
-    }
-
-    //gets min/max income vals into vars
-    const minIncome = d3.min(incomeDataArr);
-    const maxIncome = d3.max(incomeDataArr);
-
-
-    /*
-
-    Bar Chart Below here
-
-    */
-
-   //xScale Assignment 
-  barXScale
-    .domain(["Max","Min"]);
-
-  barYScale
-    .domain([minIncome,maxIncome])
-    .nice(yTicks);
-
-
-
 }
 
 function sizeChange() {
