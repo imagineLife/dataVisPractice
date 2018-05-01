@@ -8,6 +8,7 @@ let lvl = {
 
 const income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 
+let fancyData = [];
 //categorical coloring option
 // const income_color = d3.scaleThreshold()
 //     .domain(income_domain)
@@ -134,7 +135,11 @@ d3.queue()
             colorRatio["level5"]++;
             break;
     };
-
+    let thisObj = {
+      'town' :d.town,
+      'income':+d.income
+    }
+    fancyData.push(thisObj);
     return d;
 
   })
@@ -152,7 +157,7 @@ const stateSVG = d3.select("#stateImage")
 
 function ready(error, data) {
     if (error) throw error;
-
+    console.log('fancyData ->',fancyData);
 
     //puts income vals into arr
     const incomeDataArr = [];
