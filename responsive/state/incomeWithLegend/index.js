@@ -135,11 +135,14 @@ d3.queue()
             colorRatio["level5"]++;
             break;
     };
-    let thisObj = {
+    if(d.town == 'Hartford' || d.town == 'Weston'){
+      let thisObj = {
       'town' :d.town,
       'income':+d.income
+      }
+
+      fancyData.push(thisObj);
     }
-    fancyData.push(thisObj);
     return d;
 
   })
@@ -193,7 +196,7 @@ function ready(error, data) {
       .tickSize(-widthLessMargins);
 
     barXScale
-      .domain(['Min', 'Max'])
+      .domain(fancyData.map(d => d.town))
       .range([0,widthLessMargins]);
 
     barYScale
@@ -203,7 +206,31 @@ function ready(error, data) {
       xAxisG.call(d3xAxis)
         .selectAll('.tick line').remove(); 
 
-      yAxisG.call(d3yAxis) 
+      yAxisG.call(d3yAxis);
+
+  /*
+    BARS
+    Put the DATA from D3
+    into rectangles
+  */
+    bars.data(fancyData)
+      .enter().append('rect')
+        .attrs({
+          'x' : d => barXScale(d.town),
+          'y' : d => barYScale(d.income),
+          'width' : d => barXScale.bandwidth(),
+          'height' : d => heightLessMargins - barYScale(d.income),
+          'fill' : d => greenColorScale(d.income),
+          'class':'barClass'
+        });
+        // .on("mousemove", function(d){
+        // tooltipDiv
+        //   .style("left", d3.event.pageX - 75 + "px")
+        //   .style("top", d3.event.pageY - 120 + "px")
+        //   .style("display", "inline-block")
+        //   .html((d.note) + "<br>occurs "+ (d.count)+" times");
+        // })
+        // .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
 
 
     // connecticut topojson
