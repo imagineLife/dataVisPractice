@@ -43,7 +43,7 @@ const bars = barGObj.selectAll('rect');
 const barVars = {
   xLabel : 'Min. & Max. Town Incomes',
   yLabel : 'Average Household Income in $',
-  margin : { left: 50, right: 20, top: 20, bottom: 50 }
+  margin : { left: 75, right: 20, top: 20, bottom: 50 }
 };
 
 //Bar Chart X-Scale, horizontalScale
@@ -81,8 +81,8 @@ const xAxisG = barGObj.append('g')
     });
 
 // //attach another g as yAxisG to the 'parent' g
-// const yAxisG = barGObj.append('g')
-//   .style('class', 'yAxisClass');
+const yAxisG = barGObj.append('g')
+  .style('class', 'yAxisClass');
 
 // let xAxisLabel = xAxisG.append('text');
 // let yAxisLabel = yAxisG.append('text');
@@ -178,23 +178,28 @@ function ready(error, data) {
       .tickPadding(15)
       .tickSize(-heightLessMargins);
 
-    barXScale
-      .domain(['Min', 'Max'])
-      .range([0,widthLessMargins]);
-
-      xAxisG.call(d3xAxis)
-        .selectAll('.tick line').remove(); 
-
-    // Y-AXIS
+        // Y-AXIS
     //via D3
     const d3yAxis = d3.axisLeft()
       .scale(barYScale)
       .ticks(yTicks)
       .tickPadding(15)
       // .tickFormat(d3.format('.0s'))
-      .tickSize(-widthLessMargins); 
+      .tickSize(-widthLessMargins);
 
-    barYScale.domain([0, incomeExtent[1]]);
+    barXScale
+      .domain(['Min', 'Max'])
+      .range([0,widthLessMargins]);
+
+    barYScale
+      .domain([0, incomeExtent[1]])
+      .range([heightLessMargins, barVars.margin.top]);
+
+      xAxisG.call(d3xAxis)
+        .selectAll('.tick line').remove(); 
+
+      yAxisG.call(d3yAxis) 
+
 
     // connecticut topojson
     const connecticut = topojson.feature(data, {
