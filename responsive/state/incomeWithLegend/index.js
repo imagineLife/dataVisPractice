@@ -61,11 +61,12 @@ let resizedBarHeight = barDiv.clientHeight;
 
 const widthLessMargins = resizedBarWidth - barVars.margin.left - barVars.margin.right;
 const heightLessMargins = resizedBarHeight - barVars.margin.top - barVars.margin.bottom;
-// console.log('widthLessMargins ->',widthLessMargins)
+
 //set barSVG height & width
 barSVG.attrs({
   "width" : resizedBarWidth,
-  "height" : resizedBarHeight
+  "height" : resizedBarHeight,
+  "class" : 'barWrapper'
 });
 
 // //attach a g to the svg
@@ -150,7 +151,7 @@ d3.queue()
 
 
 d3.select(window)
-      .on("resize", sizeChange);
+      .on("resize", resizeCharts);
 
 const stateSVG = d3.select("#stateImage")
   .append("svg")
@@ -160,7 +161,6 @@ const stateSVG = d3.select("#stateImage")
 
 function ready(error, data) {
     if (error) throw error;
-    console.log('fancyData ->',fancyData);
 
     //puts income vals into arr
     const incomeDataArr = [];
@@ -176,7 +176,6 @@ function ready(error, data) {
 
     BarChart
 
-    
     */
     
     // X-AXIS
@@ -223,15 +222,12 @@ function ready(error, data) {
           'fill' : d => greenColorScale(d.income),
           'class':'barClass'
         });
-        // .on("mousemove", function(d){
-        // tooltipDiv
-        //   .style("left", d3.event.pageX - 75 + "px")
-        //   .style("top", d3.event.pageY - 120 + "px")
-        //   .style("display", "inline-block")
-        //   .html((d.note) + "<br>occurs "+ (d.count)+" times");
-        // })
-        // .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
 
+    /*
+
+    StateChart
+
+    */        
 
     // connecticut topojson
     const connecticut = topojson.feature(data, {
@@ -271,17 +267,19 @@ function ready(error, data) {
         });
 }
 
-function sizeChange() {
+function resizeCharts() {
     const stateContainer = document.getElementById('stateImage');
     
     d3
       .select("g")
-      .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
+      .attrs({
+        "transform": "scale(" + stateContainer.clientWidth/800 + ")",
+        "class":'stateGWrapper'
+      });
    
     d3.select('svg').attr('height',stateContainer.clientWidth*0.8);
 }
 
-// D3 select The elements & convert to consts
 let legendDiv = document.getElementById("legendContainer");
 const svgObj = d3.select(legendDiv).append("svg");
 
