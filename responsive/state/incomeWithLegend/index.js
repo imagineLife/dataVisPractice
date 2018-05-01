@@ -157,8 +157,9 @@ const stateSVG = d3.select("#stateImage")
   .append("svg")
   .attrs({
     "width": "100%",
-    "class": 'income'})
-  .append("g");
+    "class": 'income'});
+
+  const stateG = stateSVG.append("g").attr('class','stateG');
 
 function ready(error, data) {
     if (error) throw error;
@@ -244,7 +245,7 @@ function ready(error, data) {
         .projection(projection);
 
     // draw connecticut map and bind income data
-    stateSVG.selectAll(".towns")
+    stateG.selectAll(".towns")
         .data(connecticut.features)
         .enter().append("path")
         .attrs({
@@ -353,9 +354,11 @@ function continuous(selector_id, colorscale) {
     .style("left", "0px")
     .style("bottom", "0px")
 
-  svgObj
+  let svgAxis = svgObj
     .append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")")// + (margin.top) + ")")
+    .attrs({
+      "class": "axis",
+      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")"
+    })// + (margin.top) + ")")
     .call(legendaxis);
 };
