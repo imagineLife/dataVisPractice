@@ -155,9 +155,10 @@ d3.select(window)
 
 const stateSVG = d3.select("#stateImage")
   .append("svg")
-  .attr("width", "100%")
-  .attr("class", 'income')
-      .append("g");
+  .attrs({
+    "width": "100%",
+    "class": 'income'})
+  .append("g");
 
 function ready(error, data) {
     if (error) throw error;
@@ -272,12 +273,9 @@ function resizeCharts() {
     
     d3
       .select("g")
-      .attrs({
-        "transform": "scale(" + stateContainer.clientWidth/800 + ")",
-        "class":'stateGWrapper'
-      });
+      .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
-    d3.select('svg').attr('height',stateContainer.clientWidth*0.8);
+    d3.select('.income').attr('height',stateContainer.clientWidth*0.8);
 }
 
 let legendDiv = document.getElementById("legendContainer");
