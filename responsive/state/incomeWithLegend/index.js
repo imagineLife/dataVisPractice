@@ -174,6 +174,10 @@ const d3yAxis = d3.axisLeft()
   .scale(barYScale)
   .ticks(yTicks)
   .tickPadding(15)
+  .tickFormat((d) =>{
+    let f = d3.format(".2s");
+    return (`${f(d)}$`)
+  })
   .tickSize(-widthLessMargins);
 
 function ready(error, data) {
