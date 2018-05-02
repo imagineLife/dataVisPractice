@@ -283,7 +283,6 @@ function resizeCharts() {
     barSVG.attr("width", resizeFnWidth);
 
     barXScale.range([0,rlm]);
-    console.log('barscale ->',barXScale.range());
 
     //Update the X-AXIS
     xAxisG
@@ -299,6 +298,13 @@ function resizeCharts() {
 
     d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
+    //Update Bars
+    d3.selectAll('.barClass').attrs({
+      'x' : d => barXScale(d.town),
+      'y' : d => barYScale(d.income),
+      'width' : d => barXScale.bandwidth()
+    });
+
     d3.select("g")
       .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
