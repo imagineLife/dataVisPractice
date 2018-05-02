@@ -44,7 +44,7 @@ const bars = barGObj.selectAll('rect');
 const barVars = {
   xLabel : 'Min. & Max. Town Incomes',
   yLabel : 'Average Household Income in $',
-  margin : { left: 75, right: 20, top: 20, bottom: 50 }
+  margin : { left: 60, right: 20, top: 20, bottom: 50 }
 };
 
 //Bar Chart X-Scale, horizontalScale
