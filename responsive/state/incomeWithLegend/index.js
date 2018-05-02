@@ -270,13 +270,24 @@ function ready(error, data) {
 }
 
 function resizeCharts() {
+
+    let resizeFnWidth = barDiv.clientWidth;
+    let resizeFnHeight = barDiv.clientHeight;
+    
     const stateContainer = document.getElementById('stateImage');
     
+    barSVG.attr("width", resizeFnWidth);
+
     d3
       .select("g")
       .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
     d3.select('.income').attr('height',stateContainer.clientWidth*0.8);
+
+    let resizebarDiv = barDiv.clientWidth;
+    let rlm = resizebarDiv - barVars.margin.left - barVars.margin.right;
+    // console.log('rlm ->',rlm);
+    barXScale.range([0,rlm]);
 }
 
 let legendDiv = document.getElementById("legendContainer");
