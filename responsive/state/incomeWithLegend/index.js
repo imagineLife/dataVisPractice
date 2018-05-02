@@ -161,6 +161,22 @@ const stateSVG = d3.select("#stateImage")
 
   const stateG = stateSVG.append("g").attr('class','stateG');
 
+// X-AXIS
+//via D3
+const d3xAxis = d3.axisBottom()
+  .scale(barXScale)
+  .tickPadding(15)
+  .tickSize(-heightLessMargins);
+
+    // Y-AXIS
+//via D3
+const d3yAxis = d3.axisLeft()
+  .scale(barYScale)
+  .ticks(yTicks)
+  .tickPadding(15)
+  // .tickFormat(d3.format('.0s'))
+  .tickSize(-widthLessMargins);
+      
 function ready(error, data) {
     if (error) throw error;
 
@@ -179,22 +195,6 @@ function ready(error, data) {
     BarChart
 
     */
-    
-    // X-AXIS
-    //via D3
-    const d3xAxis = d3.axisBottom()
-      .scale(barXScale)
-      .tickPadding(15)
-      .tickSize(-heightLessMargins);
-
-        // Y-AXIS
-    //via D3
-    const d3yAxis = d3.axisLeft()
-      .scale(barYScale)
-      .ticks(yTicks)
-      .tickPadding(15)
-      // .tickFormat(d3.format('.0s'))
-      .tickSize(-widthLessMargins);
 
     barXScale
       .domain(fancyData.map(d => d.town))
@@ -274,20 +274,33 @@ function resizeCharts() {
     let resizeFnWidth = barDiv.clientWidth;
     let resizeFnHeight = barDiv.clientHeight;
     
+    let resizedWidthLessMargins = resizeFnWidth - barVars.margin.left - barVars.margin.right;
+    let resizedHeightLessMargins = resizeFnHeight - barVars.margin.top - barVars.margin.bottom;
+
     const stateContainer = document.getElementById('stateImage');
     
+     let resizebarDiv = barDiv.clientWidth;
+    let rlm = resizebarDiv - barVars.margin.left - barVars.margin.right;
     barSVG.attr("width", resizeFnWidth);
 
-    d3
-      .select("g")
+    barXScale.range([0,rlm]);
+    console.log('barscale ->',barXScale.range());
+
+    //Update the X-AXIS
+    xAxisG
+      .attrs({
+          // 'transform': `translate(0, ${resizedHeightLessMargins})`,
+          'x' : widthLessMargins / 2,
+          // 'y' : resizedHeight * .1,
+      })
+      .call(d3xAxis);
+  
+    d3.select("g")
       .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
-    d3.select('.income').attr('height',stateContainer.clientWidth*0.8);
+    d3.select('.income')
+      .attr('height',stateContainer.clientWidth*0.8);
 
-    let resizebarDiv = barDiv.clientWidth;
-    let rlm = resizebarDiv - barVars.margin.left - barVars.margin.right;
-    // console.log('rlm ->',rlm);
-    barXScale.range([0,rlm]);
 }
 
 let legendDiv = document.getElementById("legendContainer");
