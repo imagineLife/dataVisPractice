@@ -168,15 +168,14 @@ const d3xAxis = d3.axisBottom()
   .tickPadding(15)
   .tickSize(-heightLessMargins);
 
-    // Y-AXIS
+// Y-AXIS
 //via D3
 const d3yAxis = d3.axisLeft()
   .scale(barYScale)
   .ticks(yTicks)
   .tickPadding(15)
-  // .tickFormat(d3.format('.0s'))
   .tickSize(-widthLessMargins);
-      
+
 function ready(error, data) {
     if (error) throw error;
 
@@ -294,6 +293,11 @@ function resizeCharts() {
           // 'y' : resizedHeight * .1,
       })
       .call(d3xAxis);
+
+    d3.selectAll('.tick line')
+      .attr('x2', resizedWidthLessMargins);
+
+    d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
     d3.select("g")
       .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
