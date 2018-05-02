@@ -29,6 +29,15 @@ h2{
   margin: 10px auto;
 }
 
+line{
+  stroke: #C0C0BB;
+  fill:#C0C0BB;
+}
+
+.textSection{
+  padding: 0 15px;
+}
+
 .textSection h2{
   display: inline-block;
   border-bottom: 8px solid #2ecc71;
