@@ -29,9 +29,10 @@ h2{
   margin: 10px auto;
 }
 
-line{
-  stroke: #C0C0BB;
-  fill:#C0C0BB;
+.legendSVG line{
+  /*stroke: #C0C0BB;*/
+  /*fill:#C0C0BB;*/
+  stroke:none;
 }
 
 .textSection{
