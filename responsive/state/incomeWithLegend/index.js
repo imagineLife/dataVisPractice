@@ -374,7 +374,7 @@ function continuous(selector_id, colorscale) {
 
   const legendaxis = d3.axisRight()
     .scale(legendscale)
-    .tickSize(2) //size of tick mark, not text
+    .tickSize(1) //size of tick mark, not text
     .tickFormat((d) =>{
       let f = d3.format(".2s");
       return (`${f(d)}$`)
@@ -386,7 +386,7 @@ function continuous(selector_id, colorscale) {
     .attrs({
       "height": (resizedHeight) + "px",
       "width": (legendwidth) + "px",
-      "class":'svgClass'
+      "class":'legendSVG'
     })
     .style("position", "absolute")
     .style("left", "0px")
