@@ -233,8 +233,7 @@ function ready(error, data) {
       .enter()
       .append("text")
       .text(function (d) {
-        console.log('text d ->',d)
-        return d.income; 
+        return (d.income == "250001") ? `$250K+` :`$${d.income}`; 
       })
       .attrs({
         "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * 1.2) },
