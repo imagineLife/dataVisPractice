@@ -199,6 +199,7 @@ function ready(error, data) {
 
     */
 
+    //Scales & Axis
     barXScale
       .domain(fancyData.map(d => d.town))
       .range([0,widthLessMargins]);
@@ -212,11 +213,7 @@ function ready(error, data) {
 
       yAxisG.call(d3yAxis);
 
-  /*
-    BARS
-    Put the DATA from D3
-    into rectangles
-  */
+    //BARS
     bars.data(fancyData)
       .enter().append('rect')
         .attrs({
@@ -290,11 +287,7 @@ function resizeCharts() {
 
     //Update the X-AXIS
     xAxisG
-      .attrs({
-          // 'transform': `translate(0, ${resizedHeightLessMargins})`,
-          'x' : widthLessMargins / 2,
-          // 'y' : resizedHeight * .1,
-      })
+      .attr('x', (widthLessMargins / 2))
       .call(d3xAxis);
 
     d3.selectAll('.tick line')
