@@ -211,7 +211,9 @@ function ready(error, data) {
       xAxisG.call(d3xAxis)
         .selectAll('.tick line').remove(); 
 
-      yAxisG.call(d3yAxis);
+      yAxisG.call(d3yAxis)
+        .selectAll('.tick line')
+        .attr('stroke-dasharray','1, 5');
 
     //BARS
     bars.data(fancyData)
