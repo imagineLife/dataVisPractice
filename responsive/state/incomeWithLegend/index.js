@@ -236,7 +236,6 @@ function ready(error, data) {
         return (d.income == "250001") ? `$250K+` :`$${d.income}`; 
       })
       .attrs({
-        // "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * 1.2) },
         "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * .7)},
         "y": function (d) { return barYScale(d.income); },
         "dy": ".75em",
@@ -327,6 +326,11 @@ function resizeCharts() {
     d3.select('.income')
       .attr('height',stateContainer.clientWidth*0.8);
 
+    d3.selectAll(".barText")
+      .attrs({
+        "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * .7)},
+        "y": function (d) { return barYScale(d.income); }
+      })
 }
 
 let legendDiv = document.getElementById("legendContainer");
