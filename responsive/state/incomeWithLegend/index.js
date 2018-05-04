@@ -227,6 +227,24 @@ function ready(error, data) {
           'class':'barClass'
         });
 
+    //bar label
+    barSVG.selectAll(".text")
+      .data(fancyData)
+      .enter()
+      .append("text")
+      .text(function (d) {
+        console.log('text d ->',d)
+        return d.income; 
+      })
+      .attrs({
+        "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * 1.2) },
+        "y": function (d) { return barYScale(d.income); },
+        "dy": ".75em",
+        "text-anchor":"middle",
+        "class":"barText"
+      })
+      .style("fill", "white");
+
     /*
 
     StateChart
