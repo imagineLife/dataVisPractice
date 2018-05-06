@@ -245,9 +245,9 @@ function ready(error, data) {
             :`$${f(d.income)}`; 
       })
       .attrs({
-        "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * .7)},
-        "y": function (d) { return barYScale(d.income); },
-        "dy": ".75em",
+        "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
+        "y": function (d) { return barYScale(d.income)},
+        // "text-anchor": "middle",
         "class":"barText"
       })
       .style("fill", "white");
@@ -337,8 +337,8 @@ function resizeCharts() {
 
     d3.selectAll(".barText")
       .attrs({
-        "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * .7)},
-        "y": function (d) { return barYScale(d.income); }
+        "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
+        "y": d => ( barYScale(d.income) )
       })
 }
 
