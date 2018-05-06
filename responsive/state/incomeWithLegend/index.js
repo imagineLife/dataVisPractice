@@ -44,7 +44,7 @@ const bars = barGObj.selectAll('rect');
 const barVars = {
   xLabel : 'Min. & Max. Town Incomes',
   yLabel : 'Average Household Income in $',
-  margin : { left: 60, right: 20, top: 20, bottom: 50 }
+  margin : { left: 60, right: 20, top: 20, bottom: 100 }
 };
 
 //Bar Chart X-Scale, horizontalScale
@@ -215,7 +215,16 @@ function ready(error, data) {
       .range([heightLessMargins, barVars.margin.top]);
 
       xAxisG.call(d3xAxis)
-        .selectAll('.tick line').remove(); 
+        .selectAll('.tick line').remove();
+      xAxisG.selectAll('.tick text')
+        .attrs({
+          'transform': 'rotate(-45)',
+          'text-anchor': 'end',
+          'alignment-baseline':'middle',
+          'x': -5,
+          'y': 15,
+          'dy':0
+        }) 
 
       yAxisG.call(d3yAxis)
         .selectAll('.tick line')
