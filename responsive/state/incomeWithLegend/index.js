@@ -136,7 +136,12 @@ d3.queue()
             colorRatio["level5"]++;
             break;
     };
-    if(d.town == 'Hartford' || d.town == 'Weston'){
+    if(d.town == 'Hartford' 
+      || d.town == 'New London'
+       || d.town == 'Windham'
+        || d.town == 'Weston'
+        || d.town == 'Darien'
+        || d.town == 'New Canaan'){
       let thisObj = {
       'town' :d.town,
       'income':+d.income
@@ -183,6 +188,7 @@ const d3yAxis = d3.axisLeft()
 function ready(error, data) {
     if (error) throw error;
 
+    fancyData.sort((a,b) => b.income - a.income);
     //puts income vals into arr
     const incomeDataArr = [];
     for(const val in incomeData){
