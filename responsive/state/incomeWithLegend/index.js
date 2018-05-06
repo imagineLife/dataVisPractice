@@ -239,7 +239,10 @@ function ready(error, data) {
       .enter()
       .append("text")
       .text(function (d) {
-        return (d.income == "250001") ? `$250K+` :`$${d.income}`; 
+        let f = d3.format(".2s");
+        return (d.income == "250001") 
+            ? `$250K+` 
+            :`$${f(d.income)}`; 
       })
       .attrs({
         "x": function (d) { return barXScale(d.town) + (barXScale.bandwidth() * .7)},
