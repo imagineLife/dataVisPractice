@@ -72,6 +72,11 @@ p{
   position: relative;
 }
 
+.barText{
+  text-anchor: start;
+  visibility: hidden;
+}
+
 .visualHeader{
   padding: 50px 0;
 }
@@ -113,4 +118,10 @@ p{
 
 #rangeBar{
   min-height: 425px;
+}
+
+@media only screen and (min-width: 435px) {
+  .barText{
+    visibility: unset;
+  }
 }
