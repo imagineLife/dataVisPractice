@@ -251,7 +251,7 @@ function ready(error, data) {
         let f = d3.format(".2s");
         return (d.income == "250001") 
             ? `$250K+` 
-            :`$${f(d.income)}`; 
+            :`≈ $${f(d.income)}`; 
       })
       .attrs({
         "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
