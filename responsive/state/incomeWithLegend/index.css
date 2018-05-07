@@ -116,6 +116,11 @@ p{
   vertical-align: top;
 }
 
+.incomeRange{
+  display: inline;
+  font-size: 1.7em;
+}
+
 #rangeBar{
   min-height: 450px;
 }
