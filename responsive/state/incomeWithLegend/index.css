@@ -41,13 +41,13 @@ h2{
 
 .textSection h2{
   display: inline-block;
-  border-bottom: 8px solid #2ecc71;
+  border-bottom: 10px solid #2ecc71;
 }
 
 h3{
   display: inline-block;
   font-size:1.2em;
-  border-bottom: 4px solid #2ecc71;
+  border-bottom: 6px solid #2ecc71;
   margin-top: 10px;
 }
 
