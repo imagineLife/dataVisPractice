@@ -121,7 +121,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     // Text where the wave does not overlap.
     var text1 = gaugeGroup.append("text")
         .text(textRounder(textStartValue) + percentText)
-        .attrs({"class", "liquidFillGaugeText")
+        .attr("class", "liquidFillGaugeText")
         .attr("text-anchor", "middle")
         .attr("font-size", textPixels + "px")
         .style("fill", config.textColor)
