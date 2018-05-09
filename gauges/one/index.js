@@ -35,7 +35,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     console.log(config)
     if(config == null) config = liquidFillGaugeDefaultSettings();
 
-    var gauge = d3.select("#" + elementId);
+    var gauge = d3.select(`#${elementId}`);
     var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height")))/2;
     var locationX = parseInt(gauge.style("width"))/2 - radius;
     var locationY = parseInt(gauge.style("height"))/2 - radius;
@@ -103,7 +103,7 @@ function loadLiquidFillGauge(elementId, value, config) {
 
     // Center the gauge within the parent SVG.
     var gaugeGroup = gauge.append("g")
-        .attr('transform','translate('+locationX+','+locationY+')');
+        .attr('transform', `translate(${locationX},${locationY})`);
 
     // Draw the outer circle.
     var gaugeCircleArc = d3.svg.arc()
@@ -114,7 +114,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     gaugeGroup.append("path")
         .attr("d", gaugeCircleArc)
         .style("fill", config.circleColor)
-        .attr('transform','translate('+radius+','+radius+')');
+        .attr('transform',`translate(${radius},${radius})`);
 
     // Text where the wave does not overlap.
     var text1 = gaugeGroup.append("text")
@@ -122,10 +122,10 @@ function loadLiquidFillGauge(elementId, value, config) {
         .attrs({
             "class": "liquidFillGaugeText",
             "text-anchor": "middle",
-            "font-size": textPixels + "px"
+            "font-size": `${textPixels}px`
         })
         .style("fill", config.textColor)
-        .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
+        .attr('transform', `translate(${radius},${textRiseScaleY(config.textVertPosition)})`);
 
     // The clipping wave area.
     var clipArea = d3.svg.area()
@@ -134,7 +134,7 @@ function loadLiquidFillGauge(elementId, value, config) {
         .y1(function(d) { return (fillCircleRadius*2 + waveHeight); } );
     var waveGroup = gaugeGroup.append("defs")
         .append("clipPath")
-        .attr("id", "clipWave" + elementId);
+        .attr("id", `clipWave${elementId}`);
     var wave = waveGroup.append("path")
         .datum(data)
         .attrs({
@@ -144,7 +144,7 @@ function loadLiquidFillGauge(elementId, value, config) {
 
     // The inner circle with the clipping wave attached.
     var fillCircleGroup = gaugeGroup.append("g")
-        .attr("clip-path", "url(#clipWave" + elementId + ")");
+        .attr("clip-path", `url(#clipWave${elementId})`);
     fillCircleGroup.append("circle")
         .attrs({
             "cx": radius,
@@ -159,10 +159,10 @@ function loadLiquidFillGauge(elementId, value, config) {
         .attrs({
             "class":"liquidFillGaugeText",
             "text-anchor": "middle",
-            "font-size": textPixels + "px"
+            "font-size": `${textPixels}px`
         })
         .style("fill", config.waveTextColor)
-        .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
+        .attr('transform',`translate(${radius},${textRiseScaleY(config.textVertPosition)})`);
 
     // Make the value count up.
     if(config.valueCountUp){
@@ -181,27 +181,27 @@ function loadLiquidFillGauge(elementId, value, config) {
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     var waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
     if(config.waveRise){
-        waveGroup.attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(0)+')')
+        waveGroup.attr('transform',`translate(${waveGroupXPosition},${waveRiseScale(0)})`)
             .transition()
             .duration(config.waveRiseTime)
-            .attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(fillPercent)+')')
+            .attr('transform',`translate(${waveGroupXPosition},${waveRiseScale(fillPercent)})`)
             .each("start", function(){ 
                 console.log('in each ',this)
                 return wave.attr('transform','translate(1,0)'); 
             }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
     } else {
-        waveGroup.attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(fillPercent)+')');
+        waveGroup.attr('transform',`translate(${waveGroupXPosition},${waveRiseScale(fillPercent)})`);
     }
 
     if(config.waveAnimate) animateWave();
 
     function animateWave() {
-        wave.attr('transform','translate('+waveAnimateScale(wave.attr('T'))+',0)');
+        wave.attr('transform',`translate(${waveAnimateScale(wave.attr('T'))},0)`);
         wave.transition()
             .duration(config.waveAnimateTime * (1-wave.attr('T')))
             .ease('linear')
             .attrs({
-                'transform':'translate('+waveAnimateScale(1)+',0)',
+                'transform':`translate(${waveAnimateScale(1)},0)`,
                 'T': 1
             })
             .each('end', function(){
@@ -262,18 +262,18 @@ function loadLiquidFillGauge(elementId, value, config) {
                 .ease('linear')
                 .attrs({
                     'd': newClipArea,
-                    'transform':'translate('+newWavePosition+',0)',
+                    'transform': `translate(${newWavePosition},0)`,
                     'T':'1'
                 })
                 .each("end", function(){
                     if(config.waveAnimate){
-                        wave.attr('transform','translate('+waveAnimateScale(0)+',0)');
+                        wave.attr('transform', `translate(${waveAnimateScale(0)},0)`);
                         animateWave(config.waveAnimateTime);
                     }
                 });
             waveGroup.transition()
                 .duration(config.waveRiseTime)
-                .attr('transform','translate('+waveGroupXPosition+','+newHeight+')')
+                .attr('transform', `translate(${waveGroupXPosition},${newHeight})`)
         }
     }
 
