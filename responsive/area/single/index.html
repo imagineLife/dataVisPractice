@@ -129,14 +129,8 @@
 			});
 
 			  // add the area
-	    let areaPath = gObj.append("path")
-	       .attr("class", "area");
+	    let areaPath = gObj.append("path");
 
-	  // add the valueline path.
-	  // svg.append("path")
-	  //     .data([data])
-	  //     .attr("class", "line")
-	  //     .attr("d", valueline);
 
 		const parseData = d => {
 			d.date = parseTime(d.date);
@@ -268,6 +262,8 @@
 			   
 			   //update Line
 			   line.attr("d", lineObj(parsedData));
+
+			   areaObj.y0(resizedHeightLessMargins)
 
 			   //update Area
 			   areaPath.attr("d", areaObj(parsedData))
