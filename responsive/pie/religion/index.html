@@ -9,7 +9,11 @@
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
 		<title>Religion World-Total Pie</title>
 	</head>
-
+	<style>
+		.pieGWrapper{
+			max-height: 900px;
+		}
+	</style>
 	<body>
 		<div id="chartDiv"></div>
 	</body>    
@@ -42,13 +46,21 @@
 		const d3PieFunc = d3.pie().value(pieValue);
 		const arcFunc = d3.arc()
 			.innerRadius(0)
-			.outerRadius( (divWidthLessMargins/2) * .8);
+			.outerRadius( (divWidthLessMargins/2) * .7);
 
-		const gObj = svgObj.append('g').attr('class','gWrapper');
+		const gObj = svgObj.append('g')
+			.attrs({
+				'class':'gWrapper',
+			})
+			.style('max-height','900px');
 
 		//setup pie G element
 		const pieG = gObj.append('g')
-			.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
+			.attrs({
+				'transform': `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`,
+				'class':'pieGWrapper'
+			})
+			.style('max-height', '900px')
 
 		//Build Axis Groups
 		const colorLegendG = gObj.append('g')
@@ -81,6 +93,7 @@
 			.range(d3.schemeCategory10);
 
 		const colorLegend = d3.legendColor()
+			.orient('horizontal')
 			.scale(colorScale)
 			.shape('circle');
 
@@ -142,7 +155,7 @@
         	colorLegendG
 	          .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
 
-	        arcFunc.outerRadius( (resizedWidthLessMargins/2) * .8 );
+	        arcFunc.outerRadius( (resizedWidthLessMargins/2) * .7 );
 
 	        pieG
 				.attr('transform', `translate(${resizedWidthLessMargins/2}, ${resizedHeightLessMargins/2 })`);
