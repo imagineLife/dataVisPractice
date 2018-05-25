@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width">
 		<script src="../../../d3.v4.min.js"></script>
 		<script src="../../../d3-selection-multi.min.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+	    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script> -->
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
 		<title>Responsive Sizing</title>
 	</head>
@@ -111,7 +111,7 @@
 	          .text(colorLabel);
 
 //Build Axis elements
-	      const xAxis = d3.axisBottom()
+	      const xAxisD3Obj = d3.axisBottom()
 	        .scale(xScale)
 	        .tickPadding(15)
 	        .tickSize(-divWidthLessMargins);
@@ -122,9 +122,9 @@
 	        .tickPadding(15)
 	        .tickSize(-divWidthLessMargins);
 
-	      const colorLegend = d3.legendColor()
-	        .scale(colorScale)
-	        .shape('circle');
+	      // const colorLegend = d3.legendColor()
+	      //   .scale(colorScale)
+	      //   .shape('circle');
 
 	      const parseData = d => {
 	      	d.noteID = +d.noteID;
@@ -172,7 +172,7 @@
 	            	'class':'circle'
 	            });
 
-	        xAxisG.call(xAxis)
+	        xAxisG.call(xAxisD3Obj)
 	        	.selectAll('.tick line').attrs({
 	        		'class':'xLine',
 	        		'stroke-dasharray': '1, 5'
@@ -182,9 +182,9 @@
 	        		'class':'yLine',
 	        		'stroke-dasharray': '1, 5'
 	        	});
-	        colorLegendG.call(colorLegend)
-	          .selectAll('.cell text')
-	            .attr('dy', '0.1em');
+	        // colorLegendG.call(colorLegend)
+	        //   .selectAll('.cell text')
+	        //     .attr('dy', '0.1em');
 	      });
 
 	  	}
@@ -226,7 +226,7 @@
 				    'x' : divWidthLessMargins / 2,
 				    'y' : resizedFnHeight * .1,
 				})
-				.call(xAxis);
+				.call(xAxisD3Obj);
 
 			//Update the X-AXIS LABEL
 			xAxisLabel
