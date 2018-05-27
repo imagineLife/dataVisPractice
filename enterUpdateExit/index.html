@@ -25,7 +25,13 @@
 			{name: 'Milk', price: 3}
 		];
 
+		//Prep the text outpu of each item
 		const textFn = d => `${d.name} $${d.price}`;
+
+		//create space between each item
+		//52 because 32 for font-size, 20 between each item
+		const verticalSpacer = 52;
+
 
 		let svgWrapper = d3.select('.svgWrapper');
 		let textObj = svgWrapper.selectAll('text');
@@ -36,7 +42,10 @@
 				.data(dataArr)	//appends data to the text elements
 				.enter()		//adds content to the dom
 				.append('text')
-				.attrs({'x': 250, 'y':50})
+				.attrs({
+					'x': 250,
+					'y': (d,i) => 50 + verticalSpacer * i
+				})
 				.text(textFn)
 		}
 
