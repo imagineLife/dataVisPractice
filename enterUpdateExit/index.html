@@ -40,7 +40,6 @@
 			//selections' text
 			const selectedText = svgWrapper.selectAll('text')
 				.data(dataArr)	//appends data to the text elements
-				.text(textFn)	//adds text BEFORE the 'enter' update command
 				
 				selectedText.exit()
 					.remove();
@@ -51,6 +50,7 @@
 						'x': 250,
 						'y': (d,i) => 50 + verticalSpacer * i
 					})
+				.merge(selectedText)
 					.text(textFn);	//sets text on newly-appended elements
 		}
 
