@@ -37,11 +37,15 @@
 		let textObj = svgWrapper.selectAll('text');
 
 		function drawText(domSelection, dataArr){
-
-			svgWrapper.selectAll('text')
+			//selections' text
+			const selectedText = svgWrapper.selectAll('text')
 				.data(dataArr)	//appends data to the text elements
 				.text(textFn)	//adds text BEFORE the 'enter' update command
-				.enter()		//adds content to the dom
+				
+				selectedText.exit()
+					.remove();
+
+				selectedText.enter()		//adds content to the dom
 					.append('text')
 					.attrs({
 						'x': 250,
@@ -72,6 +76,29 @@
 					]);
 			},
 		3500);
+
+
+		//4rd drawing
+		//CHANGE the cost of mustard
+		setTimeout(() => {
+				drawText(textObj, [
+						{name: 'Milk', price: 3},
+						{name: 'Mustard', price: 2.99},
+						{name: 'Cupcakes', price: 4.99}
+					]);
+			},
+		4500);
+
+
+		//4rd drawing
+		//Simulate REMOVING the Mustard
+		setTimeout(() => {
+				drawText(textObj, [
+						{name: 'Milk', price: 3},
+						{name: 'Cupcakes', price: 4.99}
+					]);
+			},
+		6000);
 	</script>
 </body>
 </html>
