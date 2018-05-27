@@ -35,23 +35,51 @@
 
 		let svgWrapper = d3.select('.svgWrapper');
 		let textObj = svgWrapper.selectAll('text');
+		let svgWidth = +svgWrapper.attr('width');
+
+		//bars vars
+		const barsVars = {
+			xVal : d => d.price,
+			yVal : d => d.name,
+			xScale : d3.scaleLinear().range([0, svgWidth]),
+			yScale: d3.scaleBand()
+		}; 
 
 		function drawText(domSelection, dataArr){
+
+			//make bars, repeating the text pattern / setup below
+			const rects = domSelection.selectAll('rect')
+				.data(dataArr);
+
+			rects.exit()
+				.remove();
+
+			rects.enter()
+				.append('rect')
+				.attr('x', 0)
+			  .merge(rects)
+			  	.attrs({
+			  		'y': d => barsVars.yScale( barsVars.yVal(d) ),
+			  		'width': d => barsVars.xScale( barsVars.xVal(d) ),
+			  		'height': barsVars.yScale.bandwidth()
+			  	})
+
+
 			//selections' text
 			const selectedText = svgWrapper.selectAll('text')
 				.data(dataArr)	//appends data to the text elements
 				
-				selectedText.exit()
-					.remove();
+			selectedText.exit()
+				.remove();
 
-				selectedText.enter()		//adds content to the dom
-					.append('text')
-					.attrs({
-						'x': 250,
-						'y': (d,i) => 50 + verticalSpacer * i
-					})
-				.merge(selectedText)
-					.text(textFn);	//sets text on newly-appended elements
+			selectedText.enter()		//adds content to the dom
+				.append('text')
+				.attrs({
+					'x': 250,
+					'y': (d,i) => 50 + verticalSpacer * i
+				})
+			.merge(selectedText)
+				.text(textFn);	//sets text on newly-appended elements
 		}
 
 		//1. Initial Drawing
