@@ -12,7 +12,7 @@
 		.svgWrapper{
 			height: 500px;
 			width: 960px ;
-			font-size: 24pt;
+			font-size: 32pt;
 			font-family: sans-serif;
 		}
 	</style>
@@ -20,10 +20,38 @@
 <body>
 	<svg class="svgWrapper"></svg>
 	<script>
+		
+		const myData = [
+			{name: 'Milk', price: 3}
+		];
+
+		const textFn = d => `${d.name} $${d.price}`;
+
 		let svgWrapper = d3.select('.svgWrapper');
-		svgWrapper.append('text')
-			.text('Hello Text')
-			.attrs({'x': 50, 'y':50})
+		let textObj = svgWrapper.selectAll('text');
+
+		function drawText(domSelection, dataArr){
+
+			domSelection
+				.data(dataArr)	//appends data to the text elements
+				.enter()		//adds content to the dom
+				.append('text')
+				.attrs({'x': 250, 'y':50})
+				.text(textFn)
+		}
+
+		//manually adding mustard after 2 seconds
+		setTimeout(() => {
+				myData.push({name: 'Mustard', price: '3.99'});
+				drawText(textObj, myData);
+			},
+		2000);
+
+		drawText(textObj, myData);
 	</script>
 </body>
 </html>
+
+<!-- 
+
+ -->
