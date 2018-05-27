@@ -21,7 +21,7 @@
 	<svg class="svgWrapper"></svg>
 	<script>
 		
-		const myData = [
+		const initialData = [
 			{name: 'Milk', price: 3}
 		];
 
@@ -38,25 +38,40 @@
 
 		function drawText(domSelection, dataArr){
 
-			domSelection
+			svgWrapper.selectAll('text')
 				.data(dataArr)	//appends data to the text elements
+				.text(textFn)	//adds text BEFORE the 'enter' update command
 				.enter()		//adds content to the dom
-				.append('text')
-				.attrs({
-					'x': 250,
-					'y': (d,i) => 50 + verticalSpacer * i
-				})
-				.text(textFn)
+					.append('text')
+					.attrs({
+						'x': 250,
+						'y': (d,i) => 50 + verticalSpacer * i
+					})
+					.text(textFn);	//sets text on newly-appended elements
 		}
 
+		//1. Initial Drawing
+		drawText(textObj, initialData);
+
+		//2nd drawing
 		//manually adding mustard after 2 seconds
 		setTimeout(() => {
-				myData.push({name: 'Mustard', price: '3.99'});
-				drawText(textObj, myData);
+				drawText(textObj, [
+						{name: 'Milk', price: 3},
+						{name: 'Mustard', price: 3.99}
+					]);
 			},
 		2000);
 
-		drawText(textObj, myData);
+		//3rd drawing
+		//CHANGE the cost of mustard
+		setTimeout(() => {
+				drawText(textObj, [
+						{name: 'Milk', price: 3},
+						{name: 'Mustard', price: 2.99}
+					]);
+			},
+		3500);
 	</script>
 </body>
 </html>
