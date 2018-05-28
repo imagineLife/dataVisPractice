@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Responsive Area</title>
+	<title>Horizontal Single</title>
 	<meta charset="utf-8">
 	<meta content="width=device-width" name="viewport">
 	<script src="../../../d3.v4.min.js"></script>
@@ -121,11 +121,15 @@
 		    .y1(function(d) { return yScale(d[1]); });
 
 
-		const parseData = (d, i, columns) => {
+		const convertToPercentages = (d, i, columns) => {
+			let columnsLength = columns.length;
+
 			d.date = parseTime(d.date);
-			for (var i = 1, n = columns.length; i < n; ++i){ 
+
+			for (var i = 1; i < columnsLength; ++i){
 				d[columns[i]] = d[columns[i]] / 100;
 			}
+			
 			return d;
 		};
 
@@ -133,16 +137,11 @@
 		const parseTime = d3.timeParse("%Y %b %d");
 
 
-
-
-
-
-
 		let parsedData;
 
 	       function buildChart(obj){
 
-	         d3.csv(obj.dataFile, parseData, data => {
+	         d3.csv(obj.dataFile, convertToPercentages, data => {
 	            parsedData = data;
 
 	           //set the keys of the data
@@ -154,9 +153,10 @@
 			  colorScale
 			  	.domain(keys);
 			  
-			  //set the stack to have the keys
+			  //stack the data, set the keys to the stacked data
 			  stack.keys(keys);
-	           
+			  let stackedData = stack(data);
+
 	           xScale
 	             .range([0, divWidthLessMargins]);
 
@@ -165,7 +165,7 @@
 	             .nice();
 
 	           var layer = gObj.selectAll(".layer")
-				.data(stack(data))
+				.data(stackedData)
 				.enter().append("g")
 				.attr("class", "layer");
 
@@ -219,69 +219,69 @@
 	       buildChart(AllChartObj);
 
 	//2. Resize fn
-	       let resize = () => {
+	//        let resize = () => {
 	           
-	           // Extract the width and height that was computed by CSS.
-	           let resizedFnWidth = chartDiv.clientWidth;
-	           let resizedFnHeight = chartDiv.clientHeight;
+	//            // Extract the width and height that was computed by CSS.
+	//            let resizedFnWidth = chartDiv.clientWidth;
+	//            let resizedFnHeight = chartDiv.clientHeight;
 
-	           //set svg dimension based on resizing attrs
-	           svgObj.attrs({
-	               "width" : resizedFnWidth,
-	               "height" : resizedFnHeight
-	           });
+	//            //set svg dimension based on resizing attrs
+	//            svgObj.attrs({
+	//                "width" : resizedFnWidth,
+	//                "height" : resizedFnHeight
+	//            });
 
-	           //calc resized dimensions less margins
-	           let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-	           let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
+	//            //calc resized dimensions less margins
+	//            let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
+	//            let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
-	           //update scale ranges
-	           xScale.range([0, resizedWidthLessMargins]);
-	           yScale.range([resizedHeightLessMargins, margin.top]);
+	//            //update scale ranges
+	//            xScale.range([0, resizedWidthLessMargins]);
+	//            yScale.range([resizedHeightLessMargins, margin.top]);
 	           
-	           //Update the X-AXIS
-	           xAxisG
-	               .attrs({
-	                   'transform': `translate(0, ${resizedHeightLessMargins})`,
-	                   'x' : divWidthLessMargins / 2,
-	                   'y' : resizedHeightLessMargins * .1,
-	               })
-	               .call(xAxis);
+	//            //Update the X-AXIS
+	//            xAxisG
+	//                .attrs({
+	//                    'transform': `translate(0, ${resizedHeightLessMargins})`,
+	//                    'x' : divWidthLessMargins / 2,
+	//                    'y' : resizedHeightLessMargins * .1,
+	//                })
+	//                .call(xAxis);
 
-	           //Update the X-AXIS LABEL
-	           xAxisLabel
-	               .attrs({
-	                 'x' : resizedWidthLessMargins / 2
-	               })
+	//            //Update the X-AXIS LABEL
+	//            xAxisLabel
+	//                .attrs({
+	//                  'x' : resizedWidthLessMargins / 2
+	//                })
 
-	           //Update the Y-AXIS
-	           yAxisG
-	               .attrs({
-	                   'x' : -resizedHeightLessMargins / 2,
-	                   'y' : -margin.left / 2,
-	               })
-	               .call(yAxis);
+	//            //Update the Y-AXIS
+	//            yAxisG
+	//                .attrs({
+	//                    'x' : -resizedHeightLessMargins / 2,
+	//                    'y' : -margin.left / 2,
+	//                })
+	//                .call(yAxis);
 
-	           //Update yAxis Label
-	           yAxisLabel.attrs({
-	               'x' : -resizedHeightLessMargins / 2,
-	               'y' : -margin.left / 1.5,
-	           });
+	//            //Update yAxis Label
+	//            yAxisLabel.attrs({
+	//                'x' : -resizedHeightLessMargins / 2,
+	//                'y' : -margin.left / 1.5,
+	//            });
 
-	           //update yLines
-	           d3.selectAll('.yLine')
-	               .attr('x2', resizedWidthLessMargins);
+	//            //update yLines
+	//            d3.selectAll('.yLine')
+	//                .attr('x2', resizedWidthLessMargins);
 	           
-	           d3.selectAll('.xLine')
-	               .attr('y2', -resizedHeightLessMargins);
+	//            d3.selectAll('.xLine')
+	//                .attr('y2', -resizedHeightLessMargins);
 
-			   //update Area
-			   d3.selectAll('.area')
-			   	.attr("d", areaFunction);
-	       }       
+	// 		   //update Area
+	// 		   d3.selectAll('.area')
+	// 		   	.attr("d", areaFunction);
+	//        }       
 
-	//Add Resise listener & fn call
-	       window.addEventListener("resize", resize);
+	// //Add Resise listener & fn call
+	//        window.addEventListener("resize", resize);
 	</script>
 </body>
 </html>
