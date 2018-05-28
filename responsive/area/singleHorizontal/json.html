@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Responsive Area</title>
+	<title>Remix Hz Single Area</title>
 	<meta charset="utf-8">
 	<meta content="width=device-width" name="viewport">
 	<script src="../../../d3.v4.min.js"></script>
@@ -9,7 +9,7 @@
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>  -->
 	<!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
 	<link rel="stylesheet" type="text/css" href="../../dark.css">
-	<link rel="stylesheet" type="text/css" href="this.css">
+	<!-- <link rel="stylesheet" type="text/css" href="this.css"> -->
 </head>
 <body>
 	<div id="chartDiv"></div>
@@ -17,9 +17,6 @@
 	         
 		const xLabel = 'Date';
 		const yLabel = 'Percent';
-
-		const xValue = d => d.date;
-		const yValue = d => d.population;
 
 		const margin = { 
 			left: 140, 
@@ -56,11 +53,10 @@
 		gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
 		//Setup Scales
-		var xScale = d3.scaleTime()
-			.range([0, divWidthLessMargins]);
-		yScale = d3.scaleLinear()
-			.range([divHeightLessMargins, 0]);
-		colorScale = d3.scaleOrdinal(['rgba(255,255,255,0)', 'rgba(255, 127, 14,1)']);
+		var xScale = d3.scaleUtc().range([0, divWidthLessMargins]);
+		var yScale = d3.scaleLinear().range([divHeightLessMargins, 0]);
+		colorScale = d3.scaleOrdinal(['rgba(255,255,255,0)', 'rgba(255, 127, 14,.8)']);
+		// colorScale = d3.scaleOrdinal(['rgba(255,255,255,0)', 'rgba(255, 127, 14,1)']);
 
 		//Build Axis Groups
 		const xAxisG = gObj.append('g')
@@ -105,9 +101,9 @@
 
 		const yAxis = d3.axisLeft()
 			.scale(yScale)
-			.ticks(5)
+			.ticks(10)
 			.tickPadding(15)
-			.tickFormat(d3.format('.2s'))
+			// .tickFormat(d3.format('.2s'))
 			.tickSize(-divWidthLessMargins);
 
 		//declare the d3 stack function
@@ -115,102 +111,129 @@
 
 		// define the area
 		const areaFunction = d3.area()
-		    .x(function(d, i) { return xScale(d.data.date); })
+			.curve(d3.curveStepBefore)
+		    .x(function(d, i) { return xScale(d.data.t); })
 		    .y0(function(d) { return yScale(d[0]); })
-		    .y1(function(d) { return yScale(d[1]); });
+		    .y1(function(d) { return yScale( (d[1] - d[0]) ); })
+		    
 
 		// parse the date / time
 		const parseTime = d3.timeParse("%Y %b %d");
 
 
-		let parsedData;
+	    let keysArr = [];
+		let heaterRangeData = [];
 
-	       function buildChart(obj){
+		function buildChart(obj){
 
-	         d3.json(obj.dataFile, data => {
+			d3.json(obj.dataFile, data => {
 
-	         	//put data keys into array
-	         	let keysArr = [];
-	         	for (var key in data[0]){
-	         		keysArr.push(key)
-	         	}
+				let settingsData = data["Settings"];
+				let parseTime = d3.timeParse("%Y %b %d");
 
-	         	data.map(d => {
-			        d.date = parseTime(d.date);
+				//setup settingsData
+				//settingsData.map(d => {
+				//	d.t = new Date(d.t);
+					// for (var i = 1, n = keysArr.length; i < n; ++i){ 
+					// 	d[keysArr[i]] = d[keysArr[i]];
+					// }	         		
+			//	})
+
+				//setup heater-range data
+				settingsData.map(d => {
+					let thisObj = {
+						t: new Date(d.t),
+						lh: d.lh,
+						hh: d.hh
+					}
+					heaterRangeData.push(thisObj);
+				})
+
+				//put data keys into array
+				for (var key in heaterRangeData[0]){
+					keysArr.push(key)
+				}
+
+				heaterRangeData.map( d => {
 					for (var i = 1, n = keysArr.length; i < n; ++i){ 
-						d[keysArr[i]] = d[keysArr[i]] / 100;
-					}	         		
-	         	})
+							d[keysArr[i]] = d[keysArr[i]];
+						}
+				})
+				let minHeaterVal = d3.min(heaterRangeData, (d) => d.lh);
+				let maxHeaterVal = d3.max(heaterRangeData, (d) => d.hh);
+				console.log('minHeaterVal -->',minHeaterVal);
+				console.log('maxHeaterVal -->',maxHeaterVal);
+				// console.log('heaterRangeData ->',heaterRangeData);
 
+				//set the keys of the data
+				const keys = keysArr.slice(1);
 
-	            parsedData = data;
+				// scale the range of the data
+				xScale.domain(d3.extent(heaterRangeData, function (d) { return d.t; }));
+				colorScale.domain(keys);
 
-	           //set the keys of the data
-  			   const keys = keysArr.slice(1);
+				//set the stack to have the keys
+				stack.keys(keys);
 
-	           // scale the range of the data
-			  xScale
-			  	.domain(d3.extent(data, function(d) { return d.date; }));
-			  colorScale
-			  	.domain(keys);
-			  
-			  //set the stack to have the keys
-			  stack.keys(keys);
-	           
-	           xScale
-	             .range([0, divWidthLessMargins]);
+				let stackedData = stack(heaterRangeData);
+				console.log('STACKED heaterRangeData ->',stackedData);
+				//update the scale ranges
+				xScale
+				.range([0, divWidthLessMargins]);
 
-	           yScale
-	             .range([divHeightLessMargins, margin.top])
-	             .nice();
+				yScale.domain([ (minHeaterVal * .98) , (maxHeaterVal * 1.02) ])
 
-	           var layer = gObj.selectAll(".layer")
-				.data(stack(data))
+				yScale
+				.range([divHeightLessMargins, margin.top]);
+				//.nice();
+
+				var layer = gObj.selectAll(".layer")
+				.data(stackedData)
 				.enter().append("g")
 				.attr("class", "layer");
 
-			   layer.append("path")
+				layer.append("path")
 				.attr("class", "area")
 				.style("fill", function(d) { return colorScale(d.key); })
 				.attr("d", areaFunction);
 
-			   layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
+				layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
 				.append("text")
-					.attrs({
-						"x": divWidthLessMargins - 6,
-						"y": function(d) { return yScale((d[d.length - 1][0] + d[d.length - 1][1]) / 2); },
-						"dy": ".35em",
-					})
-					.style("font", "10px sans-serif")
-					.style("text-anchor", "end")
-					.text(function(d) { return d.key; });
+				.attrs({
+				"x": divWidthLessMargins - 6,
+				"y": function(d) { return yScale((d[d.length - 1][0] + d[d.length - 1][1]) / 2); },
+				"dy": ".35em",
+				})
+				.style("font", "10px sans-serif")
+				.style("text-anchor", "end")
+				.text(function(d) { return d.key; });
 
 
-	           xAxisG.call(xAxis)
-	               .selectAll('.tick line').attrs({
-	                   'class':'xLine',
-	                   'stroke-dasharray': '1, 5'
-	               });
+				xAxisG.call(xAxis)
+				.selectAll('.tick line').attrs({
+				'class':'xLine',
+				'stroke-dasharray': '1, 5'
+				});
 
-	         xAxisG.selectAll('.tick text')
-	             .attrs({
-	               'transform': 'rotate(-45)',
-	               'text-anchor': 'end',
-	               'alignment-baseline':'middle',
-	               'x': -5,
-	               'y': 15,
-	               'dy':0
-	             })
+				xAxisG.selectAll('.tick text')
+				.attrs({
+				'transform': 'rotate(-45)',
+				'text-anchor': 'end',
+				'alignment-baseline':'middle',
+				'x': -5,
+				'y': 15,
+				'dy':0
+				})
 
-	           yAxisG.call(yAxis)
-	               .selectAll('.tick line').attrs({
-	                   'class':'yLine',
-	                   'stroke-dasharray': '1, 5'
-	               });
+				yAxisG.call(yAxis)
+				.selectAll('.tick line').attrs({
+				'class':'yLine',
+				'stroke-dasharray': '1, 5'
+				});
 
-	         });
+			});
 
-	       }
+		}
 
 	       let AllChartObj = {
 	           svgClass: '.svgWrapper',
@@ -218,70 +241,6 @@
 	       }
 	       buildChart(AllChartObj);
 
-	//2. Resize fn
-	       let resize = () => {
-	           
-	           // Extract the width and height that was computed by CSS.
-	           let resizedFnWidth = chartDiv.clientWidth;
-	           let resizedFnHeight = chartDiv.clientHeight;
-
-	           //set svg dimension based on resizing attrs
-	           svgObj.attrs({
-	               "width" : resizedFnWidth,
-	               "height" : resizedFnHeight
-	           });
-
-	           //calc resized dimensions less margins
-	           let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-	           let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
-
-	           //update scale ranges
-	           xScale.range([0, resizedWidthLessMargins]);
-	           yScale.range([resizedHeightLessMargins, margin.top]);
-	           
-	           //Update the X-AXIS
-	           xAxisG
-	               .attrs({
-	                   'transform': `translate(0, ${resizedHeightLessMargins})`,
-	                   'x' : divWidthLessMargins / 2,
-	                   'y' : resizedHeightLessMargins * .1,
-	               })
-	               .call(xAxis);
-
-	           //Update the X-AXIS LABEL
-	           xAxisLabel
-	               .attrs({
-	                 'x' : resizedWidthLessMargins / 2
-	               })
-
-	           //Update the Y-AXIS
-	           yAxisG
-	               .attrs({
-	                   'x' : -resizedHeightLessMargins / 2,
-	                   'y' : -margin.left / 2,
-	               })
-	               .call(yAxis);
-
-	           //Update yAxis Label
-	           yAxisLabel.attrs({
-	               'x' : -resizedHeightLessMargins / 2,
-	               'y' : -margin.left / 1.5,
-	           });
-
-	           //update yLines
-	           d3.selectAll('.yLine')
-	               .attr('x2', resizedWidthLessMargins);
-	           
-	           d3.selectAll('.xLine')
-	               .attr('y2', -resizedHeightLessMargins);
-
-			   //update Area
-			   d3.selectAll('.area')
-			   	.attr("d", areaFunction);
-	       }       
-
-	//Add Resise listener & fn call
-	       window.addEventListener("resize", resize);
 	</script>
 </body>
 </html>
