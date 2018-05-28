@@ -22,3 +22,17 @@
 .area {
   fill: lightsteelblue;
 }
+
+.Copychart {
+	width:800px;
+	height: 375px;
+}
+
+.CopysvgWrapper {
+	width:800px;
+	height: 375px;
+}
+
+.humidityline, .temperatureline {
+	fill: none;
+}
