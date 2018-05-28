@@ -11,19 +11,19 @@
 	<style type="text/css">
 		.svgWrapper{
 			height: 500px;
-			width: 960px ;
+			width: 960px;
 			font-size: 32pt;
 			font-family: sans-serif;
 		}
 	</style>
 </head>
 <body>
-	<svg class="svgWrapper"></svg>
+	<svg class="svgWrapper" width="960" height="500"></svg>
 	<script>
 		
-		const initialData = [
-			{name: 'Milk', price: 3}
-		];
+		//bars vars
+		let xValue = d => d.price;
+		let yValue = d => d.name;
 
 		//Prep the text outpu of each item
 		const textFn = d => `${d.name} $${d.price}`;
@@ -31,38 +31,35 @@
 		//create space between each item
 		//52 because 32 for font-size, 20 between each item
 		const verticalSpacer = 52;
-
+		const initialData = [
+			{name: 'Milk', price: 3}
+		];
 
 		let svgWrapper = d3.select('.svgWrapper');
 		let textObj = svgWrapper.selectAll('text');
 		let svgWidth = +svgWrapper.attr('width');
 
-		//bars vars
-		const barsVars = {
-			xVal : d => d.price,
-			yVal : d => d.name,
-			xScale : d3.scaleLinear().range([0, svgWidth]),
-			yScale: d3.scaleBand()
-		}; 
+		let xScale = d3.scaleLinear().range([0, svgWidth]);
+		let yScale = d3.scaleBand();
 
 		function drawText(domSelection, dataArr){
 
+			//update scales based on dataArr
+			xScale.domain([0, d3.max(dataArr, xValue)]);
+			yScale.domain(dataArr.map(yValue))
+				.range([0, verticalSpacer * dataArr.length])
+
 			//make bars, repeating the text pattern / setup below
-			const rects = domSelection.selectAll('rect')
-				.data(dataArr);
-
-			rects.exit()
-				.remove();
-
-			rects.enter()
-				.append('rect')
-				.attr('x', 0)
-			  .merge(rects)
-			  	.attrs({
-			  		'y': d => barsVars.yScale( barsVars.yVal(d) ),
-			  		'width': d => barsVars.xScale( barsVars.xVal(d) ),
-			  		'height': barsVars.yScale.bandwidth()
-			  	})
+	        const rects = domSelection.selectAll('rect').data(dataArr)
+	        rects.exit().remove();
+	        rects
+	          .enter().append('rect')
+	            .attr('x', 0)
+	            .attr('fill', 'steelblue')
+	          .merge(rects)
+	            .attr('y', d => yScale(yValue(d)))
+	            .attr('width', d => xScale(xValue(d)))
+	            .attr('height', yScale.bandwidth());
 
 
 			//selections' text
@@ -82,51 +79,35 @@
 				.text(textFn);	//sets text on newly-appended elements
 		}
 
-		//1. Initial Drawing
-		drawText(textObj, initialData);
+      drawText(svgWrapper, [ { name: 'Milk', price: 3 } ]);
 
-		//2nd drawing
-		//manually adding mustard after 2 seconds
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 3.99}
-					]);
-			},
-		2000);
+      setTimeout(() => {
+        drawText(svgWrapper, [ 
+        	{ name: 'Milk', price: 3 },
+        	{ name: 'Eggs', price: 20 }
+        ]);
+      }, 1000);
 
-		//3rd drawing
-		//CHANGE the cost of mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 2.99}
-					]);
-			},
-		3500);
+      setTimeout(() => {
+        drawText(svgWrapper, [ 
+        	{ name: 'Milk', price: 3 },
+        	{ name: 'Eggs', price: 2 }
+        ]);
+      }, 2000);
 
+      setTimeout(() => {
+        drawText(svgWrapper, [
+          { name: 'Milk', price: 3 },
+          { name: 'Eggs', price: 2 },
+          { name: 'Cupcakes', price: 5 }
+        ]);
+      }, 3000);
 
-		//4rd drawing
-		//CHANGE the cost of mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 2.99},
-						{name: 'Cupcakes', price: 4.99}
-					]);
-			},
-		4500);
-
-
-		//4rd drawing
-		//Simulate REMOVING the Mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Cupcakes', price: 4.99}
-					]);
-			},
-		6000);
+      setTimeout(() => {
+        drawText(svgWrapper, [ 
+        	{ name: 'Milk', price: 3 },
+        	{ name: 'Cupcakes', price: 5 } ]);
+      }, 4000);
 	</script>
 </body>
 </html>
