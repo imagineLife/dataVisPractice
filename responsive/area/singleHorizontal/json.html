@@ -157,9 +157,6 @@
 
 				minHeaterVal = d3.min(heaterRangeData, (d) => d.lh);
 				maxHeaterVal = d3.max(heaterRangeData, (d) => d.hh);
-				console.log('minHeaterVal -->',minHeaterVal);
-				console.log('maxHeaterVal -->',maxHeaterVal);
-				// console.log('heaterRangeData ->',heaterRangeData);
 
 				//set the keys of the data
 				const keys = keysArr.slice(1);
@@ -172,7 +169,7 @@
 				stack.keys(keys);
 
 				let stackedData = stack(heaterRangeData);
-				console.log('STACKED heaterRangeData ->',stackedData);
+				
 				//update the scale ranges
 				xScale
 				.range([0, divWidthLessMargins]);
