@@ -29,7 +29,7 @@
 		const chartDiv = document.getElementById('chartDiv');     
 		const svgObj = d3.select(chartDiv).append("svg").attrs({
 			'border': '2px solid green',
-			'class': 'area'
+			'class': 'svgWrapper'
 		});
 		const gObj = svgObj.append('g').attr('class','gWrapper');
 
@@ -123,13 +123,14 @@
 
 	    let keysArr = [];
 		let heaterRangeData = [];
+		let minHeaterVal;
+		let maxHeaterVal;
 
 		function buildChart(obj){
 
 			d3.json(obj.dataFile, data => {
 
 				let settingsData = data["Settings"];
-				let parseTime = d3.timeParse("%Y %b %d");
 
 				//setup settingsData
 				//settingsData.map(d => {
@@ -154,13 +155,8 @@
 					keysArr.push(key)
 				}
 
-				heaterRangeData.map( d => {
-					for (var i = 1, n = keysArr.length; i < n; ++i){ 
-							d[keysArr[i]] = d[keysArr[i]];
-						}
-				})
-				let minHeaterVal = d3.min(heaterRangeData, (d) => d.lh);
-				let maxHeaterVal = d3.max(heaterRangeData, (d) => d.hh);
+				minHeaterVal = d3.min(heaterRangeData, (d) => d.lh);
+				maxHeaterVal = d3.max(heaterRangeData, (d) => d.hh);
 				console.log('minHeaterVal -->',minHeaterVal);
 				console.log('maxHeaterVal -->',maxHeaterVal);
 				// console.log('heaterRangeData ->',heaterRangeData);
@@ -192,7 +188,7 @@
 				.enter().append("g")
 				.attr("class", "layer");
 
-				layer.append("path")
+				let areaPath = layer.append("path")
 				.attr("class", "area")
 				.style("fill", function(d) { return colorScale(d.key); })
 				.attr("d", areaFunction);
@@ -235,11 +231,83 @@
 
 		}
 
-	       let AllChartObj = {
-	           svgClass: '.svgWrapper',
-	           dataFile:'redata.json'
-	       }
-	       buildChart(AllChartObj);
+       let AllChartObj = {
+           svgClass: '.svgWrapper',
+           dataFile:'redata.json'
+       }
+       buildChart(AllChartObj);
+
+       	//2. Resize fn
+       let resize = () => {
+           
+           // Extract the width and height that was computed by CSS.
+           let resizedFnWidth = chartDiv.clientWidth;
+           let resizedFnHeight = chartDiv.clientHeight;
+
+           //set svg dimension based on resizing attrs
+           svgObj.attrs({
+               "width" : resizedFnWidth,
+               "height" : resizedFnHeight
+           });
+
+           //calc resized dimensions less margins
+           let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
+           let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
+
+           //update scale ranges
+           xScale.range([0, resizedWidthLessMargins]);
+           yScale.range([resizedHeightLessMargins, margin.top]);
+           
+           //Update the X-AXIS
+           xAxisG
+               .attrs({
+                   'transform': `translate(0, ${resizedHeightLessMargins})`,
+                   'x' : divWidthLessMargins / 2,
+                   'y' : resizedHeightLessMargins * .1,
+               })
+               .call(xAxis);
+
+           //Update the X-AXIS LABEL
+           xAxisLabel
+               .attrs({
+                 'x' : resizedWidthLessMargins / 2
+               })
+
+           //Update the Y-AXIS
+           yAxisG
+               .attrs({
+                   'x' : -resizedHeightLessMargins / 2,
+                   'y' : -margin.left / 2,
+               })
+               .call(yAxis);
+
+           //Update yAxis Label
+           yAxisLabel.attrs({
+               'x' : -resizedHeightLessMargins / 2,
+               'y' : -margin.left / 1.5,
+           });
+
+           //update yLines
+           d3.selectAll('.yLine')
+               .attr('x2', resizedWidthLessMargins);
+           
+           d3.selectAll('.xLine')
+               .attr('y2', -resizedHeightLessMargins);
+
+           		// define the area
+		    areaFunction
+				.x(function(d, i) { return xScale(d.data.t) })
+			    .y0(function(d) { return yScale(d[0]); })
+			    .y1(function(d) { return yScale( (d[1] - d[0]) ) });
+
+		   //update Area sections
+		   d3.selectAll('.area')
+		   	.attr("d", areaFunction);
+       }       
+
+	//Add Resise listener & fn call
+	   window.addEventListener("resize", resize);
+       
 
 	</script>
 </body>
