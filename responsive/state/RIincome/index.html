@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../../d3.v4.min.js"></script>
+    <script src="../../../d3-selection-multi.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
+    <script src="https://d3js.org/topojson.v2.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="../../normalizeReset.css">
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>RI Town-By-Town Income</title>
+  </head>
+  <body onload="resizeCharts()">
+
+    <div id="parentWrapper">
+      
+      <div class="visualSection">
+        
+        <div class="visualHeader">
+          <h1>Rhode Islands's Estimated Median Family Income</h1>
+          <small><i>As Of 2016</i></small>
+        </div>
+        
+        <div class="imagesWrapper">
+          
+          <div class="group stateWrapper">
+            <h2 class="littleHeader">Income By Town</h2>
+            <div id="stateImage"></div>
+          </div>
+          
+          <div class="group legendWrapper">
+            <h2 class="littleHeader">Scale</h2>
+            <div id="legendContainer"></div>
+          </div>
+        
+        </div>
+            
+      </div>
+
+      <div class="textSection">
+        <h2>Income At A Glance</h2>
+        <div class="meaningText">
+          <h3>The Min</h3>
+          <p>The lowest annual average family income is around $36,000, and this is the city of Hartford.</p>
+
+          <h3>The Max</h3>
+          <p>The 2 towns that have the highest annual family income are Darien & Weston.These are notes as "$250K+" in the data.</p>
+          
+          <h3>A Categorical Data Problem</h3>
+          <p>The maximum values in the census data are not numerical. The maximum value is categorical, categorizing a family income above 250K$ as simply "250K+". Unlike the rest of the income values, which are numbers and can easily be compared to other numbers, the maximum is unclear. The maximum is interesting to me, and I think the maximum is important in this chart, so having a vague representation of the information looks misleading and unfortunately incomplete.<br>
+          For the sake of this project, I used $251,000 as the numerical value in place of the categorically labeled "250K+".</p>
+          
+          <h3>A Brief Look At The Range</h3>
+          <div id="rangeBar"></div>
+          <p>The range is at least <b class="incomeRange">$214,000</b>, where the Maximum is '$250K+' and the Minimum is $36,156. Due to the maximum income value recorded at '250K+', the range of town family incomes in CT can not be calculated based on this Census data.</p>
+
+
+        </div>
+
+      </div>
+   
+    </div>  
+
+
+    <script type="text/javascript" src="index.js"></script>
+  
+  </body>
+</html>

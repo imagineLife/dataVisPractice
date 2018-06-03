@@ -1,0 +1,134 @@
+*{
+  box-sizing: border-box;
+  color: white;
+}
+
+body{
+  margin: 5px;
+}
+
+div{
+  border-radius: 10px;
+}
+
+h1, h2{
+  font-weight: 800;
+}
+
+h2, h3{
+  text-align: left;
+}
+
+h1{
+  font-size: 2.2em;
+  text-align: center;
+}
+
+h2{
+  font-size:1.4em;
+  margin: 10px auto;
+}
+
+.legendSVG line{
+  /*stroke: #C0C0BB;*/
+  /*fill:#C0C0BB;*/
+  stroke:none;
+}
+
+.textSection{
+  padding: 0 15px;
+  margin-top: 20px;
+}
+
+.textSection h2{
+  display: inline-block;
+  border-bottom: 10px solid #2ecc71;
+}
+
+h3{
+  display: inline-block;
+  font-size:1.2em;
+  border-bottom: 6px solid #2ecc71;
+  margin-top: 10px;
+}
+
+small{
+  font-size: 1em;
+  text-align: center;
+  display: block;
+}
+
+i{
+  font-style: italic;
+}
+
+
+p{
+  line-height: 1.6;
+  margin: 10px 0 20px 0;
+}
+
+#parentWrapper{
+  overflow: hidden;
+  position: relative;
+}
+
+.barText{
+  text-anchor: start;
+  visibility: hidden;
+}
+
+.visualHeader{
+  padding: 50px 0;
+}
+
+#stateImage, #legendContainer{
+  display: block;
+  min-height:260px;
+}
+
+.tick text, .legendCells text{
+  font-size: 16px;
+}
+
+.imagesWrapper{
+  /*text-align: center;*/
+  overflow: hidden;
+  position: relative;
+}
+
+.group{
+  display: inline-block;
+  top: 0;
+}
+
+.group h2{
+  text-align: center;
+  margin: 10px 0;
+}
+
+.stateWrapper{
+  width: 75%;
+}
+
+.legendWrapper{
+  position: relative;
+  width:23%;
+  vertical-align: top;
+}
+
+.incomeRange{
+  display: inline;
+  font-size: 1.7em;
+}
+
+#rangeBar{
+  min-height: 450px;
+  margin-top: 15px;
+}
+
+@media only screen and (min-width: 435px) {
+  .barText{
+    visibility: unset;
+  }
+}
