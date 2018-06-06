@@ -63,6 +63,11 @@ function getIncomeExtent(data){
   return d3.extent(data, d => d.income);
 }
 
+function makeColorScale(interpolation, extent){
+  return d3.scaleSequential(interpolation)
+.domain(extent)
+}
+
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale) {
   const selection = selector_id ? selector_id : legendDiv;
@@ -84,10 +89,6 @@ function buildStateLegend(selector_id, colorscale) {
   const canvasContext = canvasObj.getContext("2d");
 
   const legendscale = buildLegendScale(canvasDimensions.h, colorScale.domain());
-  //const legendscale = d3.scaleLinear()
-    // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
-    // .range([resizedHeight - margin.top - margin.bottom, 1])
-    // .domain(colorScale.domain());
 
   // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
   const image = canvasContext.createImageData(1, resizedHeight);
@@ -263,7 +264,7 @@ function ready(error, data) {
     // console.log('fancyData ->',fancyData);
     
     let incomeExtent = getIncomeExtent(fancyData);
-
+    console.log(`income extent ${incomeExtent}`);
     /*
 
     BarChart
@@ -420,7 +421,7 @@ const margin = {top: 20, right: 60, bottom: 0, left: 2};
 let resizedWidth = legendDiv.clientWidth;
 let resizedHeight = legendDiv.clientHeight;
 
-const greenColorScale = d3.scaleSequential(d3.interpolateGreens)
-.domain([31375,251000]);
+
+const greenColorScale = makeColorScale(d3.interpolateGreens, [31375,251000]);
 
 buildStateLegend(legendDiv, greenColorScale);
