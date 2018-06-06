@@ -110,10 +110,10 @@ function buildStateLegend(selector_id, colorscale) {
       let f = d3.format(".2s");
       return (`${f(d)}$`)
     })
-    .ticks(3);
+    .ticks(4);
 
   //SVG for the labeling
-  svgObj
+  legendSVG
     .attrs({
       "height": (resizedHeight) + "px",
       "width": (legendwidth) + "px",
@@ -123,11 +123,11 @@ function buildStateLegend(selector_id, colorscale) {
     .style("left", "0px")
     .style("bottom", "0px")
 
-  let svgAxis = svgObj
+  let legendAxis = legendSVG
     .append("g")
     .attrs({
-      "class": "axis",
-      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")"
+      "class": "legendAxis",
+      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",5)"
     })// + (margin.top) + ")")
     .call(legendaxis);
 };
@@ -263,7 +263,6 @@ function ready(error, data) {
     // console.log('fancyData ->',fancyData);
     
     let incomeExtent = getIncomeExtent(fancyData);
-    console.log('incomeExtent ->',incomeExtent)
 
     /*
 
@@ -415,7 +414,7 @@ function resizeCharts() {
 }
 
 const legendDiv = document.getElementById("legendContainer");
-const svgObj = d3.select(legendDiv).append("svg");
+const legendSVG = d3.select(legendDiv).append("svg");
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
 let resizedWidth = legendDiv.clientWidth;
