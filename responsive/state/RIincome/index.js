@@ -1,3 +1,137 @@
+function selectElements(){
+  // D3 select The elements & convert to vars
+  const barDiv = document.getElementById("rangeBar");
+  const barSVG = d3.select(barDiv).append("svg");
+  const barGObj = barSVG.append('g');
+  const bars = barGObj.selectAll('rect');
+  return  {barDiv, barSVG, barGObj, bars};
+};
+
+function appendSVGTODiv(DivClass, className){
+  return d3.select(DivClass)
+    .append("svg")
+    .attrs({
+      "width": "100%",
+      "class": className
+    });
+};
+
+function getResizeDimensions(parent, m){
+  let resizeFnWidth = parent.clientWidth,
+    resizeFnHeight = parent.clientHeight,
+    resizedWidthLessMargins = resizeFnWidth - m.left - m.right,
+    resizedHeightLessMargins = resizeFnHeight - m.top - m.bottom;
+  return { resizeFnWidth, resizeFnHeight, resizedWidthLessMargins, resizedHeightLessMargins };
+};
+
+function createXAxisG(parent, className, h){
+  return parent.append('g')
+    .attrs({
+      'transform': `translate(0, ${h})`,
+      'class': className
+    });
+};
+
+function createYAxisG(parent, className){
+  return parent.append('g')
+  .style('class', className);
+};
+
+function makeLegendCanvas(parent, d, className){
+  return d3.select(parent)
+  .append("canvas")
+  .attrs({
+    "width": 1,
+    "class": className
+  })
+  .style("height", (d.h)+ "px")
+  .style("width", (d.w) + "px")
+  .style("border", "1px solid #000")
+  .style("top", (d.marginTop) + "px")
+  .style("left", (d.marginLeft) + "px")
+  .node();
+}
+
+function buildLegendScale(h, dom){
+  return d3.scaleLinear()
+    // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+    .range([h, 1])
+    .domain(dom);
+}
+
+function getIncomeExtent(data){
+  return d3.extent(data, d => d.income);
+}
+
+// create continuous color legend
+function buildStateLegend(selector_id, colorscale) {
+  const selection = selector_id ? selector_id : legendDiv;
+  const colorScale = colorscale ? colorscale :  greenColorScale;
+
+  const legendheight = 275,
+      legendwidth = 80;
+
+
+  const canvasDimensions = {
+    h:resizedHeight - margin.top - margin.bottom,
+    w: legendwidth - margin.left - margin.right,
+    marginTop: margin.top,
+    marginLeft: margin.left
+  }
+
+  const canvasObj = makeLegendCanvas(selection, canvasDimensions, 'canvasClass');
+
+  const canvasContext = canvasObj.getContext("2d");
+
+  const legendscale = buildLegendScale(canvasDimensions.h, colorScale.domain());
+  //const legendscale = d3.scaleLinear()
+    // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
+    // .range([resizedHeight - margin.top - margin.bottom, 1])
+    // .domain(colorScale.domain());
+
+  // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+  const image = canvasContext.createImageData(1, resizedHeight);
+
+  d3.range(resizedHeight).forEach(function(i) {
+    const c = d3.rgb(colorScale(legendscale.invert(i)));
+    image.data[4*i] = c.r;
+    image.data[4*i + 1] = c.g;
+    image.data[4*i + 2] = c.b;
+    image.data[4*i + 3] = 255;
+  });
+
+  canvasContext.putImageData(image, 0, 0);
+
+
+  const legendaxis = d3.axisRight()
+    .scale(legendscale)
+    .tickSize(1) //size of tick mark, not text
+    .tickFormat((d) =>{
+      let f = d3.format(".2s");
+      return (`${f(d)}$`)
+    })
+    .ticks(3);
+
+  //SVG for the labeling
+  svgObj
+    .attrs({
+      "height": (resizedHeight) + "px",
+      "width": (legendwidth) + "px",
+      "class":'legendSVG'
+    })
+    .style("position", "absolute")
+    .style("left", "0px")
+    .style("bottom", "0px")
+
+  let svgAxis = svgObj
+    .append("g")
+    .attrs({
+      "class": "axis",
+      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")"
+    })// + (margin.top) + ")")
+    .call(legendaxis);
+};
+
 // color 
 let lvl = {
     "one":5,
@@ -34,12 +168,6 @@ let colorRatio = {
 
 */
 
-// D3 select The elements & convert to vars
-let barDiv = document.getElementById("rangeBar");
-const barSVG = d3.select(barDiv).append("svg");
-const barGObj = barSVG.append('g');
-const bars = barGObj.selectAll('rect');
-
 // Build Variables
 const barVars = {
   xLabel : 'Min. & Max. Town Incomes',
@@ -56,6 +184,7 @@ const barXScale = d3.scaleBand()
 const barYScale = d3.scaleLinear();
 const yTicks = 5;  
 
+let {barDiv, barSVG, barGObj, bars} = selectElements();
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
 
@@ -75,52 +204,26 @@ barGObj.attrs({
   'class': 'gWrapper'
 });
 
-// //attach another g as xAxisG to the 'parent' g
-const xAxisG = barGObj.append('g')
-    .attrs({
-      'transform': `translate(0, ${heightLessMargins})`,
-      'class': 'xAxisClass'
-    });
-
-// //attach another g as yAxisG to the 'parent' g
-const yAxisG = barGObj.append('g')
-  .style('class', 'yAxisClass');
+//Make bar axis
+const xAxisG = createXAxisG(barGObj, 'xAxisClass', heightLessMargins)
+const yAxisG = createYAxisG(barGObj, 'yAxisClass');
 
 
 // asynchronous tasks, load topojson maps and data
 d3.queue()
   .defer(d3.json, "riTowns.json")
   .defer(d3.csv, "data.csv", function(d) { 
-    console.log('d ->',d)
     if (isNaN(d.income)) {
         incomeData.set(d.id, 0); 
     } else {
         incomeData.set(d.id, +d.income)
     }
-    // switch(true){
-    //     case (d.income < (lvl.one - .1)):
-    //         colorRatio["level1"]++;
-    //         break;
-    //     case (d.income >= lvl.one && d.income< (lvl.two - .1)):
-    //         colorRatio["level2"]++;
-    //         break;
-    //     case (d.income >= lvl.two && d.income < (lvl.three - .1)):
-    //         colorRatio["level3"]++;
-    //         break;
-    //     case (d.income >= lvl.three && d.income < (lvl.four - .1)):
-    //         colorRatio["level4"]++;
-    //         break;
-    //     default:
-    //         colorRatio["level5"]++;
-    //         break;
-    // };
       let thisObj = {
       'town' : d.town,
       'income':+d.income
       }
       fancyData.push(thisObj);
     return d;
-
   })
   .await(ready);
 
@@ -128,13 +231,10 @@ d3.queue()
 d3.select(window)
       .on("resize", resizeCharts);
 
-const stateSVG = d3.select("#stateImage")
-  .append("svg")
-  .attrs({
-    "width": "100%",
-    "class": 'income'});
 
-  const stateG = stateSVG.append("g").attr('class','stateG');
+const stateSVG = appendSVGTODiv("#stateImage",'income');
+
+const stateG = stateSVG.append("g").attr('class','stateG');
 
 // X-AXIS
 //via D3
@@ -160,18 +260,11 @@ function ready(error, data) {
 
     // fancyData.sort((a,b) => b.income - a.income);
 
-    //puts income vals into arr
-    const incomeDataArr = [];
-    for(const val in incomeData){
-      let curVal = incomeData[val];
-      if(Number.isInteger(curVal) && curVal > 0){
-        incomeDataArr.push(curVal);
-      }
-    }
+    // console.log('fancyData ->',fancyData);
+    
+    let incomeExtent = getIncomeExtent(fancyData);
+    console.log('incomeExtent ->',incomeExtent)
 
-    console.log(`incomeDataArr -> ${incomeDataArr}`)
-      let incomeExtent = (d3.extent(incomeDataArr))
-      console.log(`incomeExtent ${incomeExtent}`)
     /*
 
     BarChart
@@ -246,8 +339,6 @@ function ready(error, data) {
         geometries: data.objects.RhodeIslandTowns.geometries
     });
 
-    // console.log('RI -->',rhodeIsland);
-
     // projection and path
     const projection = d3.geoAlbersUsa()
         .fitExtent([[0,0], [750, 625]], rhodeIsland);
@@ -263,9 +354,7 @@ function ready(error, data) {
           "class": "towns",        
           "d": geoPath,
           "fill": (d) => { 
-            // console.log('d ->',d.properties.GEOID)
             const townGeoID = incomeData.get(d.properties.GEOID);
-            console.log('townGeoID ->',townGeoID)
             return (
                 townGeoID != 0 ?
                 income_color(townGeoID) : 
@@ -284,15 +373,12 @@ function ready(error, data) {
 
 function resizeCharts() {
 
-    let resizeFnWidth = barDiv.clientWidth;
-    let resizeFnHeight = barDiv.clientHeight;
+    var { resizeFnWidth, resizeFnHeight, lessMargins, resizedWidthLessMargins,resizedHeightLessMargins } = getResizeDimensions(barDiv, barVars.margin);
     
-    let resizedWidthLessMargins = resizeFnWidth - barVars.margin.left - barVars.margin.right;
-    let resizedHeightLessMargins = resizeFnHeight - barVars.margin.top - barVars.margin.bottom;
 
     const stateContainer = document.getElementById('stateImage');
     
-     let resizebarDiv = barDiv.clientWidth;
+    let resizebarDiv = barDiv.clientWidth;
     let rlm = resizebarDiv - barVars.margin.left - barVars.margin.right;
     barSVG.attr("width", resizeFnWidth);
 
@@ -328,7 +414,7 @@ function resizeCharts() {
       })
 }
 
-let legendDiv = document.getElementById("legendContainer");
+const legendDiv = document.getElementById("legendContainer");
 const svgObj = d3.select(legendDiv).append("svg");
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
@@ -338,76 +424,4 @@ let resizedHeight = legendDiv.clientHeight;
 const greenColorScale = d3.scaleSequential(d3.interpolateGreens)
 .domain([31375,251000]);
 
-continuous(legendDiv, greenColorScale);
-
-// create continuous color legend
-function continuous(selector_id, colorscale) {
-  const selection = selector_id ? selector_id : legendDiv;
-  const colorScale = colorscale ? colorscale :  greenColorScale;
-
-  const legendheight = 275,
-      legendwidth = 80;
-
-  const canvasObj = d3.select(selection)
-    .append("canvas")
-    .attrs({
-      "height": resizedHeight,// - margin.top - margin.bottom,
-      "width": 1,
-      "class": 'canvasClass'
-    })
-    .style("height", (resizedHeight - margin.top - margin.bottom)+ "px")
-    .style("width", (legendwidth - margin.left - margin.right) + "px")
-    .style("border", "1px solid #000")
-    .style("top", (margin.top) + "px")
-    .style("left", (margin.left) + "px")
-    .node();
-
-  const canvasContext = canvasObj.getContext("2d");
-
-  const legendscale = d3.scaleLinear()
-    // .range([1, resizedHeight - margin.top - margin.bottom]) // THIS puts max values on BOTTOM
-    .range([resizedHeight - margin.top - margin.bottom, 1])
-    .domain(colorScale.domain());
-
-  // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-  const image = canvasContext.createImageData(1, resizedHeight);
-
-  d3.range(resizedHeight).forEach(function(i) {
-    const c = d3.rgb(colorScale(legendscale.invert(i)));
-    image.data[4*i] = c.r;
-    image.data[4*i + 1] = c.g;
-    image.data[4*i + 2] = c.b;
-    image.data[4*i + 3] = 255;
-  });
-
-  canvasContext.putImageData(image, 0, 0);
-
-
-  const legendaxis = d3.axisRight()
-    .scale(legendscale)
-    .tickSize(1) //size of tick mark, not text
-    .tickFormat((d) =>{
-      let f = d3.format(".2s");
-      return (`${f(d)}$`)
-    })
-    .ticks(3);
-
-  //SVG for the labeling
-  svgObj
-    .attrs({
-      "height": (resizedHeight) + "px",
-      "width": (legendwidth) + "px",
-      "class":'legendSVG'
-    })
-    .style("position", "absolute")
-    .style("left", "0px")
-    .style("bottom", "0px")
-
-  let svgAxis = svgObj
-    .append("g")
-    .attrs({
-      "class": "axis",
-      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",0"+")"
-    })// + (margin.top) + ")")
-    .call(legendaxis);
-};
+buildStateLegend(legendDiv, greenColorScale);
