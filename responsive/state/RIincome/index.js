@@ -71,15 +71,34 @@ function makeColorScale(interpolation, extent){
 .domain(extent)
 }
 
+function addAxisToSVG(parent, x, y, axisObj){
+  return parent
+  .append('g')
+  .attrs({
+    'class': 'legendAxis',
+    'transform': `translate(${x},${y})`
+  })
+  .call(axisObj);
+}
+
+function makeLegendAxisObj(scale){
+  return d3.axisRight()
+  .scale(scale)
+  .tickSize(5) //size of tick mark, not text
+  .tickFormat((d) =>{
+    let f = d3.format(".2s");
+    return (`${f(d)}$`)
+  })
+  .ticks(4);
+}
+
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale, ext) {
 
   const selection = selector_id ? selector_id : legendDiv;
   const colorScale = colorscale ? colorscale :  greenColorScale;
 
-  const legendheight = 275,
-      legendwidth = 80;
-
+  const legendheight = 275, legendwidth = 80;
 
   const canvasDimensions = {
     h:resizedHeight,
@@ -107,15 +126,7 @@ function buildStateLegend(selector_id, colorscale, ext) {
 
   canvasContext.putImageData(canvasImageData, 0, 0);
 
-
-  const legendaxis = d3.axisRight()
-    .scale(legendscale)
-    .tickSize(5) //size of tick mark, not text
-    .tickFormat((d) =>{
-      let f = d3.format(".2s");
-      return (`${f(d)}$`)
-    })
-    .ticks(4);
+  const legendaxisobj = makeLegendAxisObj(legendscale);
 
   legendSVG
     .attrs({
@@ -127,13 +138,10 @@ function buildStateLegend(selector_id, colorscale, ext) {
     .style("left", "0px")
     .style("bottom", "0px")
 
-  let legendAxis = legendSVG
-    .append("g")
-    .attrs({
-      "class": "legendAxis",
-      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",-10)"
-    })
-    .call(legendaxis);
+  let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
+
+  let legendAxis = addAxisToSVG(legendSVG,legendAxisXTranslate, '-10',legendaxisobj);
+
 };
 
 let incomeExtent;
@@ -232,10 +240,6 @@ function makeXAxis(scale,h){
 
 
 const d3xAxis = makeXAxis(barXScale, heightLessMargins);
-// d3.axisBottom()
-//   .scale(barXScale)
-//   .tickPadding(15)
-//   .tickSize(-heightLessMargins);
 
 // Y-AXIS
 //via D3
