@@ -127,8 +127,47 @@ p{
   margin-top: 15px;
 }
 
+.importantText{
+  font-size: 2em;
+}
+
+.meaningText{
+  display:block;
+}
+
+.minWrapper > h3, .maxWrapper > h3 {
+  margin: 5px 0;
+} 
+
+.minMaxHeader{
+  display: block;
+  width: fit-content;
+}
+
 @media only screen and (min-width: 435px) {
   .barText{
     visibility: unset;
   }
+}
+
+@media only screen and (min-width : 768px){
+  .minWrapper, .maxWrapper{
+    width: 50%;
+    display: inline-block;
+    padding: 0 25px;
+  }
+
+  .minWrapper > p, .maxWrapper > p{
+    display: inline;
+  }
+
+  .maxWrapper{
+    float: right;
+  }
+
+  .minMaxWrapper{
+    margin: 25px 0;
+  }
+
+
 }
