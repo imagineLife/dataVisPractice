@@ -356,9 +356,7 @@ function ready(error, data) {
       .append("text")
       .text(function (d) {
         let f = d3.format(".2s");
-        return (d.income == "250001") 
-            ? `$250K+` 
-            :`≈ $${f(d.income)}`; 
+        return `≈ $${f(d.income)}`; 
       })
       .attrs({
         "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
