@@ -4,7 +4,9 @@ function selectElements(){
   const barSVG = d3.select(barDiv).append("svg");
   const barGObj = barSVG.append('g');
   const bars = barGObj.selectAll('rect');
-  return  {barDiv, barSVG, barGObj, bars};
+  const legendDiv = document.getElementById("legendContainer");
+
+  return  {barDiv, barSVG, barGObj, bars, legendDiv};
 };
 
 function appendSVGTODiv(DivClass, className){
@@ -60,7 +62,8 @@ function buildLegendScale(h, dom){
 }
 
 function getIncomeExtent(data){
-  return d3.extent(data, d => d.income);
+  let arr = d3.extent(data, d => d.income)
+  return arr;
 }
 
 function makeColorScale(interpolation, extent){
@@ -69,7 +72,8 @@ function makeColorScale(interpolation, extent){
 }
 
 // create continuous color legend
-function buildStateLegend(selector_id, colorscale) {
+function buildStateLegend(selector_id, colorscale, ext) {
+
   const selection = selector_id ? selector_id : legendDiv;
   const colorScale = colorscale ? colorscale :  greenColorScale;
 
@@ -78,7 +82,7 @@ function buildStateLegend(selector_id, colorscale) {
 
 
   const canvasDimensions = {
-    h:resizedHeight - margin.top - margin.bottom,
+    h:resizedHeight,
     w: legendwidth - margin.left - margin.right,
     marginTop: margin.top,
     marginLeft: margin.left
@@ -91,29 +95,28 @@ function buildStateLegend(selector_id, colorscale) {
   const legendscale = buildLegendScale(canvasDimensions.h, colorScale.domain());
 
   // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-  const image = canvasContext.createImageData(1, resizedHeight);
+  const canvasImageData = canvasContext.createImageData(1, resizedHeight);
 
   d3.range(resizedHeight).forEach(function(i) {
     const c = d3.rgb(colorScale(legendscale.invert(i)));
-    image.data[4*i] = c.r;
-    image.data[4*i + 1] = c.g;
-    image.data[4*i + 2] = c.b;
-    image.data[4*i + 3] = 255;
+    canvasImageData.data[4*i] = c.r;
+    canvasImageData.data[4*i + 1] = c.g;
+    canvasImageData.data[4*i + 2] = c.b;
+    canvasImageData.data[4*i + 3] = 255;
   });
 
-  canvasContext.putImageData(image, 0, 0);
+  canvasContext.putImageData(canvasImageData, 0, 0);
 
 
   const legendaxis = d3.axisRight()
     .scale(legendscale)
-    .tickSize(1) //size of tick mark, not text
+    .tickSize(5) //size of tick mark, not text
     .tickFormat((d) =>{
       let f = d3.format(".2s");
       return (`${f(d)}$`)
     })
     .ticks(4);
 
-  //SVG for the labeling
   legendSVG
     .attrs({
       "height": (resizedHeight) + "px",
@@ -128,10 +131,12 @@ function buildStateLegend(selector_id, colorscale) {
     .append("g")
     .attrs({
       "class": "legendAxis",
-      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",5)"
-    })// + (margin.top) + ")")
+      "transform": "translate(" + (legendwidth - margin.left - margin.right + 3) + ",-10)"
+    })
     .call(legendaxis);
 };
+
+let incomeExtent;
 
 // color 
 let lvl = {
@@ -144,12 +149,13 @@ let lvl = {
 const income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 
 let fancyData = [];
+
 //categorical coloring option
-// const income_color = d3.scaleThreshold()
+// const legendColorScale = d3.scaleThreshold()
 //     .domain(income_domain)
 //     .range(d3.schemeReds[5]);
 
-const income_color = d3.scaleSequential(d3.interpolateGreens)
+const legendColorScale = d3.scaleSequential(d3.interpolateGreens)
     .domain([28901,116935])
 
 const incomeData = d3.map();
@@ -165,7 +171,7 @@ let colorRatio = {
 
 /*
 
-  Bar Chart
+  Bar Chart prep
 
 */
 
@@ -176,16 +182,11 @@ const barVars = {
   margin : { left: 60, right: 20, top: 20, bottom: 100 }
 };
 
-//Bar Chart X-Scale, horizontalScale
-const barXScale = d3.scaleBand()
-  .paddingInner(0.3)
-  .paddingOuter(0.2);
-
 // //Bar Y-Scale, verticalScale
 const barYScale = d3.scaleLinear();
 const yTicks = 5;  
 
-let {barDiv, barSVG, barGObj, bars} = selectElements();
+let {barDiv, barSVG, barGObj, bars, legendDiv} = selectElements();
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
 
@@ -209,40 +210,32 @@ barGObj.attrs({
 const xAxisG = createXAxisG(barGObj, 'xAxisClass', heightLessMargins)
 const yAxisG = createYAxisG(barGObj, 'yAxisClass');
 
-
-// asynchronous tasks, load topojson maps and data
-d3.queue()
-  .defer(d3.json, "riTowns.json")
-  .defer(d3.csv, "data.csv", function(d) { 
-    if (isNaN(d.income)) {
-        incomeData.set(d.id, 0); 
-    } else {
-        incomeData.set(d.id, +d.income)
-    }
-      let thisObj = {
-      'town' : d.town,
-      'income':+d.income
-      }
-      fancyData.push(thisObj);
-    return d;
-  })
-  .await(ready);
-
-
-d3.select(window)
-      .on("resize", resizeCharts);
-
-
+//make state SVG wrapper
 const stateSVG = appendSVGTODiv("#stateImage",'income');
 
+//make state G wrapper
 const stateG = stateSVG.append("g").attr('class','stateG');
+
+//Bar Chart X-Scale, horizontalScale
+const barXScale = d3.scaleBand()
+  .paddingInner(0.3)
+  .paddingOuter(0.2);
 
 // X-AXIS
 //via D3
-const d3xAxis = d3.axisBottom()
-  .scale(barXScale)
-  .tickPadding(15)
-  .tickSize(-heightLessMargins);
+function makeXAxis(scale,h){
+  return d3.axisBottom()
+    .scale(scale)
+    .tickPadding(15)
+    .tickSize(-h);
+}
+
+
+const d3xAxis = makeXAxis(barXScale, heightLessMargins);
+// d3.axisBottom()
+//   .scale(barXScale)
+//   .tickPadding(15)
+//   .tickSize(-heightLessMargins);
 
 // Y-AXIS
 //via D3
@@ -256,76 +249,120 @@ const d3yAxis = d3.axisLeft()
   })
   .tickSize(-widthLessMargins);
 
+const legendSVG = d3.select(legendDiv).append("svg");
+
+const margin = {top: 20, right: 60, bottom: 0, left: 2};
+let resizedWidth = legendDiv.clientWidth;
+let resizedHeight = legendDiv.clientHeight;
+
+
+// asynchronous tasks, load topojson maps and data
+d3.queue()
+  .defer(d3.json, "riTowns.json")
+  .defer(d3.csv, "data.csv", function(d) { 
+    if (isNaN(d.income)) {
+        incomeData.set(d.id, 0); 
+    } else {
+        incomeData.set(d.id, +d.income)
+    }
+
+    if(d.town == 'Central Falls' 
+      || d.town == 'Woonsocket'
+       || d.town == 'Providence'
+        || d.town == 'Barrington'
+        || d.town == 'East Greenwich'
+        || d.town == 'Jamestown'){
+      
+      let thisObj = {
+        'town' :d.town,
+        'income':+d.income
+      }
+
+      fancyData.push(thisObj);
+    }
+      
+      return d;
+  })
+  .await(ready);
+
+
+d3.select(window)
+      .on("resize", resizeCharts);
+
+
+
+
 function ready(error, data) {
     if (error) throw error;
-
-    // fancyData.sort((a,b) => b.income - a.income);
-
-    // console.log('fancyData ->',fancyData);
     
-    let incomeExtent = getIncomeExtent(fancyData);
-    console.log(`income extent ${incomeExtent}`);
+    const greenColorScale = makeColorScale(d3.interpolateGreens, [28901,116935]);
+
+    incomeExtent = getIncomeExtent(fancyData);
+    
+    fancyData.sort((a,b) => b.income - a.income);
+
+
     /*
 
     BarChart
 
     */
 
-    //Scales & Axis
-    // barXScale
-    //   .domain(fancyData.map(d => d.town))
-    //   .range([0,widthLessMargins]);
+   // Scales & Axis
+    barXScale
+      .domain(fancyData.map(d => d.town))
+      .range([0,widthLessMargins]);
 
-    // barYScale
-    //   .domain([0, incomeExtent[1]])
-    //   .range([heightLessMargins, barVars.margin.top]);
+    barYScale
+      .domain([0, (incomeExtent[1] * 1.1)])
+      .range([heightLessMargins, barVars.margin.top]);
 
-    //   xAxisG.call(d3xAxis)
-    //     .selectAll('.tick line').remove();
-    //   xAxisG.selectAll('.tick text')
-    //     .attrs({
-    //       'transform': 'rotate(-45)',
-    //       'text-anchor': 'end',
-    //       'alignment-baseline':'middle',
-    //       'x': -5,
-    //       'y': 15,
-    //       'dy':0
-    //     }) 
+      xAxisG.call(d3xAxis)
+        .selectAll('.tick line').remove();
+      xAxisG.selectAll('.tick text')
+        .attrs({
+          'transform': 'rotate(-45)',
+          'text-anchor': 'end',
+          'alignment-baseline':'middle',
+          'x': -5,
+          'y': 15,
+          'dy':0
+        }) 
 
-    //   yAxisG.call(d3yAxis)
-    //     .selectAll('.tick line')
-    //     .attr('stroke-dasharray','1, 5');
+      yAxisG.call(d3yAxis)
+        .selectAll('.tick line')
+        .attr('stroke-dasharray','1, 5');
 
-    // //BARS
-    // bars.data(fancyData)
-    //   .enter().append('rect')
-    //     .attrs({
-    //       'x' : d => barXScale(d.town),
-    //       'y' : d => barYScale(d.income),
-    //       'width' : d => barXScale.bandwidth(),
-    //       'height' : d => heightLessMargins - barYScale(d.income),
-    //       'fill' : d => greenColorScale(d.income),
-    //       'class':'barClass'
-    //     });
+    //BARS
+    bars.data(fancyData)
+      .enter().append('rect')
+        .attrs({
+          'x' : d => barXScale(d.town),
+          'y' : d => barYScale(d.income),
+          'width' : d => barXScale.bandwidth(),
+          'height' : d => heightLessMargins - barYScale(d.income),
+          'fill' : d => greenColorScale(d.income),
+          'class':'barClass'
+        });
 
-    // //bar label
-    // barSVG.selectAll(".text")
-    //   .data(fancyData)
-    //   .enter()
-    //   .append("text")
-    //   .text(function (d) {
-    //     let f = d3.format(".2s");
-    //     return (d.income == "250001") 
-    //         ? `$250K+` 
-    //         :`≈ $${f(d.income)}`; 
-    //   })
-    //   .attrs({
-    //     "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
-    //     "y": function (d) { return barYScale(d.income)},
-    //     // "text-anchor": "middle",
-    //     "class":"barText"
-    //   })
-    //   .style("fill", "white");
+    //bar label
+    barSVG.selectAll(".text")
+      .data(fancyData)
+      .enter()
+      .append("text")
+      .text(function (d) {
+        let f = d3.format(".2s");
+        return (d.income == "250001") 
+            ? `$250K+` 
+            :`≈ $${f(d.income)}`; 
+      })
+      .attrs({
+        "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
+        "y": function (d) { return barYScale(d.income)},
+        // "text-anchor": "middle",
+        "class":"barText"
+      })
+      .style("fill", "white");
 
     /*
 
@@ -357,7 +394,7 @@ function ready(error, data) {
             const townGeoID = incomeData.get(d.properties.GEOID);
             return (
                 townGeoID != 0 ?
-                income_color(townGeoID) : 
+                legendColorScale(townGeoID) : 
                 "none"
                 )
           }
@@ -369,6 +406,8 @@ function ready(error, data) {
         .text(function(d) {
             return d.properties.NAME10;
         });
+
+    buildStateLegend(legendDiv, greenColorScale, incomeExtent);
 }
 
 function resizeCharts() {
@@ -413,15 +452,3 @@ function resizeCharts() {
         "y": d => ( barYScale(d.income) )
       })
 }
-
-const legendDiv = document.getElementById("legendContainer");
-const legendSVG = d3.select(legendDiv).append("svg");
-
-const margin = {top: 20, right: 60, bottom: 0, left: 2};
-let resizedWidth = legendDiv.clientWidth;
-let resizedHeight = legendDiv.clientHeight;
-
-
-const greenColorScale = makeColorScale(d3.interpolateGreens, [31375,251000]);
-
-buildStateLegend(legendDiv, greenColorScale);
