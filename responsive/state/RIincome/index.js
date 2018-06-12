@@ -405,10 +405,7 @@ function ready(error, data) {
     // title
     d3.select("svg.income").selectAll("path")
         .append("title")
-        .text(function(d) {
-          console.log('text d ->',d.properties);
-            return d.properties.NAME;
-        });
+        .text(d => d.properties.NAME);
 
     buildStateLegend(legendDiv, greenColorScale, incomeExtent);
 }
