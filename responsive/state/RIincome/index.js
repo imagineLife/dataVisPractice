@@ -89,7 +89,7 @@ function makeLegendAxisObj(scale){
     let f = d3.format(".2s");
     return (`${f(d)}$`)
   })
-  .ticks(4);
+  .ticks(6);
 }
 
 // create continuous color legend
@@ -406,7 +406,8 @@ function ready(error, data) {
     d3.select("svg.income").selectAll("path")
         .append("title")
         .text(function(d) {
-            return d.properties.NAME10;
+          console.log('text d ->',d.properties);
+            return d.properties.NAME;
         });
 
     buildStateLegend(legendDiv, greenColorScale, incomeExtent);
