@@ -5,6 +5,7 @@
 
 body{
   margin: 5px;
+  font-size: 20px;
 }
 
 div{
@@ -144,6 +145,14 @@ p{
   width: fit-content;
 }
 
+.minMaxWrapper{
+  margin: 50px 0;
+}
+
+.minWrapper, .maxWrapper{
+  padding: 50px 0;
+}
+
 @media only screen and (min-width: 435px) {
   .barText{
     visibility: unset;
@@ -164,10 +173,5 @@ p{
   .maxWrapper{
     float: right;
   }
-
-  .minMaxWrapper{
-    margin: 25px 0;
-  }
-
 
 }
