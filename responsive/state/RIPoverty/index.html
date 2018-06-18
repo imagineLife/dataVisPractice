@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../../d3.v4.min.js"></script>
+    <script src="../../../d3-selection-multi.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
+    <script src="https://d3js.org/topojson.v2.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="../../normalizeReset.css">
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>RI Town-By-Town Poverty</title>
+  </head>
+  <body onload="resizeCharts()">
+
+    <div id="parentWrapper">
+      
+      <div class="visualSection">
+        
+        <div class="visualHeader">
+          <h1>Rhode Islands's Estimated Poverty</h1>
+          <small><i>As Of 2016</i></small>
+        </div>
+        
+        <div class="imagesWrapper">
+          
+          <div class="group stateWrapper">
+            <h2 class="littleHeader">Poverty By Town</h2>
+            <div id="stateImage"></div>
+          </div>
+          
+          <div class="group legendWrapper">
+            <h2 class="littleHeader">Scale</h2>
+            <div id="legendContainer"></div>
+          </div>
+        
+        </div>
+            
+      </div>
+
+      <div class="textSection">
+        <h2>Poverty At A Glance</h2>
+       
+        <div class="meaningText">
+            <div class="minMaxWrapper">
+              <div class="minWrapper">
+                <h3 class="minMaxHeader">The Minimum</h3>
+                <p>Test <br>
+                <b class="importantText">MicCheck</b></p>
+              </div>
+              
+              <div class="maxWrapper">  
+                <h3 class="minMaxHeader">The Maximum</h3>
+                <p>Test <br>
+                <b class="importantText">MicCheck</b></p>
+              </div>
+            </div>
+          
+          <h3>A Brief Look At The Range</h3>
+          <p>The town with the lowest median family income is estimated at <b class="incomeRange">$88,034</b> less than the town with the highest median family income.</p>
+          <div id="rangeBar"></div>
+        </div>
+
+      </div>
+   
+    </div>  
+
+
+    <script type="text/javascript" src="index.js"></script>
+  
+  </body>
+</html>
