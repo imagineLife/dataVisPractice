@@ -113,8 +113,16 @@ function attachXAxis (parent, axisObj){
   .selectAll('.tick line').remove();
 }
 
+function getTop5FromArr(arr){
+  for(let i = 0; i < 5; i++){
+    top5Arr.push(arr[i])
+  }
+}
+
 var format = d3.format(".2s");
 var povertyArr = [];
+var top5Arr = [];
+
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale, ext) {
 
@@ -306,6 +314,9 @@ function ready(error, data) {
 
     let povertyExtentObjs = [povertyMin, povertyMax];
 
+    getTop5FromArr(povertyArr);
+
+    console.log(top5Arr)
     povertyExtent = getPovertyValuesExtent(povertyExtentObjs);
     
     const redColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
