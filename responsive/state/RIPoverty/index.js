@@ -108,6 +108,11 @@ function parseValsToInts(d){
         }
 }
 
+function attachXAxis (parent, axisObj){
+  return  parent.call(axisObj)
+  .selectAll('.tick line').remove();
+}
+
 var format = d3.format(".2s");
 var povertyArr = [];
 // create continuous color legend
@@ -300,21 +305,12 @@ function ready(error, data) {
     let povertyMin = povertyArr[povertyArr.length - 1], povertyMax = povertyArr[0];
 
     let povertyExtentObjs = [povertyMin, povertyMax];
-    console.log('povertyExtentObjs')
-    console.log(povertyExtentObjs);
 
     povertyExtent = getPovertyValuesExtent(povertyExtentObjs);
-
-    console.log('povertyExtent values->',povertyExtent);
-
-    let minPovertyVal = povertyExtent[0];
-    let maxPovertyVal = povertyExtent[povertyExtent.length -1]
-    console.log(`minPoverty ${minPovertyVal} max -> ${maxPovertyVal}`);
     
     const redColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
 
-    const legendColorScale = d3.scaleSequential(d3.interpolateReds)
-    .domain(povertyExtent)
+    const legendColorScale = d3.scaleSequential(d3.interpolateReds).domain(povertyExtent)
 
     /*
 
@@ -331,8 +327,7 @@ function ready(error, data) {
       .domain([0, (povertyExtent[1] * 1.1)])
       .range([heightLessMargins, barVars.margin.top]);
 
-      xAxisG.call(d3xAxis)
-        .selectAll('.tick line').remove();
+      attachXAxis(xAxisG, d3xAxis);
 
       var xTicksNice = designTickText(xAxisG,'-5',15,0);
 
@@ -440,11 +435,9 @@ function resizeCharts() {
       'width' : d => barXScale.bandwidth()
     });
 
-    d3.select("g")
-      .attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
+    d3.select("g").attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
    
-    d3.select('.poverty')
-      .attr('height',stateContainer.clientWidth*0.8);
+    d3.select('.poverty').attr('height',stateContainer.clientWidth*0.9);
 
     d3.selectAll(".barText")
       .attrs({
