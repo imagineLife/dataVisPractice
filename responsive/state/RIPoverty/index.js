@@ -115,7 +115,7 @@ var povertyArr = [];
 function buildStateLegend(selector_id, colorscale, ext) {
 
   const selection = selector_id ? selector_id : legendDiv;
-  const colorScale = colorscale ? colorscale :  greenColorScale;
+  const colorScale = colorscale ? colorscale :  redColorScale;
 
   const legendheight = 275, legendwidth = 80;
 
@@ -318,10 +318,9 @@ function ready(error, data) {
     
     povertyExtent = getPovertyExtent(povertyArr);
     
-    console.log('povertyArr ->',povertyArr);
-    const greenColorScale = makeColorScale(d3.interpolateGreens, povertyExtent);
+    const redColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
 
-    const legendColorScale = d3.scaleSequential(d3.interpolateGreens)
+    const legendColorScale = d3.scaleSequential(d3.interpolateReds)
     .domain(povertyExtent)
 
     /*
@@ -356,7 +355,7 @@ function ready(error, data) {
           'y' : d => barYScale(d.percentBelowPoverty),
           'width' : d => barXScale.bandwidth(),
           'height' : d => heightLessMargins - barYScale(d.percentBelowPoverty),
-          'fill' : d => greenColorScale(d.percentBelowPoverty),
+          'fill' : d => redColorScale(d.percentBelowPoverty),
           'class':'barClass'
         });
 
@@ -414,7 +413,7 @@ function ready(error, data) {
         .append("title")
         .text(d => d.properties.NAME);
 
-    buildStateLegend(legendDiv, greenColorScale, povertyExtent);
+    buildStateLegend(legendDiv, redColorScale, povertyExtent);
 }
 
 function resizeCharts() {
