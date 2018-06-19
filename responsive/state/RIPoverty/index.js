@@ -374,11 +374,9 @@ function ready(error, data) {
     });
 
     // projection and path
-    const projection = d3.geoAlbersUsa()
-        .fitExtent([[0,0], [750, 625]], rhodeIsland);
+    const projection = d3.geoAlbersUsa().fitExtent([[0,0], [750, 625]], rhodeIsland);
 
-    const geoPath = d3.geoPath()
-        .projection(projection);
+    const geoPath = d3.geoPath().projection(projection);
 
     // draw rhodeIsland map and bind poverty data
     stateG.selectAll(".towns")
@@ -398,9 +396,7 @@ function ready(error, data) {
         });
     
     // title
-    d3.select("svg.poverty").selectAll("path")
-        .append("title")
-        .text(d => d.properties.NAME);
+    d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
 
     buildStateLegend(legendDiv, redColorScale, povertyExtent);
 }
