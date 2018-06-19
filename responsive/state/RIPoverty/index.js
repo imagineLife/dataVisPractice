@@ -104,7 +104,7 @@ function parseValsToInts(d){
     return {
         'town': d.town,
         'belowPoverty': +d.belowPoverty,
-        'belowPoverty': +d.belowPoverty
+        'percentBelow': +d.percentBelow
         }
 }
 
@@ -279,7 +279,7 @@ d3.queue()
     if (isNaN(d.belowPoverty)) {
         d3PovertyObj.set(d.id, 0); 
     } else {
-        d3PovertyObj.set(d.id, +d.belowPoverty)
+        d3PovertyObj.set(d.id, +d.belowPoverty, +d.percentBelow)
     }
 
     if(+d.belowPoverty > 0){
@@ -287,7 +287,7 @@ d3.queue()
         povertyArr.push(thisObjParsed);
     }
       
-      return d;
+    return d;
   })
   .await(ready);
 
@@ -398,6 +398,7 @@ function ready(error, data) {
     // title
     d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
 
+    //builds state-legend
     buildStateLegend(legendDiv, redColorScale, povertyExtent);
 }
 
