@@ -61,8 +61,8 @@ function buildLegendScale(h, dom){
     .domain(dom);
 }
 
-function getPovertyExtent(data){
-  let arr = d3.extent(data, d => d.percentBelowPoverty)
+function getPovertyValuesExtent(data){
+  let arr = d3.extent(data, d => d.belowPoverty)
   return arr;
 }
 
@@ -103,9 +103,9 @@ function designTickText(obj,xP,yP,dyP){
 
 function parseValsToInts(d){
     return {
-        id: d.id,
+        'town': d.town,
         'belowPoverty': +d.belowPoverty,
-        'percentBelowPoverty': +d.percentBelowPoverty
+        'belowPoverty': +d.belowPoverty
         }
 }
 
@@ -276,10 +276,10 @@ let resizedHeight = legendDiv.clientHeight;
 d3.queue()
   .defer(d3.json, "riTowns.json")
   .defer(d3.csv, "data.csv", function(d) {
-    if (isNaN(d.percentBelowPoverty)) {
+    if (isNaN(d.belowPoverty)) {
         d3PovertyObj.set(d.id, 0); 
     } else {
-        d3PovertyObj.set(d.id, +d.percentBelowPoverty)
+        d3PovertyObj.set(d.id, +d.belowPoverty)
     }
 
     // if(d.town == 'Central Falls' 
@@ -297,7 +297,7 @@ d3.queue()
     //   fancyData.push(thisObj);
     // }
 
-    if(+d.percentBelowPoverty > 0){
+    if(+d.belowPoverty > 0){
         let thisObjParsed = parseValsToInts(d);
         povertyArr.push(thisObjParsed);
     }
@@ -316,7 +316,17 @@ d3.select(window)
 function ready(error, data) {
     if (error) throw error;
     
-    povertyExtent = getPovertyExtent(povertyArr);
+    povertyArr.sort((a,b) => b.belowPoverty - a.belowPoverty);
+    console.log(`povertArr first`)
+    console.log(povertyArr[0]);
+
+    console.log(`povertArr LAST`)
+    console.log(povertyArr[povertyArr.length - 1 ]);
+
+    povertyExtent = getPovertyValuesExtent(povertyArr);
+    let minPovertyVal = povertyExtent[0];
+    let maxPovertyVal = povertyExtent[povertyExtent.length -1]
+    console.log(`minPoverty ${minPovertyVal} max -> ${maxPovertyVal}`);
     
     const redColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
 
@@ -352,10 +362,10 @@ function ready(error, data) {
       .enter().append('rect')
         .attrs({
           'x' : d => barXScale(d.town),
-          'y' : d => barYScale(d.percentBelowPoverty),
+          'y' : d => barYScale(d.belowPoverty),
           'width' : d => barXScale.bandwidth(),
-          'height' : d => heightLessMargins - barYScale(d.percentBelowPoverty),
-          'fill' : d => redColorScale(d.percentBelowPoverty),
+          'height' : d => heightLessMargins - barYScale(d.belowPoverty),
+          'fill' : d => redColorScale(d.belowPoverty),
           'class':'barClass'
         });
 
@@ -364,10 +374,10 @@ function ready(error, data) {
       .data(fancyData)
       .enter()
       .append("text")
-      .text((d) => `≈ $${format(d.percentBelowPoverty)}`)
+      .text((d) => `≈ $${format(d.belowPoverty)}`)
       .attrs({
         "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
-        "y": function (d) { return barYScale(d.percentBelowPoverty)},
+        "y": function (d) { return barYScale(d.belowPoverty)},
         "class":"barText"
       })
       .style("fill", "white");
@@ -442,7 +452,7 @@ function resizeCharts() {
     //Update Bars
     d3.selectAll('.barClass').attrs({
       'x' : d => barXScale(d.town),
-      'y' : d => barYScale(d.percentBelowPoverty),
+      'y' : d => barYScale(d.belowPoverty),
       'width' : d => barXScale.bandwidth()
     });
 
@@ -455,6 +465,6 @@ function resizeCharts() {
     d3.selectAll(".barText")
       .attrs({
         "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
-        "y": d => ( barYScale(d.percentBelowPoverty) )
+        "y": d => ( barYScale(d.belowPoverty) )
       })
 }
