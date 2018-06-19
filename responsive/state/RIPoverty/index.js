@@ -62,8 +62,7 @@ function buildLegendScale(h, dom){
 }
 
 function getPovertyValuesExtent(data){
-  let arr = d3.extent(data, d => d.belowPoverty)
-  return arr;
+  return d3.extent(data, d => d.belowPoverty)
 }
 
 function makeColorScale(interpolation, extent){
@@ -85,7 +84,7 @@ function makeLegendAxisObj(scale){
   return d3.axisRight()
   .scale(scale)
   .tickSize(5) //size of tick mark, not text
-  .tickFormat((d) =>(`${format(d)}%`))
+  .tickFormat((d) =>(`${format(d)}`))
   .ticks(6);
 }
 
@@ -175,11 +174,7 @@ let lvl = {
 
 const poverty_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 
-let fancyData = [];
-
-
 const d3PovertyObj = d3.map();
-
 
 let colorRatio = {
     "level1": 0,
@@ -261,7 +256,7 @@ const d3yAxis = d3.axisLeft()
   .tickPadding(15)
   .tickFormat((d) =>{
     let f = d3.format(".2s");
-    return (`${f(d)}%`)
+    return (`${f(d)}`)
   })
   .tickSize(-widthLessMargins);
 
@@ -281,21 +276,6 @@ d3.queue()
     } else {
         d3PovertyObj.set(d.id, +d.belowPoverty)
     }
-
-    // if(d.town == 'Central Falls' 
-    //   || d.town == 'Woonsocket'
-    //    || d.town == 'Providence'
-    //     || d.town == 'Barrington'
-    //     || d.town == 'East Greenwich'
-    //     || d.town == 'Jamestown'){
-      
-    //   let thisObj = {
-    //     'town' :d.town,
-    //     'belowPoverty':+d.belowPoverty
-    //   }
-
-    //   fancyData.push(thisObj);
-    // }
 
     if(+d.belowPoverty > 0){
         let thisObjParsed = parseValsToInts(d);
@@ -317,13 +297,16 @@ function ready(error, data) {
     if (error) throw error;
     
     povertyArr.sort((a,b) => b.belowPoverty - a.belowPoverty);
-    console.log(`povertArr first`)
-    console.log(povertyArr[0]);
+    let povertyMin = povertyArr[povertyArr.length - 1], povertyMax = povertyArr[0];
 
-    console.log(`povertArr LAST`)
-    console.log(povertyArr[povertyArr.length - 1 ]);
+    let povertyExtentObjs = [povertyMin, povertyMax];
+    console.log('povertyExtentObjs')
+    console.log(povertyExtentObjs);
 
-    povertyExtent = getPovertyValuesExtent(povertyArr);
+    povertyExtent = getPovertyValuesExtent(povertyExtentObjs);
+
+    console.log('povertyExtent values->',povertyExtent);
+
     let minPovertyVal = povertyExtent[0];
     let maxPovertyVal = povertyExtent[povertyExtent.length -1]
     console.log(`minPoverty ${minPovertyVal} max -> ${maxPovertyVal}`);
@@ -341,7 +324,7 @@ function ready(error, data) {
 
    // Scales & Axis
     barXScale
-      .domain(fancyData.map(d => d.town))
+      .domain(povertyExtentObjs.map(d => d.town))
       .range([0,widthLessMargins]);
 
     barYScale
@@ -358,7 +341,7 @@ function ready(error, data) {
         .attr('stroke-dasharray','1, 5');
 
     //BARS
-    bars.data(fancyData)
+    bars.data(povertyExtentObjs)
       .enter().append('rect')
         .attrs({
           'x' : d => barXScale(d.town),
@@ -371,13 +354,14 @@ function ready(error, data) {
 
     //bar label
     barSVG.selectAll(".text")
-      .data(fancyData)
+      .data(povertyExtentObjs)
       .enter()
       .append("text")
-      .text((d) => `≈ $${format(d.belowPoverty)}`)
+      .text((d) => `${d.belowPoverty}`)
       .attrs({
-        "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
+        "x": d => ( barXScale(d.town) + (barXScale.bandwidth() / 1.5) ),
         "y": function (d) { return barYScale(d.belowPoverty)},
+        "text-anchor": 'middle',
         "class":"barText"
       })
       .style("fill", "white");
@@ -464,7 +448,7 @@ function resizeCharts() {
 
     d3.selectAll(".barText")
       .attrs({
-        "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
+        "x": d => ( barXScale(d.town) + (barXScale.bandwidth() / 1.5) ),
         "y": d => ( barYScale(d.belowPoverty) )
       })
 }
