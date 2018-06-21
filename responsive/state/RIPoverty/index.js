@@ -1,12 +1,20 @@
 function selectElements(){
   // D3 select The elements & convert to vars
   const barDiv = document.getElementById("rangeBar");
+  const top5BarDiv = document.getElementById("top5Bar");
+
   const barSVG = d3.select(barDiv).append("svg");
+  const top5barSVG = d3.select(top5BarDiv).append("svg");
+
   const barGObj = barSVG.append('g');
+  const top5barGObj = top5barSVG.append('g');
+
   const bars = barGObj.selectAll('rect');
+  const top5bars = top5barGObj.selectAll('rect');
+
   const legendDiv = document.getElementById("legendContainer");
 
-  return  {barDiv, barSVG, barGObj, bars, legendDiv};
+  return  {barDiv, barSVG, barGObj, bars, legendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars};
 };
 
 function appendSVGTODiv(DivClass, className){
@@ -61,13 +69,8 @@ function buildLegendScale(h, dom){
     .domain(dom);
 }
 
-function getPovertyValuesExtent(data){
-  return d3.extent(data, d => d.belowPoverty)
-}
-
 function makeColorScale(interpolation, extent){
-  return d3.scaleSequential(interpolation)
-.domain(extent)
+  return d3.scaleSequential(interpolation).domain(extent)
 }
 
 function addAxisToSVG(parent, x, y, axisObj){
@@ -119,15 +122,40 @@ function getTop5FromArr(arr){
   }
 }
 
+// X-AXIS
+//via D3
+function makeXAxis(scale,h){
+  return d3.axisBottom()
+    .scale(scale)
+    .tickPadding(15)
+    .tickSize(-h);
+}
+
+function buildAndColorTowns(towns, state, data, dataObj, colorScale){
+  return towns.data(state.features)
+  .enter().append("path")
+  .attrs({
+    "class": "towns",        
+    "d": data,
+    "fill": (d) => { 
+      const townGeoID = dataObj.get(d.properties.GEOID);
+      return (
+          townGeoID != 0 ?
+          colorScale(townGeoID) : 
+          "none"
+          )
+    }
+  });
+}
+
 var format = d3.format(".2s");
-var povertyArr = [];
-var top5Arr = [];
+var povertyArr = [], percentArr = [], top5Arr = [];
 
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale, ext) {
 
   const selection = selector_id ? selector_id : legendDiv;
-  const colorScale = colorscale ? colorscale :  redColorScale;
+  const colorScale = colorscale ? colorscale :  belowPovertyColorScale;
 
   const legendheight = 275, legendwidth = 80;
 
@@ -175,7 +203,7 @@ function buildStateLegend(selector_id, colorscale, ext) {
 
 };
 
-let povertyExtent;
+let povertyExtent, percentExtent;
 
 // color 
 let lvl = {
@@ -212,9 +240,11 @@ const barVars = {
 
 // //Bar Y-Scale, verticalScale
 const barYScale = d3.scaleLinear();
+const top5YScale = d3.scaleLinear();
 const yTicks = 5;  
 
-let {barDiv, barSVG, barGObj, bars, legendDiv} = selectElements();
+let {barDiv, barSVG, barGObj, bars, legendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars} = selectElements();
+
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
 
@@ -228,38 +258,53 @@ barSVG.attrs({
   "class" : 'barWrapper'
 });
 
-// //attach a g to the svg
+//set top5 barSVG height & width
+top5barSVG.attrs({
+  "width" : resizedBarWidth,
+  "height" : resizedBarHeight,
+  "class" : 'top5barWrapper'
+});
+
+//attach a g to the svg
 barGObj.attrs({
   'transform':`translate(${barVars.margin.left},${barVars.margin.top})`,
   'class': 'gWrapper'
+});
+
+//attach a g to the top5BarSvg
+top5barGObj.attrs({
+  'transform':`translate(${barVars.margin.left},${barVars.margin.top})`,
+  'class': 'top5gWrapper'
 });
 
 //Make bar axis
 const xAxisG = createXAxisG(barGObj, 'xAxisClass', heightLessMargins)
 const yAxisG = createYAxisG(barGObj, 'yAxisClass');
 
+//Make bar axis
+const top5xAxisG = createXAxisG(top5barGObj, 'xAxisClass', heightLessMargins)
+const top5yAxisG = createYAxisG(top5barGObj, 'yAxisClass');
+
 //make state SVG wrapper
-const stateSVG = appendSVGTODiv("#stateImage",'poverty');
+const belowPovertyStageSVG = appendSVGTODiv("#belowPovertyState",'poverty');
+const percentBelowStateSVG = appendSVGTODiv("#percentBelowState",'percentBelow');
 
 //make state G wrapper
-const stateG = stateSVG.append("g").attr('class','stateG');
+const stateG = belowPovertyStageSVG.append("g").attr('class','stateG');
 
 //Bar Chart X-Scale, horizontalScale
-const barXScale = d3.scaleBand()
+const minMaxXScale = d3.scaleBand()
   .paddingInner(0.3)
   .paddingOuter(0.2);
 
-// X-AXIS
-//via D3
-function makeXAxis(scale,h){
-  return d3.axisBottom()
-    .scale(scale)
-    .tickPadding(15)
-    .tickSize(-h);
-}
+//Bar Chart X-Scale, horizontalScale
+const top5XScale = d3.scaleBand()
+  .paddingInner(0.3)
+  .paddingOuter(0.2);
 
+const d3MinMaxXAxis = makeXAxis(minMaxXScale, heightLessMargins);
 
-const d3xAxis = makeXAxis(barXScale, heightLessMargins);
+const d3Top5XAxis = makeXAxis(top5XScale, heightLessMargins);
 
 // Y-AXIS
 //via D3
@@ -293,6 +338,7 @@ d3.queue()
     if(+d.belowPoverty > 0){
         let thisObjParsed = parseValsToInts(d);
         povertyArr.push(thisObjParsed);
+        percentArr.push(thisObjParsed);
     }
       
     return d;
@@ -309,40 +355,60 @@ d3.select(window)
 function ready(error, data) {
     if (error) throw error;
     
-    povertyArr.sort((a,b) => b.belowPoverty - a.belowPoverty);
-    let povertyMin = povertyArr[povertyArr.length - 1], povertyMax = povertyArr[0];
-
+    const sortedPoverty = povertyArr.sort((a,b) => b.belowPoverty - a.belowPoverty);
+    let povertyMin = sortedPoverty[sortedPoverty.length - 1], povertyMax = sortedPoverty[0];
     let povertyExtentObjs = [povertyMin, povertyMax];
+    povertyExtent = d3.extent(povertyExtentObjs, d => d.belowPoverty);
+
+    const percentSorted = percentArr.sort((a,b) => b.percentBelow - a.percentBelow);
+    let percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
+    let percentExtentObjs = [percentMin, percentMax];
+    percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
+    const percentageColorScale = makeColorScale(d3.interpolateReds, percentExtent);
+
 
     getTop5FromArr(povertyArr);
-
-    console.log(top5Arr)
-    povertyExtent = getPovertyValuesExtent(povertyExtentObjs);
     
-    const redColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
+    const belowPovertyColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
+    const povertyPercentageColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
 
     const legendColorScale = d3.scaleSequential(d3.interpolateReds).domain(povertyExtent)
 
     /*
 
-    BarChart
+    Min & Max BarChart
 
     */
 
    // Scales & Axis
-    barXScale
+    minMaxXScale
       .domain(povertyExtentObjs.map(d => d.town))
+      .range([0,widthLessMargins]);
+
+       // Scales & Axis
+    top5XScale
+      .domain(top5Arr.map(d => d.town))
       .range([0,widthLessMargins]);
 
     barYScale
       .domain([0, (povertyExtent[1] * 1.1)])
       .range([heightLessMargins, barVars.margin.top]);
 
-      attachXAxis(xAxisG, d3xAxis);
+    top5YScale
+      .domain([0, (top5Arr[0]["belowPoverty"] * 1.1)])
+      .range([heightLessMargins, barVars.margin.top]);
+
+      attachXAxis(xAxisG, d3MinMaxXAxis);
+      attachXAxis(top5xAxisG, d3Top5XAxis);
 
       var xTicksNice = designTickText(xAxisG,'-5',15,0);
+      var top5XTicksNice = designTickText(top5xAxisG,'-5',15,0);
 
       yAxisG.call(d3yAxis)
+        .selectAll('.tick line')
+        .attr('stroke-dasharray','1, 5');
+
+      top5yAxisG.call(d3yAxis)
         .selectAll('.tick line')
         .attr('stroke-dasharray','1, 5');
 
@@ -350,22 +416,52 @@ function ready(error, data) {
     bars.data(povertyExtentObjs)
       .enter().append('rect')
         .attrs({
-          'x' : d => barXScale(d.town),
+          'x' : d => minMaxXScale(d.town),
           'y' : d => barYScale(d.belowPoverty),
-          'width' : d => barXScale.bandwidth(),
+          'width' : d => minMaxXScale.bandwidth(),
           'height' : d => heightLessMargins - barYScale(d.belowPoverty),
-          'fill' : d => redColorScale(d.belowPoverty),
+          'fill' : d => belowPovertyColorScale(d.belowPoverty),
           'class':'barClass'
         });
 
+        //BARS
+    top5bars.data(top5Arr)
+      .enter().append('rect')
+        .attrs({
+          'x' : d => top5XScale(d.town),
+          'y' : d => top5YScale(+d.belowPoverty),
+          'width' : d => top5XScale.bandwidth(),
+          'height' : d => heightLessMargins - top5YScale(d.belowPoverty),
+          'fill' : d => belowPovertyColorScale(d.belowPoverty),
+          'class':'top5BarClass'
+        });
+
     //bar label
+
+    // function addLabelsTobars(barsObj, barData, textVal, xs, xVal, ys){
+    //   return barsObj.selectAll(".text")
+    //   .data(barData)
+    //   .enter()
+    //   .append("text")
+    //   .text((d) => textVal)
+    //   .attrs({
+    //     "x": d => ( xs(d.xVal) + (xs.bandwidth() / 1.5) ),
+    //     "y": function (d) { return ys(`d.${textVal}`)},
+    //     "text-anchor": 'middle',
+    //     "class":"barText"
+    //   })
+    //   .style("fill", "white");
+    // }
+
+    // addLabelsTobars(barSVG, povertyExtentObjs, 'd.belowPoverty', minMaxXScale, 'town', barYScale);
+
     barSVG.selectAll(".text")
       .data(povertyExtentObjs)
       .enter()
       .append("text")
       .text((d) => `${d.belowPoverty}`)
       .attrs({
-        "x": d => ( barXScale(d.town) + (barXScale.bandwidth() / 1.5) ),
+        "x": d => ( minMaxXScale(d.town) + (minMaxXScale.bandwidth() / 1.5) ),
         "y": function (d) { return barYScale(d.belowPoverty)},
         "text-anchor": 'middle',
         "class":"barText"
@@ -374,7 +470,7 @@ function ready(error, data) {
 
     /*
 
-    StateChart
+    BelowPoverty StateChart
 
     */        
 
@@ -386,31 +482,40 @@ function ready(error, data) {
 
     // projection and path
     const projection = d3.geoAlbersUsa().fitExtent([[0,0], [750, 625]], rhodeIsland);
-
     const geoPath = d3.geoPath().projection(projection);
 
-    // draw rhodeIsland map and bind poverty data
-    stateG.selectAll(".towns")
-        .data(rhodeIsland.features)
-        .enter().append("path")
-        .attrs({
-          "class": "towns",        
-          "d": geoPath,
-          "fill": (d) => { 
-            const townGeoID = d3PovertyObj.get(d.properties.GEOID);
-            return (
-                townGeoID != 0 ?
-                legendColorScale(townGeoID) : 
-                "none"
-                )
-          }
-        });
+    // D3 select towns
+    let stateTowns = stateG.selectAll(".towns");
+
+    //build the towns & color them
+    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, legendColorScale);
     
-    // title
+    // state town titles
     d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
 
     //builds state-legend
-    buildStateLegend(legendDiv, redColorScale, povertyExtent);
+    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent);
+
+    /*
+
+    PercentBelowPoverty
+    StateChart
+
+    */        
+
+
+
+    // D3 select towns
+    // let stateTowns = stateG.selectAll(".towns");
+
+    //build the towns & color them
+    // buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, legendColorScale);
+    
+    // state town titles
+    // d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
+
+    //builds state-legend
+    // buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent);
 }
 
 function resizeCharts() {
@@ -418,18 +523,23 @@ function resizeCharts() {
     var { resizeFnWidth, resizeFnHeight, lessMargins, resizedWidthLessMargins,resizedHeightLessMargins } = getResizeDimensions(barDiv, barVars.margin);
     
 
-    const stateContainer = document.getElementById('stateImage');
+    const stateContainer = document.getElementById('belowPovertyState');
     
     let resizebarDiv = barDiv.clientWidth;
     let rlm = resizebarDiv - barVars.margin.left - barVars.margin.right;
     barSVG.attr("width", resizeFnWidth);
 
-    barXScale.range([0,rlm]);
+    minMaxXScale.range([0,rlm]);
 
     //Update the X-AXIS
     xAxisG
       .attr('x', (widthLessMargins / 2))
-      .call(d3xAxis);
+      .call(d3MinMaxXAxis);
+
+    //Update the X-AXIS
+    top5xAxisG
+      .attr('x', (widthLessMargins / 2))
+      .call(d3Top5XAxis);
 
     d3.selectAll('.tick line')
       .attr('x2', resizedWidthLessMargins);
@@ -438,9 +548,9 @@ function resizeCharts() {
   
     //Update Bars
     d3.selectAll('.barClass').attrs({
-      'x' : d => barXScale(d.town),
+      'x' : d => minMaxXScale(d.town),
       'y' : d => barYScale(d.belowPoverty),
-      'width' : d => barXScale.bandwidth()
+      'width' : d => minMaxXScale.bandwidth()
     });
 
     d3.select("g").attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
@@ -449,7 +559,7 @@ function resizeCharts() {
 
     d3.selectAll(".barText")
       .attrs({
-        "x": d => ( barXScale(d.town) + (barXScale.bandwidth() / 1.5) ),
+        "x": d => ( minMaxXScale(d.town) + (minMaxXScale.bandwidth() / 1.5) ),
         "y": d => ( barYScale(d.belowPoverty) )
       })
 }
