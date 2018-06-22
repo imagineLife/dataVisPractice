@@ -171,9 +171,9 @@ function updateLegendStyle(legendsvg, heightVal, widthVal, className){
   .style("bottom", "0px")
 }
 
-function makeStateResponsive(stageGClass, parentDiv){
-  d3.select(stageGClass).attr('height',parentDiv.clientWidth*0.9);
-  d3.select(".BelowPovertyG").attr("transform", "scale(" + parentDiv.clientWidth/900 + ")");
+function makeStateResponsive(SVGClass, gWrapper, parentDiv){
+  d3.select(SVGClass).attr('height',parentDiv.clientWidth*0.9);
+  d3.select(gWrapper).attr("transform", "scale(" + parentDiv.clientWidth/900 + ")");
 }
 
 // create continuous color legend
@@ -279,7 +279,7 @@ const top5yAxisG = createYAxisG(top5barGObj, 'yAxisClass');
 
 //make state SVG wrapper
 const belowPovertyStageSVG = appendSVGTODiv("#totalDivWrapper",'povertyTotalSVG');
-const percentBelowStateSVG = appendSVGTODiv("#percentBelowState",'percentBelowSVG');
+const percentBelowStateSVG = appendSVGTODiv("#percentDivWrapper",'percentBelowSVG');
 
 //make state G wrappers
 const BelowPovertyG = belowPovertyStageSVG.append("g").attr('class','BelowPovertyG');
@@ -499,7 +499,7 @@ function resizeCharts() {
     
 
     const stateContainer = document.getElementById('totalDivWrapper');
-    const percentContainer = document.getElementById('percentBelowState');
+    const percentContainer = document.getElementById('percentDivWrapper');
     
     let resizebarDiv = barDiv.clientWidth;
     let top5BarResized = top5BarDiv.clientWidth;
@@ -544,8 +544,8 @@ function resizeCharts() {
       'width' : d => top5XScale.bandwidth()
     });
 
-    makeStateResponsive('.povertyTotalSVG', stateContainer)
-    makeStateResponsive('.percentBelowSVG', percentContainer)
+    makeStateResponsive('.povertyTotalSVG', '.BelowPovertyG', stateContainer)
+    makeStateResponsive('.percentBelowSVG', '.percentBelowG', percentContainer)
 
 
     d3.selectAll(".barText")
