@@ -176,6 +176,12 @@ function makeStateResponsive(SVGClass, gWrapper, parentDiv){
   d3.select(gWrapper).attr("transform", "scale(" + parentDiv.clientWidth/900 + ")");
 }
 
+function updateXAxis(axisGObj, w,axisObj){
+  axisGObj
+  .attr('x', (w / 2))
+  .call(axisObj);
+}
+    
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale, ext, canvasClass) {
 
@@ -511,22 +517,12 @@ function resizeCharts() {
     minMaxXScale.range([0,rlm]);
     top5XScale.range([0,rlm]);
 
-    //Update the X-AXIS
-    minMaxXAxisG
-      .attr('x', (widthLessMargins / 2))
-      .call(d3MinMaxXAxis);
+    updateXAxis(minMaxXAxisG, widthLessMargins, d3MinMaxXAxis);
+    updateXAxis(top5xAxisG, widthLessMargins, d3Top5XAxis);
 
-    //Update the X-AXIS
-    top5xAxisG
-      .attr('x', (widthLessMargins / 2))
-      .call(d3Top5XAxis);
+    d3.selectAll('.tick line').attr('x2', resizedWidthLessMargins);
 
-
-    d3.selectAll('.tick line')
-      .attr('x2', resizedWidthLessMargins);
-
-    d3.selectAll('.totalLegendAxis .tick line')
-      .attr('x2', 0);
+    d3.selectAll('.totalLegendAxis .tick line').attr('x2', 0);
 
     d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
