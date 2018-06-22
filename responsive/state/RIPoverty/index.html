@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../../../d3.v4.min.js"></script>
     <script src="../../../d3-selection-multi.min.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>    
-    <script src="https://d3js.org/topojson.v2.min.js"></script>    
+    <script src="../../../d3-scale-chromatic.js"></script>
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>     -->
+    <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
+    <script src="../../../topo-v2.js"></script>
     <link rel="stylesheet" type="text/css" href="../../normalizeReset.css">
     <link rel="stylesheet" type="text/css" href="../../dark.css">
     <link rel="stylesheet" type="text/css" href="index.css">
@@ -27,7 +29,7 @@
           
           <div class="group stateWrapper">
             <h2 class="littleHeader">Poverty By Town</h2>
-            <div id="belowPovertyState"></div>
+            <div id="totalDivWrapper"></div>
           </div>
           
           <div class="group legendWrapper">
@@ -57,15 +59,29 @@
 
       </div>
 
-      <div class="textSection">
-        <h2>Poverty By Percentage of Populaton</h2>
+      <div class="visualSection">
+        
+        <div class="visualHeader">
+          <h1>Poverty By Percentage of Populaton</h1>
+        </div>
+        
+        <div class="imagesWrapper">
+          
+          <div class="group stateWrapper">
+            <h2 class="littleHeader">Percentage of Poverty</h2>
+            <div id="percentBelowState"></div>
+          </div>
+          
+          <div class="group legendWrapper">
+            <h2 class="littleHeader">Scale</h2>
+            <div id="percentLegendContainer"></div>
+          </div>
+        
+        </div>
+            
+      </div>
        
 
-        <div class="group stateWrapper">
-          <div id="percentBelowState"></div>
-        </div>
-
-      </div>
    
     </div>  
 
