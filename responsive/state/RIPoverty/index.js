@@ -1,3 +1,14 @@
+var format = d3.format(".2s");
+var povertyArr = [], percentArr = [], top5Arr = [];
+let povertyExtent, percentExtent;
+
+// BarChart Variables
+const barVars = {
+  xLabel : 'Min. & Max. Town Poverty',
+  yLabel : 'Average Household Poverty in $',
+  margin : { left: 60, right: 20, top: 20, bottom: 100 }
+};
+
 function selectElements(){
   // D3 select The elements & convert to vars
   const barDiv = document.getElementById("rangeBar");
@@ -13,8 +24,9 @@ function selectElements(){
   const top5bars = top5barGObj.selectAll('rect');
 
   const legendDiv = document.getElementById("legendContainer");
+  const percentLegend = document.getElementById("percentLegendContainer");
 
-  return  {barDiv, barSVG, barGObj, bars, legendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars};
+  return  {barDiv, barSVG, barGObj, bars, legendDiv, percentLegend, top5BarDiv, top5barSVG, top5barGObj, top5bars};
 };
 
 function appendSVGTODiv(DivClass, className){
@@ -28,9 +40,9 @@ function appendSVGTODiv(DivClass, className){
 
 function getResizeDimensions(parent, m){
   let resizeFnWidth = parent.clientWidth,
-    resizeFnHeight = parent.clientHeight,
-    resizedWidthLessMargins = resizeFnWidth - m.left - m.right,
-    resizedHeightLessMargins = resizeFnHeight - m.top - m.bottom;
+      resizeFnHeight = parent.clientHeight,
+      resizedWidthLessMargins = resizeFnWidth - m.left - m.right,
+      resizedHeightLessMargins = resizeFnHeight - m.top - m.bottom;
   return { resizeFnWidth, resizeFnHeight, resizedWidthLessMargins, resizedHeightLessMargins };
 };
 
@@ -73,11 +85,11 @@ function makeColorScale(interpolation, extent){
   return d3.scaleSequential(interpolation).domain(extent)
 }
 
-function addAxisToSVG(parent, x, y, axisObj){
+function addAxisToSVG(parent, x, y, axisObj, className){
   return parent
   .append('g')
   .attrs({
-    'class': 'legendAxis',
+    'class': className,
     'transform': `translate(${x},${y})`
   })
   .call(axisObj);
@@ -86,7 +98,7 @@ function addAxisToSVG(parent, x, y, axisObj){
 function makeLegendAxisObj(scale){
   return d3.axisRight()
   .scale(scale)
-  .tickSize(5) //size of tick mark, not text
+  .tickSize(0) //size of tick mark, not text
   .tickFormat((d) =>(`${format(d)}`))
   .ticks(6);
 }
@@ -148,11 +160,24 @@ function buildAndColorTowns(towns, state, data, dataObj, colorScale){
   });
 }
 
-var format = d3.format(".2s");
-var povertyArr = [], percentArr = [], top5Arr = [];
+function updateLegendStyle(legendsvg, heightVal, widthVal, className){
+      legendsvg.attrs({
+    "height": (heightVal) + "px",
+    "width": (widthVal) + "px",
+    "class":className
+  })
+  .style("position", "absolute")
+  .style("left", "0px")
+  .style("bottom", "0px")
+}
+
+function makeStateResponsive(stageGClass, parentDiv){
+  d3.select(stageGClass).attr('height',parentDiv.clientWidth*0.9);
+  d3.select(".BelowPovertyG").attr("transform", "scale(" + parentDiv.clientWidth/900 + ")");
+}
 
 // create continuous color legend
-function buildStateLegend(selector_id, colorscale, ext) {
+function buildStateLegend(selector_id, colorscale, ext, canvasClass) {
 
   const selection = selector_id ? selector_id : legendDiv;
   const colorScale = colorscale ? colorscale :  belowPovertyColorScale;
@@ -166,7 +191,7 @@ function buildStateLegend(selector_id, colorscale, ext) {
     marginLeft: margin.left
   }
 
-  const canvasObj = makeLegendCanvas(selection, canvasDimensions, 'canvasClass');
+  const canvasObj = makeLegendCanvas(selection, canvasDimensions, canvasClass);
 
   const canvasContext = canvasObj.getContext("2d");
 
@@ -187,43 +212,17 @@ function buildStateLegend(selector_id, colorscale, ext) {
 
   const legendaxisobj = makeLegendAxisObj(legendscale);
 
-  legendSVG
-    .attrs({
-      "height": (resizedHeight) + "px",
-      "width": (legendwidth) + "px",
-      "class":'legendSVG'
-    })
-    .style("position", "absolute")
-    .style("left", "0px")
-    .style("bottom", "0px")
+
+  updateLegendStyle(totalsLegendSVG, resizedHeight, legendwidth, 'povertySVG')
+
 
   let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
 
-  let legendAxis = addAxisToSVG(legendSVG,legendAxisXTranslate, '-10',legendaxisobj);
+  let legendAxis = addAxisToSVG(totalsLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, 'totalLegendAxis');
 
 };
 
-let povertyExtent, percentExtent;
-
-// color 
-let lvl = {
-    "one":5,
-    "two":10,
-    "three":15,
-    "four":20
-}
-
-const poverty_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
-
 const d3PovertyObj = d3.map();
-
-let colorRatio = {
-    "level1": 0,
-    "level2": 0,
-    "level3": 0,
-    "level4": 0,
-    "level5": 0
-}
 
 /*
 
@@ -231,19 +230,12 @@ let colorRatio = {
 
 */
 
-// Build Variables
-const barVars = {
-  xLabel : 'Min. & Max. Town Poverty',
-  yLabel : 'Average Household Poverty in $',
-  margin : { left: 60, right: 20, top: 20, bottom: 100 }
-};
-
 // //Bar Y-Scale, verticalScale
 const barYScale = d3.scaleLinear();
 const top5YScale = d3.scaleLinear();
 const yTicks = 5;  
 
-let {barDiv, barSVG, barGObj, bars, legendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars} = selectElements();
+let {barDiv, barSVG, barGObj, bars, legendDiv, percentLegend, top5BarDiv, top5barSVG, top5barGObj, top5bars} = selectElements();
 
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
@@ -286,12 +278,12 @@ const top5xAxisG = createXAxisG(top5barGObj, 'xAxisClass', heightLessMargins)
 const top5yAxisG = createYAxisG(top5barGObj, 'yAxisClass');
 
 //make state SVG wrapper
-const belowPovertyStageSVG = appendSVGTODiv("#belowPovertyState",'poverty');
-const percentBelowStateSVG = appendSVGTODiv("#percentBelowState",'percentBelow');
+const belowPovertyStageSVG = appendSVGTODiv("#totalDivWrapper",'povertyTotalSVG');
+const percentBelowStateSVG = appendSVGTODiv("#percentBelowState",'percentBelowSVG');
 
 //make state G wrappers
 const BelowPovertyG = belowPovertyStageSVG.append("g").attr('class','BelowPovertyG');
-const percentBelowG = percentBelowStateSVG.append("g").attr('class','stateG');
+const percentBelowG = percentBelowStateSVG.append("g").attr('class','percentBelowG');
 
 //Bar Chart X-Scale, horizontalScale
 const minMaxXScale = d3.scaleBand()
@@ -319,7 +311,7 @@ const d3yAxis = d3.axisLeft()
   })
   .tickSize(-widthLessMargins);
 
-const legendSVG = d3.select(legendDiv).append("svg");
+const totalsLegendSVG = d3.select(legendDiv).append("svg");
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
 let resizedWidth = legendDiv.clientWidth;
@@ -371,7 +363,7 @@ function ready(error, data) {
     getTop5FromArr(povertyArr);
     
     const belowPovertyColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
-    const povertyPercentageColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
+    const povertyPercentageColorScale = makeColorScale(d3.interpolateReds, percentExtent);
 
     const legendColorScale = d3.scaleSequential(d3.interpolateReds).domain(povertyExtent)
 
@@ -497,28 +489,8 @@ function ready(error, data) {
     d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
 
     //builds state-legend
-    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent);
+    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass');
 
-    /*
-
-    PercentBelowPoverty
-    StateChart
-
-    */        
-
-
-
-    // D3 select towns
-    // let stateTowns = stateG.selectAll(".towns");
-
-    //build the towns & color them
-    // buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, legendColorScale);
-    
-    // state town titles
-    // d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
-
-    //builds state-legend
-    // buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent);
 }
 
 function resizeCharts() {
@@ -526,7 +498,7 @@ function resizeCharts() {
     var { resizeFnWidth, resizeFnHeight, lessMargins, resizedWidthLessMargins,resizedHeightLessMargins } = getResizeDimensions(barDiv, barVars.margin);
     
 
-    const stateContainer = document.getElementById('belowPovertyState');
+    const stateContainer = document.getElementById('totalDivWrapper');
     const percentContainer = document.getElementById('percentBelowState');
     
     let resizebarDiv = barDiv.clientWidth;
@@ -538,7 +510,7 @@ function resizeCharts() {
 
     minMaxXScale.range([0,rlm]);
     top5XScale.range([0,rlm]);
-    
+
     //Update the X-AXIS
     minMaxXAxisG
       .attr('x', (widthLessMargins / 2))
@@ -552,6 +524,9 @@ function resizeCharts() {
 
     d3.selectAll('.tick line')
       .attr('x2', resizedWidthLessMargins);
+
+    d3.selectAll('.totalLegendAxis .tick line')
+      .attr('x2', 0);
 
     d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
@@ -569,8 +544,9 @@ function resizeCharts() {
       'width' : d => top5XScale.bandwidth()
     });
 
-    d3.select("g").attr("transform", "scale(" + stateContainer.clientWidth/800 + ")");
-    d3.select('.poverty').attr('height',stateContainer.clientWidth*0.9);
+    makeStateResponsive('.povertyTotalSVG', stateContainer)
+    makeStateResponsive('.percentBelowSVG', percentContainer)
+
 
     d3.selectAll(".barText")
       .attrs({
