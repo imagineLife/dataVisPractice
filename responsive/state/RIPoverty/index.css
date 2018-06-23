@@ -80,6 +80,10 @@ p{
   padding: 50px 0;
 }
 
+.visualSection{
+  margin-bottom: 50px;
+}
+
 #stateImage, #legendContainer, #percentLegendContainer{
   display: block;
   min-height:260px;
