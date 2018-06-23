@@ -163,15 +163,13 @@ function buildAndColorTowns(towns, state, data, dataObj, colorScale, townSVG){
 
 }
 
-function updateLegendStyle(svgObj, heightVal, widthVal, className){
-      svgObj.attrs({
+function updateDimensionsAndClass(svgElement, heightVal, widthVal, className){
+  svgElement.attrs({
     "height": (heightVal) + "px",
     "width": (widthVal) + "px",
     "class":className
   })
-  .style("position", "absolute")
-  .style("left", "0px")
-  .style("bottom", "0px")
+
 }
 
 function makeStateResponsive(SVGClass, gWrapper, parentDiv){
@@ -215,7 +213,11 @@ function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, a
 
   const legendaxisobj = makeLegendAxisObj(legendscale);
 
-  updateLegendStyle(legendSVGID, resizedHeight, legendwidth, legendSVGClass)
+  updateDimensionsAndClass(legendSVGID, resizedHeight, legendwidth, legendSVGClass)
+  legendSVGID
+    .style("position", "absolute")
+    .style("left", "0px")
+    .style("bottom", "0px")
 
   let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
 
@@ -245,19 +247,9 @@ let resizedBarHeight = barDiv.clientHeight;
 const widthLessMargins = resizedBarWidth - barVars.margin.left - barVars.margin.right;
 const heightLessMargins = resizedBarHeight - barVars.margin.top - barVars.margin.bottom;
 
-//set barSVG height & width
-barSVG.attrs({
-  "width" : resizedBarWidth,
-  "height" : resizedBarHeight,
-  "class" : 'barWrapper'
-});
-
-//set top5 barSVG height & width
-top5barSVG.attrs({
-  "width" : resizedBarWidth,
-  "height" : resizedBarHeight,
-  "class" : 'top5barWrapper'
-});
+//set dimesions on bar svg elements
+updateDimensionsAndClass(barSVG, resizedBarHeight, resizedBarWidth, 'barWrapper')
+updateDimensionsAndClass(top5barSVG, resizedBarHeight, resizedBarWidth, 'top5barWrapper')
 
 //attach a g to the svg
 barGObj.attrs({
@@ -517,6 +509,7 @@ function resizeCharts() {
     //update ticks
     d3.selectAll('.tick line').attr('x2', resizedWidthLessMargins);
     d3.selectAll('.totalLegendAxis .tick line').attr('x2', 0);
+    d3.selectAll('.PercentLegendAxis .tick line').attr('x2', 0);
     d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
     //Update Bars
