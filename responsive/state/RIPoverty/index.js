@@ -1,5 +1,8 @@
-const format = d3.format(".2s");
-const formatPercent =d3.format(',.0%')
+var format = d3.format(".2s");
+function formatPercent(n){ 
+  let per = n/100;
+  return d3.format('.0%')(per)}
+
 
 var povertyArr = [], percentArr = [], top5Arr = [];
 let povertyExtent, percentExtent;
@@ -370,7 +373,6 @@ function ready(error, data) {
     const percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
     const percentExtentObjs = [percentMin, percentMax];
     percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
-    percentExtent = [percentExtent[0] / 100, percentExtent[1]/100]
     console.log('percentExtent ->',percentExtent)
 
     getTop5FromArr(povertyArr);
