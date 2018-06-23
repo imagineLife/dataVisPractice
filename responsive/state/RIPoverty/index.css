@@ -159,6 +159,19 @@ p{
   visibility: hidden;
 }
 
+footer{
+  background-color: rgba(0,0,0,.4);
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding: 0 10px;
+}
+
+footer p{
+  font-size: 12px;
+  bottom: 0;
+}
+
 @media only screen and (min-width: 600px) {
   .top5barText, .totalBarText {
     visibility: unset;
