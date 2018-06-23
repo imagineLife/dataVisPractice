@@ -183,6 +183,19 @@ function updateXAxis(axisGObj, w,axisObj){
   .call(axisObj);
 }
 
+function makeStateGeoPath(dat){
+  const rhodeIsland = topojson.feature(dat, {
+      type: "GeometryCollection",
+      geometries: dat.objects.RhodeIslandTowns.geometries
+  });
+
+  // projection and path
+  const projection = d3.geoAlbersUsa().fitExtent([[0,0], [800, 800]], rhodeIsland);
+  const geoPath = d3.geoPath().projection(projection);
+
+  return {rhodeIsland, geoPath};  
+}
+
 // create continuous color legend
 function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass) {
 
@@ -214,6 +227,7 @@ function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, a
   const legendaxisobj = makeLegendAxisObj(legendscale);
 
   updateDimensionsAndClass(legendSVGID, resizedHeight, legendwidth, legendSVGClass)
+  
   legendSVGID
     .style("position", "absolute")
     .style("left", "0px")
@@ -355,8 +369,6 @@ function ready(error, data) {
     const percentExtentObjs = [percentMin, percentMax];
     percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
 
-    console.log('percentExtent',percentExtent);
-
     getTop5FromArr(povertyArr);
     
     const belowPovertyColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
@@ -458,15 +470,7 @@ function ready(error, data) {
 
     */        
 
-    // rhodeIsland topojson
-    const rhodeIsland = topojson.feature(data, {
-        type: "GeometryCollection",
-        geometries: data.objects.RhodeIslandTowns.geometries
-    });
-
-    // projection and path
-    const projection = d3.geoAlbersUsa().fitExtent([[0,0], [750, 625]], rhodeIsland);
-    const geoPath = d3.geoPath().projection(projection);
+    const { rhodeIsland, geoPath }  = makeStateGeoPath(data);
 
     // D3 select towns
     let stateTowns = BelowPovertyG.selectAll(".towns");
@@ -476,11 +480,8 @@ function ready(error, data) {
     buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale, 'svg.povertyTotalSVG');
     buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale, 'svg.percentBelowSVG');
 
-    //builds state-legend
+    //builds state-legends
     buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG');
-    
-    //buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass) {
-
     buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG');
 
 }
