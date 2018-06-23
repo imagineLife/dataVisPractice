@@ -219,7 +219,7 @@ function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, a
 
   let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
 
-  let legendAxis = addAxisToSVG(totalsLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, axisClassName);
+  let legendAxis = addAxisToSVG(legendSVGID,legendAxisXTranslate, '-10',legendaxisobj, axisClassName);
 
 };
 
@@ -486,8 +486,10 @@ function ready(error, data) {
 
     //builds state-legend
     buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG');
-    //buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass)
-    // buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG');
+    
+    //buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass) {
+
+    buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG');
 
 }
 
