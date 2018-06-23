@@ -1,4 +1,6 @@
-var format = d3.format(".2s");
+const format = d3.format(".2s");
+const formatPercent =d3.format(',.0%')
+
 var povertyArr = [], percentArr = [], top5Arr = [];
 let povertyExtent, percentExtent;
 
@@ -95,11 +97,11 @@ function addAxisToSVG(parent, x, y, axisObj, className){
   .call(axisObj);
 }
 
-function makeLegendAxisObj(scale){
+function makeLegendAxisObj(scale,formatFn){
   return d3.axisRight()
   .scale(scale)
   .tickSize(0) //size of tick mark, not text
-  .tickFormat((d) =>(`${format(d)}`))
+  .tickFormat((d) =>(`${formatFn(d)}`))
   .ticks(6);
 }
 
@@ -197,7 +199,7 @@ function makeStateGeoPath(dat){
 }
 
 // create continuous color legend
-function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass) {
+function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass, legendTickFormat) {
 
   const legendheight = 275, legendwidth = 80;
 
@@ -224,7 +226,7 @@ function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, a
   });
   canvasContext.putImageData(canvasImageData, 0, 0);
 
-  const legendaxisobj = makeLegendAxisObj(legendscale);
+  const legendaxisobj = makeLegendAxisObj(legendscale, legendTickFormat);
 
   updateDimensionsAndClass(legendSVGID, resizedHeight, legendwidth, legendSVGClass)
   
@@ -368,6 +370,8 @@ function ready(error, data) {
     const percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
     const percentExtentObjs = [percentMin, percentMax];
     percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
+    percentExtent = [percentExtent[0] / 100, percentExtent[1]/100]
+    console.log('percentExtent ->',percentExtent)
 
     getTop5FromArr(povertyArr);
     
@@ -481,8 +485,8 @@ function ready(error, data) {
     buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale, 'svg.percentBelowSVG');
 
     //builds state-legends
-    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG');
-    buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG');
+    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG', format);
+    buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG', formatPercent);
 
 }
 
