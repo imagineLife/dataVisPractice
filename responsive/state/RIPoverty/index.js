@@ -24,9 +24,9 @@ function selectElements(){
   const top5bars = top5barGObj.selectAll('rect');
 
   const legendDiv = document.getElementById("legendContainer");
-  const percentLegend = document.getElementById("percentLegendContainer");
+  const percentLegendDiv = document.getElementById("percentLegendContainer");
 
-  return  {barDiv, barSVG, barGObj, bars, legendDiv, percentLegend, top5BarDiv, top5barSVG, top5barGObj, top5bars};
+  return  {barDiv, barSVG, barGObj, bars, legendDiv, percentLegendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars};
 };
 
 function appendSVGTODiv(DivClass, className){
@@ -181,9 +181,9 @@ function updateXAxis(axisGObj, w,axisObj){
   .attr('x', (w / 2))
   .call(axisObj);
 }
-    
+
 // create continuous color legend
-function buildStateLegend(selector_id, colorscale, ext, canvasClass) {
+function buildStateLegend(selector_id, colorscale, ext, canvasClass, legendSVG) {
 
   const selection = selector_id ? selector_id : legendDiv;
   const colorScale = colorscale ? colorscale :  belowPovertyColorScale;
@@ -219,16 +219,19 @@ function buildStateLegend(selector_id, colorscale, ext, canvasClass) {
   const legendaxisobj = makeLegendAxisObj(legendscale);
 
 
-  updateLegendStyle(totalsLegendSVG, resizedHeight, legendwidth, 'povertySVG')
+  updateLegendStyle(legendSVG, resizedHeight, legendwidth, 'povertySVG')
+  // updateLegendStyle(percentLegendSVG, resizedHeight, legendwidth, 'percentLegendSVG')
 
 
   let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
 
   let legendAxis = addAxisToSVG(totalsLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, 'totalLegendAxis');
+  // let percentLegendAxis = addAxisToSVG(percentLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, 'percentLegendAxis');
 
 };
 
 const d3PovertyObj = d3.map();
+const d3PercentObj = d3.map();
 
 /*
 
@@ -241,7 +244,7 @@ const barYScale = d3.scaleLinear();
 const top5YScale = d3.scaleLinear();
 const yTicks = 5;  
 
-let {barDiv, barSVG, barGObj, bars, legendDiv, percentLegend, top5BarDiv, top5barSVG, top5barGObj, top5bars} = selectElements();
+let {barDiv, barSVG, barGObj, bars, legendDiv, percentLegendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars} = selectElements();
 
 let resizedBarWidth = barDiv.clientWidth;
 let resizedBarHeight = barDiv.clientHeight;
@@ -318,6 +321,7 @@ const d3yAxis = d3.axisLeft()
   .tickSize(-widthLessMargins);
 
 const totalsLegendSVG = d3.select(legendDiv).append("svg");
+const percentLegendSVG = d3.select(percentLegendDiv).append("svg");
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
 let resizedWidth = legendDiv.clientWidth;
@@ -330,8 +334,10 @@ d3.queue()
   .defer(d3.csv, "data.csv", function(d) {
     if (isNaN(d.belowPoverty)) {
         d3PovertyObj.set(d.id, 0); 
+        d3PercentObj.set(d.id, 0); 
     } else {
-        d3PovertyObj.set(d.id, +d.belowPoverty, +d.percentBelow)
+        d3PovertyObj.set(d.id, +d.belowPoverty)
+        d3PercentObj.set(d.id, +d.percentBelow)
     }
 
     if(+d.belowPoverty > 0){
@@ -360,18 +366,17 @@ function ready(error, data) {
     povertyExtent = d3.extent(povertyExtentObjs, d => d.belowPoverty);
 
     const percentSorted = percentArr.sort((a,b) => b.percentBelow - a.percentBelow);
-    let percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
-    let percentExtentObjs = [percentMin, percentMax];
+    const percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
+    const percentExtentObjs = [percentMin, percentMax];
     percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
-    const percentageColorScale = makeColorScale(d3.interpolateReds, percentExtent);
 
+    console.log('percentExtent',percentExtent);
 
     getTop5FromArr(povertyArr);
     
     const belowPovertyColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
-    const povertyPercentageColorScale = makeColorScale(d3.interpolateReds, percentExtent);
+    const percentColorScale = makeColorScale(d3.interpolateBlues, percentExtent);
 
-    const legendColorScale = d3.scaleSequential(d3.interpolateReds).domain(povertyExtent)
 
     /*
 
@@ -435,25 +440,7 @@ function ready(error, data) {
           'class' : 'topBarClass'
         });
 
-    //bar label
-
-    // function addLabelsTobars(barsObj, barData, textVal, xs, xVal, ys){
-    //   return barsObj.selectAll(".text")
-    //   .data(barData)
-    //   .enter()
-    //   .append("text")
-    //   .text((d) => textVal)
-    //   .attrs({
-    //     "x": d => ( xs(d.xVal) + (xs.bandwidth() / 1.5) ),
-    //     "y": function (d) { return ys(`d.${textVal}`)},
-    //     "text-anchor": 'middle',
-    //     "class":"barText"
-    //   })
-    //   .style("fill", "white");
-    // }
-
-    // addLabelsTobars(barSVG, povertyExtentObjs, 'd.belowPoverty', minMaxXScale, 'town', barYScale);
-
+    //minMax bar labels
     barSVG.selectAll(".text")
       .data(povertyExtentObjs)
       .enter()
@@ -463,7 +450,21 @@ function ready(error, data) {
         "x": d => ( minMaxXScale(d.town) + (minMaxXScale.bandwidth() / 1.5) ),
         "y": function (d) { return barYScale(d.belowPoverty)},
         "text-anchor": 'middle',
-        "class":"barText"
+        "class":"totalBarText"
+      })
+      .style("fill", "white");
+
+    //top5 bar labels
+    top5barSVG.selectAll(".text")
+      .data(top5Arr)
+      .enter()
+      .append("text")
+      .text((d) => `${d.belowPoverty}`)
+      .attrs({
+        "x": d => ( top5XScale(d.town) + (top5XScale.bandwidth()) ),
+        "y": function (d) { return top5YScale(d.belowPoverty)},
+        "text-anchor": 'middle',
+        "class":"top5barText"
       })
       .style("fill", "white");
 
@@ -488,14 +489,16 @@ function ready(error, data) {
     let povertyTowns = percentBelowG.selectAll(".towns");
 
     //build the towns & color them
-    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, legendColorScale);
-    buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PovertyObj, legendColorScale);
+    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale);
+    buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale);
     
     // state town titles
-    d3.select("svg.poverty").selectAll("path").append("title").text(d => d.properties.NAME);
+    d3.select("svg.povertyTotalSVG").selectAll("path").append("title").text(d => d.properties.NAME);
+    d3.select("svg.percentBelowSVG").selectAll("path").append("title").text(d => d.properties.NAME);
 
     //builds state-legend
-    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass');
+    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG);
+    // buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG);
 
 }
 
@@ -520,10 +523,9 @@ function resizeCharts() {
     updateXAxis(minMaxXAxisG, widthLessMargins, d3MinMaxXAxis);
     updateXAxis(top5xAxisG, widthLessMargins, d3Top5XAxis);
 
+    //update ticks
     d3.selectAll('.tick line').attr('x2', resizedWidthLessMargins);
-
     d3.selectAll('.totalLegendAxis .tick line').attr('x2', 0);
-
     d3yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
   
     //Update Bars
@@ -540,13 +542,20 @@ function resizeCharts() {
       'width' : d => top5XScale.bandwidth()
     });
 
+    //make states responsive
     makeStateResponsive('.povertyTotalSVG', '.BelowPovertyG', stateContainer)
     makeStateResponsive('.percentBelowSVG', '.percentBelowG', percentContainer)
 
-
-    d3.selectAll(".barText")
+    //update barText placement
+    d3.selectAll(".totalBarText")
       .attrs({
         "x": d => ( minMaxXScale(d.town) + (minMaxXScale.bandwidth() / 1.5) ),
         "y": d => ( barYScale(d.belowPoverty) )
+      })
+
+    d3.selectAll(".top5barText")
+      .attrs({
+        "x": d => ( top5XScale(d.town) + top5XScale.bandwidth() ),
+        "y": d => ( top5YScale(d.belowPoverty) )
       })
 }
