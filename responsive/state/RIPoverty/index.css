@@ -31,8 +31,6 @@ h2{
 }
 
 .legendSVG line{
-  /*stroke: #C0C0BB;*/
-  /*fill:#C0C0BB;*/
   stroke:none;
 }
 
@@ -69,21 +67,20 @@ p{
   margin: 10px 0 20px 0;
 }
 
+.comparisonP{
+  margin: 0 30px;
+}
+
 #parentWrapper{
   overflow: hidden;
   position: relative;
-}
-
-.barText{
-  text-anchor: start;
-  visibility: hidden;
 }
 
 .visualHeader{
   padding: 50px 0;
 }
 
-#stateImage, #legendContainer{
+#stateImage, #legendContainer, #percentLegendContainer{
   display: block;
   min-height:260px;
 }
@@ -153,8 +150,13 @@ p{
   padding: 25px 0;
 }
 
-@media only screen and (min-width: 435px) {
-  .barText{
+.top5barText, .totalBarText {
+  text-anchor: start;
+  visibility: hidden;
+}
+
+@media only screen and (min-width: 600px) {
+  .top5barText, .totalBarText {
     visibility: unset;
   }
 }
