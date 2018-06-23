@@ -29,12 +29,12 @@ function selectElements(){
   return  {barDiv, barSVG, barGObj, bars, legendDiv, percentLegendDiv, top5BarDiv, top5barSVG, top5barGObj, top5bars};
 };
 
-function appendSVGTODiv(DivClass, className){
-  return d3.select(DivClass)
+function appendSVGTODiv(parentDivClass, svgClassName){
+  return d3.select(parentDivClass)
     .append("svg")
     .attrs({
       "width": "100%",
-      "class": className
+      "class": svgClassName
     });
 };
 
@@ -143,8 +143,8 @@ function makeXAxis(scale,h){
     .tickSize(-h);
 }
 
-function buildAndColorTowns(towns, state, data, dataObj, colorScale){
-  return towns.data(state.features)
+function buildAndColorTowns(towns, state, data, dataObj, colorScale, townSVG){
+  towns.data(state.features)
   .enter().append("path")
   .attrs({
     "class": "towns",        
@@ -158,10 +158,13 @@ function buildAndColorTowns(towns, state, data, dataObj, colorScale){
           )
     }
   });
+
+  d3.select(townSVG).selectAll("path").append("title").text(d => d.properties.NAME);
+
 }
 
-function updateLegendStyle(legendsvg, heightVal, widthVal, className){
-      legendsvg.attrs({
+function updateLegendStyle(svgObj, heightVal, widthVal, className){
+      svgObj.attrs({
     "height": (heightVal) + "px",
     "width": (widthVal) + "px",
     "class":className
@@ -183,10 +186,7 @@ function updateXAxis(axisGObj, w,axisObj){
 }
 
 // create continuous color legend
-function buildStateLegend(selector_id, colorscale, ext, canvasClass, legendSVG) {
-
-  const selection = selector_id ? selector_id : legendDiv;
-  const colorScale = colorscale ? colorscale :  belowPovertyColorScale;
+function buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass) {
 
   const legendheight = 275, legendwidth = 80;
 
@@ -197,36 +197,29 @@ function buildStateLegend(selector_id, colorscale, ext, canvasClass, legendSVG) 
     marginLeft: margin.left
   }
 
-  const canvasObj = makeLegendCanvas(selection, canvasDimensions, canvasClass);
+  const canvasObj = makeLegendCanvas(parentID, canvasDimensions, canvasClass);
 
-  const canvasContext = canvasObj.getContext("2d");
-
-  const legendscale = buildLegendScale(canvasDimensions.h, colorScale.domain());
+  const legendscale = buildLegendScale(canvasDimensions.h, colorscale.domain());
 
   // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+  const canvasContext = canvasObj.getContext("2d");
   const canvasImageData = canvasContext.createImageData(1, resizedHeight);
-
   d3.range(resizedHeight).forEach(function(i) {
-    const c = d3.rgb(colorScale(legendscale.invert(i)));
+    const c = d3.rgb(colorscale(legendscale.invert(i)));
     canvasImageData.data[4*i] = c.r;
     canvasImageData.data[4*i + 1] = c.g;
     canvasImageData.data[4*i + 2] = c.b;
     canvasImageData.data[4*i + 3] = 255;
   });
-
   canvasContext.putImageData(canvasImageData, 0, 0);
 
   const legendaxisobj = makeLegendAxisObj(legendscale);
 
-
-  updateLegendStyle(legendSVG, resizedHeight, legendwidth, 'povertySVG')
-  // updateLegendStyle(percentLegendSVG, resizedHeight, legendwidth, 'percentLegendSVG')
-
+  updateLegendStyle(legendSVGID, resizedHeight, legendwidth, legendSVGClass)
 
   let legendAxisXTranslate = legendwidth - margin.left - margin.right + 3;
 
-  let legendAxis = addAxisToSVG(totalsLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, 'totalLegendAxis');
-  // let percentLegendAxis = addAxisToSVG(percentLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, 'percentLegendAxis');
+  let legendAxis = addAxisToSVG(totalsLegendSVG,legendAxisXTranslate, '-10',legendaxisobj, axisClassName);
 
 };
 
@@ -320,8 +313,8 @@ const d3yAxis = d3.axisLeft()
   })
   .tickSize(-widthLessMargins);
 
-const totalsLegendSVG = d3.select(legendDiv).append("svg");
-const percentLegendSVG = d3.select(percentLegendDiv).append("svg");
+const totalsLegendSVG = appendSVGTODiv(legendDiv, 'totalsLegendSVG')
+const percentLegendSVG = appendSVGTODiv(percentLegendDiv, 'percentLegendSVG')
 
 const margin = {top: 20, right: 60, bottom: 0, left: 2};
 let resizedWidth = legendDiv.clientWidth;
@@ -380,7 +373,7 @@ function ready(error, data) {
 
     /*
 
-    Min & Max BarChart
+    Bar Charts 
 
     */
 
@@ -428,7 +421,6 @@ function ready(error, data) {
           'class':'barClass'
         });
 
-        //BARS
     top5bars.data(top5Arr)
       .enter().append('rect')
         .attrs({
@@ -470,7 +462,7 @@ function ready(error, data) {
 
     /*
 
-    BelowPoverty StateChart
+    StateCharts
 
     */        
 
@@ -489,16 +481,13 @@ function ready(error, data) {
     let povertyTowns = percentBelowG.selectAll(".towns");
 
     //build the towns & color them
-    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale);
-    buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale);
-    
-    // state town titles
-    d3.select("svg.povertyTotalSVG").selectAll("path").append("title").text(d => d.properties.NAME);
-    d3.select("svg.percentBelowSVG").selectAll("path").append("title").text(d => d.properties.NAME);
+    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale, 'svg.povertyTotalSVG');
+    buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale, 'svg.percentBelowSVG');
 
     //builds state-legend
-    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG);
-    // buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG);
+    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG');
+    //buildStateLegend(parentID, colorscale, ext, canvasClass, legendSVGID, axisClassName, legendSVGClass)
+    // buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG');
 
 }
 
