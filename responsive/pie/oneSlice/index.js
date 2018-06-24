@@ -37,12 +37,6 @@ function setSVGDims(obj, w, h){
 	});
 }
 
-function tweenPie(b) {
-	b.innerRadius = 0;
-	var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
-	return function(t) { return arcFunc(i(t)); };
-}
-
 let dataObject = [
   {
     "religion": "Christian",
@@ -114,6 +108,12 @@ function buildChart(obj){
 	    .ease(d3.easeBounce)
 	    .duration(1100)
 	    .attrTween("d", tweenPie);
+
+	function tweenPie(b) {
+	  b.innerRadius = 0;
+	  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+	  return function(t) { return arcFunc(i(t)); };
+	}
 }
 
 //2. Build fn
