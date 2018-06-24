@@ -37,6 +37,12 @@ function setSVGDims(obj, w, h){
 	});
 }
 
+function tweenPie(b) {
+	b.innerRadius = 0;
+	var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+	return function(t) { return arcFunc(i(t)); };
+}
+
 let dataObject = [
   {
     "religion": "Christian",
@@ -62,7 +68,7 @@ const margin = {
 function buildChart(obj){
 
 	//Setup Scales
-	const colorScale = d3.scaleOrdinal().range(['rgba(255,255,255,.1)','steelblue']);
+	const colorScale = d3.scaleOrdinal().range(['rgba(255,255,255,.05)','steelblue']);
 
 	let arcs;
 	let jsonDataVal = obj.jsonData[0]["population"];
@@ -71,8 +77,6 @@ function buildChart(obj){
 		key: 'key',
 		population: 100 - jsonDataVal
 	};
-	console.log('remainderObj')
-	console.log(remainderObj)
 
 	obj.jsonData.push(remainderObj)
 
@@ -105,7 +109,11 @@ function buildChart(obj){
 		.attrs({
 			'd': arcFunc,
 			'fill': d => colorScale(colorValue(d.data)),
-		});
+		})
+		 .transition()
+	    .ease(d3.easeBounce)
+	    .duration(1100)
+	    .attrTween("d", tweenPie);
 }
 
 //2. Build fn
@@ -120,7 +128,7 @@ function resize(){
 
     arcFunc.outerRadius( (divWidthLessMargins/2) * .7 );
 
-    pieG.attr('transform', `translate(${cssDivWidth/2}, ${cssDivHeight/2 })`);
+    pieG.attr('transform', `translate(${cssDivWidth/2}, ${cssDivHeight/2 }) rotate(90)`);
     pieG.selectAll('path').attr('d', arcFunc)
 
 }

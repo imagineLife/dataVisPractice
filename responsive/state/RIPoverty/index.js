@@ -195,7 +195,7 @@ function makeStateGeoPath(dat){
   });
 
   // projection and path
-  const projection = d3.geoAlbersUsa().fitExtent([[0,0], [800, 800]], rhodeIsland);
+  const projection = d3.geoAlbersUsa().fitExtent([[0,0], [900, 700]], rhodeIsland);
   const geoPath = d3.geoPath().projection(projection);
 
   return {rhodeIsland, geoPath};  
