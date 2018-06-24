@@ -4,7 +4,7 @@ function formatPercent(n){
   return d3.format('.0%')(per)}
 
 
-var povertyArr = [], percentArr = [], top5Arr = [];
+var povertyArr = [], percentArr = [], top5Arr = [], top5PercArr = [];
 let povertyExtent, percentExtent;
 
 // BarChart Variables
@@ -133,9 +133,9 @@ function attachXAxis (parent, axisObj){
   .selectAll('.tick line').remove();
 }
 
-function getTop5FromArr(arr){
+function getTop5FromArr(sourceArr, destArr){
   for(let i = 0; i < 5; i++){
-    top5Arr.push(arr[i])
+    destArr.push(sourceArr[i])
   }
 }
 
@@ -195,10 +195,16 @@ function makeStateGeoPath(dat){
   });
 
   // projection and path
-  const projection = d3.geoAlbersUsa().fitExtent([[0,0], [900, 700]], rhodeIsland);
+  let projection = d3.geoAlbersUsa().fitExtent([[0,0], [900, 600]], rhodeIsland);
   const geoPath = d3.geoPath().projection(projection);
 
   return {rhodeIsland, geoPath};  
+}
+
+function setAndStyleAxisToG(axis,g){
+  g.call(axis)
+  .selectAll('.tick line')
+  .attr('stroke-dasharray','1, 5');
 }
 
 // create continuous color legend
@@ -299,17 +305,13 @@ const BelowPovertyG = belowPovertyStageSVG.append("g").attr('class','BelowPovert
 const percentBelowG = percentBelowStateSVG.append("g").attr('class','percentBelowG');
 
 //Bar Chart X-Scale, horizontalScale
-const minMaxXScale = d3.scaleBand()
-  .paddingInner(0.3)
-  .paddingOuter(0.2);
+const minMaxXScale = d3.scaleBand().paddingInner(0.3).paddingOuter(0.2);
 
 //Bar Chart X-Scale, horizontalScale
-const top5XScale = d3.scaleBand()
-  .paddingInner(0.3)
-  .paddingOuter(0.2);
+const top5XScale = d3.scaleBand().paddingInner(0.3).paddingOuter(0.2);
 
+//xAxis from scale& Margins
 const d3MinMaxXAxis = makeXAxis(minMaxXScale, heightLessMargins);
-
 const d3Top5XAxis = makeXAxis(top5XScale, heightLessMargins);
 
 // Y-AXIS
@@ -354,9 +356,24 @@ d3.queue()
   })
   .await(ready);
 
+function serializer() {
+  // arguments is a list of functions
+  var args = Array.prototype.slice.call(arguments, 0); // clone the arguments
+
+  return function() {
+    // arguments are passed by the event system
+    var ret;
+
+    for (var i=0; i<args.length; i++) {
+      ret = args[i].apply(this, arguments);
+      if (ret === false) return ret;
+    }
+    return ret; 
+  };
+}
 
 d3.select(window)
-      .on("resize", resizeCharts);
+      .on("resize", serializer(resizeCharts, resizePie));
 
 
 
@@ -373,9 +390,9 @@ function ready(error, data) {
     const percentMin = percentSorted[percentSorted.length - 1], percentMax = percentSorted[0];
     const percentExtentObjs = [percentMin, percentMax];
     percentExtent = d3.extent(percentExtentObjs, d => d.percentBelow);
-    console.log('percentExtent ->',percentExtent)
 
-    getTop5FromArr(povertyArr);
+    getTop5FromArr(povertyArr, top5Arr);
+    getTop5FromArr(percentSorted, top5PercArr);
     
     const belowPovertyColorScale = makeColorScale(d3.interpolateReds, povertyExtent);
     const percentColorScale = makeColorScale(d3.interpolateBlues, percentExtent);
@@ -411,13 +428,8 @@ function ready(error, data) {
       var xTicksNice = designTickText(minMaxXAxisG,'-5',15,0);
       var top5XTicksNice = designTickText(top5xAxisG,'-5',15,0);
 
-      minMaxYAxisG.call(d3yAxis)
-        .selectAll('.tick line')
-        .attr('stroke-dasharray','1, 5');
-
-      top5yAxisG.call(d3yAxis)
-        .selectAll('.tick line')
-        .attr('stroke-dasharray','1, 5');
+      setAndStyleAxisToG(d3yAxis, minMaxYAxisG);
+      setAndStyleAxisToG(d3yAxis, top5yAxisG);
 
     //BARS
     bars.data(povertyExtentObjs)
