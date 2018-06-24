@@ -88,7 +88,7 @@ let AllChartObj = {
 		top: 40,
 		bottom: 40
 	},
-	clrsArr :['rgba(255,255,255,.05)','steelblue']
+	clrsArr : ['rgba(255,255,255,.05)','steelblue'] //d3.schemeCategory10
 }
 
 function buildChart(obj){
@@ -113,7 +113,7 @@ function buildChart(obj){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, obj.margin);
 
 	//pie & arc functions
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(obj.pieWedgeValue, divWidthLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(AllChartObj.pieWedgeValue, divWidthLessMargins)
 
 	//setup pie G element
 	pieG.attrs({
@@ -135,12 +135,12 @@ function buildChart(obj){
 //2. Build fn
 function resize(){
 
-	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, AllChartObj.margin)
 
 	const svgObj = d3.select('svg'), pieG = d3.select('.pieGWrapper');
 	//set svg dimension based on resizing attrs
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(obj.pieWedgeValue, divWidthLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(AllChartObj.pieWedgeValue, divWidthLessMargins)
 
     arcFunc.outerRadius( (divWidthLessMargins/2) * .7 );
 
