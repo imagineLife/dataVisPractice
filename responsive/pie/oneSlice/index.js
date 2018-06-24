@@ -37,7 +37,40 @@ function setSVGDims(obj, w, h){
 	});
 }
 
-let dataObject = [
+function addRemainderSlice(sliceVal, sourceDataObj){
+	let remainderObj = {
+		key: 'key',
+		population: 100 - sliceVal
+	};
+
+	sourceDataObj.push(remainderObj)
+}
+
+
+function buildPieChart(pieFn, dataObj, pieObj,arcFn,clrScl,clrVal,tweenFn){
+	
+	arcs = pieFn(dataObj);
+	pieObj.selectAll('path')
+		.data(arcs)
+		.enter()
+		.append('path')
+		.attrs({
+			'd': arcFn,
+			'fill': d => clrScl(clrVal(d.data)),
+		})
+		 .transition()
+	    .ease(d3.easeBounce)
+	    .duration(1100)
+	    .attrTween("d", tweenFn);
+}
+
+function makeColorScale(colorArr, srcData, dataColorVal){
+	const colorScale = d3.scaleOrdinal().range(colorArr);
+	colorScale.domain(srcData.map(dataColorVal));
+	return colorScale;
+}
+
+let originalDataObj = [
   {
     "religion": "Christian",
     "population": 25
@@ -46,7 +79,7 @@ let dataObject = [
 
 let AllChartObj = {
 	svgClass: '.svgWrapper',
-	jsonData: dataObject
+	jsonData: originalDataObj
 }
 
 const pieWedgeValue = d => d.population;
@@ -58,26 +91,27 @@ const margin = {
 	top: 40,
 	bottom: 40
 };
+const clrsArr = ['rgba(255,255,255,.05)','steelblue'];
 
 function buildChart(obj){
 
-	//Setup Scales
-	const colorScale = d3.scaleOrdinal().range(['rgba(255,255,255,.05)','steelblue']);
-
 	let arcs;
 	let jsonDataVal = obj.jsonData[0]["population"];
-	
-	let remainderObj = {
-		key: 'key',
-		population: 100 - jsonDataVal
-	};
 
-	obj.jsonData.push(remainderObj)
+	function tweenPie(b) {
+	  b.innerRadius = 0;
+	  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+	  return function(t) { return arcFunc(i(t)); };
+	}
+
+	addRemainderSlice(jsonDataVal, obj.jsonData)
 
 	let jsonData = obj.jsonData.sort((a, b) => b.population - a.population);
 
+	//get page elements into D3
 	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
 
+	//parse client dimensions
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
 
 	//pie & arc functions
@@ -93,27 +127,11 @@ function buildChart(obj){
 	//set svg height & width from div computed dimensions
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
 
+	//Setup Scales
+	const colorScale  = makeColorScale(clrsArr, jsonData, colorValue);
 
-	colorScale.domain(jsonData.map(colorValue));
-	arcs = d3PieFunc(jsonData);
-	pieG.selectAll('path')
-		.data(arcs)
-		.enter()
-		.append('path')
-		.attrs({
-			'd': arcFunc,
-			'fill': d => colorScale(colorValue(d.data)),
-		})
-		 .transition()
-	    .ease(d3.easeBounce)
-	    .duration(1100)
-	    .attrTween("d", tweenPie);
-
-	function tweenPie(b) {
-	  b.innerRadius = 0;
-	  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
-	  return function(t) { return arcFunc(i(t)); };
-	}
+	//build the pie chart!
+	buildPieChart(d3PieFunc, jsonData, pieG, arcFunc, colorScale, colorValue, tweenPie);
 }
 
 //2. Build fn
