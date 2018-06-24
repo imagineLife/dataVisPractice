@@ -78,20 +78,18 @@ let originalDataObj = [
 ];
 
 let AllChartObj = {
-	svgClass: '.svgWrapper',
-	jsonData: originalDataObj
+	jsonData: originalDataObj,
+	parentDivID: 'chartDiv',
+	pieWedgeValue: d => d.population,
+	colorValue: d => d.religion,
+	margin :{ 
+		left: 20, 
+		right: 250,
+		top: 40,
+		bottom: 40
+	},
+	clrsArr :['rgba(255,255,255,.05)','steelblue']
 }
-
-const pieWedgeValue = d => d.population;
-const colorValue = d => d.religion;
-const colorLabel = 'Religion';
-const margin = { 
-	left: 20, 
-	right: 250,
-	top: 40,
-	bottom: 40
-};
-const clrsArr = ['rgba(255,255,255,.05)','steelblue'];
 
 function buildChart(obj){
 
@@ -109,13 +107,13 @@ function buildChart(obj){
 	let jsonData = obj.jsonData.sort((a, b) => b.population - a.population);
 
 	//get page elements into D3
-	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
+	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv(obj.parentDivID);
 
 	//parse client dimensions
-	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, obj.margin);
 
 	//pie & arc functions
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, divWidthLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(obj.pieWedgeValue, divWidthLessMargins)
 
 	//setup pie G element
 	pieG.attrs({
@@ -128,10 +126,10 @@ function buildChart(obj){
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
 
 	//Setup Scales
-	const colorScale  = makeColorScale(clrsArr, jsonData, colorValue);
+	const colorScale  = makeColorScale(obj.clrsArr, jsonData, obj.colorValue);
 
 	//build the pie chart!
-	buildPieChart(d3PieFunc, jsonData, pieG, arcFunc, colorScale, colorValue, tweenPie);
+	buildPieChart(d3PieFunc, jsonData, pieG, arcFunc, colorScale, obj.colorValue, tweenPie);
 }
 
 //2. Build fn
@@ -142,7 +140,7 @@ function resize(){
 	const svgObj = d3.select('svg'), pieG = d3.select('.pieGWrapper');
 	//set svg dimension based on resizing attrs
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, divWidthLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(obj.pieWedgeValue, divWidthLessMargins)
 
     arcFunc.outerRadius( (divWidthLessMargins/2) * .7 );
 
