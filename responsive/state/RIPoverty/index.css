@@ -8,16 +8,13 @@ body{
   font-size: 20px;
 }
 
-div{
-  border-radius: 10px;
-}
-
 h1, h2{
   font-weight: 800;
 }
 
 h2, h3{
   text-align: left;
+  margin-bottom: 1.5em;
 }
 
 h1{
@@ -51,6 +48,10 @@ h3{
   margin-top: 10px;
 }
 
+.incomeRange{
+  font-size: 1.5em;
+}
+
 small{
   font-size: 1em;
   text-align: center;
@@ -63,7 +64,7 @@ i{
 
 
 p{
-  line-height: 1.6;
+  line-height: 1.6em;
   margin: 10px 0 20px 0;
 }
 
@@ -173,13 +174,36 @@ footer p{
 }
 
 .povertyTotalSVG, .percentBelowSVG{
-  max-height: 600px;
+  max-height: 640px;
+}
+
+.pieWrapper{
+  border: 2px solid green;
 }
 
 #pieDiv{
-  width: 95%;
+  width: 50%;
   border:2px solid white;
   margin: 0 auto;
+  display: inline-block;
+  line-height: 0;
+}
+
+.pieTitle{
+  font-size: 1.2em;
+}
+
+.pieWords{
+  display: inline-block;
+  width: 45%;
+  border: 2px solid blue;
+  vertical-align: top;  
+}
+
+.piePara{
+  font-size: 50px;
+  text-align: center;
+  line-height: 1em;
 }
 
 @media only screen and (min-width: 600px) {
