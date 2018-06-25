@@ -372,12 +372,6 @@ function serializer() {
   };
 }
 
-d3.select(window)
-      .on("resize", serializer(resizeCharts, resizePie));
-
-
-
-
 function ready(error, data) {
     if (error) throw error;
     
@@ -562,3 +556,6 @@ function resizeCharts() {
         "y": d => ( top5YScale(d.belowPoverty) )
       })
 }
+
+d3.select(window)
+      .on("resize", serializer( resizeCharts, resizePie ));
