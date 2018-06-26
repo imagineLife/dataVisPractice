@@ -55,9 +55,11 @@ function buildPieChart(pieFn, dataObj, pieObj, arcFn, clrScl, clrVal, tweenFn){
 		.attrs({
 			'd': arcFn,
 			'fill': d => {
-				console.log('d ->',d.data);
-				if(d.data.town){return clrScl(clrVal(d.data))}else return 'rgba(255,255,255,.1)'
-				
+				if(d.data.town){
+					return clrScl(clrVal(d.data))
+				}else{
+					return 'rgba(255,255,255,.1)'
+				}
 			},
 			'transform' : 'rotate(90)'
 		})
@@ -77,29 +79,7 @@ function makeThisColorScale(interpolation, extent){
   return d3.scaleSequential(interpolation).domain(extent)
 }
 
-let originalDataObj = [
-	{town: "Central Falls", 'percentBelow': 32.7},
-	{town: "Providence", 'percentBelow': 28.2},
-	{town: "Woonsocket", 'percentBelow': 25.1},
-	{town: "Pawtucket", 'percentBelow': 19.9},
-	{town: "West Warwick", 'percentBelow': 16.4}
-];
-
-let AllChartObj = {
-	jsonData: originalDataObj,
-	parentDivID: 'pieDiv',
-	pieWedgeValue: function(d){ return +d.percentBelow},
-	colorValue: function(d){return d.percentBelow},
-	margin :{ 
-		left: 100, 
-		right: 145,
-		top: 40,
-		bottom: 40
-	},
-	clrsArr : ['steelblue', 'rgba(255,255,255,.05)'] //d3.interpolateBlues
-}
-
-function buildChart(obj){
+function buildChart(obj, data){
 
 	function tweenPie(b) {
 	  b.innerRadius = 0;
@@ -108,10 +88,14 @@ function buildChart(obj){
 	}
 
 	let arcs;
-	let percentVal = obj.jsonData[0]["percentBelow"];
+	let percentVal = data[0]["percentBelow"];
 
-	let jsonData = [obj.jsonData[0]];
-	jsonData = jsonData.sort((a, b) => b.percentBelow - a.percentBelow);
+	let jsonData = [data[0]];
+	console.log('firstSubObject')
+	console.log(jsonData)
+
+	console.log('sorted object')
+	console.log(jsonData)
 
 	addRemainderSlice(percentVal, jsonData);
 
@@ -140,7 +124,6 @@ function buildChart(obj){
 	pieSVGObj.attr('class','pieSVGWrapper')
 
 	//Setup Scales
-	// const colorScale  = makeColorScale(obj.clrsArr, obj.jsonData, obj.colorValue);
 	const colorScale  = makeThisColorScale(d3.interpolateBlues, [2.3, 32.7] );
 
 	//build the pie chart!
@@ -167,4 +150,36 @@ function resizePie(){
 
 }
 
-buildChart(AllChartObj);  	
+let originalDataObj = [
+	{town: "Central Falls", 'percentBelow': 32.7},
+	{town: "Providence", 'percentBelow': 28.2},
+	{town: "Woonsocket", 'percentBelow': 25.1},
+	{town: "Pawtucket", 'percentBelow': 19.9},
+	{town: "West Warwick", 'percentBelow': 16.4}
+];
+
+let jsonData = originalDataObj;
+
+let AllChartObj = {
+	parentDivID: 'pieDiv',
+	pieWedgeValue: function(d){ return +d.percentBelow},
+	colorValue: function(d){return d.percentBelow},
+	margin :{ 
+		left: 100, 
+		right: 145,
+		top: 40,
+		bottom: 40
+	},
+	clrsArr : ['steelblue', 'rgba(255,255,255,.05)'] //d3.interpolateBlues
+}
+
+originalDataObj.forEach((d, i) => {
+  let thisObj = [{
+    town: d.town,
+    percentBelow: d.percentBelow,
+    chartNo: i + 1      
+  }];
+  // buildChart(AllChartObj, thisObj)
+})
+
+buildChart(AllChartObj, jsonData);
