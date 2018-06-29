@@ -1,16 +1,20 @@
-function makeD3ElementsFromParentDiv(parDivID){
+function makeD3ElementsFromParentDiv(parDivID, pieNumber){
 	const pieWrapperDiv = document.getElementById(parDivID);
 	const pieDiv = d3.select(pieWrapperDiv).append("div").attrs({
 		'class': 'pieDiv',
-		'id':'pieDiv'
+		'id':'pieDiv'+pieNumber
 	})	      
 	const pieSVGObj = pieDiv.append("svg");
 	const pieG = pieSVGObj.append('g').style('max-height','900px');
-
+	// const pieP = d3.select(pieWrapperDiv).append("div").attrs({
+	// 	'class': 'pieWords',
+	// 	'id':'pieWords'+pieNumber
+	// })
 	return {pieDiv, pieSVGObj, pieG};
 }
 
 function getClientDims(parentDivId, marginObj){
+	console.log(parentDivId)
 	// Extract the DIV width and height that was computed by pieCSS.
 	let pieCSSDivWidth = document.getElementById(parentDivId).clientWidth;
 	let pieCSSDivHeight = document.getElementById(parentDivId).clientHeight;
@@ -70,17 +74,16 @@ function buildPieChart(pieFn, dataObj, pieObj, arcFn, clrScl, clrVal, tweenFn){
 	    .attrTween("d", tweenFn);
 }
 
-function makeColorScale(colorArr, completePieJsonObj, dataColorVal){
-	const colorScale = d3.scaleOrdinal().range(colorArr);
-	colorScale.domain(completePieJsonObj.map(dataColorVal));
-	return colorScale;
-}
-
 function makeThisColorScale(interpolation, extent){
   return d3.scaleSequential(interpolation).domain(extent)
 }
 
-function buildChart(obj, data){
+function selectAndUpdatePies(){
+	d3.selectAll('.pieDiv').each(resizePie);
+}
+
+function buildChart(obj, data, pieNumber){
+	console.log('pieNumber: ',pieNumber)
 
 	function tweenPie(b) {
 	  b.innerRadius = 0;
@@ -96,13 +99,13 @@ function buildChart(obj, data){
 	addRemainderSlice(percentVal, jsonData);
 
 	//get page elements into D3
-	let {pieDiv, pieSVGObj, pieG} = makeD3ElementsFromParentDiv(obj.parentDivID);
+	let {pieDiv, pieSVGObj, pieG} = makeD3ElementsFromParentDiv(obj.parentDivID, pieNumber);
 
 	//parse client dimensions
-	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims('pieDiv', obj.margin);
+	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims('pieDiv'+pieNumber, obj.margin);
 
 	//pie & arc functions
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(AllChartObj.pieWedgeValue, pieDivHeightLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(chartVars.pieWedgeValue, pieDivHeightLessMargins)
 
     pieG.attrs({
 		'transform':`translate(${pieCSSDivWidth/2}, ${pieCSSDivHeight/2 }) rotate(32.7)`,
@@ -122,9 +125,11 @@ function buildChart(obj, data){
 }
 
 //2. Build fn
-function resizePie(){
+function resizePie(d,i){
 
-	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims('pieDiv', AllChartObj.margin)
+	var pieID = 'pieDiv'+i;
+
+	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims(pieID, chartVars.margin)
 
 	let pieSVGObj = d3.select('.pieSVGWrapper');
 	let pieG = d3.select('.pieGWrapper');
@@ -132,7 +137,7 @@ function resizePie(){
 	//set svg dimension based on resizing attrs
 	setSVGDims(pieSVGObj, pieCSSDivWidth, pieCSSDivHeight);
 
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(AllChartObj.pieWedgeValue, pieDivWidthLessMargins)
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(chartVars.pieWedgeValue, pieDivWidthLessMargins)
 
     arcFunc.outerRadius( (pieDivHeightLessMargins) * .95 );
 
@@ -149,9 +154,7 @@ let originalDataObj = [
 	{town: "West Warwick", 'percentBelow': 16.4}
 ];
 
-let jsonData = originalDataObj;
-
-let AllChartObj = {
+let chartVars = {
 	parentDivID: 'pieWrapper',
 	pieWedgeValue: function(d){ return +d.percentBelow},
 	colorValue: function(d){return d.percentBelow},
@@ -171,6 +174,11 @@ originalDataObj.forEach((d, i) => {
 	    percentBelow: d.percentBelow,
 	    chartNo: i + 1      
 	  }];
-	  buildChart(AllChartObj, thisObj)
+	  buildChart(chartVars, thisObj, i)
 	}
 })
+
+
+
+d3.select(window)
+      .on("resize", serializer( resizeCharts, selectAndUpdatePies ));

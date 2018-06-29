@@ -556,6 +556,3 @@ function resizeCharts() {
         "y": d => ( top5YScale(d.belowPoverty) )
       })
 }
-
-d3.select(window)
-      .on("resize", serializer( resizeCharts, resizePie ));
