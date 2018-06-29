@@ -177,13 +177,8 @@ footer p{
   max-height: 640px;
 }
 
-.pieWrapper{
-  border: 2px solid green;
-}
-
 .pieDiv{
   width: 50%;
-  border:2px solid white;
   margin: 0 auto;
   display: inline-block;
   line-height: 0;
@@ -191,13 +186,14 @@ footer p{
 
 .pieTitle{
   font-size: 1.2em;
+  text-align: center; 
 }
 
 .pieWords{
   display: inline-block;
   width: 45%;
-  border: 2px solid blue;
   vertical-align: top;  
+  margin-top: 3%;
 }
 
 .piePara{
