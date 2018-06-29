@@ -181,7 +181,7 @@ footer p{
   border: 2px solid green;
 }
 
-#pieDiv{
+.pieDiv{
   width: 50%;
   border:2px solid white;
   margin: 0 auto;
