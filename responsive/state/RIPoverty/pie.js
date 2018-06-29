@@ -1,20 +1,28 @@
 function makeD3ElementsFromParentDiv(parDivID, pieNumber){
 	const pieWrapperDiv = document.getElementById(parDivID);
+	let pieWords = d3.select(pieWrapperDiv).append('div').attrs({
+		'class': 'pieWords',
+		'id': 'pieWords'+pieNumber
+	})
+	let pieTitle = pieWords.append('div').attrs({
+		'class': 'pieTitle',
+		'id': 'pieTitle'+pieNumber
+	})
+	const pieText = pieWords.append('div').attrs({
+		'class': 'piePara',
+		'id': 'pieText'+pieNumber
+	})
 	const pieDiv = d3.select(pieWrapperDiv).append("div").attrs({
 		'class': 'pieDiv',
 		'id':'pieDiv'+pieNumber
 	})	      
 	const pieSVGObj = pieDiv.append("svg");
 	const pieG = pieSVGObj.append('g').style('max-height','900px');
-	// const pieP = d3.select(pieWrapperDiv).append("div").attrs({
-	// 	'class': 'pieWords',
-	// 	'id':'pieWords'+pieNumber
-	// })
-	return {pieDiv, pieSVGObj, pieG};
+	return {pieDiv, pieSVGObj, pieG, pieWords, pieTitle, pieText};
 }
 
 function getClientDims(parentDivId, marginObj){
-	console.log(parentDivId)
+
 	// Extract the DIV width and height that was computed by pieCSS.
 	let pieCSSDivWidth = document.getElementById(parentDivId).clientWidth;
 	let pieCSSDivHeight = document.getElementById(parentDivId).clientHeight;
@@ -82,8 +90,24 @@ function selectAndUpdatePies(){
 	d3.selectAll('.pieDiv').each(resizePie);
 }
 
+function selectMatchingTextsElements(paraNum){
+	const pTitle = '#pieTitle'+paraNum;
+	const pNumber = '#piePara'+paraNum;
+	let thisPara = d3.select(pNumber);
+	let thisTitle = d3.select(pTitle);
+	return { thisPara, thisTitle };
+
+}
+
+function setPieTexts(t, p, d){
+	p.text(d[0].percentBelow+'%')
+	t.text(d[0].town)
+}
+
 function buildChart(obj, data, pieNumber){
-	console.log('pieNumber: ',pieNumber)
+
+	//select & update pie texts
+	// let { thisPara, thisTitle } = selectMatchingTextsElements(pieNumber);
 
 	function tweenPie(b) {
 	  b.innerRadius = 0;
@@ -91,7 +115,6 @@ function buildChart(obj, data, pieNumber){
 	  return function(t) { return arcFunc(i(t)); };
 	}
 
-	let arcs;
 	let percentVal = data[0]["percentBelow"];
 
 	let jsonData = [data[0]];
@@ -99,7 +122,8 @@ function buildChart(obj, data, pieNumber){
 	addRemainderSlice(percentVal, jsonData);
 
 	//get page elements into D3
-	let {pieDiv, pieSVGObj, pieG} = makeD3ElementsFromParentDiv(obj.parentDivID, pieNumber);
+	let {pieDiv, pieSVGObj, pieG, pieWords, pieTitle, pieText} = makeD3ElementsFromParentDiv(obj.parentDivID, pieNumber);
+	setPieTexts(pieTitle, pieText, data);
 
 	//parse client dimensions
 	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims('pieDiv'+pieNumber, obj.margin);
