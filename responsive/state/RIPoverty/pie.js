@@ -1,24 +1,33 @@
+function addDivToObj(p,friendly, uniqueID){
+	return p.append('div').attrs({
+		'class': friendly,
+		'id': friendly+uniqueID
+	})
+}
+
 function makeD3ElementsFromParentDiv(parDivID, pieNumber){
-	const pieWrapperDiv = document.getElementById(parDivID);
-	let pieWords = d3.select(pieWrapperDiv).append('div').attrs({
-		'class': 'pieWords',
-		'id': 'pieWords'+pieNumber
+	const piesWrapperDiv = document.getElementById(parDivID);
+	let chartTextWrapper = d3.select(piesWrapperDiv).append('div').attrs({
+		'class': 'chartAndText',
+		'id': 'chartAndText'+pieNumber
 	})
-	let pieTitle = pieWords.append('div').attrs({
-		'class': 'pieTitle',
-		'id': 'pieTitle'+pieNumber
+
+	let pieTextWrapper = chartTextWrapper.append('div').attrs({
+		'class': 'wordsWrapper halfSize',
+		'id': 'wordsWrapper'+pieNumber
 	})
-	const pieText = pieWords.append('div').attrs({
-		'class': 'piePara',
-		'id': 'pieText'+pieNumber
-	})
-	const pieDiv = d3.select(pieWrapperDiv).append("div").attrs({
-		'class': 'pieDiv',
+	const pieDiv = chartTextWrapper.append("div").attrs({
+		'class': 'pieDiv halfSize',
 		'id':'pieDiv'+pieNumber
-	})	      
-	const pieSVGObj = pieDiv.append("svg");
-	const pieG = pieSVGObj.append('g').style('max-height','900px');
-	return {pieDiv, pieSVGObj, pieG, pieWords, pieTitle, pieText};
+	})
+
+	let pieText = addDivToObj(pieTextWrapper, 'pieP',pieNumber);
+	let pieTitle = addDivToObj(pieTextWrapper, 'pieTitle',pieNumber);
+	      
+	const pieSVG = pieDiv.append("svg");
+	const pieG = pieSVG.append('g').style('max-height','900px');
+	
+	return {pieDiv, pieSVG, pieG, pieTitle, pieText};
 }
 
 function getClientDims(parentDivId, marginObj){
@@ -119,7 +128,7 @@ function buildChart(obj, data, pieNumber){
 	addRemainderSlice(percentVal, jsonData);
 
 	//get page elements into D3
-	let {pieDiv, pieSVGObj, pieG, pieWords, pieTitle, pieText} = makeD3ElementsFromParentDiv(obj.parentDivID, pieNumber);
+	let {pieDiv, pieSVG, pieG, pieTitle, pieText} = makeD3ElementsFromParentDiv(obj.parentDivID, pieNumber);
 	setPieTexts(pieTitle, pieText, data);
 
 	//parse client dimensions
@@ -135,8 +144,8 @@ function buildChart(obj, data, pieNumber){
 	.style('max-height', '900px')
 
 	//set svg height & width from div computed dimensions
-	setSVGDims(pieSVGObj, pieCSSDivWidth, pieCSSDivHeight);
-	pieSVGObj.attr('class','pieSVGWrapper')
+	setSVGDims(pieSVG, pieCSSDivWidth, pieCSSDivHeight);
+	pieSVG.attr('class','pieSVGWrapper')
 
 	//Setup Scales
 	const colorScale  = makeThisColorScale(d3.interpolateBlues, [2.3, 32.7] );
@@ -148,15 +157,15 @@ function buildChart(obj, data, pieNumber){
 //2. Build fn
 function resizePie(d,i){
 
-	var pieID = 'pieDiv'+i;
+	var thisPieID = 'pieDiv'+i;
 
-	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims(pieID, chartVars.margin)
+	let { pieCSSDivWidth, pieCSSDivHeight, pieDivWidthLessMargins, pieDivHeightLessMargins } = getClientDims(thisPieID, chartVars.margin)
 
-	let pieSVGObj = d3.select('.pieSVGWrapper');
+	let pieSVG = d3.select('.pieSVGWrapper');
 	let pieG = d3.select('.pieGWrapper');
 	
 	//set svg dimension based on resizing attrs
-	setSVGDims(pieSVGObj, pieCSSDivWidth, pieCSSDivHeight);
+	setSVGDims(pieSVG, pieCSSDivWidth, pieCSSDivHeight);
 
 	const { d3PieFunc, arcFunc } = makeD3PieFuncs(chartVars.pieWedgeValue, pieDivWidthLessMargins)
 
@@ -176,7 +185,7 @@ let originalDataObj = [
 ];
 
 let chartVars = {
-	parentDivID: 'pieWrapper',
+	parentDivID: 'piesWrapper',
 	pieWedgeValue: function(d){ return +d.percentBelow},
 	colorValue: function(d){return d.percentBelow},
 	margin :{ 
