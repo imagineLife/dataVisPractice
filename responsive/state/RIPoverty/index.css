@@ -176,16 +176,25 @@ footer p{
   max-height: 640px;
 }
 
+#piesWrapper{
+  text-align: center;
+}
+
+.chartAndText{
+  width: 100%;
+  display: block;
+  margin-bottom: 10%
+}
+
 .pieDiv{
-  width: 50%;
-  margin: 0 auto;
-  display: inline-block;
   line-height: 0;
+  text-align: center;
 }
 
 .pieTitle{
   font-size: 1.2em;
   text-align: center; 
+  vertical-align: top;  
 }
 
 .pieWords{
@@ -195,10 +204,28 @@ footer p{
   margin-top: 10%;
 }
 
-.piePara{
+.pieP{
   font-size: 50px;
   text-align: center;
   line-height: 1em;
+}
+
+.halfSize{
+  width: 50%;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  margin: 0 auto;
+}
+
+.wordsWrapper{
+  margin-top: 10%;
+}
+
+@media only screen and (min-width: 400px){
+  .wordsWrapper{
+    margin-top: 7%;
+  }
 }
 
 @media only screen and (min-width: 600px) {
@@ -208,6 +235,11 @@ footer p{
 }
 
 @media only screen and (min-width : 768px){
+  .chartAndText{
+    width: 49%;
+    display: inline-block;
+  }
+
   .minWrapper, .maxWrapper{
     width: 50%;
     display: inline-block;
