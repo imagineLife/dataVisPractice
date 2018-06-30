@@ -106,9 +106,6 @@ function setPieTexts(t, p, d){
 
 function buildChart(obj, data, pieNumber){
 
-	//select & update pie texts
-	// let { thisPara, thisTitle } = selectMatchingTextsElements(pieNumber);
-
 	function tweenPie(b) {
 	  b.innerRadius = 0;
 	  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
@@ -192,7 +189,7 @@ let chartVars = {
 }
 
 originalDataObj.forEach((d, i) => {
-	if(i <= 0){  
+	if(i <= 5){  
 	  let thisObj = [{
 	    town: d.town,
 	    percentBelow: d.percentBelow,
