@@ -441,12 +441,18 @@ function ready(error, data) {
       .enter().append('rect')
         .attrs({
           'x' : d => top5XScale(d.town),
-          'y' : d => top5YScale(+d.belowPoverty),
+          'y' : d => heightLessMargins,
           'width' : d => top5XScale.bandwidth(),
-          'height' : d => heightLessMargins - top5YScale(d.belowPoverty),
           'fill' : d => belowPovertyColorScale(d.belowPoverty),
           'class' : 'topBarClass'
-        });
+        })
+        .transition()
+        .delay((d,i)=>i*150)
+        .attrs({
+          "y": (d) => top5YScale(+d.belowPoverty),
+          "height": (d)=> heightLessMargins - top5YScale(d.belowPoverty)
+        })
+        ;
 
     //minMax bar labels
     barSVG.selectAll(".text")
@@ -469,7 +475,7 @@ function ready(error, data) {
       .append("text")
       .text((d) => `${d.belowPoverty}`)
       .attrs({
-        "x": d => ( top5XScale(d.town) + (top5XScale.bandwidth()) ),
+        "x": d => ( top5XScale(d.town) + (top5XScale.bandwidth() / 1.1) ),
         "y": function (d) { return top5YScale(d.belowPoverty)},
         "text-anchor": 'middle',
         "class":"top5barText"
@@ -488,14 +494,15 @@ function ready(error, data) {
     let stateTowns = BelowPovertyG.selectAll(".towns");
     let povertyTowns = percentBelowG.selectAll(".towns");
 
-    //build the towns & color them
-    buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale, 'svg.povertyTotalSVG');
-    buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale, 'svg.percentBelowSVG');
+    setTimeout(() => {
+      //build the towns & color them
+      buildAndColorTowns(stateTowns, rhodeIsland, geoPath, d3PovertyObj, belowPovertyColorScale, 'svg.povertyTotalSVG');
+      buildAndColorTowns(povertyTowns, rhodeIsland, geoPath, d3PercentObj, percentColorScale, 'svg.percentBelowSVG');
 
-    //builds state-legends
-    buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG', format);
-    buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG', formatPercent);
-
+      //builds state-legends
+      buildStateLegend(legendDiv, belowPovertyColorScale, povertyExtent, 'povertyCanvasClass', totalsLegendSVG, 'totalLegendAxis', 'povertyLegendSVG', format);
+      buildStateLegend(percentLegendDiv, percentColorScale, percentExtent ,'percentCanvasClass', percentLegendSVG, 'PercentLegendAxis', 'percentLegendSVG', formatPercent);
+    }, 50)
 }
 
 function resizeCharts() {
@@ -552,7 +559,7 @@ function resizeCharts() {
 
     d3.selectAll(".top5barText")
       .attrs({
-        "x": d => ( top5XScale(d.town) + top5XScale.bandwidth() ),
+        "x": d => ( top5XScale(d.town) + top5XScale.bandwidth() / 1.1 ),
         "y": d => ( top5YScale(d.belowPoverty) )
       })
 }
