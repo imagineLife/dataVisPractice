@@ -39,8 +39,8 @@ function setSVGDims(obj, w, h){
 
 function addRemainderSlice(sliceVal, sourceDataObj){
 	let remainderObj = {
-		key: 'key',
-		population: 100 - sliceVal
+		'key': 'key',
+		'percentBelow': 100 - sliceVal
 	};
 
 	sourceDataObj.push(remainderObj)
@@ -48,7 +48,6 @@ function addRemainderSlice(sliceVal, sourceDataObj){
 
 
 function buildPieChart(pieFn, dataObj, pieObj,arcFn,clrScl,clrVal,tweenFn){
-	
 	arcs = pieFn(dataObj);
 	pieObj.selectAll('path')
 		.data(arcs)
@@ -64,24 +63,25 @@ function buildPieChart(pieFn, dataObj, pieObj,arcFn,clrScl,clrVal,tweenFn){
 	    .attrTween("d", tweenFn);
 }
 
-function makeColorScale(colorArr, srcData, dataColorVal){
+function makeColorScale(colorArr, completePieJsonObj, dataColorVal){
+
 	const colorScale = d3.scaleOrdinal().range(colorArr);
-	colorScale.domain(srcData.map(dataColorVal));
+	colorScale.domain(completePieJsonObj.map(dataColorVal));
 	return colorScale;
 }
 
 let originalDataObj = [
   {
-    "religion": "Christian",
-    "population": 25
+	"town": "Central Falls", 
+	"percentBelow": 32.7
   }
 ];
 
 let AllChartObj = {
 	jsonData: originalDataObj,
 	parentDivID: 'chartDiv',
-	pieWedgeValue: d => d.population,
-	colorValue: d => d.religion,
+	pieWedgeValue: d => d.percentBelow,
+	colorValue: d => d.town,
 	margin :{ 
 		left: 20, 
 		right: 250,
@@ -94,8 +94,7 @@ let AllChartObj = {
 function buildChart(obj){
 
 	let arcs;
-	let jsonDataVal = obj.jsonData[0]["population"];
-
+	let jsonDataVal = obj.jsonData[0]["percentBelow"];
 	function tweenPie(b) {
 	  b.innerRadius = 0;
 	  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
@@ -104,8 +103,9 @@ function buildChart(obj){
 
 	addRemainderSlice(jsonDataVal, obj.jsonData)
 
-	let jsonData = obj.jsonData.sort((a, b) => b.population - a.population);
-
+	let jsonData = obj.jsonData.sort((a, b) => b.percentBelow - a.percentBelow);
+	console.log('jsonData')
+	console.log(jsonData);
 	//get page elements into D3
 	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv(obj.parentDivID);
 
@@ -115,9 +115,11 @@ function buildChart(obj){
 	//pie & arc functions
 	const { d3PieFunc, arcFunc } = makeD3PieFuncs(AllChartObj.pieWedgeValue, divWidthLessMargins)
 
+	let rotation = 2 *  jsonData[0]["percentBelow"];
+	console.log(rotation);
 	//setup pie G element
 	pieG.attrs({
-			'transform': `translate(${cssDivWidth/2}, ${cssDivHeight/2 }) rotate(90)`,
+			'transform': `translate(${cssDivWidth/2}, ${cssDivHeight/2 }) rotate (${rotation})`,
 			'class':'pieGWrapper'
 		})
 		.style('max-height', '900px')
@@ -128,6 +130,8 @@ function buildChart(obj){
 	//Setup Scales
 	const colorScale  = makeColorScale(obj.clrsArr, jsonData, obj.colorValue);
 
+	console.log('jsonData BEFORE PIE')
+	console.log(jsonData)
 	//build the pie chart!
 	buildPieChart(d3PieFunc, jsonData, pieG, arcFunc, colorScale, obj.colorValue, tweenPie);
 }
