@@ -85,12 +85,23 @@ function makeLegendAxisObj(scale){
   return d3.axisRight()
   .scale(scale)
   .tickSize(5) //size of tick mark, not text
-  .tickFormat((d) =>{
-    let f = d3.format(".2s");
-    return (`${f(d)}$`)
-  })
+  .tickFormat((d) =>(`${format(d)}$`))
   .ticks(6);
 }
+
+function designTickText(obj,xP,yP,dyP){
+  return obj.selectAll('.tick text')
+  .attrs({
+    'transform': 'rotate(-45)',
+    'text-anchor': 'end',
+    'alignment-baseline':'middle',
+    'x': xP,
+    'y': yP,
+    'dy':dyP
+  }) 
+}
+
+var format = d3.format(".2s");
 
 // create continuous color legend
 function buildStateLegend(selector_id, colorscale, ext) {
@@ -157,11 +168,6 @@ let lvl = {
 const income_domain = [lvl.one,lvl.two,lvl.three,lvl.four]
 
 let fancyData = [];
-
-//categorical coloring option
-// const legendColorScale = d3.scaleThreshold()
-//     .domain(income_domain)
-//     .range(d3.schemeReds[5]);
 
 const legendColorScale = d3.scaleSequential(d3.interpolateGreens)
     .domain([28901,116935])
@@ -323,15 +329,8 @@ function ready(error, data) {
 
       xAxisG.call(d3xAxis)
         .selectAll('.tick line').remove();
-      xAxisG.selectAll('.tick text')
-        .attrs({
-          'transform': 'rotate(-45)',
-          'text-anchor': 'end',
-          'alignment-baseline':'middle',
-          'x': -5,
-          'y': 15,
-          'dy':0
-        }) 
+
+      var xTicksNice = designTickText(xAxisG,'-5',15,0);
 
       yAxisG.call(d3yAxis)
         .selectAll('.tick line')
@@ -354,14 +353,10 @@ function ready(error, data) {
       .data(fancyData)
       .enter()
       .append("text")
-      .text(function (d) {
-        let f = d3.format(".2s");
-        return `≈ $${f(d.income)}`; 
-      })
+      .text((d) => `≈ $${format(d.income)}`)
       .attrs({
         "x": d => ( barXScale(d.town) + barXScale.bandwidth() ),
         "y": function (d) { return barYScale(d.income)},
-        // "text-anchor": "middle",
         "class":"barText"
       })
       .style("fill", "white");
