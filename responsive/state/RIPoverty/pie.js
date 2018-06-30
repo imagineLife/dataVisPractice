@@ -71,14 +71,14 @@ function buildPieChart(pieFn, dataObj, pieObj, arcFn, clrScl, clrVal, tweenFn){
 				if(d.data.town){
 					return clrScl(clrVal(d.data))
 				}else{
-					return 'rgba(255,255,255,.1)'
+					return 'rgb(82,82,82)'
 				}
 			},
 			'transform' : 'rotate(90)'
 		})
 		 .transition()
 	    .ease(d3.easeBounce)
-	    .duration(1100)
+	    .duration(2100)
 	    .attrTween("d", tweenFn);
 }
 
@@ -195,7 +195,7 @@ originalDataObj.forEach((d, i) => {
 	    percentBelow: d.percentBelow,
 	    chartNo: i + 1      
 	  }];
-	  buildChart(chartVars, thisObj, i)
+	  setTimeout(() => buildChart(chartVars, thisObj, i), 60)
 	}
 })
 
