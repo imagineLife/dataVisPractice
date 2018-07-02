@@ -26,29 +26,17 @@ var svg = d3.select("body").append("svg")
 
 var g = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var xAxisG = g.append("g")
-	.attrs({
-		"class": "x axis",
-		"transform": "translate(0," + innerHeight + ")"
-	});
 
 var pieG = g.append("g");
 
-var xScale = d3.scaleOrdinal().range([0, innerWidth]);
 var radiusScale = d3.scaleSqrt().range([0, radiusMax]);
 var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-
-var xAxis = d3.axisBottom()
-	.scale(xScale)
-	.tickSize(0);
 
 var pie = d3.pie();
 var arc = d3.arc();
 
 function render(data){
 
-	xScale.domain(data.map( (d) => { return d[xColumn]; }));
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
 
@@ -72,8 +60,6 @@ function render(data){
 			"d": arc,
 			"fill": (d) => colorScale(colorValue(d.data))
 		})
-
-	xAxisG.call(xAxis);
 }
 
 function type(d){
