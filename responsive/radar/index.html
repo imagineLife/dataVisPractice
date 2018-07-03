@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<script src="../../../d3.v4.min.js"></script>
+		<script src="../../../d3-selection-multi.min.js"></script>
+		<link rel="stylesheet" href="./index.css">
+		<title>Religion World-Total Pie</title>
+	</head>
+
+	<div id="chart"></div>
+	<script>
+		var width = 300,
+		    height = 300;
+
+		// Config for the Radar chart
+		var config = {
+		    w: width,
+		    h: height,
+		    maxValue: 100,
+		    levels: 5,
+		    ExtraWidthX: 300
+		}
+
+		//Call function to draw the Radar chart
+		d3.json("data.json", function(error, data) {
+		    if (error) throw error;
+		    RadarChart.draw("#chart", data, config);
+		});
+
+		var svg = d3.select('body')
+			.selectAll('svg')
+			.append('svg')
+			.attr("width", width)
+			.attr("height", height);
+	</script>
+	<script src="radar.js"></script>
