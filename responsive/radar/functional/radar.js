@@ -1,28 +1,28 @@
-var RadarChart = {
-  getClientDims: function(parentDiv, marginObj){
-    if(!marginObj){
-      marginObj = {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50
-      }
+
+function getClientDims (parentDiv, marginObj){
+  if(!marginObj){
+    marginObj = {
+      top: 50,
+      right: 50,
+      bottom: 50,
+      left: 50
     }
+  }
 
-    // Extract the DIV width and height that was computed by CSS.
-    let cssDivWidth = parentDiv.clientWidth;
-    let cssDivHeight = parentDiv.clientHeight;
-    
-    //get css-computed dimensions
-    const divWidthLessMargins =cssDivWidth - marginObj.left - marginObj.right;
-    const divHeightLessMargins = cssDivHeight - marginObj.top - marginObj.bottom;
-    
-    console.log('in js, cssDivWidth')
-    console.log(cssDivWidth)
-    return { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins };
-  },
+  // Extract the DIV width and height that was computed by CSS.
+  let cssDivWidth = parentDiv.clientWidth;
+  let cssDivHeight = parentDiv.clientHeight;
+  
+  //get css-computed dimensions
+  const divWidthLessMargins =cssDivWidth - marginObj.left - marginObj.right;
+  const divHeightLessMargins = cssDivHeight - marginObj.top - marginObj.bottom;
+  
+  console.log('in js, cssDivWidth')
+  console.log(cssDivWidth)
+  return { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins };
+};
 
-  draw: function(id, d, options){
+  function draw(id, d, options){
     var cfg = {
      radius: 5,
      w: 600,
@@ -59,8 +59,10 @@ var RadarChart = {
 
     var g = d3.select(id)
         .append("svg")
-        .attr("width", cfg.w+cfg.ExtraWidthX)
-        .attr("height", cfg.h+cfg.ExtraWidthY)
+        .attrs({
+          "width": cfg.w+cfg.ExtraWidthX,
+          "height": cfg.h+cfg.ExtraWidthY
+        })
         .append("g")
         .attr("transform", "translate(" + cfg.TranslateX + "," + cfg.TranslateY + ")");
 
@@ -73,11 +75,13 @@ var RadarChart = {
        .data(allAxis)
        .enter()
        .append("svg:line")
-       .attr("x1", function(d, i){return levelFactor*(1-cfg.factor*Math.sin(i*cfg.radians/total));})
-       .attr("y1", function(d, i){return levelFactor*(1-cfg.factor*Math.cos(i*cfg.radians/total));})
-       .attr("x2", function(d, i){return levelFactor*(1-cfg.factor*Math.sin((i+1)*cfg.radians/total));})
-       .attr("y2", function(d, i){return levelFactor*(1-cfg.factor*Math.cos((i+1)*cfg.radians/total));})
-       .attr("class", "line")
+       .attrs({
+        "x1": (d, i) =>  levelFactor*(1-cfg.factor*Math.sin(i*cfg.radians/total)),
+        "y1": (d, i) =>  levelFactor*(1-cfg.factor*Math.cos(i*cfg.radians/total)),
+        "x2": (d, i) =>  levelFactor*(1-cfg.factor*Math.sin((i+1)*cfg.radians/total)),
+        "y2": (d, i) =>  levelFactor*(1-cfg.factor*Math.cos((i+1)*cfg.radians/total)),
+        "class": "line"
+      })
        .style("stroke", "grey")
        .style("stroke-opacity", "0.75")
        .style("stroke-width", "0.3px")
@@ -91,13 +95,17 @@ var RadarChart = {
        .data([1]) //dummy data
        .enter()
        .append("svg:text")
-       .attr("x", function(d){return levelFactor*(1-cfg.factor*Math.sin(0));})
-       .attr("y", function(d){return levelFactor*(1-cfg.factor*Math.cos(0));})
-       .attr("class", "legend")
+       .attrs({
+          "x": (d) => levelFactor*(1-cfg.factor*Math.sin(0)),
+          "y": (d) => levelFactor*(1-cfg.factor*Math.cos(0)),
+          "class": "legend"
+        })
        .style("font-family", "sans-serif")
        .style("font-size", "10px")
-       .attr("transform", "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")")
-       .attr("fill", "#737373")
+       .attrs({
+          "transform": "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")",
+          "fill": "#737373"
+        })
        .text((j+1)*100/cfg.levels);
     }
 
@@ -110,11 +118,13 @@ var RadarChart = {
         .attr("class", "axis");
 
     axis.append("line")
-      .attr("x1", cfg.w/2)
-      .attr("y1", cfg.h/2)
-      .attr("x2", function(d, i){return cfg.w/2*(1-cfg.factor*Math.sin(i*cfg.radians/total));})
-      .attr("y2", function(d, i){return cfg.h/2*(1-cfg.factor*Math.cos(i*cfg.radians/total));})
-      .attr("class", "line")
+      .attrs({
+        "x1": cfg.w/2,
+        "y1": cfg.h/2,
+        "x2": (d, i) => cfg.w/2*(1-cfg.factor*Math.sin(i*cfg.radians/total)),
+        "y2": (d, i) => cfg.h/2*(1-cfg.factor*Math.cos(i*cfg.radians/total)),
+        "class": "line"
+      })
       .style("stroke", "grey")
       .style("stroke-width", "1px");
 
@@ -123,11 +133,13 @@ var RadarChart = {
       .text(function(d){return d})
       .style("font-family", "sans-serif")
       .style("font-size", "11px")
-      .attr("text-anchor", "middle")
-      .attr("dy", "1.5em")
-      .attr("transform", function(d, i){return "translate(0, -10)"})
-      .attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
-      .attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
+      .attrs({
+        "text-anchor": "middle",
+        "dy": "1.5em",
+        "transform": function(d, i){return "translate(0, -10)"},
+        "x": (d, i) => cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total),
+        "y": (d, i) => cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total)
+      })
 
  
     d.forEach(function(y, x){
@@ -211,7 +223,6 @@ var RadarChart = {
         series++;
     });
   }
-};
 
 var width = 300,
     height = 300;
@@ -228,7 +239,7 @@ var config = {
 //Call function to draw the Radar chart
 d3.json("data.json", function(error, data) {
     if (error) throw error;
-    RadarChart.draw("#chart", data, config);
+    draw("#chart", data, config);
 });
 
 var svg = d3.select('body')
