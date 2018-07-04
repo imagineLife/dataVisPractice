@@ -62,7 +62,7 @@ function render(data){
 
 	var pieG = svg.append("g")
 		.attrs({
-			"transform": "translate(" + divWidthLessMargins / 2 + "," + divHeightLessMargins / 2 + ")",
+			"transform": `translate(${divWidthLessMargins / 2.2},${divHeightLessMargins / 2})`,
 			'class':'pieGWrapper'
 		})
 		.style('max-height','900px');
@@ -72,13 +72,9 @@ function render(data){
 	var pie = d3.pie();
 	var arc = d3.arc();
 
-	function getMinMaxRadius(){
-
-	}
-
 	var radiusMax = 231;
 
-	radiusScale.range([0,radiusMax])
+	radiusScale.range([0,300])
 
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
@@ -130,10 +126,10 @@ function resize(){
 	setSVGDims(svgObj, divWidthLessMargins, divHeightLessMargins);
 	const { d3PieFunc, arcFunc } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
 
-    pieG.attr('transform', `translate(${cssDivWidth/2}, ${cssDivHeight/2 })`);
+    pieG.attr('transform', `translate(${cssDivWidth/2.2}, ${cssDivHeight/2 })`);
     pieG.selectAll('path').attr('d', arcFunc)
 
 }
 
 d3.csv("data.csv", type, render);
-d3.select(window).on('resize',resize);
+// d3.select(window).on('resize',resize);
