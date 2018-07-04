@@ -69,8 +69,8 @@ function render(data){
 
 	var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-	var pie = d3.pie();
-	var arc = d3.arc();
+	var d3PieFn = d3.pie();
+	var d3ArcFn = d3.arc();
 
 	var radiusMax = 231;
 
@@ -79,12 +79,12 @@ function render(data){
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
 
-	pie.value(() => 1);
-	arc.innerRadius(0).outerRadius((d) => { 
+	d3PieFn.value(() => 1);
+	d3ArcFn.innerRadius(0).outerRadius((d) => { 
 		return radiusScale(d.data[radiusColumn]);
 	});
 
-	var pieData = pie(data);
+	var pieData = d3PieFn(data);
 
 	var slices = pieG.selectAll("path")
 		.remove()
@@ -94,7 +94,7 @@ function render(data){
 	slices.enter()
 		.append("path")
 		.attrs({
-			"d": arc,
+			"d": d3ArcFn,
 			"fill": (d) => colorScale(colorValue(d.data))
 		})
 }
