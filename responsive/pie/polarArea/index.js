@@ -1,5 +1,3 @@
-var outerWidth = 960;
-var outerHeight = 500;
 var margin = { 
 	top: 20,
 	 right: 20,
@@ -48,11 +46,21 @@ function setSVGDims(obj, w, h){
 	});
 }
 
-var radiusScale = d3.scaleSqrt()//.range([0, radiusMax]);
+var radiusScale = d3.scaleSqrt();
 
 function render(data){
 
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
+
+	//calcluate largest radiusScale
+	let smallerDimension = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
+
+	let largestRadiusCalculation = Math.floor( ( smallerDimension / 2) * .75 );
+	let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
+
+	let smallestDimension = (smallerDimension < 175) ? smallerDimension : 175;
+
+	console.log('smallestDimension ->',smallestDimension)
 
 	var svg = d3.select("body").append("svg")
 		.attrs({
@@ -71,8 +79,6 @@ function render(data){
 
 	var d3PieFn = d3.pie();
 	var d3ArcFn = d3.arc();
-
-	var radiusMax = 231;
 
 	radiusScale.range([0,300])
 
