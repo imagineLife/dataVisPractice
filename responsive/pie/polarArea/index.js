@@ -46,6 +46,13 @@ function setSVGDims(obj, w, h){
 	});
 }
 
+//calcluate largest radiusScale based on parent dimensions & written largest val
+function getLargestRadius(w,h, largestVal){
+	let smallerHorW = (w < h) ? w : h;
+	let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
+	return (largestRadiusCalculation < largestVal)? largestRadiusCalculation : largestVal; 
+}
+
 var radiusScale = d3.scaleSqrt();
 
 function render(data){
@@ -53,14 +60,11 @@ function render(data){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
 
 	//calcluate largest radiusScale
-	let smallerDimension = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
+	// let smallerHorW = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
+	// let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
+	// let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
 
-	let largestRadiusCalculation = Math.floor( ( smallerDimension / 2) * .75 );
-	let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
-
-	let smallestDimension = (smallerDimension < 175) ? smallerDimension : 175;
-
-	console.log('smallestDimension ->',smallestDimension)
+	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 300);
 
 	var svg = d3.select("body").append("svg")
 		.attrs({
@@ -80,7 +84,7 @@ function render(data){
 	var d3PieFn = d3.pie();
 	var d3ArcFn = d3.arc();
 
-	radiusScale.range([0,300])
+	radiusScale.range([0,largestRadius])
 
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
