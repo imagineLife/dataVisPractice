@@ -1,12 +1,15 @@
 var outerWidth = 960;
 var outerHeight = 500;
-var margin = { left: 11, top: 75, right: 377, bottom: 88 };
+var margin = { 
+	top: 20,
+	 right: 20,
+	  bottom: 20,
+	   left: 20
+	};
 var xColumn = "name";
 var colorColumn = "religion";
 var radiusColumn = "population";
 var colorValue = d => d.religion;
-var innerWidth  = outerWidth  - margin.left - margin.right;
-var innerHeight = outerHeight - margin.top  - margin.bottom;
 
 function getClientDims(parentDiv, marginObj){
 
@@ -45,29 +48,34 @@ function setSVGDims(obj, w, h){
 	});
 }
 
-var svg = d3.select("body").append("svg")
-	.attrs({
-		"width":  outerWidth,
-		"height": outerHeight
-	});
-
-var pieG = svg.append("g")
-	.attrs({
-		"transform": "translate(" + innerWidth / 2 + "," + innerHeight / 2 + ")",
-		'class':'pieGWrapper'
-	})
-	.style('max-height','900px');
-
 var radiusScale = d3.scaleSqrt()//.range([0, radiusMax]);
-var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-var pie = d3.pie();
-var arc = d3.arc();
 
 function render(data){
 
-	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin)
-	
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
+
+	var svg = d3.select("body").append("svg")
+		.attrs({
+			"width":  divWidthLessMargins,
+			"height": divHeightLessMargins
+		});
+
+	var pieG = svg.append("g")
+		.attrs({
+			"transform": "translate(" + divWidthLessMargins / 2 + "," + divHeightLessMargins / 2 + ")",
+			'class':'pieGWrapper'
+		})
+		.style('max-height','900px');
+
+	var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+	var pie = d3.pie();
+	var arc = d3.arc();
+
+	function getMinMaxRadius(){
+
+	}
+
 	var radiusMax = 231;
 
 	radiusScale.range([0,radiusMax])
@@ -81,8 +89,6 @@ function render(data){
 	});
 
 	var pieData = pie(data);
-
-	pieG.attr("transform", "translate(" + innerWidth / 2 + "," + innerHeight / 2 + ")");
 
 	var slices = pieG.selectAll("path")
 		.remove()
@@ -108,16 +114,21 @@ function resize(){
 
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin)
 
+	//calcluate largest radiusScale
 	let smallerDimension = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
-	let smallestDimension = (smallerDimension < 300) ? smallerDimension : 300;
-	radiusScale.range([0,(smallestDimension * .9)])
-	let svgObj = d3.select('svg'), pieG = d3.select('.pieGWrapper');
+
+	let largestRadiusCalculation = Math.floor( ( smallerDimension / 2) * .75 );
+	let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
+
+	let smallestDimension = (smallerDimension < 175) ? smallerDimension : 175;
+	radiusScale.range([0,  largestRadius])
+	
+	let svgObj = d3.select('svg'), 
+		pieG = d3.select('.pieGWrapper');
 
 	//set svg dimension based on resizing attrs
-	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
+	setSVGDims(svgObj, divWidthLessMargins, divHeightLessMargins);
 	const { d3PieFunc, arcFunc } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
-
-    // arcFunc.outerRadius( (divWidthLessMargins/2) * .7 );
 
     pieG.attr('transform', `translate(${cssDivWidth/2}, ${cssDivHeight/2 })`);
     pieG.selectAll('path').attr('d', arcFunc)
