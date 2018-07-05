@@ -47,7 +47,7 @@ function setSVGDims(obj, w, h){
 }
 
 //calcluate largest radiusScale based on parent dimensions & written largest val
-function getLargestRadius(w,h, largestVal){
+function getBigScreenMaxRadius(w,h, largestVal){
 	let smallerHorW = (w < h) ? w : h;
 	let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
 	return (largestRadiusCalculation < largestVal)? largestRadiusCalculation : largestVal; 
@@ -59,12 +59,22 @@ function render(data){
 
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
 
-	//calcluate largest radiusScale
-	// let smallerHorW = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
-	// let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
-	// let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
+	//bigScreenLargeRadius
+	let largestRadius = getBigScreenMaxRadius(divWidthLessMargins, divHeightLessMargins, 300);
 
-	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 300);
+	//smallScreenLargeRadius
+	let smallerHorW = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
+	let smallestLargeRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
+	let smallestLargeWedge =  (smallestLargeRadiusCalculation < 150) ? 150 : smallestLargeRadiusCalculation;
+	console.log('divWidthLessMargins ->',divWidthLessMargins);
+
+	// let finalRadiusMaxCalc = (divWidthLessMargins)
+
+	/*
+		if smallerHorW
+			< 300, set LargeRad = smallestLargeWedge
+			> 
+	*/
 
 	var svg = d3.select("body").append("svg")
 		.attrs({
@@ -74,7 +84,7 @@ function render(data){
 
 	var pieG = svg.append("g")
 		.attrs({
-			"transform": `translate(${divWidthLessMargins / 2.2},${divHeightLessMargins / 2})`,
+			"transform": `translate(${Math.floor(divWidthLessMargins / 2.2)},${Math.floor(divHeightLessMargins / 2)})`,
 			'class':'pieGWrapper'
 		})
 		.style('max-height','900px');
@@ -121,12 +131,8 @@ function resize(){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin)
 
 	//calcluate largest radiusScale
-	let smallerDimension = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
+	let largestRadius = getBigScreenMaxRadius(divWidthLessMargins, divHeightLessMargins, 300);
 
-	let largestRadiusCalculation = Math.floor( ( smallerDimension / 2) * .75 );
-	let largestRadius = (largestRadiusCalculation < 300)? largestRadiusCalculation : 300; 
-
-	let smallestDimension = (smallerDimension < 175) ? smallerDimension : 175;
 	radiusScale.range([0,  largestRadius])
 	
 	let svgObj = d3.select('svg'), 
@@ -136,7 +142,7 @@ function resize(){
 	setSVGDims(svgObj, divWidthLessMargins, divHeightLessMargins);
 	const { d3PieFunc, arcFunc } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
 
-    pieG.attr('transform', `translate(${cssDivWidth/2.2}, ${cssDivHeight/2 })`);
+    pieG.attr('transform', `translate(${Math.floor(divWidthLessMargins/2.2)}, ${Math.floor(divHeightLessMargins/2) })`);
     pieG.selectAll('path').attr('d', arcFunc)
 
 }
