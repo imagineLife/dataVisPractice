@@ -47,7 +47,7 @@ function setSVGDims(obj, w, h){
 }
 
 //calcluate largest radiusScale based on parent dimensions & written largest val
-function getBigScreenMaxRadius(w,h, largestVal){
+function getLargestRadius(w,h, largestVal){
 	let smallerHorW = (w < h) ? w : h;
 	let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
 	return (largestRadiusCalculation < largestVal)? largestRadiusCalculation : largestVal; 
@@ -59,22 +59,12 @@ function render(data){
 
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
 
-	//bigScreenLargeRadius
-	let largestRadius = getBigScreenMaxRadius(divWidthLessMargins, divHeightLessMargins, 300);
+	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 600);
 
 	//smallScreenLargeRadius
 	let smallerHorW = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
 	let smallestLargeRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
 	let smallestLargeWedge =  (smallestLargeRadiusCalculation < 150) ? 150 : smallestLargeRadiusCalculation;
-	console.log('divWidthLessMargins ->',divWidthLessMargins);
-
-	// let finalRadiusMaxCalc = (divWidthLessMargins)
-
-	/*
-		if smallerHorW
-			< 300, set LargeRad = smallestLargeWedge
-			> 
-	*/
 
 	var svg = d3.select("body").append("svg")
 		.attrs({
@@ -131,7 +121,7 @@ function resize(){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin)
 
 	//calcluate largest radiusScale
-	let largestRadius = getBigScreenMaxRadius(divWidthLessMargins, divHeightLessMargins, 300);
+	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 300);
 
 	radiusScale.range([0,  largestRadius])
 	
@@ -148,4 +138,4 @@ function resize(){
 }
 
 d3.csv("data.csv", type, render);
-// d3.select(window).on('resize',resize);
+d3.select(window).on('resize',resize);
