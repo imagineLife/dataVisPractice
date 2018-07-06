@@ -1,14 +1,3 @@
-var margin = { 
-	top: 20,
-	 right: 20,
-	  bottom: 20,
-	   left: 20
-	};
-var xColumn = "name";
-var colorColumn = "religion";
-var radiusColumn = "population";
-var colorValue = d => d.religion;
-
 function getClientDims(parentDiv, marginObj){
 
 	// Extract the DIV width and height that was computed by CSS.
@@ -53,6 +42,15 @@ function getLargestRadius(w,h, largestVal){
 	return (largestRadiusCalculation < largestVal)? largestRadiusCalculation : largestVal; 
 }
 
+var margin = { 
+	top: 20,
+	 right: 20,
+	  bottom: 20,
+	   left: 20
+	};
+var colorColumn = "religion";
+var radiusColumn = "population";
+var colorValue = d => d.religion;
 var radiusScale = d3.scaleSqrt();
 
 function render(data){
@@ -60,11 +58,6 @@ function render(data){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
 
 	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 600);
-
-	//smallScreenLargeRadius
-	let smallerHorW = (divWidthLessMargins < divHeightLessMargins) ? divWidthLessMargins : divHeightLessMargins;
-	let smallestLargeRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
-	let smallestLargeWedge =  (smallestLargeRadiusCalculation < 150) ? 150 : smallestLargeRadiusCalculation;
 
 	var svg = d3.select("body").append("svg")
 		.attrs({
@@ -89,7 +82,7 @@ function render(data){
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
 
-	d3PieFn.value(() => 1);
+	d3PieFn.value(1);
 	d3ArcFn.innerRadius(0).outerRadius((d) => { 
 		return radiusScale(d.data[radiusColumn]);
 	});
