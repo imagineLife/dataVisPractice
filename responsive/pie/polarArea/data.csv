@@ -1,9 +1,10 @@
-religion,population
-Christian,2173100000
-Muslim,1598360000
-Unaffiliated,1126280000
-Hindu,1032860000
-Buddhist,487320000
-Folk Religions,404890000
-Other Religions,57770000
-Jewish,13640000
+Race,howMany
+"White & Hispanic",92245
+"African Americans",16474
+"American Indian or Alaskan Native",1998
+"Asian",4334
+"Hawaiian Islanders",19
+"Other Ethnicity",18152
+"Two-Plus Races",6939
+"Hispanic & Latino",44864
+"White",70504

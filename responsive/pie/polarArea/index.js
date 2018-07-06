@@ -41,7 +41,7 @@ function setSVGDims(obj, w, h){
 //calcluate largest radiusScale based on parent dimensions & written largest val
 function getLargestRadius(w,h, largestVal){
 	let smallerHorW = (w < h) ? w : h;
-	let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) * .8 );
+	let largestRadiusCalculation = Math.floor( ( smallerHorW / 2) *.95 );
 	return (largestRadiusCalculation < largestVal)? largestRadiusCalculation : largestVal; 
 }
 
@@ -52,9 +52,9 @@ var margin = {
 	   left: 20
 	};
 
-var colorColumn = "religion";
-var radiusColumn = "population";
-var colorValue = d => d.religion;
+var colorColumn = "Race";
+var radiusColumn = "howMany";
+var colorValue = d => d.Race;
 var radiusScale = d3.scaleSqrt();
 
 function render(data){
@@ -104,8 +104,7 @@ function render(data){
 }
 
 function type(d){
-	d.name = "World";
-	d.population = +d.population;
+	d.howMany = +d.howMany;
 	return d;
 }
 
@@ -115,7 +114,7 @@ function resize(){
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
 
 	//calcluate largest radiusScale
-	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 300);
+	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 330);
 
 	radiusScale.range([0,  largestRadius])
 	
