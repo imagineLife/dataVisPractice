@@ -23,12 +23,12 @@ function getClientDims(parentDiv, marginObj){
 
 function makeD3PieFuncs(wedgeVal, w){
 	const d3PieFunc = d3.pie().value(wedgeVal);
-	const arcFunc = d3.arc()
+	const d3ArcFn = d3.arc()
 		.innerRadius(0).outerRadius((d) => {
 			return radiusScale(d.data[radiusColumn]);
 		})
 
-	return { d3PieFunc, arcFunc };
+	return { d3PieFunc, d3ArcFn };
 }
 
 function setSVGDims(obj, w, h){
@@ -61,7 +61,9 @@ function render(data){
 
 	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
 
-	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
+
+	const { d3PieFunc, d3ArcFn } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
 
 	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 600);
 
@@ -78,20 +80,17 @@ function render(data){
 
 	var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-	var d3PieFn = d3.pie();
-	var d3ArcFn = d3.arc();
-
 	radiusScale.range([0,largestRadius])
 
 	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
 
-	d3PieFn.value(1);
+	d3PieFunc.value(1);
 	d3ArcFn.innerRadius(0).outerRadius((d) => { 
 		return radiusScale(d.data[radiusColumn]);
 	});
 
-	var pieData = d3PieFn(data);
+	var pieData = d3PieFunc(data);
 
 	var slices = pieG.selectAll("path")
 		.remove()
@@ -115,7 +114,7 @@ function type(d){
 //2. Build fn
 function resize(){
 
-	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin)
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
 
 	//calcluate largest radiusScale
 	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 300);
@@ -127,12 +126,12 @@ function resize(){
 
 	//set svg dimension based on resizing attrs
 	setSVGDims(svgObj, divWidthLessMargins, divHeightLessMargins);
-	const { d3PieFunc, arcFunc } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
+	const { d3PieFunc, d3ArcFn } = makeD3PieFuncs(radiusColumn, divWidthLessMargins)
 
     pieG.attr('transform', `translate(${Math.floor(divWidthLessMargins/2.2)}, ${Math.floor(divHeightLessMargins/2) })`);
-    pieG.selectAll('path').attr('d', arcFunc)
+    pieG.selectAll('path').attr('d', d3ArcFn)
 
 }
 
 d3.csv("data.csv", type, render);
-// d3.select(window).on('resize',resize);
+d3.select(window).on('resize',resize);
