@@ -1,3 +1,13 @@
+function makeD3ElementsFromParentDiv(parendDivID){
+	const chartDiv = document.getElementById(parendDivID); 	      
+	const svgObj = d3.select(chartDiv).append("svg");
+	const pieG = svgObj.append('g')
+		.attr('class','gWrapper')
+		.style('max-height','900px');
+
+	return {chartDiv, svgObj, pieG};
+}
+
 function getClientDims(parentDiv, marginObj){
 
 	// Extract the DIV width and height that was computed by CSS.
@@ -21,13 +31,6 @@ function makeD3PieFuncs(wedgeVal, w){
 	return { d3PieFunc, arcFunc };
 }
 
-function makeD3ElementsFromParentDiv(parendDivID){
-	const chartDiv = document.getElementById(parendDivID); 	      
-	const svgObj = d3.select(chartDiv).append("svg");
-
-	return {chartDiv, svgObj, pieG};
-}
-
 function setSVGDims(obj, w, h){
 	obj.attrs({
 		"width" : w,
@@ -48,6 +51,7 @@ var margin = {
 	  bottom: 20,
 	   left: 20
 	};
+
 var colorColumn = "religion";
 var radiusColumn = "population";
 var colorValue = d => d.religion;
@@ -55,18 +59,18 @@ var radiusScale = d3.scaleSqrt();
 
 function render(data){
 
+	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
+
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(document.getElementById('body'), margin);
 
 	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 600);
 
-	var svg = d3.select("body").append("svg")
-		.attrs({
+	svgObj.attrs({
 			"width":  divWidthLessMargins,
 			"height": divHeightLessMargins
 		});
 
-	var pieG = svg.append("g")
-		.attrs({
+	pieG.attrs({
 			"transform": `translate(${Math.floor(divWidthLessMargins / 2.2)},${Math.floor(divHeightLessMargins / 2)})`,
 			'class':'pieGWrapper'
 		})
@@ -131,4 +135,4 @@ function resize(){
 }
 
 d3.csv("data.csv", type, render);
-d3.select(window).on('resize',resize);
+// d3.select(window).on('resize',resize);
