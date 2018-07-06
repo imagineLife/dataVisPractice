@@ -67,10 +67,8 @@ function render(data){
 
 	let largestRadius = getLargestRadius(divWidthLessMargins, divHeightLessMargins, 600);
 
-	svgObj.attrs({
-			"width":  divWidthLessMargins,
-			"height": divHeightLessMargins
-		});
+	//set svg height & width from div computed dimensions
+	setSVGDims(svgObj, divWidthLessMargins, divHeightLessMargins);
 
 	pieG.attrs({
 			"transform": `translate(${Math.floor(divWidthLessMargins / 2.2)},${Math.floor(divHeightLessMargins / 2)})`,
@@ -79,23 +77,23 @@ function render(data){
 		.style('max-height','900px');
 
 	var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-	radiusScale.range([0,largestRadius])
-
-	radiusScale.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })]);
 	colorScale.domain(data.map(function (d){ return d[colorColumn]; }));
-
+	
+	radiusScale
+		.domain([0, d3.max(data, (d) => { return d[radiusColumn]; })])
+		.range([0,largestRadius]);
+	
 	d3PieFunc.value(1);
+	const arcs = d3PieFunc(data);
+
 	d3ArcFn.innerRadius(0).outerRadius((d) => { 
 		return radiusScale(d.data[radiusColumn]);
 	});
 
-	var pieData = d3PieFunc(data);
-
 	var slices = pieG.selectAll("path")
 		.remove()
 		.exit()
-		.data(pieData);
+		.data(arcs);
 
 	slices.enter()
 		.append("path")
