@@ -1,9 +1,3 @@
-function makeTimeScale(dataMin, dataMax, pixMin, pixMax){
-  return d3.scaleTime()
-        .domain([dataMin,dataMax])
-        .range([pixMin,pixMax]);
-}
-
 function makeLinearScale(domMin,domMax,rangeMin,rangeMax){
   return d3.scaleLinear()
         .domain([ domMin, domMax ])
@@ -20,9 +14,6 @@ var settings = {
 };
 
 d3.json("npm.json", function(data){
-
-    console.log('data!')
-    console.log(data)
     
     var svg = d3.select("svg");
 
@@ -82,14 +73,18 @@ d3.json("npm.json", function(data){
 
     gXObj = gWrapper.append("g")
       .attrs({
-        "transform" : "translate(0,"+(+gWrapper.attr("height"))+")",
+        "transform" : `translate(0, ${gWrapper.attr("height")})`,
         "class" : "axis axis--x"
       })
       .call(d3xAxis);
 
-    gYObj = gWrapper.append("g").attr("class","axis axis--y").call(d3yAxis);
+    gYObj = gWrapper.append("g")
+      .attr("class","axis axis--y")
+      .call(d3yAxis);
     
-    d3.selectAll(".axis--y > g.tick > line").attr("x2",canvasWidth).style("stroke","lightgrey");
+    d3.selectAll(".axis--y > g.tick > line")
+      .attr("x2",canvasWidth)
+      .style("stroke","lightgrey");
 
     barWidth = ( xScale(2) - xScale(1) ) * .5;
     
@@ -102,18 +97,16 @@ d3.json("npm.json", function(data){
         "clip-path" :  "url(#clip)",
 
         //THIS can be moved, so that the bar is to the 'right' of the value
-        //"x" : (d) => xScale(d.measureNumber)-barWidth*0.5,
+        //"x" : (d) => xScale(d.measureNumber),
         "x" : (d) => xScale(d.measureNumber)-barWidth*0.5,
         "width" : barWidth,
         "height" : (d) => canvasHeight-yScale(d.howMany),
         "y" : (d) =>  yScale(d.howMany)
       })
       .style("fill","steelblue")
-      .style("stroke","blue")
-      .style("stroke-width","1px");
    
 
-    gWrapper.append("g")
+    let yAxisLabel = gWrapper.append("g")
       .attr("transform", `translate( ${(-40)} , ${(+gWrapper.attr("height"))/2 }) rotate(270)`)
       .append("text")
       .attrs({
@@ -132,11 +125,11 @@ function zoomed() {
     gXObj.call(d3xAxis.scale(rescaleXFn));
 
  
-    barWidth = ( rescaleXFn(2) - rescaleXFn(1) ) * .75;
+    barWidth = ( rescaleXFn(2) - rescaleXFn(1) ) * .5;
 
     d3.selectAll("rect.barClass")   
       .attrs({
-        "x" : (d) => rescaleXFn(d.measureNumber)-barWidth*0.5,
+        "x" : (d) => rescaleXFn(d.measureNumber)-barWidth*.5,
         "width" : barWidth
       });
 }
