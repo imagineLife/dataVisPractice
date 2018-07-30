@@ -26,23 +26,11 @@ d3.json("npm.json", function(data){
     var canvasHeight = svgHeight-padding.top-padding.bottom;
     var canvasWidth  = svgWidth-padding.left-padding.right;
 
-    data.forEach(function(d,i) {
+    data.forEach((d,i) => {
       var eMaxY = d3.max(d,function(d){return +d.howMany;});
       var eMinY = d3.min(d,function(d){return +d.howMany;});
       var eMaxX = d3.max(d,function(d){return +d.measureNumber;});
       var eMinX = d3.min(d,function(d){return +d.measureNumber;});
-
-      if(dataLimits.maxX == null){ dataLimits.maxX = eMaxX;} 
-      else { if(eMaxX > dataLimits.maxX){ dataLimits.maxX = eMaxX;}}
-
-      if(dataLimits.minX == null){ dataLimits.minX = eMinX;} 
-      else { if(eMinX < dataLimits.minX){ dataLimits.minX = eMinX;}}
-
-      if(dataLimits.maxY == null){dataLimits.maxY = eMaxY;} 
-      else { if(eMaxY > dataLimits.maxY){dataLimits.maxY = eMaxY;}}
-
-      if(dataLimits.minY == null){dataLimits.minY = eMinY;}
-      else { if(eMinY < dataLimits.minY){dataLimits.minY = eMinY;}}
     });   
 
     var gWrapper = svg.append("g")
@@ -59,7 +47,8 @@ d3.json("npm.json", function(data){
 
     var d3Zoom = d3.zoom().on("zoom",zoomed);
   
-    d3xAxis = d3.axisBottom(xScale);
+    d3xAxis = d3.axisBottom(xScale).ticks(8);
+
     d3yAxis = d3.axisLeft(yScale);
 
     var clip = gWrapper.append("clipPath")
@@ -93,24 +82,30 @@ d3.json("npm.json", function(data){
       .enter()
       .append("rect")
       .attrs({
-        "class" : "barClass",
-        "clip-path" :  "url(#clip)",
-
-        //THIS can be moved, so that the bar is to the 'right' of the value
-        //"x" : (d) => xScale(d.measureNumber),
-        "x" : (d) => xScale(d.measureNumber)-barWidth*0.5,
+        "class" : 'barClass',
+        "clip-path" :  'url(#clip)',
+        "x" : (d) => xScale(d.measureNumber)-barWidth*.5,
         "width" : barWidth,
         "height" : (d) => canvasHeight-yScale(d.howMany),
         "y" : (d) =>  yScale(d.howMany)
       })
-      .style("fill","steelblue")
+      .style('fill','steelblue')
    
 
-    let yAxisLabel = gWrapper.append("g")
-      .attr("transform", `translate( ${(-40)} , ${(+gWrapper.attr("height"))/2 }) rotate(270)`)
-      .append("text")
+    let xAxisLabel = gWrapper.append("g")
+      .attr('transform', `translate( ${ gWrapper.attr('width')/2 } , ${ svg.attr('height') * .9 } )`)
+      .append('text')
       .attrs({
-        "text-anchor" : "middle",
+        'text-anchor' : 'middle',
+        'class' : 'rotated'
+      })
+      .text('Measure Number');
+
+    let yAxisLabel = gWrapper.append('g')
+      .attr('transform', `translate( ${(-40)} , ${(+gWrapper.attr('height'))/2 }) rotate(270)`)
+      .append('text')
+      .attrs({
+        'text-anchor' : 'middle',
         'class' : 'rotated'
       })
       .text('Note Count');
