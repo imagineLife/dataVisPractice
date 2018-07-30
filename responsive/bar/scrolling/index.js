@@ -18,18 +18,15 @@ var settings = {
         type:"line"
     }
 };
-d3.json("data.json",function(data){
 
-    if(data[0].metric.WIDGET_SETTINGS != ""){
-        var wid = JSON.parse(data[0].metric.WIDGET_SETTINGS);   
-        if(wid != null){
-          $.extend(settings,wid);
-        }
-    }
+d3.json("npm.json", function(data){
+
+    console.log('data!')
+    console.log(data)
     
     var svg = d3.select("svg");
 
-    var dataLimits = {maxY:null, minY:null, maxX:null, minX:null};
+    var dataLimits = {maxY:14, minY:0, maxX:157, minX:0};
     var padding = {top:20,bottom:150,left:100,right:20};
 
     var svgWidth = +svg.attr("width");
@@ -38,11 +35,11 @@ d3.json("data.json",function(data){
     var canvasHeight = svgHeight-padding.top-padding.bottom;
     var canvasWidth  = svgWidth-padding.left-padding.right;
 
-    data.forEach(function(e,i) {        
-      var eMaxY = d3.max(e.data,function(d){return +d.VALUE_NUMERIC;});
-      var eMinY = d3.min(e.data,function(d){return +d.VALUE_NUMERIC;});
-      var eMaxX = d3.max(e.data,function(d){return new Date(d.DATA_DATE);});
-      var eMinX = d3.min(e.data,function(d){return new Date(d.DATA_DATE);});
+    data.forEach(function(d,i) {
+      var eMaxY = d3.max(d,function(d){return +d.howMany;});
+      var eMinY = d3.min(d,function(d){return +d.howMany;});
+      var eMaxX = d3.max(d,function(d){return +d.measureNumber;});
+      var eMinX = d3.min(d,function(d){return +d.measureNumber;});
 
       if(dataLimits.maxX == null){ dataLimits.maxX = eMaxX;} 
       else { if(eMaxX > dataLimits.maxX){ dataLimits.maxX = eMaxX;}}
@@ -65,7 +62,7 @@ d3.json("data.json",function(data){
           "transform" : "translate("+padding.left+","+padding.top+")"
         });
 
-    xScale = makeTimeScale(dataLimits.minX, dataLimits.maxX, 0,+gWrapper.attr("width"));
+    xScale = makeLinearScale(0, 12, 0,+gWrapper.attr("width"));
 
     yScale = makeLinearScale( dataLimits.maxY*1.1, dataLimits.minY-(dataLimits.minY*0.1), 0,+gWrapper.attr("height"))
 
@@ -94,19 +91,22 @@ d3.json("data.json",function(data){
     
     d3.selectAll(".axis--y > g.tick > line").attr("x2",canvasWidth).style("stroke","lightgrey");
 
-    barWidth = (xScale(new Date("2016-01-02")) - xScale(new Date("2016-01-01")));
+    barWidth = ( xScale(2) - xScale(1) ) * .5;
     
     var barLines = gWrapper.selectAll("rect.bar")
-      .data(data[0].data)    
+      .data(data)    
       .enter()
       .append("rect")
       .attrs({
         "class" : "barClass",
         "clip-path" :  "url(#clip)",
-        "x" : (d) => xScale(new Date(d.DATA_DATE))-barWidth*0.5,
+
+        //THIS can be moved, so that the bar is to the 'right' of the value
+        //"x" : (d) => xScale(d.measureNumber)-barWidth*0.5,
+        "x" : (d) => xScale(d.measureNumber)-barWidth*0.5,
         "width" : barWidth,
-        "height" : (d) => canvasHeight-yScale(d.VALUE_NUMERIC),
-        "y" : (d) =>  yScale(d.VALUE_NUMERIC)
+        "height" : (d) => canvasHeight-yScale(d.howMany),
+        "y" : (d) =>  yScale(d.howMany)
       })
       .style("fill","steelblue")
       .style("stroke","blue")
@@ -120,19 +120,23 @@ d3.json("data.json",function(data){
         "text-anchor" : "middle",
         'class' : 'rotated'
       })
-      .text(data[0].metric.Y_AXIS_NAME);
+      .text('Note Count');
 
     svg.call(d3Zoom);
 });
 
 function zoomed() {
-    gXObj.call(d3xAxis.scale(d3.event.transform.rescaleX(xScale)));
+    
     var rescaleXFn = d3.event.transform.rescaleX(xScale);
+
+    gXObj.call(d3xAxis.scale(rescaleXFn));
+
  
-    barWidth = rescaleXFn(new Date("2016-01-02")) - rescaleXFn(new Date("2016-01-01"));
+    barWidth = ( rescaleXFn(2) - rescaleXFn(1) ) * .75;
+
     d3.selectAll("rect.barClass")   
       .attrs({
-        "x" : (d) => rescaleXFn(new Date(d.DATA_DATE))-barWidth*0.5,
+        "x" : (d) => rescaleXFn(d.measureNumber)-barWidth*0.5,
         "width" : barWidth
       });
 }
