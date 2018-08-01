@@ -2,7 +2,7 @@ const v = {
 	margin: {
 		t: 50,
 		r: 20,
-		b: 50,
+		b: 75,
 		l: 80
 	},
 	setHeight: 500,
@@ -97,7 +97,7 @@ d3.json("data/data.json").then(function(data){
 	const colorScale = d3.scaleOrdinal(d3.schemePasetl1)
 
 	//make axis labels
-	let xAxisLabel = makeLabel(gWrapper, ( widthLessMargins / 2 ), ( v.setHeight - 30 ), v.xLabelText);
+	let xAxisLabel = makeLabel(gWrapper, ( widthLessMargins / 2 ), ( v.setHeight - 80 ), v.xLabelText);
 	let yAxisLabel = makeLabel(gWrapper, ( -170 ), ( -40 ), v.yLabelText);
 	let timeAxisLabel = makeLabel(gWrapper, ( -40 ), ( -10 ), v.timeLabelText);
 
