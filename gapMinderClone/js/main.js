@@ -1,10 +1,5 @@
 const v = {
-	margin: {
-		t: 50,
-		r: 20,
-		b: 75,
-		l: 80
-	},
+	margin: { t: 50, r: 20, b: 75, l: 80 },
 	setHeight: 500,
 	setWidth: 800,
 	xLabelText: 'GDP Per Capita ($)',
@@ -69,61 +64,114 @@ function connectAxisToParent(parent, transformation, className){
 		})
 }
 
-d3.json("data/data.json").then(function(data){
+function drawAndUpdateCircles(data) {
+    // Standard transition timeVar for the visualization
+    var t = d3.transition().duration(150).ease(d3.easeLinear);
 
-	let timeVar = 0;
+    // JOIN new data with old elements.
+    var circles = gWrapper.selectAll("circle")
+	    .data(data, (d) => d.country);
 
-	//calculate svg dimensions less margins
-	const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
-	const widthLessMargins = v.setWidth - v.margin.l - v.margin.r;	
+    // EXIT old elements not present in new data.
+    circles.exit()
+        .attr("class", "exit")
+        .remove();
 
-	//domain & range vars
-	const logDomain = [142, 150000],
-		logRange = [0, v.setWidth],
-		linearRange = [heightLessMargins, 0],
-		linearDomain = [0,90],
-		radiusDom = [2000,1400000000],
-		radiusRange = [25*Math.PI, 1500*Math.PI];
+    // ENTER new elements present in new data.
+    circles.enter()
+        .append("circle")
+        .attrs({
+        	"class": "enter",
+        	"fill": (d) => colorScale(d.continent)
+        })
+        .merge(circles)
+        .transition(t)
+            .attrs({
+            	"cy": (d) => yScale(d.life_exp),
+            	"cx": (d) => xScale(d.income),
+            	"r" : (d) => Math.sqrt(radiusScale(d.population) / Math.PI)
+            })
 
-	//make svg & g objects
-	let svgObj = appendElement('#chart','svg', v.setWidth, v.setHeight, 'svgObj');
-	let gWrapper = appendD3Element(svgObj, 'g', 'gWrapper');
-	gWrapper.attr('transform', `translate( ${v.margin.l}, ${v.margin.t})`);
+    // drawAndUpdateCircles the time label
+    timeAxisLabel.text(+(timeVar + 1800))
+}
 
-	//make x & y & circle-radius scales
-	let xScale = makeLogScale(10, logDomain, logRange);
-	let yScale = makeLinearScale(linearDomain, linearRange);
-	let radiusScale = makeLinearScale(radiusDom, radiusRange);
-	const colorScale = d3.scaleOrdinal(d3.schemePasetl1)
+let timeVar = 0, formattedData;
 
-	//make axis labels
-	let xAxisLabel = makeLabel(gWrapper, ( widthLessMargins / 2 ), ( v.setHeight - 80 ), v.xLabelText);
-	let yAxisLabel = makeLabel(gWrapper, ( -170 ), ( -40 ), v.yLabelText);
-	let timeAxisLabel = makeLabel(gWrapper, ( -40 ), ( -10 ), v.timeLabelText);
+//calculate svg dimensions less margins
+const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
+const widthLessMargins = v.setWidth - v.margin.l - v.margin.r;	
 
-	//adjust labels
+//domain & range vars
+const logDomain = [142, 150000],
+	logRange = [0, v.setWidth],
+	linearRange = [heightLessMargins, 0],
+	linearDomain = [0,90],
+	radiusDom = [2000,1400000000],
+	radiusRange = [25*Math.PI, 1500*Math.PI];
+
+//make svg & g objects
+let svgObj = appendElement('#chart','svg', v.setWidth, v.setHeight, 'svgObj');
+let gWrapper = appendD3Element(svgObj, 'g', 'gWrapper');
+gWrapper.attr('transform', `translate( ${v.margin.l}, ${v.margin.t})`);
+
+//make x & y & circle-radius scales
+let xScale = makeLogScale(10, logDomain, logRange);
+let yScale = makeLinearScale(linearDomain, linearRange);
+let radiusScale = makeLinearScale(radiusDom, radiusRange);
+const colorScale = d3.scaleOrdinal(d3.schemePastel1)
+
+//make axis labels
+let xAxisLabel = makeLabel(gWrapper, ( widthLessMargins / 2 ), ( v.setHeight - 80 ), v.xLabelText);
+let yAxisLabel = makeLabel(gWrapper, ( -170 ), ( -40 ), v.yLabelText);
 	yAxisLabel.attr('transform','rotate(-90)')
+let timeAxisLabel = makeLabel(gWrapper, ( -40 ), ( -10 ), v.timeLabelText);
 
 
-	//make axis objects
-	let xAxisObj = makeD3xAxis(xScale, [400, 4000, 40000], d3.format('$'))
-	let yAxisObj = makeD3yAxis(yScale)
+//make axis objects
+let xAxisObj = makeD3xAxis(xScale, [400, 4000, 40000], d3.format('$'))
+let yAxisObj = makeD3yAxis(yScale)
 
-	//append axis to gWrapper
-	let transformString = "translate(0," + (heightLessMargins) +")";
+//append axis to gWrapper
+let transformString = "translate(0," + (heightLessMargins) +")";
+let xAxisG = connectAxisToParent(gWrapper, transformString, 'xAxisG');
+	xAxisG.call(xAxisObj)
+let yAxisG = connectAxisToParent(gWrapper, `translate(0, 0)`, 'yAxisG');
+	yAxisG.call(yAxisObj)
 
-	let xAxisG = connectAxisToParent(gWrapper, transformString, 'xAxisG');
-		xAxisG.call(xAxisObj)
-	let yAxisG = connectAxisToParent(gWrapper, `translate(0, 0)`, 'yAxisG');
-		yAxisG.call(yAxisObj)
+d3.json("data/data.json").then((data) => {
 
+	// Clean data
+	formattedData = data.map((yearObj) => {
 
+	    return yearObj["countries"].filter((country) => {
 
+	    	//if this country HAS data, return this country by returning true
+	        var dataExists = (country.income && country.life_exp);
+	        return dataExists
+	    })
+	    .map((country) => {
+	        country.income = +country.income;
+	        country.life_exp = +country.life_exp;
+	        return country;            
+	    })
+	});
 
+    // First run of the visualization
+    drawAndUpdateCircles(formattedData[0]);
 
+    return true
 
+}).then(() => {
 
-
-
+	// Run the code every 0.1 second
+	setInterval(() => {  
+	    // At the end of our data, loop back
+	    timeVar = (timeVar < 214) ? timeVar+1 : 0
+	    drawAndUpdateCircles(formattedData[timeVar]);            
+	}, 150);
 
 })
+
+
+//http://localhost:8080/gapMinderClone/
