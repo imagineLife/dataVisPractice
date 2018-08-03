@@ -6,7 +6,25 @@ var width = 600 - margin.left - margin.right,
 var flag = true;
 
 var t = d3.transition().duration(3000);
-    
+
+function makeAxisGroup(parent, className, transformation){
+    return parent.append("g")
+    .attr("class", className)
+    .attr("transform", transformation);
+}
+
+function makeAxisLabel(parent, x, y, transformation, textVal){
+    return parent.append("text")
+    .attrs({
+        "x": x,
+        "y": y,
+        "font-size": "20px",
+        "text-anchor": "middle",
+        "transform": transformation
+    })
+    .text(textVal);
+}
+
 var g = d3.select("#chart-area")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -14,41 +32,25 @@ var g = d3.select("#chart-area")
     .append("g")
         .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
-var xAxisGroup = g.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height +")");
+var xAxisGroup = makeAxisGroup(g, 'x axis', `translate(0, ${height})` )
+var yAxisGroup = makeAxisGroup(g, 'y axis', `translate(0, 0)` )
 
-var yAxisGroup = g.append("g")
-    .attr("class", "y axis");
+//make axis labels
+let yLabel = makeAxisLabel(g, -(height / 2), (-60), "rotate(-90)", "Revenue")
+let xLabel = makeAxisLabel(g, (width / 2), (height + 50), "", "Month")
 
 // X Scale
-var x = d3.scaleBand()
+var xScale = d3.scaleBand()
     .range([0, width])
     .padding(0.2);
 
 // Y Scale
-var y = d3.scaleLinear()
+var yScale = d3.scaleLinear()
     .range([height, 0]);
 
-// X Label
-g.append("text")
-    .attr("y", height + 50)
-    .attr("x", width / 2)
-    .attr("font-size", "20px")
-    .attr("text-anchor", "middle")
-    .text("Month");
 
-// Y Label
-var yLabel = g.append("text")
-    .attr("y", -60)
-    .attr("x", -(height / 2))
-    .attr("font-size", "20px")
-    .attr("text-anchor", "middle")
-    .attr("transform", "rotate(-90)")
-    .text("Revenue");
 
 d3.json("data/data.json").then(function(data){
-    console.log(data);
 
     // Clean data
     data.forEach(function(d) {
@@ -70,15 +72,15 @@ d3.json("data/data.json").then(function(data){
 function update(data) {
     var value = flag ? "revenue" : "profit";
 
-    x.domain(data.map(function(d){ return d.month }));
-    y.domain([0, d3.max(data, function(d) { return d[value] })])
+    xScale.domain(data.map(function(d){ return d.month }));
+    yScale.domain([0, d3.max(data, function(d) { return d[value] })])
 
     // X Axis
-    var xAxisCall = d3.axisBottom(x);
+    var xAxisCall = d3.axisBottom(xScale);
     xAxisGroup.transition().duration(1000).call(xAxisCall);;
 
     // Y Axis
-    var yAxisCall = d3.axisLeft(y)
+    var yAxisCall = d3.axisLeft(yScale)
         .tickFormat(function(d){ return "$" + d; });
     yAxisGroup.transition().duration(1000).call(yAxisCall);
 
@@ -92,7 +94,7 @@ function update(data) {
     rects.exit()
         .attr("fill", "red")
     .transition().duration(1000)
-        .attr("y", y(0))
+        .attr("y", yScale(0))
         .attr("height", 0)
         .remove();
 
@@ -100,17 +102,17 @@ function update(data) {
     rects.enter()
         .append("rect")
             .attr("fill", "grey")
-            .attr("y", y(0))
+            .attr("y", yScale(0))
             .attr("height", 0)
-            .attr("x", function(d){ return x(d.month) })
-            .attr("width", x.bandwidth)
+            .attr("x", function(d){ return xScale(d.month) })
+            .attr("width", xScale.bandwidth)
             // AND UPDATE old elements present in new data.
             .merge(rects)
             .transition().duration(1000)
-                .attr("x", function(d){ return x(d.month) })
-                .attr("width", x.bandwidth)
-                .attr("y", function(d){ return y(d[value]); })
-                .attr("height", function(d){ return height - y(d[value]); });
+                .attr("x", function(d){ return xScale(d.month) })
+                .attr("width", xScale.bandwidth)
+                .attr("y", function(d){ return yScale(d[value]); })
+                .attr("height", function(d){ return height - yScale(d[value]); });
 
     var label = flag ? "Revenue" : "Profit";
     yLabel.text(label);
