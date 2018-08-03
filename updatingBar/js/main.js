@@ -42,7 +42,7 @@ let xLabel = makeAxisLabel(g, (width / 2), (height + 50), "", "Month")
 // X Scale
 var xScale = d3.scaleBand()
     .range([0, width])
-    .padding(0.2);
+    .padding(0.1);
 
 // Y Scale
 var yScale = d3.scaleLinear()
@@ -75,14 +75,14 @@ function update(data) {
     xScale.domain(data.map(function(d){ return d.month }));
     yScale.domain([0, d3.max(data, function(d) { return d[value] })])
 
-    // X Axis
-    var xAxisCall = d3.axisBottom(xScale);
-    xAxisGroup.transition().duration(1000).call(xAxisCall);;
-
-    // Y Axis
-    var yAxisCall = d3.axisLeft(yScale)
+    // Update axis
+    var xAxisD3Obj = d3.axisBottom(xScale);
+    var yAxisD3Obj = d3.axisLeft(yScale)
         .tickFormat(function(d){ return "$" + d; });
-    yAxisGroup.transition().duration(1000).call(yAxisCall);
+    
+    //transition the axis groups
+    yAxisGroup.transition().duration(1000).call(yAxisD3Obj);
+    xAxisGroup.transition().duration(1000).call(xAxisD3Obj);;
 
     // JOIN new data with old elements.
     var rects = g.selectAll("rect")
@@ -91,29 +91,38 @@ function update(data) {
         });
 
     // EXIT old elements not present in new data.
-    rects.exit()
+    let exitData = rects.exit();
+
+    exitData
         .attr("fill", "red")
     .transition().duration(1000)
         .attr("y", yScale(0))
         .attr("height", 0)
         .remove();
 
+    let enterData = rects.enter();
+
     // ENTER new elements present in new data...
-    rects.enter()
+    enterData
         .append("rect")
-            .attr("fill", "grey")
-            .attr("y", yScale(0))
-            .attr("height", 0)
-            .attr("x", function(d){ return xScale(d.month) })
-            .attr("width", xScale.bandwidth)
-            // AND UPDATE old elements present in new data.
+            .attrs({
+                "fill": "grey",
+                "y": yScale(0),
+                "height": 0,
+                "x": (d) => xScale(d.month),
+                "width": xScale.bandwidth  
+            })
+    
+            // MERGE AND UPDATE NEW data with 
+            // already-present elements present in new data.
             .merge(rects)
             .transition().duration(1000)
-                .attr("x", function(d){ return xScale(d.month) })
-                .attr("width", xScale.bandwidth)
-                .attr("y", function(d){ return yScale(d[value]); })
-                .attr("height", function(d){ return height - yScale(d[value]); });
-
+                .attrs({
+                    "x": (d) => xScale(d.month),
+                    "width": xScale.bandwidth,
+                    "y": (d) => yScale(d[value]),
+                    "height": (d) => height - yScale(d[value])
+                })
     var label = flag ? "Revenue" : "Profit";
     yLabel.text(label);
 
