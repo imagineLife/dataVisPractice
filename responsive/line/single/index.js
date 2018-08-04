@@ -180,20 +180,13 @@ let resize = () => {
    //update scale ranges
    xScale.range([0, resizedWidthLessMargins]);
    yScale.range([resizedHeightLessMargins, margin.top]);
-
-   //Update the line
-
    
    //Update the X & Y axis
-
     resetAxisG(xAxisG, `translate(0, ${resizedHeightLessMargins})`, (divWidthLessMargins / 2), (resizedHeightLessMargins * .1), xAxis)
     resetAxisG(yAxisG, ``, (-resizedHeightLessMargins / 2), (-margin.left / 2), yAxis)
 
    //Update the X-AXIS LABEL
-   xAxisLabel
-       .attrs({
-         'x' : resizedWidthLessMargins / 2
-       })
+   xAxisLabel.attr('x', resizedWidthLessMargins / 2)
 
    //Update yAxis Label
    yAxisLabel.attrs({
@@ -202,11 +195,9 @@ let resize = () => {
    });
 
    //update yLines
-   d3.selectAll('.yLine')
-       .attr('x2', resizedWidthLessMargins);
+   d3.selectAll('.yLine').attr('x2', resizedWidthLessMargins);
    
-   d3.selectAll('.xLine')
-       .attr('y2', -resizedHeightLessMargins);
+   d3.selectAll('.xLine').attr('y2', -resizedHeightLessMargins);
    
    //update Line
    linePath.attr("d", lineObj(parsedData));
