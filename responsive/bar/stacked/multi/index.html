@@ -143,8 +143,11 @@
       yScale.domain([0, d3.max(data, (d) => d.totalOfThisCategory )]).nice();
       colorScale.domain(data.columns.slice(1));
 
+      let stackRangeKeys = data.columns.slice(1);
+      let arrayOfSingleStackSeries = stack.keys(stackRangeKeys)(data);
+
       gObj.selectAll(".seriesClass")
-        .data(stack.keys(data.columns.slice(1))(data))
+        .data(arrayOfSingleStackSeries)
         .enter().append("g")
           .attrs({
             "class": "seriesClass",
