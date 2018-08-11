@@ -6,6 +6,18 @@ function appendGWithDims(parent, className, transformation){
     })
 }
 
+function appendTextToParentG(parent,className, xPos, yPos, textVal, transformation){
+  return parent.append('text')
+    .attrs({
+      'class' :className,
+      'x' : xPos,
+      'y' : yPos,
+      'transform': transformation
+    })
+    .style('text-anchor', 'middle')
+    .text(textVal);
+}
+
 // Build Variables
 const vars = {
   xLabel : 'City',
@@ -45,16 +57,8 @@ const xAxisG = appendGWithDims(gObj, 'axis axis--', `translate(0,${heightLessMar
 const yAxisG = appendGWithDims(gObj, 'axis axis--y', '')
 
 //axis titles
-let yAxisLabel = yAxisG.append('text');
-let xAxisLabel = xAxisG.append('text');
-
-xAxisLabel
-  .attrs({
-    'class' :'x axis-label',
-    'x' : widthLessMargins / 2,
-    'y' : resizedHeight * .1
-  })
-  .text(vars.xLabel);
+let xAxisLabel = appendTextToParentG(xAxisG, 'x axis-label', (widthLessMargins / 2), (resizedHeight * .1), vars.xLabel, '')
+let yAxisLabel = appendTextToParentG(yAxisG, 'y axis-label', (-heightLessMargins / 2), (-vars.margin.left / 1.75), vars.yLabel, `rotate(-90)`)
 
 yAxisLabel.attrs({
   'class' : 'y axis-label',
