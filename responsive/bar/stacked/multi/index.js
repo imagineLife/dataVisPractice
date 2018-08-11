@@ -1,3 +1,11 @@
+function appendGWithDims(parent, className, transformation){
+  return parent.append('g')
+    .attrs({
+      'class': className,
+      'transform': transformation
+    })
+}
+
 // Build Variables
 const vars = {
   xLabel : 'City',
@@ -8,9 +16,11 @@ const vars = {
 //Add nodes to D3 selections
 const chartDiv = document.getElementById("chart");
 const svgObj = d3.select(chartDiv).append("svg");
-const width = +600 - vars.margin.left - vars.margin.right;
-const height = +500 - vars.margin.top - vars.margin.bottom;
-const gObj = svgObj.append("g");
+// const width = 600 - vars.margin.left - vars.margin.right;
+// const height = 500 - vars.margin.top - vars.margin.bottom;
+
+
+const gObj = appendGWithDims(svgObj, 'gObj', `translate( ${vars.margin.left}, ${vars.margin.top})`)
 
 //Tooltip
 const tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
@@ -30,16 +40,9 @@ let resizedHeight = chartDiv.clientHeight;
 let heightLessMargins = resizedHeight - vars.margin.top - vars.margin.bottom;
 let widthLessMargins = resizedWidth - vars.margin.left - vars.margin.right;
 
-
 //declare axis g vars
-const xAxisG = gObj.append("g")
-  .attrs({
-    "class": "axis axis--x",
-    "transform": "translate(0," + heightLessMargins + ")"
-  });
-
-const yAxisG = gObj.append("g")
-  .attr("class", "axis axis--y");
+const xAxisG = appendGWithDims(gObj, 'axis axis--', `translate(0,${heightLessMargins})`)
+const yAxisG = appendGWithDims(gObj, 'axis axis--y', '')
 
 //axis titles
 let yAxisLabel = yAxisG.append('text');
@@ -67,9 +70,6 @@ svgObj.attrs({
   "width" : resizedWidth,
   "height" : resizedHeight
 });
-
-//transform the g obj
-gObj.attr("transform", "translate(" + vars.margin.left + "," + vars.margin.top + ")");
 
 const stack = d3.stack();
 
