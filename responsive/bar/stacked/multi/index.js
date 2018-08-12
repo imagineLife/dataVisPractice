@@ -60,15 +60,6 @@ const yAxisG = appendGWithDims(gObj, 'axis axis--y', '')
 let xAxisLabel = appendTextToParentG(xAxisG, 'x axis-label', (widthLessMargins / 2), (resizedHeight * .1), vars.xLabel, '')
 let yAxisLabel = appendTextToParentG(yAxisG, 'y axis-label', (-heightLessMargins / 2), (-vars.margin.left / 1.75), vars.yLabel, `rotate(-90)`)
 
-yAxisLabel.attrs({
-  'class' : 'y axis-label',
-  'x' : -heightLessMargins / 2,
-  'y' : -vars.margin.left / 1.75,
-  'transform' : `rotate(-90)`
-})
-.style('text-anchor', 'middle')
-.text(vars.yLabel);
-
 //set svg height & width
 svgObj.attrs({
   "width" : resizedWidth,
