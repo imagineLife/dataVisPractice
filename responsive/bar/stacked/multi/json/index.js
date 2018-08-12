@@ -18,6 +18,14 @@ function appendTextToParentG(parent,className, xPos, yPos, textVal, transformati
     .text(textVal);
 }
 
+function setObjXYTras(obj, xPos, yPos, trans){
+  return obj.attrs({
+    'transform': trans,
+    'x' : xPos,
+    'y' : yPos,
+  })
+}
+
 // Build Variables
 const vars = {
   xLabel : 'City',
@@ -238,36 +246,18 @@ let resize = () => {
     "width": xScale.bandwidth()
   })
 
-  //Update the X-AXIS
-  xAxisG
-    .attrs({
-        'transform': `translate(0, ${resizedHeightLessMargins})`,
-        'x' : resizedWidthLessMargins / 2,
-        'y' : resizedHeight * .1,
-    })
-    .call(xAxisD3);
 
-  //Update the Y-AXIS
-  yAxisG
-    .attrs({
-        'x' : -resizedHeightLessMargins / 2,
-        'y' : -vars.margin.left / 2,
-    })
-    .call(yAxisD3);
+  //Update the X & Y axis G elements
+  setObjXYTras(xAxisG, (resizedWidthLessMargins / 2), (resizedHeight * .1), `translate(0, ${resizedHeightLessMargins})`);
+  xAxisG.call(xAxisD3);
+  setObjXYTras(yAxisG, (-resizedHeightLessMargins / 2), (-vars.margin.left / 2), '');
+  yAxisG.call(yAxisD3);
 
-  //Update the X-AXIS LABEL
-  xAxisLabel
-    .attrs({
-      'x' : resizedWidthLessMargins / 2,
-      'y' : resizedHeight * .1
-    })
+  //update x & y axis labels
+  setObjXYTras(xAxisLabel, (resizedWidthLessMargins / 2), (resizedHeight * .1), '');
+  setObjXYTras(yAxisLabel, (-resizedHeightLessMargins / 2), (-vars.margin.left / 1.75), `rotate(-90)`);
 
-  //Update yAxis Label
-  yAxisLabel.attrs({
-    'x' : -resizedHeightLessMargins / 2,
-    'y' : -vars.margin.left / 1.75,
-  });
-
+  //update the tile lines
   d3.selectAll('.tick line')
     .attr('x2', resizedWidthLessMargins);
 
