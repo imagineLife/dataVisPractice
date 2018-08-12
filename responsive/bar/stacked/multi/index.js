@@ -28,12 +28,9 @@ const vars = {
 //Add nodes to D3 selections
 const chartDiv = document.getElementById("chart");
 const svgObj = d3.select(chartDiv).append("svg");
+const gObj = appendGWithDims(svgObj, 'gObj', `translate( ${vars.margin.left}, ${vars.margin.top})`)
 // const width = 600 - vars.margin.left - vars.margin.right;
 // const height = 500 - vars.margin.top - vars.margin.bottom;
-
-
-const gObj = appendGWithDims(svgObj, 'gObj', `translate( ${vars.margin.left}, ${vars.margin.top})`)
-
 //Tooltip
 const tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
 
@@ -45,10 +42,9 @@ const yScale = d3.scaleLinear();
 const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
 // Extract the width and height that was computed by CSS.
+// & calcualte dimensions less margins
 let resizedWidth = chartDiv.clientWidth;
 let resizedHeight = chartDiv.clientHeight;
-
-//calcualte dimensions less margins
 let heightLessMargins = resizedHeight - vars.margin.top - vars.margin.bottom;
 let widthLessMargins = resizedWidth - vars.margin.left - vars.margin.right;
 
@@ -88,6 +84,8 @@ d3.csv("data.csv", type, (error, data) => {
 
   data.sort((a, b) =>  b.totalOfThisCategory - a.totalOfThisCategory );
 
+  console.log('data.columns.slice(1)')
+  console.log(data.columns.slice(1))
   xScale.domain(data.map((d) =>  d.geo));
   yScale.domain([0, d3.max(data, (d) => d.totalOfThisCategory )]).nice();
   colorScale.domain(data.columns.slice(1));
@@ -167,7 +165,7 @@ d3.csv("data.csv", type, (error, data) => {
   //       "x": width + 18,
   //       "width": 18,
   //       "height": 18,
-  //       "fill": z
+  //       "fill": colorScale
   //     })
 
   // legend.append("text")
@@ -189,13 +187,22 @@ function filterObj(obj, val){
 }
 
 function type(d, i, columns) {
-  //columns are the column header row
+  //columns equals an array of the column 'headers', here the stacked pieces keys
+  //["geo", "<5", "5-17", "18-34", "35-64", "65+"]
 
-  for (i = 1, t = 0; i < columns.length; ++i){
-    t += d[columns[i]] = +d[columns[i]];
+  singleBarTotal = 0; 
+  let NumberOfStackedPieces = columns.length;
+  console.log('NumberOfStackedPieces')
+  console.log(NumberOfStackedPieces)
+  console.log('- - - - -')
+  for (i = 1; i < NumberOfStackedPieces; ++i){
+    
+    let singleStackedPieceVal = d[columns[i]];
+
+    singleBarTotal += +singleStackedPieceVal;
   }
 
-  d.totalOfThisCategory = t;
+  d.totalOfThisCategory = singleBarTotal;
   return d;
 }
 
