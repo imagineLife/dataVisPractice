@@ -82,13 +82,14 @@ function update(data) {
     
     //transition the axis groups
     yAxisGroup.transition().duration(1000).call(yAxisD3Obj);
-    xAxisGroup.transition().duration(1000).call(xAxisD3Obj);;
+    xAxisGroup.transition().duration(1000).call(xAxisD3Obj);
+
 
     // JOIN new data with old elements.
     var rects = g.selectAll("rect")
         .data(data, function(d){
             return d.month;
-        });
+        }).attr('fill','grey');
 
     // EXIT old elements not present in new data.
     let exitData = rects.exit();
@@ -105,24 +106,24 @@ function update(data) {
     // ENTER new elements present in new data...
     enterData
         .append("rect")
+        .attrs({
+            "fill": "blue",
+            "y": yScale(0),
+            "height": 0,
+            "x": (d) => xScale(d.month),
+            "width": xScale.bandwidth  
+        })
+
+        // MERGE AND UPDATE NEW data with 
+        // already-present elements present in new data.
+        .merge(rects)
+        .transition().duration(1000)
             .attrs({
-                "fill": "grey",
-                "y": yScale(0),
-                "height": 0,
                 "x": (d) => xScale(d.month),
-                "width": xScale.bandwidth  
+                "width": xScale.bandwidth,
+                "y": (d) => yScale(d[value]),
+                "height": (d) => height - yScale(d[value])
             })
-    
-            // MERGE AND UPDATE NEW data with 
-            // already-present elements present in new data.
-            .merge(rects)
-            .transition().duration(1000)
-                .attrs({
-                    "x": (d) => xScale(d.month),
-                    "width": xScale.bandwidth,
-                    "y": (d) => yScale(d[value]),
-                    "height": (d) => height - yScale(d[value])
-                })
     var label = flag ? "Revenue" : "Profit";
     yLabel.text(label);
 
