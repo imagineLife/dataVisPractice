@@ -1,0 +1,73 @@
+[
+  {
+    "geo": "CentralFalls",
+    "White": 33.6,
+    "WhiteAndHispanic": 33.6,
+    "AfricanAmericans": 25.3,
+    "AmericanIndianAndAlaskaNative": 17,
+    "Asian": 10.2,
+    "Other": 39.1,
+    "2+Races": 32.3,
+    "HispanicLatino": 36.3,
+    "PercentBelow": 32.7,
+    "BPMen": 3008,
+    "BPWomen": 3188,
+    "BPWhite": 1182
+  },
+  {
+    "geo": "Pawtucket",
+    "White": 18.2,
+    "WhiteAndHispanic": 18.2,
+    "AfricanAmericans": 21.7,
+    "AmericanIndianAndAlaskaNative": 5.8,
+    "Asian": 15.4,
+    "Other": 28.4,
+    "2+Races": 20,
+    "HispanicLatino": 32.4,
+    "PercentBelow": 19.9,
+    "BPMen": 6741,
+    "BPWomen": 7366
+  },
+  {
+    "geo": "Providence",
+    "White": 25.4,
+    "WhiteAndHispanic": 25.4,
+    "AfricanAmericans": 28.9,
+    "AmericanIndianAndAlaskaNative": 50.6,
+    "Asian": 24.1,
+    "Other": 32.6,
+    "2+Races": 34.6,
+    "HispanicLatino": 35.2,
+    "PercentBelow": 28.2,
+    "BPMen": 20682,
+    "BPWomen": 25996
+  },
+  {
+    "geo": "Woonsocket",
+    "White": 24.1,
+    "WhiteAndHispanic": 24.1,
+    "AfricanAmericans": 40.3,
+    "AmericanIndianAndAlaskaNative": 11.7,
+    "Asian": 6.6,
+    "Other": 57.7,
+    "2+Races": 36.4,
+    "HispanicLatino": 48.2,
+    "PercentBelow": 25.1,
+    "BPMen": 4841,
+    "BPWomen": 5349
+  },
+  {
+    "geo": "WestWarwick",
+    "White": 16.6,
+    "WhiteAndHispanic": 16.6,
+    "AfricanAmericans": 11.1,
+    "AmericanIndianAndAlaskaNative": 0,
+    "Asian": 11.5,
+    "Other": 13.3,
+    "2+Races": 20.1,
+    "HispanicLatino": 30.6,
+    "PercentBelow": 16.4,
+    "BPMen": 2154,
+    "BPWomen": 2536
+  }
+]
