@@ -3,14 +3,14 @@ const v = {
         left:80,
         right:20,
         top:50,
-        bottom:100
+        bottom:120
     },
     flag : true
 }
 
 
-const width = 600 - v.margins.left - v.margins.right,
-    height = 400 - v.margins.top - v.margins.bottom;
+const width = 800 - v.margins.left - v.margins.right,
+    height = 600 - v.margins.top - v.margins.bottom;
 
 // var t = d3.transition().duration(3000);
 
@@ -43,8 +43,8 @@ var xAxisGroup = makeAxisGroup(svgObj, 'x axis', `translate(0, ${height})` )
 var yAxisGroup = makeAxisGroup(svgObj, 'y axis', `translate(0, 0)` )
 
 //make axis labels
-let yLabel = makeAxisLabel(svgObj, -(height / 2), (-60), "rotate(-90)", "Revenue")
-let xLabel = makeAxisLabel(svgObj, (width / 2), (height + 50), "", "Race")
+let yLabel = makeAxisLabel(svgObj, -(height / 2), (-60), "rotate(-90)")
+let xLabel = makeAxisLabel(svgObj, (width / 2), (height + 100), "")
 
 // X Scale
 var xScale = d3.scaleBand().range([0, width]).padding(0.1);
@@ -75,33 +75,26 @@ d3.json("data/top5EUE.json").then(function(data){
 
 function update(data, townName) {
 
-    let selectedTownData = data.filter((town) => town.geo === townName)
+    let selectedTownObj = data.filter((town) => town.geo === townName)
     let selectedBarData = {
-        'African American': +selectedTownData[0].AfricanAmericans,
-        'American Indian & Alaska Native': +selectedTownData[0].AmericanIndianAndAlaskaNative,
-        'Asian': +selectedTownData[0].Asian,
-        'Hispanic of Latino': +selectedTownData[0].HispanicLatino,
-        'Other': +selectedTownData[0].Other,
-        'Two Or More': +selectedTownData[0].twoOrMore,
-        'White': +selectedTownData[0].White,
-        'White And Hispanic' : +selectedTownData[0].WhiteAndHispanic,
+        'African American': +selectedTownObj[0].AfricanAmericans,
+        'American Indian & Alaska Native': +selectedTownObj[0].AmericanIndianAndAlaskaNative,
+        'Asian': +selectedTownObj[0].Asian,
+        'Hispanic of Latino': +selectedTownObj[0].HispanicLatino,
+        'Other': +selectedTownObj[0].Other,
+        'Two Or More': +selectedTownObj[0].twoOrMore,
+        'White': +selectedTownObj[0].White,
+        'White And Hispanic' : +selectedTownObj[0].WhiteAndHispanic,
     }
 
     let raceKeys = Object.keys(selectedBarData)
+    let raceVals = Object.values(selectedBarData)
 
-    var value = 'white';
+    xScale.domain(raceKeys);
 
-    xScale.domain(data.map(function(d){ 
-        console.log('xScale domain setting d.geo')
-        console.log(d.geo)
-        return d.geo 
-    }));
-
-    console.log('complete xScale domain')
-    console.log(xScale.domain())
     //gathers the percentages and calc max
-    yScale.domain([0, d3.max(data, function(d) { return d[value] })])
-    
+    yScale.domain([0, d3.max(raceVals, d => d )])
+
     // Update axis
     var xAxisD3Obj = d3.axisBottom(xScale);
     var yAxisD3Obj = d3.axisLeft(yScale)
@@ -111,14 +104,20 @@ function update(data, townName) {
     yAxisGroup.transition().duration(1000).call(yAxisD3Obj);
     xAxisGroup.transition().duration(1000).call(xAxisD3Obj);
 
+    xAxisGroup.selectAll('.tick text')
+        .attrs({
+            'transform': 'rotate(-45)',
+            'text-anchor': 'end',
+            'alignment-baseline':'middle',
+            'x': -5,
+            'y': 15,
+            'dy':0,
+            'class' :'xTickLabel'
+        })
 
     // JOIN new data with old elements.
     var rects = svgObj.selectAll("rect")
-        .data(data, function(d){
-            console.log('rects enter d')
-            console.log(d)
-            return d.geo;
-        }).attr('fill','grey');
+        .data(raceVals, d => d).attr('fill','grey');
 
     // EXIT old elements not present in new data.
     // ENTER new elements
@@ -136,14 +135,10 @@ function update(data, townName) {
     enterData
         .append("rect")
         .attrs({
-            "fill": "blue",
+            "fill": "darkkhaki",
             "y": yScale(0),
             "height": 0,
-            "x": (d) => {
-                console.log('x pos xScale(d.geo)')
-                console.log(xScale(d.geo))
-                return xScale(d.geo)
-            },
+            "x": (d, i) => xScale(raceKeys[i]),
             "width": xScale.bandwidth  
         })
 
@@ -152,12 +147,13 @@ function update(data, townName) {
         .merge(rects)
         .transition().duration(1000)
             .attrs({
-                "x": (d) => xScale(d.geo),
+                "x": (d, i) => xScale(raceKeys[i]), 
                 "width": xScale.bandwidth,
-                "y": (d) => yScale(d[value]),
-                "height": (d) => height - yScale(d[value])
+                "y": (d) => yScale(d),
+                "height": (d) => height - yScale(d)
             })
-    var label = 'White';
+    var label = 'Percent At Or Below Poverty';
     yLabel.text(label);
+    xLabel.text(townName);
 
 }
