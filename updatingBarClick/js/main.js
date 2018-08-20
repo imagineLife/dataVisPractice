@@ -58,25 +58,47 @@ d3.json("data/top5EUE.json").then(function(data){
     data.forEach(function(d) {
         d.white = +d.White;
         d.whiteAndHispanic = +d.WhiteAndHispanic;
-        d.AfricanAmerican = +d.AfricanAmericans;
-        d.AmericanIndian = +d.AmericanIndianAndAlaskaNative;
+        d.AfricanAmericans = +d.AfricanAmericans;
+        d.AmericanIndianAndAlaskaNative = +d.AmericanIndianAndAlaskaNative;
         d.Asian = +d.Asian;
         d.Other = +d.Other;
         d.twoOrMore = +d['2+Races'];
-        d.HispanicOrLatino = +d.HispanicLatino;
+        d.HispanicLatino = +d.HispanicLatino;
         d.percentBelow = +d.PercentBelow;
         d.men = +d.BPMen;
         d.women = +d.BPWomen;
     });
 
     // Run the vis for the first time
-    update(data);
+    update(data, 'CentralFalls');
 });
 
-function update(data) {
+function update(data, townName) {
+
+    let selectedTownData = data.filter((town) => town.geo === townName)
+    let selectedBarData = {
+        'African American': +selectedTownData[0].AfricanAmericans,
+        'American Indian & Alaska Native': +selectedTownData[0].AmericanIndianAndAlaskaNative,
+        'Asian': +selectedTownData[0].Asian,
+        'Hispanic of Latino': +selectedTownData[0].HispanicLatino,
+        'Other': +selectedTownData[0].Other,
+        'Two Or More': +selectedTownData[0].twoOrMore,
+        'White': +selectedTownData[0].White,
+        'White And Hispanic' : +selectedTownData[0].WhiteAndHispanic,
+    }
+
+    let raceKeys = Object.keys(selectedBarData)
+
     var value = 'white';
 
-    xScale.domain(data.map(function(d){ return d.geo }));
+    xScale.domain(data.map(function(d){ 
+        console.log('xScale domain setting d.geo')
+        console.log(d.geo)
+        return d.geo 
+    }));
+
+    console.log('complete xScale domain')
+    console.log(xScale.domain())
     //gathers the percentages and calc max
     yScale.domain([0, d3.max(data, function(d) { return d[value] })])
     
@@ -93,6 +115,8 @@ function update(data) {
     // JOIN new data with old elements.
     var rects = svgObj.selectAll("rect")
         .data(data, function(d){
+            console.log('rects enter d')
+            console.log(d)
             return d.geo;
         }).attr('fill','grey');
 
@@ -115,7 +139,11 @@ function update(data) {
             "fill": "blue",
             "y": yScale(0),
             "height": 0,
-            "x": (d) => xScale(d.geo),
+            "x": (d) => {
+                console.log('x pos xScale(d.geo)')
+                console.log(xScale(d.geo))
+                return xScale(d.geo)
+            },
             "width": xScale.bandwidth  
         })
 
