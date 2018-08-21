@@ -47,29 +47,41 @@ function makeAxisLabel(parent, x, y, transformation, textVal){
     .text(textVal);
 }
 
-var svgObj = d3.select("#chart-area")
+let chartDiv = document.getElementById("chart-area")
+var svgObj = d3.select(chartDiv)
     .append("svg")
-    .attrs({
-        "width": width + v.margins.left + v.margins.right,
-        "height": height + v.margins.top + v.margins.bottom,
-        "class": 'svgWrapper'
-    });
+    .attr("class", 'svgWrapper');
 var chartG =svgObj.append("g")
         .attr("transform", "translate(" + v.margins.left + ", " + v.margins.top + ")")
         .attr("class", 'chartG');
 
-var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${height})` )
+
+// Extract the width and height that was computed by CSS.
+      let resizedWidth = chartDiv.clientWidth;
+      let resizedHeight = chartDiv.clientHeight;
+      const widthLessMargins = resizedWidth - v.margins.left - v.margins.right;
+      const heightLessMargins = resizedHeight - v.margins.top - v.margins.bottom;
+      console.log('resizedWidth')
+      console.log(resizedWidth)
+      console.log('- - - - -')
+
+      svgObj.attrs({
+        "width": resizedWidth + v.margins.left + v.margins.right,
+        "height": resizedHeight + v.margins.top + v.margins.bottom,
+      })
+
+var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${heightLessMargins})` )
 var yAxisGroup = makeAxisGroup(chartG, 'y axis', `translate(0, 0)` )
 
 //make axis labels
-let yLabel = makeAxisLabel(chartG, -(height / 2), (-60), "rotate(-90)")
-let xLabel = makeAxisLabel(chartG, (width / 2), (height + 100), "")
+let yLabel = makeAxisLabel(chartG, -(heightLessMargins / 2), (-60), "rotate(-90)")
+let xLabel = makeAxisLabel(chartG, (widthLessMargins / 2), (heightLessMargins + 100), "")
 
 // X Scale
-var xScale = d3.scaleBand().range([0, width]).padding(0.1);
+var xScale = d3.scaleBand().range([0, widthLessMargins]).padding(0.1);
 
 // Y Scale
-var yScale = d3.scaleLinear().range([height, 0]);
+var yScale = d3.scaleLinear().range([heightLessMargins, 0]);
 
 let dataSourceData;
 
@@ -176,7 +188,7 @@ function update(data, townName) {
             "x": (d, i) => xScale(d.race), 
             "width": xScale.bandwidth,
             "y": (d) => yScale(d.val),
-            "height": (d) => height - yScale(d.val),
+            "height": (d) => heightLessMargins - yScale(d.val),
             'class': 'singleRect',
             'id': (d) => d.race
         })
