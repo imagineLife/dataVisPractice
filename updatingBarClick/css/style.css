@@ -3,10 +3,12 @@
 	font-family: sans-serif;
 }
 
-#chart-area svg {
-	margin-left: auto;
-    margin-right: auto;
-    display: block;
+#chart-area {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
 }
 
 #logo {
