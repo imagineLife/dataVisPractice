@@ -117,11 +117,17 @@ function update(data, townName) {
 
     let raceKeys = Object.keys(selectedBarData)
     let raceVals = Object.values(selectedBarData)
+    let mappedRaces = raceVals.map((v, i) => {
+        return {
+            race: raceKeys[i],
+            val : v
+        }
+    })
 
     xScale.domain(raceKeys);
 
     //gathers the percentages and calc max
-    yScale.domain([0, d3.max(raceVals, d => d )])
+    yScale.domain([0, d3.max(mappedRaces, d => d.val )])
 
     // Update axis
     var xAxisD3Obj = d3.axisBottom(xScale);
@@ -129,8 +135,8 @@ function update(data, townName) {
         .tickFormat(d => `${d}%`);
     
     //transition the axis groups
-    yAxisGroup.transition().duration(1000).call(yAxisD3Obj);
-    xAxisGroup.transition().duration(1000).call(xAxisD3Obj);
+    yAxisGroup.transition().duration(600).call(yAxisD3Obj);
+    xAxisGroup.call(xAxisD3Obj);
 
     xAxisGroup.selectAll('.tick text')
         .attrs({
@@ -145,44 +151,44 @@ function update(data, townName) {
 
     // JOIN new data with old elements.
     var rects = chartG.selectAll(".singleRect")
-        .data(raceVals, d => d).attr('fill','darkkhaki');
-    console.log('selected Rects')
-    console.log(rects)
+        .data(mappedRaces, d => d.val).attr('fill','darkkhaki');
     // EXIT old elements not present in new data.
     // ENTER new elements
-    // let exitData = rects.exit();
-    // let enterData = rects.enter();
+    let exitData = rects.exit();
+    let enterData = rects.enter();
 
-    // exitData
-    rects.exit()
-        .attr("fill", "darkkhaki")
+    exitData
+    // rects.exit()
+        // .attr("fill", "darkkhaki")
     .transition().duration(1000)
         .attr("y", yScale(0))
         .attr("height", 0)
         .remove();
 
     // ENTER new elements present in new data...
-    // enterData
+    enterData
     rects.enter()
         .append("rect")
         .attrs({
             "fill": "darkkhaki",
-            "y": yScale(0),
-            "height": 0,
-            "x": (d, i) => xScale(raceKeys[i]),
+            "x": (d, i) => xScale(d.race), 
             "width": xScale.bandwidth,
+            "y": (d) => yScale(d.val),
+            "height": (d) => height - yScale(d.val),
             'class': 'singleRect'
         })
+        .transition().duration(1000) 
+
 
         // MERGE AND UPDATE NEW data with 
         // already-present elements present in new data.
-        .merge(rects)
-        .transition().duration(1500)
+        rects.merge(rects)
+        .transition().duration(1000)
             .attrs({
-                "x": (d, i) => xScale(raceKeys[i]), 
+                "x": (d, i) => xScale(d.race), 
                 "width": xScale.bandwidth,
-                "y": (d) => yScale(d),
-                "height": (d) => height - yScale(d),
+                "y": (d) => yScale(d.val),
+                "height": (d) => height - yScale(d.val),
                 'class': 'singleRect'
             })
     yLabel.text('Percent At Or Below Poverty');
