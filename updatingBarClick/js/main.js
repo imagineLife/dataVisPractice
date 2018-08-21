@@ -3,7 +3,7 @@ const v = {
         left:80,
         right:20,
         top:50,
-        bottom:120
+        bottom:175
     },
     flag : true
 }
@@ -12,12 +12,27 @@ const v = {
 const width = 800 - v.margins.left - v.margins.right,
     height = 600 - v.margins.top - v.margins.bottom;
 
-// var t = d3.transition().duration(3000);
+function makeButtonsFromTownNames(towns){
+    d3.select("body")
+    .selectAll("input")
+    .data(towns)
+    .enter()
+        .append("input")
+        .attrs({
+            "type":"button",
+            "class": "townButton",
+            "value": d => d
+        })
+        .on('click', (d) => update(dataSourceData, d))
+
+}
 
 function makeAxisGroup(parent, className, transformation){
     return parent.append("g")
-    .attr("class", className)
-    .attr("transform", transformation);
+    .attrs({
+        "class": className,
+        "transform": transformation
+    });
 }
 
 function makeAxisLabel(parent, x, y, transformation, textVal){
@@ -34,17 +49,21 @@ function makeAxisLabel(parent, x, y, transformation, textVal){
 
 var svgObj = d3.select("#chart-area")
     .append("svg")
-        .attr("width", width + v.margins.left + v.margins.right)
-        .attr("height", height + v.margins.top + v.margins.bottom)
-    .append("g")
-        .attr("transform", "translate(" + v.margins.left + ", " + v.margins.top + ")");
+    .attrs({
+        "width": width + v.margins.left + v.margins.right,
+        "height": height + v.margins.top + v.margins.bottom,
+        "class": 'svgWrapper'
+    });
+var chartG =svgObj.append("g")
+        .attr("transform", "translate(" + v.margins.left + ", " + v.margins.top + ")")
+        .attr("class", 'chartG');
 
-var xAxisGroup = makeAxisGroup(svgObj, 'x axis', `translate(0, ${height})` )
-var yAxisGroup = makeAxisGroup(svgObj, 'y axis', `translate(0, 0)` )
+var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${height})` )
+var yAxisGroup = makeAxisGroup(chartG, 'y axis', `translate(0, 0)` )
 
 //make axis labels
-let yLabel = makeAxisLabel(svgObj, -(height / 2), (-60), "rotate(-90)")
-let xLabel = makeAxisLabel(svgObj, (width / 2), (height + 100), "")
+let yLabel = makeAxisLabel(chartG, -(height / 2), (-60), "rotate(-90)")
+let xLabel = makeAxisLabel(chartG, (width / 2), (height + 100), "")
 
 // X Scale
 var xScale = d3.scaleBand().range([0, width]).padding(0.1);
@@ -52,8 +71,11 @@ var xScale = d3.scaleBand().range([0, width]).padding(0.1);
 // Y Scale
 var yScale = d3.scaleLinear().range([height, 0]);
 
+let dataSourceData;
+
 d3.json("data/top5EUE.json").then(function(data){
 
+    dataSourceData = data;
     // Clean data
     data.forEach(function(d) {
         d.white = +d.White;
@@ -69,8 +91,14 @@ d3.json("data/top5EUE.json").then(function(data){
         d.women = +d.BPWomen;
     });
 
+    //get town names into array
+    let AllTownNames = data.map((d) => { 
+        return d.geo
+    })
+
+    makeButtonsFromTownNames(AllTownNames)
     // Run the vis for the first time
-    update(data, 'CentralFalls');
+    update(data, 'Central Falls');
 });
 
 function update(data, townName) {
@@ -116,44 +144,48 @@ function update(data, townName) {
         })
 
     // JOIN new data with old elements.
-    var rects = svgObj.selectAll("rect")
-        .data(raceVals, d => d).attr('fill','grey');
-
+    var rects = chartG.selectAll(".singleRect")
+        .data(raceVals, d => d).attr('fill','darkkhaki');
+    console.log('selected Rects')
+    console.log(rects)
     // EXIT old elements not present in new data.
     // ENTER new elements
-    let exitData = rects.exit();
-    let enterData = rects.enter();
+    // let exitData = rects.exit();
+    // let enterData = rects.enter();
 
-    exitData
-        .attr("fill", "red")
+    // exitData
+    rects.exit()
+        .attr("fill", "darkkhaki")
     .transition().duration(1000)
         .attr("y", yScale(0))
         .attr("height", 0)
         .remove();
 
     // ENTER new elements present in new data...
-    enterData
+    // enterData
+    rects.enter()
         .append("rect")
         .attrs({
             "fill": "darkkhaki",
             "y": yScale(0),
             "height": 0,
             "x": (d, i) => xScale(raceKeys[i]),
-            "width": xScale.bandwidth  
+            "width": xScale.bandwidth,
+            'class': 'singleRect'
         })
 
         // MERGE AND UPDATE NEW data with 
         // already-present elements present in new data.
         .merge(rects)
-        .transition().duration(1000)
+        .transition().duration(1500)
             .attrs({
                 "x": (d, i) => xScale(raceKeys[i]), 
                 "width": xScale.bandwidth,
                 "y": (d) => yScale(d),
-                "height": (d) => height - yScale(d)
+                "height": (d) => height - yScale(d),
+                'class': 'singleRect'
             })
-    var label = 'Percent At Or Below Poverty';
-    yLabel.text(label);
+    yLabel.text('Percent At Or Below Poverty');
     xLabel.text(townName);
 
 }
