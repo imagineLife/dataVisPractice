@@ -127,7 +127,9 @@ function update(data, townName) {
     xScale.domain(raceKeys);
 
     //gathers the percentages and calc max
-    yScale.domain([0, d3.max(mappedRaces, d => d.val )])
+    //ADJUSTABLE y-Axis
+    // yScale.domain([0, d3.max(mappedRaces, d => d.val )])
+    yScale.domain([0, 60])
 
     // Update axis
     var xAxisD3Obj = d3.axisBottom(xScale);
@@ -151,26 +153,22 @@ function update(data, townName) {
 
     // JOIN new data with old elements.
     var rects = chartG.selectAll(".singleRect")
-        .data(mappedRaces).attr('fill','darkkhaki');
+        .data(mappedRaces, (d) => d.race).attr('fill','darkkhaki');
     // EXIT old elements not present in new data.
     // ENTER new elements
     let exitData = rects.exit();
     let enterData = rects.enter();
 
-    // console.log('enterData')
-    // console.log(enterData._groups)
-    // console.log('exitData')
-    // console.log(exitData._groups)
-    exitData
-    // rects.exit()
+    // exitData
+    rects.exit()
         // .attr("fill", "darkkhaki")
-    .transition().duration(1000)
+    .transition().duration(700)
         .attr("y", yScale(0))
         .attr("height", 0)
         .remove();
 
     // ENTER new elements present in new data...
-    enterData
+    // enterData
     rects.enter()
         .append("rect")
         .attrs({
@@ -182,13 +180,13 @@ function update(data, townName) {
             'class': 'singleRect',
             'id': (d) => d.race
         })
-        .transition().duration(1000) 
+        .transition().duration(700) 
 
 
         // MERGE AND UPDATE NEW data with 
         // already-present elements present in new data.
         rects.merge(rects)
-        .transition().duration(1000)
+        .transition().duration(700)
             .attrs({
                 "x": (d, i) => xScale(d.race), 
                 "width": xScale.bandwidth,
