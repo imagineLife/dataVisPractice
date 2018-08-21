@@ -135,7 +135,7 @@ function update(data, townName) {
         .tickFormat(d => `${d}%`);
     
     //transition the axis groups
-    yAxisGroup.transition().duration(600).call(yAxisD3Obj);
+    yAxisGroup.transition().duration(500).call(yAxisD3Obj);
     xAxisGroup.call(xAxisD3Obj);
 
     xAxisGroup.selectAll('.tick text')
@@ -151,12 +151,16 @@ function update(data, townName) {
 
     // JOIN new data with old elements.
     var rects = chartG.selectAll(".singleRect")
-        .data(mappedRaces, d => d.val).attr('fill','darkkhaki');
+        .data(mappedRaces).attr('fill','darkkhaki');
     // EXIT old elements not present in new data.
     // ENTER new elements
     let exitData = rects.exit();
     let enterData = rects.enter();
 
+    // console.log('enterData')
+    // console.log(enterData._groups)
+    // console.log('exitData')
+    // console.log(exitData._groups)
     exitData
     // rects.exit()
         // .attr("fill", "darkkhaki")
@@ -175,7 +179,8 @@ function update(data, townName) {
             "width": xScale.bandwidth,
             "y": (d) => yScale(d.val),
             "height": (d) => height - yScale(d.val),
-            'class': 'singleRect'
+            'class': 'singleRect',
+            'id': (d) => d.race
         })
         .transition().duration(1000) 
 
@@ -189,7 +194,8 @@ function update(data, townName) {
                 "width": xScale.bandwidth,
                 "y": (d) => yScale(d.val),
                 "height": (d) => height - yScale(d.val),
-                'class': 'singleRect'
+                'class': 'singleRect',
+                'id': (d) => d.race
             })
     yLabel.text('Percent At Or Below Poverty');
     xLabel.text(townName);
