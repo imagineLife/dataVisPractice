@@ -23,3 +23,13 @@
 .xTickLabel{
 	font-size: 1.5em;
 }
+
+.svgWrapper{
+	border: 2px solid blue;
+}
+
+.townButton{
+	position: absolute;
+	display: inline-block;
+	bottom: 0;
+}
