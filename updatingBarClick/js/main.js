@@ -2,18 +2,14 @@ const v = {
     margins : { 
         left:80,
         right:20,
-        top:50,
-        bottom:175
+        top:10,
+        bottom:200
     },
     flag : true
 }
 
-
-const width = 800 - v.margins.left - v.margins.right,
-    height = 600 - v.margins.top - v.margins.bottom;
-
 function makeButtonsFromTownNames(towns){
-    d3.select("body")
+    d3.select("#chart-area")
     .selectAll("input")
     .data(towns)
     .enter()
@@ -21,7 +17,8 @@ function makeButtonsFromTownNames(towns){
         .attrs({
             "type":"button",
             "class": "townButton",
-            "value": d => d
+            "value": d => d,
+            display: 'block'
         })
         .on('click', (d) => update(dataSourceData, d))
 
@@ -47,38 +44,41 @@ function makeAxisLabel(parent, x, y, transformation, textVal){
     .text(textVal);
 }
 
-let chartDiv = d3.select("#chart-area")
-var svgObj = chartDiv
+let chartDiv = document.getElementById("chart-area");
+var svgObj = d3.select(chartDiv)
     .append("svg")
-    .attrs({
-        "width": width + v.margins.left + v.margins.right,
-        "height": height + v.margins.top + v.margins.bottom,
-        "class": 'svgWrapper'
-    });
+    .attr("class",'svgWrapper');
 var chartG =svgObj.append("g")
-        .attr("transform", "translate(" + v.margins.left + ", " + v.margins.top + ")")
+        .attr("transform", `translate(${v.margins.left},${v.margins.top})`)
         .attr("class", 'chartG');
 
 
 // Extract the width and height that was computed by CSS.
       let resizedWidth = chartDiv.clientWidth;
-      let resizedHeight = chartDiv.clientHeight;
+      let resizedHeight = chartDiv.clientHeight - 50; //-50 for buttons!!
+      let wLessM = resizedWidth - v.margins.left - v.margins.right;
+      let hLessM = resizedHeight - v.margins.top - v.margins.bottom;
       console.log('resizedWidth')
       console.log(resizedWidth)
-      console.log('- - - -')
+      console.log('- - -')
 
-var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${height})` )
+      svgObj.attrs({
+        "width": resizedWidth,
+        "height": resizedHeight,
+      })
+
+var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${hLessM})` )
 var yAxisGroup = makeAxisGroup(chartG, 'y axis', `translate(0, 0)` )
 
 //make axis labels
-let yLabel = makeAxisLabel(chartG, -(height / 2), (-60), "rotate(-90)")
-let xLabel = makeAxisLabel(chartG, (width / 2), (height + 100), "")
+let yLabel = makeAxisLabel(chartG, -(hLessM / 2), (-60), "rotate(-90)")
+let xLabel = makeAxisLabel(chartG, (wLessM / 2), (hLessM + 100), "")
 
 // X Scale
-var xScale = d3.scaleBand().range([0, width]).padding(0.1);
+var xScale = d3.scaleBand().range([0, wLessM]).padding(0.1);
 
 // Y Scale
-var yScale = d3.scaleLinear().range([height, 0]);
+var yScale = d3.scaleLinear().range([hLessM, 0]);
 
 let dataSourceData;
 
@@ -185,7 +185,7 @@ function update(data, townName) {
             "x": (d, i) => xScale(d.race), 
             "width": xScale.bandwidth,
             "y": (d) => yScale(d.val),
-            "height": (d) => height - yScale(d.val),
+            "height": (d) => hLessM - yScale(d.val),
             'class': 'singleRect',
             'id': (d) => d.race
         })
@@ -200,7 +200,7 @@ function update(data, townName) {
                 "x": (d, i) => xScale(d.race), 
                 "width": xScale.bandwidth,
                 "y": (d) => yScale(d.val),
-                "height": (d) => height - yScale(d.val),
+                "height": (d) => hLessM - yScale(d.val),
                 'class': 'singleRect',
                 'id': (d) => d.race
             })
