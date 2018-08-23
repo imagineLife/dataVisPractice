@@ -32,14 +32,15 @@ function makeAxisGroup(parent, className, transformation){
     });
 }
 
-function makeAxisLabel(parent, x, y, transformation, textVal){
+function makeAxisLabel(parent, x, y, transformation, textVal, cl){
     return parent.append("text")
     .attrs({
         "x": x,
         "y": y,
         "font-size": "20px",
         "text-anchor": "middle",
-        "transform": transformation
+        "transform": transformation,
+        'class': cl
     })
     .text(textVal);
 }
@@ -71,8 +72,8 @@ var xAxisGroup = makeAxisGroup(chartG, 'x axis', `translate(0, ${hLessM})` )
 var yAxisGroup = makeAxisGroup(chartG, 'y axis', `translate(0, 0)` )
 
 //make axis labels
-let yLabel = makeAxisLabel(chartG, -(hLessM / 2), (-60), "rotate(-90)")
-let xLabel = makeAxisLabel(chartG, (wLessM / 2), (hLessM + 100), "")
+let yLabel = makeAxisLabel(chartG, -(hLessM / 2), (-60), "rotate(-90)", '', 'YAxisLabel')
+let xLabel = makeAxisLabel(chartG, (wLessM / 2), (hLessM + 100), "", '', 'XAxisLabel')
 
 // X Scale
 var xScale = d3.scaleBand().range([0, wLessM]).padding(0.1);
@@ -141,13 +142,13 @@ function update(data, townName) {
     yScale.domain([0, 60])
 
     // Update axis
-    var xAxisD3Obj = d3.axisBottom(xScale);
-    var yAxisD3Obj = d3.axisLeft(yScale)
-        .tickFormat(d => `${d}%`);
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale).tickFormat(d => `${d}%`);
     
-    //transition the axis groups
-    yAxisGroup.transition().duration(500).call(yAxisD3Obj);
-    xAxisGroup.call(xAxisD3Obj);
+    //transition the y axis groups
+    //ONLY animates with variable y axis domain
+    yAxisGroup.transition().duration(500).call(yAxis);
+    xAxisGroup.call(xAxis);
 
     xAxisGroup.selectAll('.tick text')
         .attrs({
@@ -204,7 +205,61 @@ function update(data, townName) {
                 'class': 'singleRect',
                 'id': (d) => d.race
             })
+    
     yLabel.text('Percent At Or Below Poverty');
     xLabel.text(townName);
 
 }
+
+function setXYTrans(obj, xPos, yPos, trans){
+    return obj.attrs({
+        'x': xPos,
+        'y': yPos,
+        'transform': trans
+    })
+}
+
+function resize(){
+    console.log('resizing!')
+    // Extract the width and height that was computed by CSS.
+      let resizedFnWidth = chartDiv.clientWidth;
+      let resizedFnHeight = chartDiv.clientHeight - 50;
+      let xAxis = d3.axisBottom(xScale);
+      let yAxis = d3.axisLeft(yScale);
+      let resizedWidthLessMargins = resizedFnWidth - v.margins.left - v.margins.right;
+      let resizedHeightLessMargins = resizedFnHeight - v.margins.top - v.margins.bottom;
+      let xAxisLabel = d3.select('.XAxisLabel')
+      let yAxisLabel = d3.select('.YAxisLabel')
+      svgObj.attrs({
+        "width" : resizedFnWidth,
+        "height" : resizedFnHeight
+      });
+
+    //Update scale RANGES
+    xScale.range([0, resizedWidthLessMargins]);
+    yScale.range([resizedHeightLessMargins, v.margins.top]);
+
+
+    setXYTrans(xAxisGroup, (resizedWidthLessMargins / 2), (resizedHeight * .1), `translate(0, ${resizedHeightLessMargins})`);
+    xAxisGroup.call(xAxis);
+    
+    setXYTrans(xAxisLabel, (resizedWidthLessMargins / 2), (resizedHeightLessMargins + 100), '');
+    setXYTrans(yAxisGroup, (-resizedHeightLessMargins / 2), (-v.margins.left / 2));
+    yAxisGroup.call(yAxis);
+
+    setXYTrans(yAxisLabel, (-resizedHeightLessMargins / 2), (-60),'rotate(-90)');
+
+
+      //Update Bars
+      d3.selectAll('.singleRect').attrs({
+        'x' : d => xScale(d.race),
+        'y' : d => yScale(d.val),
+        'width' : d => xScale.bandwidth(),
+        'height' : d => resizedHeightLessMargins - yScale(d.val) 
+      });
+    
+
+      yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
+}
+
+    d3.select(window).on('resize', resize);
