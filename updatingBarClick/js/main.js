@@ -73,14 +73,16 @@ var yAxisGroup = makeAxisGroup(chartG, 'y axis', `translate(0, 0)` )
 
 //make axis labels
 let yLabel = makeAxisLabel(chartG, -(hLessM / 2), (-60), "rotate(-90)", '', 'YAxisLabel')
-let xLabel = makeAxisLabel(chartG, (wLessM / 2), (hLessM + 100), "", '', 'XAxisLabel')
+let xLabel = makeAxisLabel(chartG, (wLessM / 2), (resizedHeight - 50), "", '', 'XAxisLabel')
 
-// X Scale
+// Scales Scale
 var xScale = d3.scaleBand().range([0, wLessM]).padding(0.1);
-
-// Y Scale
 var yScale = d3.scaleLinear().range([hLessM, 0]);
 
+
+// axis
+var xAxis = d3.axisBottom(xScale).tickSize(10);
+var yAxis = d3.axisLeft(yScale).tickFormat(d => `${d}%`).ticks(Math.max(hLessM/80, 2));
 let dataSourceData;
 
 d3.json("data/top5EUE.json").then(function(data){
@@ -140,15 +142,14 @@ function update(data, townName) {
     //ADJUSTABLE y-Axis
     // yScale.domain([0, d3.max(mappedRaces, d => d.val )])
     yScale.domain([0, 60])
-
-    // Update axis
-    var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale).tickFormat(d => `${d}%`);
     
     //transition the y axis groups
     //ONLY animates with variable y axis domain
     yAxisGroup.transition().duration(500).call(yAxis);
-    xAxisGroup.call(xAxis);
+    xAxisGroup
+        .call(xAxis)
+        .selectAll(".tick text")
+          .call(wrap, xScale.bandwidth());
 
     xAxisGroup.selectAll('.tick text')
         .attrs({
@@ -223,13 +224,15 @@ function resize(){
     console.log('resizing!')
     // Extract the width and height that was computed by CSS.
       let resizedFnWidth = chartDiv.clientWidth;
-      let resizedFnHeight = chartDiv.clientHeight - 50;
-      let xAxis = d3.axisBottom(xScale);
-      let yAxis = d3.axisLeft(yScale);
+
+      // - 50 for buttons, conditional for min-height
+      let resizedFnHeight = ((chartDiv.clientHeight - 50) > 474) ? chartDiv.clientHeight - 50 : 475;
       let resizedWidthLessMargins = resizedFnWidth - v.margins.left - v.margins.right;
       let resizedHeightLessMargins = resizedFnHeight - v.margins.top - v.margins.bottom;
+      
       let xAxisLabel = d3.select('.XAxisLabel')
       let yAxisLabel = d3.select('.YAxisLabel')
+      
       svgObj.attrs({
         "width" : resizedFnWidth,
         "height" : resizedFnHeight
@@ -237,13 +240,16 @@ function resize(){
 
     //Update scale RANGES
     xScale.range([0, resizedWidthLessMargins]);
-    yScale.range([resizedHeightLessMargins, v.margins.top]);
+    yScale.range([resizedHeightLessMargins, 0]);
 
 
     setXYTrans(xAxisGroup, (resizedWidthLessMargins / 2), (resizedHeight * .1), `translate(0, ${resizedHeightLessMargins})`);
-    xAxisGroup.call(xAxis);
+    xAxisGroup
+        .call(xAxis)
+        .selectAll(".tick text")
+        .call(wrap, xScale.bandwidth());
     
-    setXYTrans(xAxisLabel, (resizedWidthLessMargins / 2), (resizedHeightLessMargins + 100), '');
+    setXYTrans(xAxisLabel, (resizedWidthLessMargins / 2), (resizedFnHeight - 50), '');
     setXYTrans(yAxisGroup, (-resizedHeightLessMargins / 2), (-v.margins.left / 2));
     yAxisGroup.call(yAxis);
 
@@ -260,6 +266,30 @@ function resize(){
     
 
       yAxis.ticks(Math.max(resizedHeightLessMargins/80, 2))
+}
+
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+    while (word = words.pop()) {
+      line.push(word)
+      tspan.text(line.join(" "))
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop()
+        tspan.text(line.join(" "))
+        line = [word]
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+      }
+    }
+  })
 }
 
     d3.select(window).on('resize', resize);
