@@ -102,6 +102,9 @@ d3.json("data.json", (error, data) => {
     //1. Get KEYS of json objects
     // These are the category names for the stacked pieces
     vars.stackedElementKeys = Object.keys(d);
+    console.log('vars.stackedElementKeys')
+    console.log(vars.stackedElementKeys)
+    console.log('- - - - -')
     vars.numberOfStackedPieces = vars.stackedElementKeys.slice(1).length;
     //2. placeholder for TOTAL stacked pieces value
     let singleBarTotal = 0;
@@ -125,8 +128,13 @@ d3.json("data.json", (error, data) => {
   colorScale.domain(vars.stackedElementKeys.slice(1));
 
   let stackRangeKeys = vars.stackedElementKeys.slice(1);
+  console.log('stackRangeKeys')
+  console.log(stackRangeKeys)
   let arrayOfSingleStackSeries = stack.keys(stackRangeKeys)(data);
-
+    console.log('arrayOfSingleStackSeries')
+    console.log(arrayOfSingleStackSeries)
+    console.log('- - - - -')
+    
   gObj.selectAll(".seriesClass")
     .data(arrayOfSingleStackSeries)
     .enter().append("g")
