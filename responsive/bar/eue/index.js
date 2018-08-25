@@ -106,6 +106,8 @@ function updateData(data){
 				}
 			}
 		})
+		.transition()
+    	.duration(1000)
 
 	//Update yAxis
 	chartSVG.select('.yAxisClass')
