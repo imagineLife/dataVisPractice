@@ -78,16 +78,12 @@ table {
 	font-size: 1.5em;
 }
 
-/*.svgWrapper{
-	border: 2px solid blue;
-}*/
-
 .townButton{
 	position: relative;
 	display: inline-block;
 	margin-bottom: 50px;
 	width: 18%;
-	margin: 0 3px;
+	margin: 0 1%;
 	cursor: pointer;
 	height: 45px;
 }
