@@ -68,7 +68,12 @@ function drawAndUpdateCircles(data) {
     // Standard transition timeVar for the visualization
     var t = d3.transition().duration(150).ease(d3.easeLinear);
 
-    // JOIN new data with old elements.
+    // JOIN new data with old elements
+    //ALSO note the data method
+    /*
+		telling d3 to note d.country makes the circles
+		track items based on their country value, rather than their indexs in the arrays
+    */
     var circles = gWrapper.selectAll("circle")
 	    .data(data, (d) => d.country);
 
