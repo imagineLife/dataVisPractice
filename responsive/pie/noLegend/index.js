@@ -110,8 +110,11 @@ let resize = () => {
 
 	//set svg dimension based on resizing attrs
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
-
-    arcFunc.outerRadius( (divWidthLessMargins/2) * .7 );
+	let resizedRadiusVal = (divWidthLessMargins/2) * .7;
+	let biggestRadius = (resizedRadiusVal < 221) ? resizedRadiusVal : 220;
+    arcFunc.outerRadius(biggestRadius);
+	console.log('arcFunc.outerRadius()');
+    console.log((divWidthLessMargins/2) * .7);
 
     pieG.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
     pieG.selectAll('path').attr('d', arcFunc)
