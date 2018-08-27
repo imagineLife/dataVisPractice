@@ -1,3 +1,39 @@
+function makeD3ElementsFromParentDiv(parendDivID){
+  const chartDiv = document.getElementById(parendDivID);        
+  const svgObj = d3.select(chartDiv).append("svg");
+  const pieGWrapper = svgObj.append('g')
+    .attr('class','pieGWrapper')
+    .style('max-height','900px');
+
+  return {chartDiv, svgObj, pieGWrapper};
+}
+
+function setSVGDims(obj, w, h){
+  obj.attrs({
+    "width" : w,
+    "height" : h
+  });
+}
+
+function makeD3PieFuncs(wedgeVal, w){
+
+  //.sort keeps the pie from showin 'blank' space
+  // when re-organizing slices
+  const d3PieFunc = d3.pie().sort(null).value(wedgeVal);
+  const arcFunc = d3.arc()
+    .innerRadius(0)
+    .outerRadius( (w) * .7);
+
+  return { d3PieFunc, arcFunc };
+}
+
+function randomCount(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+const pieWedgeValue = d => d.value;
+
 var keys = [
   "White"
   , "Unknown"
@@ -10,39 +46,25 @@ var width = 250,
   height = 250,
   radius = Math.min(width, height) / 2;
 
-var svg = d3.select("#pie")
-  .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv');
 
-svg.append("g").attr("class", "slices");
-
-var pie = d3.pie()
-  .sort(null)
-  .value(function(d) {
-    return d.value;
-  });
-
-var arc = d3.arc()
-  .outerRadius(radius * 1.0)
-  .innerRadius(radius * 0.0);
-
-var outerArc = d3.arc()
-  .innerRadius(radius * 0.5)
-  .outerRadius(radius * 1);
+setSVGDims(svgObj, width, height);
+pieGWrapper.attr("transform", `translate(${width / 2} , ${height / 2})`)
+    
+//pie & arc functions
+const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, radius)
 
 var key = function(d) { return d.data.label; };
 
-var color = d3.scaleOrdinal(d3.schemePastel1)
-    .domain(keys);
+const colorScale = d3.scaleOrdinal().range(d3.schemePastel1);
+colorScale.domain(keys);
 
 update(makeData());
 
 var inter = setInterval(function() {
     update(makeData());
-  }, 6000);
+  }, 3000);
+
 
 function mergeWithFirstEqualZero(first, second){
 
@@ -56,8 +78,8 @@ function mergeWithFirstEqualZero(first, second){
 
   var sortedMerge = d3.merge([ second, onlyFirst ])
     .sort(function(a, b) {
-        return d3.ascending(a.label, b.label);
-      });
+      return d3.ascending(a.label, b.label);
+    });
 
   return sortedMerge;
 }
@@ -79,62 +101,64 @@ function makeData() {
       return d3.ascending(a.label, b.label);
     });
 
+  // console.log('MAKE DATA returning...')
+  // console.log(sortedData)
+  // console.log('- - - -')
   return sortedData;
 }
 
-function randomCount(min, max) {
-
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function update(data) {
-	console.log('updating with data -->')
-	console.log(data)
-	console.log('- - - - -')
+	// console.log('updating with data -->')
+	// console.log(data)
+	// console.log('- - - - -')
 
     var duration = 700;
 
-    var oldData = svg.select(".slices")
+    var oldData = svgObj.select(".pieGWrapper")
       .selectAll("path")
-      .data().map(function(d) { return d.data });
+      .data().map(d => d.data );
 
     if (oldData.length == 0) oldData = data;
 
-    var was = mergeWithFirstEqualZero(data, oldData);
-    var is = mergeWithFirstEqualZero(oldData, data);
+    var prevData = mergeWithFirstEqualZero(data, oldData);
 
-    var slice = svg.select(".slices")
+    var fnDataWithZeros = mergeWithFirstEqualZero(oldData, data);
+
+    let prevArcs = d3PieFunc(prevData);
+    let curArcs = d3PieFunc(fnDataWithZeros);
+
+    var prevSlices = svgObj.select(".pieGWrapper")
       .selectAll("path")
-      .data(pie(was), key);
+      .data(prevArcs, (d) => d[key]);
 
-    slice.enter()
+    prevSlices.enter()
       .insert("path")
-      .attr("class", "slice")
-      .style("fill", function(d) { return color(d.data.label); })
+      .attr("class", "singleSlice")
+      .style("fill", (d) => colorScale(d.data.label) )
       .each(function(d) {
           this._current = d;
         });
 
-    slice = svg.select(".slices")
+    newSlices = svgObj.select(".pieGWrapper")
       .selectAll("path")
-      .data(pie(is), key);
+      .data(d3PieFunc(fnDataWithZeros), key);
 
-    slice.transition()
+    newSlices.transition()
       .duration(duration)
       .attrTween("d", function(d) {
           var interpolate = d3.interpolate(this._current, d);
           var _this = this;
           return function(t) {
               _this._current = interpolate(t);
-              return arc(_this._current);
+              return arcFunc(_this._current);
             };
         });
 
-    slice = svg.select(".slices")
+    removingExtraSlices = svgObj.select(".pieGWrapper")
       .selectAll("path")
-      .data(pie(data), key);
+      .data(d3PieFunc(data), key);
 
-    slice.exit()
+    removingExtraSlices.exit()
       .transition()
       .delay(duration)
       .duration(0)
