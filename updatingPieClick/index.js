@@ -31,134 +31,179 @@ function randomCount(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function mergeWithFirstEqualZero(first, second){
 
-const pieWedgeValue = d => d.value;
+  var secondSet = d3.set();
+
+  second.forEach(function(d) { secondSet.add(d.religion); });
+
+  var onlyFirst = first
+    .filter(function(d){ return !secondSet.has(d.religion) })
+    .map(function(d) { return {religion: d.religion, population: 0}; });
+
+  var sortedMerge = d3.merge([ second, onlyFirst ])
+    .sort(function(a, b) {
+        return d3.ascending(a.religion, b.religion);
+      });
+
+  return sortedMerge;
+}
+
+var myData = [
+  {
+    "religion": "Christian",
+    "population": 0
+  },
+  {
+    "religion": "Muslim",
+    "population": 15
+  },
+  {
+    "religion": "Unaffiliated",
+    "population": 11
+  },
+  {
+    "religion": "Hindu",
+    "population": 10
+  },
+  {
+    "religion": "Buddhist",
+    "population": 48
+  },
+  {
+    "religion": "Folk Religions",
+    "population": 40
+  },
+  {
+    "religion": "Other Religions",
+    "population": 57
+  },
+  {
+    "religion": "Jewish",
+    "population": 13
+  }
+];
 
 var keys = [
-  "White"
-  , "Unknown"
-  , "Black or African American"
-  , "American Indian or Alaska Native"
-  , "Asian"
-  , "Native Hawaiian or Other Pacific Islander"];
+  "Christian"
+  , "Muslim"
+  , "Unaffiliated"
+  , "Hindu"
+  , "Buddhist"
+  , "Fold Religions"
+  , "Other Religions"
+  , "Jewish"
+  ];
+
+
+let curDataSection = 0;
+function makeData(selectorVal) {
+
+  let pieData;
+  if(selectorVal === 'firstHalf'){
+    pieData = myData.slice(0,5)
+  }else{
+    pieData = myData.slice(2,7)
+  }
+
+  var sortedData = pieData.sort(function(a, b) {
+      return d3.ascending(a.religion, b.religion);
+    });
+
+  return sortedData;
+}
+
+function randomCount(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getSlicePaths(parent, className, pieFn, data, k){
+  return parent.select(className)
+  .selectAll("path")
+  .data(pieFn(data), k);
+}
+
+function clickBtnFn(){
+  update(makeData(this.value))
+}
 
 var width = 250,
   height = 250,
   radius = Math.min(width, height) / 2;
 
-var {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv');
 
-setSVGDims(svgObj, width, height);
-pieGWrapper.attr("transform", `translate(${width / 2} , ${height / 2})`)
+let {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv');
     
-//pie & arc functions
-const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, radius)
+    svgObj
+      .attr("width", width)
+      .attr("height", height)
+      .attr('class', 'svgWrapper')
+  
+    pieGWrapper
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+      .attr("class", "pieGWrapper");
 
-var key = function(d) { return d.data.label; };
+var pie = d3.pie()
+  .sort(null)
+  .value(function(d) {
+    return d.population;
+  });
 
-const colorScale = d3.scaleOrdinal().range(d3.schemePastel1);
-colorScale.domain(keys);
+var arc = d3.arc()
+  .outerRadius(radius * 1.0)
+  .innerRadius(50);
 
-update(makeData());
+var key = function(d) { return d.data.religion; };
 
-var inter = setInterval(function() {
-    update(makeData());
-  }, 3000);
+var color = d3.scaleOrdinal(d3.schemeDark2).domain(keys);
 
+update(makeData('firstHalf'));
 
-function mergeWithFirstEqualZero(first, second){
+// var inter = setInterval(function() {
+//     update(makeData());
+//   }, 3000);
 
-  var secondSet = d3.set();
-
-  second.forEach(function(d) { secondSet.add(d.label); });
-
-  var onlyFirst = first
-    .filter(function(d){ return !secondSet.has(d.label) })
-    .map(function(d) { return {label: d.label, value: 0}; });
-
-  var sortedMerge = d3.merge([ second, onlyFirst ])
-    .sort(function(a, b) {
-      return d3.ascending(a.label, b.label);
-    });
-
-  return sortedMerge;
-}
-
-function makeData() {
-
-  var data = Array();
-
-  for (i = 0; i < keys.length; i++) {
-    if (Math.random() < 0.7) {
-      var ob = {};
-      ob["label"] = keys[i];
-      ob["value"] = randomCount(1, 100);
-      data.push(ob);
-    }
-  }
-
-  var sortedData = data.sort(function(a, b) {
-      return d3.ascending(a.label, b.label);
-    });
-
-  // console.log('MAKE DATA returning...')
-  // console.log(sortedData)
-  // console.log('- - - -')
-  return sortedData;
-}
+d3.selectAll("input[name='dataset']").on("change", clickBtnFn);
 
 function update(data) {
-	// console.log('updating with data -->')
-	// console.log(data)
-	// console.log('- - - - -')
 
-    var duration = 700;
+    var duration = 1000;
 
     var oldData = svgObj.select(".pieGWrapper")
       .selectAll("path")
-      .data().map(d => d.data );
+      .data().map(function(d) { return d.data });
 
     if (oldData.length == 0) oldData = data;
 
     var prevData = mergeWithFirstEqualZero(data, oldData);
+    var newDataWithZeros = mergeWithFirstEqualZero(oldData, data);
 
-    var fnDataWithZeros = mergeWithFirstEqualZero(oldData, data);
+    let oldSlice = getSlicePaths(svgObj, ".pieGWrapper", pie,prevData, key)
 
-    let prevArcs = d3PieFunc(prevData);
-    let curArcs = d3PieFunc(fnDataWithZeros);
-
-    var prevSlices = svgObj.select(".pieGWrapper")
-      .selectAll("path")
-      .data(prevArcs, (d) => d[key]);
-
-    prevSlices.enter()
+    oldSlice.enter()
       .insert("path")
       .attr("class", "singleSlice")
-      .style("fill", (d) => colorScale(d.data.label) )
+      .style("fill", function(d) { return color(d.data.religion); })
       .each(function(d) {
           this._current = d;
         });
 
-    newSlices = svgObj.select(".pieGWrapper")
-      .selectAll("path")
-      .data(d3PieFunc(fnDataWithZeros), key);
+    let newSlicesWithZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,newDataWithZeros, key)
 
-    newSlices.transition()
+    newSlicesWithZeros.transition()
       .duration(duration)
       .attrTween("d", function(d) {
           var interpolate = d3.interpolate(this._current, d);
-          var _this = this;
+          var curSlice = this;
           return function(t) {
-              _this._current = interpolate(t);
-              return arcFunc(_this._current);
+              curSlice._current = interpolate(t);
+              return arc(curSlice._current);
             };
         });
 
-    removingExtraSlices = svgObj.select(".pieGWrapper")
-      .selectAll("path")
-      .data(d3PieFunc(data), key);
+    let newSlicesNoZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,data, key)
 
-    removingExtraSlices.exit()
+    newSlicesNoZeros.exit()
       .transition()
       .delay(duration)
       .duration(0)
