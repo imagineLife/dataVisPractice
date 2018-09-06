@@ -57,9 +57,9 @@
 
 // Build Variables
       const vars = {
-        xLabel : 'Note Name',
-        yLabel : 'Number Of Notes',
-        margin : { left: 125, right: 70, top: 40, bottom: 110 }
+        xLabel : 'Number Of Sales',
+        yLabel : 'SalesPerson',
+        margin : { left: 145, right: 70, top: 20, bottom: 110 }
       };
 
       const xValFromData = d => d.salesperson
@@ -126,18 +126,12 @@
   TRANSFORM the Axis Text
 */
       xAxisLabel
-          .attrs({
-            'class' :'x axis-label',
-            'x' : widthLessMargins / 2,
-            'y' : resizedHeight * .1
-          })
+          .attr('class','x axis-label')
           .text(vars.xLabel);
 
 
         yAxisLabel.attrs({
             'class' : 'y axis-label',
-            'x' : -heightLessMargins / 2,
-            'y' : -vars.margin.left / 1.75,
             'transform' : `rotate(-90)`
           })
           .style('text-anchor', 'middle')
@@ -190,10 +184,8 @@
         bars.data(data)
           .enter().append('rect')
             .attrs({
-              // 'x' : d => xScale(d.salesperson),
               'y' : d => yScale(d.salesperson),
               'width': d => xScale(+d.sales),
-              // 'height' : d => heightLessMargins - yScale(yValFromData(d)),
               'height': yScale.bandwidth(),
               'fill' : 'steelblue',
               'class':'barClass'
@@ -203,7 +195,7 @@
               .style("left", d3.event.pageX - 75 + "px")
               .style("top", d3.event.pageY - 120 + "px")
               .style("display", "inline-block")
-              .html((d.salesperson) + "<br>occurs "+ (d.sales)+" times");
+              .html(`<b>${d.salesperson}:</b> <br>${d.sales} sales`);
             })
             .on("mouseout", function(d){ tooltipDiv.style("display", "none");});;
 
@@ -259,15 +251,16 @@
       //Update yAxis Label
       yAxisLabel.attrs({
         'x' : -resizedHeightLessMargins / 2,
-        'y' : -vars.margin.left / 1.75,
+        'y' : -vars.margin.left / 1.45,
       });
 
       //Update Bars
       d3.selectAll('.barClass').attrs({
-        'x' : d => xScale(d.salesperson),
-        'y' : d => yScale(+d.sales),
-        'width' : d => xScale.bandwidth(),
-        'height' : d => resizedHeightLessMargins - yScale(yValFromData(d))
+        'y' : d => yScale(d.salesperson),
+        'width': d => xScale(+d.sales),
+        'height': yScale.bandwidth(),
+        'fill' : 'steelblue',
+        'class':'barClass'
       });
     
       d3.selectAll('.tick line')
