@@ -68,12 +68,12 @@ let svgObj = d3.select('#chart')
 //RESETS 
 //svg translate to middle
 
-
+const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 let radiusScale = d3.scaleSqrt();
 //forceY & forceX to default 0
 let simulation = d3.forceSimulation()
-  .force("yforce", d3.forceY().strength(.1))
-  .force("xforce", d3.forceX().strength(.1));
+  .force("yforce", d3.forceY().strength(.03))
+  .force("xforce", d3.forceX().strength(.03));
 
   radiusScale
     .domain(d3.extent(thisDataObj, (d) => {return +d.sales}))
@@ -88,7 +88,7 @@ let circlesObj = gWrapper.selectAll('.artists')
     .attrs({
       'class' : d => `artist-circle ${d.name}`,
       'r'     : d => radiusScale(d.sales),
-      'fill'  : 'lightblue'
+      'fill'  : (d) => colorScale(d.sales)
     });
 
 let myTickFn = () => {
