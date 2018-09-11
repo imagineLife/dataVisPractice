@@ -1,7 +1,32 @@
-let myVars = {
-        svgW : 500,
-        svgH : 500
-      };
+function makeD3ElementsFromParentDiv(parendDivID){
+  const chartDiv = document.getElementById(parendDivID);        
+  const svgObj = d3.select(chartDiv).append("svg");
+  const gWrapper = svgObj.append('g')
+    .attr('class','gWrapper')
+    .style('max-height','900px');
+
+  return {chartDiv, svgObj, gWrapper};
+}
+
+function getClientDims(parentDiv, marginObj){
+
+  // Extract the DIV width and height that was computed by CSS.
+  let cssDivWidth = parentDiv.clientWidth;
+  let cssDivHeight = parentDiv.clientHeight;
+  
+  //get css-computed dimensions
+  const divWidthLessMargins =cssDivWidth - marginObj.left - marginObj.right;
+  const divHeightLessMargins = cssDivHeight - marginObj.top - marginObj.bottom;
+  
+  return { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins };
+}
+
+const margin = { 
+  left: 20, 
+  right: 250,
+  top: 40,
+  bottom: 40
+};
 
 let thisDataObj = [
    {
@@ -52,21 +77,8 @@ let thisDataObj = [
    "sales": 25,
    "decade":"post"
 }
-]
+];
 
-let svgObj = d3.select('#chart')
-  .append('svg')
-  .attrs({
-    'width':myVars.svgW,
-    'height':myVars.svgH,
-    'class': 'svgWrapper'
-  });
-
-  let gWrapper = svgObj.append('g')
-  .attr('transform', "translate(" + myVars.svgW / 2 + "," + myVars.svgH / 2 + ")")
-  .attr('class', 'gWrapper');
-//RESETS 
-//svg translate to middle
 
 const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 let radiusScale = d3.scaleSqrt();
@@ -75,28 +87,46 @@ let simulation = d3.forceSimulation()
   .force("yforce", d3.forceY().strength(.03))
   .force("xforce", d3.forceX().strength(.03));
 
+function buildChart(dataObj){
+
+  const {chartDiv, svgObj, gWrapper} = makeD3ElementsFromParentDiv('chart');
+
+  let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
+
+  svgObj.attrs({
+    'width':cssDivWidth,
+    'height':cssDivHeight,
+    'class': 'svgWrapper'
+  });
+
+  //svg translate to middle
+  gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
+
   radiusScale
-    .domain(d3.extent(thisDataObj, (d) => {return +d.sales}))
-    .range([15,100])
+    .domain(d3.extent(dataObj, (d) => {return +d.sales}))
+    .range([15,(cssDivWidth/4)])
 
   simulation.force("myCollide", d3.forceCollide((d) => { return radiusScale(d.sales)}));
 
-let circlesObj = gWrapper.selectAll('.artists')
-    .data(thisDataObj)
-    .enter()
-    .append('circle')
-    .attrs({
-      'class' : d => `artist-circle ${d.name}`,
-      'r'     : d => radiusScale(d.sales),
-      'fill'  : (d) => colorScale(d.sales)
-    });
+  let circlesObj = gWrapper.selectAll('.artists')
+      .data(dataObj)
+      .enter()
+      .append('circle')
+      .attrs({
+        'class' : d => `artist-circle ${d.name}`,
+        'r'     : d => radiusScale(d.sales),
+        'fill'  : (d) => colorScale(d.sales)
+      });
 
-let myTickFn = () => {
-  circlesObj.attrs({
-    "cx" : (d) => {return d.x},
-    "cy" : (d) => {return d.y}
-  })
+  let myTickFn = () => {
+    circlesObj.attrs({
+      "cx" : (d) => {return d.x},
+      "cy" : (d) => {return d.y}
+    })
+  }
+
+  simulation.nodes(dataObj)
+    .on('tick', myTickFn)
 }
 
-simulation.nodes(thisDataObj)
-  .on('tick', myTickFn)
+buildChart(thisDataObj)
