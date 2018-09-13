@@ -107,7 +107,7 @@ function update(data) {
     let oldSlice = getSlicePaths(svgObj, ".pieGWrapper", pie, prevData, pieSliceKeyName)
 
     oldSlice.enter()
-      .insert("path")
+      .append("path")
       .attr("class", "singleSlice")
       .style("fill", d => {
        console.log('fill d')
@@ -117,6 +117,16 @@ function update(data) {
       .each(function(d) {
           this._current = d;
         });
+
+    oldSlice.enter()
+    .append('text')
+    .attrs({
+      'class': 'sliceLabel',
+      'x': (d,i) => placeLabels(d,i)
+    })
+    .style('fill', 'white')
+    .text(d => d.data.keyname)
+    
 
     let newSlicesWithZeros = getSlicePaths(svgObj, ".pieGWrapper", pie, newDataWithZeros, pieSliceKeyName)
 
@@ -139,6 +149,11 @@ function update(data) {
       .duration(0)
       .remove();
 };
+
+function placeLabels(data,ind){
+  if(ind === 1) return -125
+  if(ind === 0) return 75
+}
 
 //1. Data array
 var myData = [
