@@ -28,29 +28,6 @@ function makeD3PieFuncs(wedgeVal, w){
   return { d3PieFunc, arcFunc };
 }
 
-function mergeWithFirstEqualZero(first, second){
-
-  var secondSet = d3.set();
-
-  second.forEach(function(d) { 
-    return secondSet.add(d.keyname)
-  });
-
-  var onlyFirst = first
-    .filter(function(d){ return !secondSet.has(d.keyname) })
-    .map(function(d) { return {keyname: d.keyname, popval: 0}; });
-
-  var sortedMerge = d3.merge([ second, onlyFirst ])
-    .sort(function(a, b) {
-        return d3.ascending(a.keyname, b.keyname);
-      });
-
-  console.log('sortedMerge')
-  console.log(sortedMerge)
-
-  return sortedMerge;
-}
-
 function getPortionOfData(selectorVal) {
   let thisTownData = myData.filter(town => town.geo === selectorVal)
   let menVal = thisTownData[0]['BPMen'];
@@ -75,12 +52,6 @@ function getPortionOfData(selectorVal) {
   return sortedData;
 }
 
-function getSlicePaths(parent, className, pieFn, data, k){
-  return parent.select(className)
-  .selectAll("path")
-  .data(pieFn(data), k);
-}
-
 function clickBtnFn(){
   let clickedData = getPortionOfData(this.value);
   update(clickedData)
@@ -97,13 +68,6 @@ function getDims(w, obj){
 // Then, interpolate from _current to the new angles.
 // During the transition, _current is updated in-place by d3.interpolate.
 function arcTween(a) {
-  console.log('arcTween a')
-  console.log(a)
-  console.log('micCheck this')
-  console.log(this);
-  console.log('this._current')
-  console.log(this._current);
-  console.log('- - - - -')
   var i = d3.interpolate(this._current, a);
   this._current = i(0);
   return function(t) {
@@ -111,8 +75,10 @@ function arcTween(a) {
   };
 }
 
-
-
+function placeLabels(data,ind){
+  if(ind === 1) return -125
+  if(ind === 0) return 75
+}
 
 function update(data) {
   
@@ -160,15 +126,6 @@ function update(data) {
 
 };
 
-
-
-
-
-function placeLabels(data,ind){
-  if(ind === 1) return -125
-  if(ind === 0) return 75
-}
-
 //1. Data array
 var myData = [
   {
@@ -214,30 +171,29 @@ var keys = ["Men", "Women"];
 
 let { updateW, updateH, origRadius } = getDims(window, s.m)
 
-//7. make arc fn 
+//3. make arc fn 
 var arcFn = d3.arc()
   .outerRadius(origRadius * .75)
   .innerRadius(50);
 
-
-//6. make pie fn
+//4. make pie fn
 var pieFn = d3.pie()
   .sort(null)
   .value(function(d) {
     return d.popval;
   });
 
-//8. make pie-slice-name value
+//5. make pie-slice-name value
 var pieSliceKeyName = d => d.data.keyname;
 
-//9. make colorScale
+//6. make colorScale
 var colorScale = d3.scaleOrdinal(d3.schemePastel2).domain(keys);
 
-//build html elements & set widths, heights, transformations
+//7. build html elements & set widths, heights, transformations
 let {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv')
 
-//10. UPDATE the chart with the 'firstHalf' of the data
+//8. UPDATE the chart with the 'firstHalf' of the data
 update(getPortionOfData('Central Falls'));
 
-//11. make onClick for radio buttons
+//9. make onClick for radio buttons
 d3.selectAll("input[name='dataset']").on("change", clickBtnFn);
