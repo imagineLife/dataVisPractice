@@ -53,8 +53,6 @@ function mergeWithFirstEqualZero(first, second){
 
 function getPortionOfData(selectorVal) {
   let thisTownData = myData.filter(town => town.geo === selectorVal)
-  // let justMenAndWomen = (
-  // ({ BPMen, BPWomen }) => ({ BPMen, BPWomen }))(thisTownData[0]);
   let menVal = thisTownData[0]['BPMen'];
   let womenVal = thisTownData[0]['BPWomen']
 
@@ -90,32 +88,81 @@ function clickBtnFn(){
 
 function getDims(w, obj){
   let updateW = w.innerWidth - obj.l - obj.r;
-  let updateH = w.innerHeight - obj.t - obj.b;
+  let updateH = (w.innerHeight - obj.t - obj.b) * .85;
   let updateRadius = Math.min(updateW, updateH) * .45;
   return { updateW, updateH, updateRadius };
+}
+
+// Store the displayed angles in _current.
+// Then, interpolate from _current to the new angles.
+// During the transition, _current is updated in-place by d3.interpolate.
+function arcTween(a) {
+  console.log('arcTween a')
+  console.log(a)
+  console.log('micCheck this')
+  console.log(this);
+  console.log('this._current')
+  console.log(this._current);
+  console.log('- - - - -')
+  var i = d3.interpolate(this._current, a);
+  this._current = i(0);
+  return function(t) {
+    return arcFn(i(t));
+  };
 }
 
 
 
 
-
 function update(data) {
-    console.log('updateData')
-    console.log(data)
-    var duration = 750;
+  
+  //prep updated dimensions
+  let { updateW, updateH, updateRadius } = getDims(window, s.m)
 
-    //prep updated dimensions
-    let { updateW, updateH, updateRadius } = getDims(window, s.m)
+  arcFn.outerRadius(updateRadius * .75)
+  .innerRadius(50);
 
-    let {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv')
-    setSVGDimsAndTrans(svgObj, updateW, updateH, s.m)
-    svgObj.attr('class', 'svgWrapper')
+  var duration = 750;
 
-    pieGWrapper
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-      .attr("class", "pieGWrapper");
+  setSVGDimsAndTrans(svgObj, updateW, updateH, s.m)
+  svgObj.attr('class', 'svgWrapper')
+
+  pieGWrapper
+    .attrs({
+      "transform": `translate(${updateW / 2},${updateH / 2 })`,
+      "class": "pieGWrapper"
+    });
+
+
+  // join
+  var singleSlice = pieGWrapper.selectAll(".singleSlice")
+      .data(pieFn(data), (d) => { 
+        // console.log('singleSlice d')
+        // console.log(d)
+        return d.data.keyname});
+
+  // update
+  singleSlice 
+    .transition()
+      .duration(750)
+      .attrTween("d", arcTween);
+
+  // enter
+  singleSlice.enter()
+    .append("path")
+    .attrs({
+      "class": "singleSlice",
+      "fill": (d, i) => colorScale(i),
+      "d": arcFn
+    })
+    .each(d => this._current = d)
+    .transition().duration(700);
 
 };
+
+
+
+
 
 function placeLabels(data,ind){
   if(ind === 1) return -125
@@ -165,28 +212,29 @@ var s = {
 //CAN/SHOULD be re-done
 var keys = ["Men", "Women"];
 
-//3. set arbirtary h/w/radius vals
-var width = 350,
-  height = 350,
-  radius = Math.min(width, height) / 2;
+let { updateW, updateH, origRadius } = getDims(window, s.m)
+
+//7. make arc fn 
+var arcFn = d3.arc()
+  .outerRadius(origRadius * .75)
+  .innerRadius(50);
+
 
 //6. make pie fn
-var pie = d3.pie()
+var pieFn = d3.pie()
   .sort(null)
   .value(function(d) {
     return d.popval;
   });
-
-//7. make arc fn 
-var arc = d3.arc()
-  .outerRadius(radius * 1.0)
-  .innerRadius(50);
 
 //8. make pie-slice-name value
 var pieSliceKeyName = d => d.data.keyname;
 
 //9. make colorScale
 var colorScale = d3.scaleOrdinal(d3.schemePastel2).domain(keys);
+
+//build html elements & set widths, heights, transformations
+let {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv')
 
 //10. UPDATE the chart with the 'firstHalf' of the data
 update(getPortionOfData('Central Falls'));
