@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ResizingText Example</title>
+    <script src="../../../../d3.v4.min.js"></script>
+    <script src="../../../../d3-selection-multi.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <style>
+
+      /* Make the chart container fill the page using CSS. */
+      #chart, #chart2 {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 50%;
+      }
+      #chart2{
+        bottom: 0;
+        top: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <div id="chart2"></div>
+    <script src="index.js"></script>
+  </body>
+</html>
