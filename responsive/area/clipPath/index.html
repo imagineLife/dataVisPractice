@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Responsive Area</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width" name="viewport">
+  <script src="../../../d3.v4.min.js"></script>
+  <script src="../../../d3-selection-multi.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>  -->
+  <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+  <!-- <link rel="stylesheet" type="text/css" href="../../dark.css"> -->
+</head>
+<body>
+  <!-- <div id="chartDiv"></div> -->
+  <svg width="960" height="500" class="svgClass"></svg>
+    <script>
+//elements
+    var svg = d3.select("svg");
+
+//dimensions
+    var margin = {top: 20, right: 20, bottom: 30, left: 60},
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom;
+
+    var parseDate = d3.timeParse("%Y-%m-%d"),
+        formatDate = d3.timeFormat("%Y");
+
+//elements
+      var  gWrapper = svg.append("g").attrs({
+        "transform": "translate(" + margin.left + "," + margin.top + ")",
+        'class': 'gWrapper'
+      })
+
+//axis Groups
+    var yGroup = gWrapper.append("g").attr('class', 'xAxisG');
+    var xGroup = gWrapper.append("g").attrs({
+      'class': 'yAxisG',
+      "transform": "translate(0," + height + ")"
+    })
+
+//scales
+    var xScale = d3.scaleTime()
+        .domain([new Date(1991, 0, 1), new Date(1993, 0, 0)])
+        .range([0, width]);
+    var yScale = d3.scaleLinear()
+        .range([height, 0]);
+
+//axis
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
+
+    var areaObj = d3.area()
+        .curve(d3.curveStepAfter)
+        .y0(yScale(0))
+        .y1(function(d) { return yScale(d.value); });
+
+    var areaPath = gWrapper.append("path")
+        .attrs({
+          "clip-path": "url(#clipPath)",
+          "fill": "steelblue",
+          "class": 'barArea'
+        });
+
+    var zoom = d3.zoom()
+        .scaleExtent([1 / 4, 8])
+        .translateExtent([[-width, -Infinity], [2 * width, Infinity]])
+        //.on("zoom", zoomed);
+
+    var zoomRect = svg.append("rect").attrs({
+          "width": width,
+          "height": height,
+          "fill": "none",
+          "pointer-events": "all",
+          'class': 'zoomRect',
+          'stroke-width':'3px',
+          'stroke': 'green'
+        })
+       // .call(zoom);
+
+    gWrapper.append("clipPath")
+        .attr("id", "clipPath")
+      .append("rect")
+        .attrs({
+          'class':'clipRect',
+          "width": width,
+          "height": height
+        });
+
+      let parsedData;
+    d3.csv("data.csv", function(d) {
+
+      d.date = parseDate(d.date);
+      d.value = +d.value;
+      return d;
+    }, function(error, data) {
+      if (error) throw error;
+
+      parsedData = data;
+      
+      var xExtent = d3.extent(data, function(d) { return d.date; });
+     zoom.translateExtent([[xScale(xExtent[0]), -Infinity], [xScale(xExtent[1]), Infinity]])
+      
+      yScale.domain([0, d3.max(data, function(d) { return d.value; })]);
+      
+      yGroup.call(yAxis).select(".domain").remove();
+
+      areaPath.data([data])
+       .attr("d", d => {
+        console.log('d ->',d.value);
+        return areaObj(d)
+      });
+
+
+      //areaPath.datum(data)
+      //zoomRect.call(zoom.transform, d3.zoomIdentity);
+    });
+    // function zoomed() {
+      //var xz = d3.event.transform.rescaleX(xScale);
+      xGroup.call(xAxis.scale(xScale));
+      // areaPath.attr("d", areaObj(parsedData));
+         // xScale(d.date);
+    //}
+
+    </script>
+</body>
+</html>
