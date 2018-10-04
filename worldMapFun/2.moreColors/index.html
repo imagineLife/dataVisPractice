@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WorldMapFun</title>
+	<meta charset="utf-8">
+	<meta content="width=device-width" name="viewport">
+	<script src="../../d3.v5.min.js"></script>
+	<script src="../../../../d3-selection-multi.min.js"></script>
+	<script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>  -->
+	<!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+	<style type="text/css">
+		.svgWrapper{
+			height: 500px;
+			width: 960px ;
+			font-size: 32pt;
+			font-family: sans-serif;
+		}
+
+		body{
+			background-color: darkblue;
+		}
+
+		.countryPath{
+			fill: lightgreen;
+			stroke: black;
+			stroke-opacity: .2;
+		}
+	</style>
+</head>
+<body>
+	<svg width='960' height='500' class='svgWrapper'></svg>
+	<script src='index.js'></script>
+</body>
+</html>
