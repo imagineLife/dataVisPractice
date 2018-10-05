@@ -86,25 +86,36 @@ const margin = {
   top: 40,
   bottom: 40
 };
-const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
-let radiusScale = d3.scaleSqrt();
-//forceY & forceX to default 0
-let simulation = d3.forceSimulation()
-  .force("yforce", d3.forceY().strength(.03))
-  .force("xforce", d3.forceX().strength(.03));
 
+//1. make colorScale
+const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+
+//2. make radiusScale
+let radiusScale = d3.scaleSqrt();
+
+//3. make html elements
 const {chartDiv, svgObj, gWrapper} = makeD3ElementsFromParentDiv('chart');
 
 function buildChart(dataObj){
 
+  //1. Grab on-screen elements
   let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
 
+  //2. calculate smaller height or width
   let smallestViewSize = Math.min(cssDivHeight, cssDivWidth)
+
+  //3. set svgDims from cssDivWIdth & height
   svgObj.attrs({
     'width':cssDivWidth,
     'height':cssDivHeight,
     'class': 'svgWrapper'
   });
+
+  //4. make d3 pack fn
+  let d3Pack = d3.pack()
+    .size([smallestViewSize, smallestViewSize])
+    .padding(1.5)
+
 
   //svg translate to middle
   gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
@@ -112,8 +123,6 @@ function buildChart(dataObj){
   radiusScale
     .domain(d3.extent(dataObj, (d) => {return +d.sales}))
     .range([0,(smallestViewSize/4)])
-
-  simulation.force("myCollide", d3.forceCollide((d) => { return radiusScale(d.sales)}));
 
   let circlesObj = gWrapper.selectAll('.artists')
       .data(dataObj)
@@ -134,12 +143,6 @@ function buildChart(dataObj){
       "cy" : (d) => {return d.y}
     })
   }
-
-  simulation.nodes(dataObj)
-    .on('tick', myTickFn)
-
-  console.log('simulation')
-  console.log(simulation.nodes())
 }
 
 function updateData(){
@@ -152,11 +155,6 @@ function updateData(){
 
     radiusScale.range([0,(smallestResizeVal/4)])
 
-    simulation
-      .force("myCollide", d3.forceCollide((d) => { return radiusScale(d.sales)}))
-      .alpha(.5)
-      .restart();
-
 
   let resizeCirclesObj = gWrapper.selectAll('.artist-circle')
     .attr('r', d => radiusScale(d.sales));
@@ -167,9 +165,6 @@ function updateData(){
       "cy" : (d) => {return d.y}
     })
   }
-
-  simulation.nodes(thisDataObj)
-    .on('tick', resizeTick)
 }
 
 buildChart(thisDataObj)
