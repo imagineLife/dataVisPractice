@@ -18,10 +18,10 @@ function resetAxisG(axisG, transform, xPos, yPos, caller){
 }
 
 const margin = { 
-	left: 160, 
-	right: 50,
-	top: 50,
-	bottom: 120
+	left: 20, 
+	right: 20,
+	top: 20,
+	bottom: 20
 };
 
 //Select/Create div, svg, g
@@ -57,12 +57,12 @@ function buildChart(obj){
    parsedData = data;
 
    xScale
-     .domain([0,250])
-     .range([0, divWidthLessMargins]);
+     .domain([0,210])
+     .range([margin.left, divWidthLessMargins]);
 
    yScale
-     .domain([0,250])
-     .range([0, divHeightLessMargins])
+     .domain([0,210])
+     .range([margin.top, divHeightLessMargins])
      .nice();
 
    svgObj.selectAll('.svgLine')
@@ -105,8 +105,16 @@ let resize = () => {
    let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
 
    //update scale ranges
-   xScale.range([0, resizedWidthLessMargins]);
-   yScale.range([resizedHeightLessMargins, margin.top]);
+   xScale.range([margin.left, resizedWidthLessMargins]);
+   yScale.range([margin.top, resizedHeightLessMargins]);
+
+   d3.select('.svgLine')
+    .attrs({
+      'x1': d => xScale(+d.x1),
+      'y1': d => yScale(+d.y1),
+      'x2': d => xScale(+d.x2),
+      'y2': d => yScale(+d.y2)
+    })
 
 }       
 
