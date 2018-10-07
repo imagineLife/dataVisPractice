@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Responsive Line</title>
+	<title>WorldMapFun</title>
 	<meta charset="utf-8">
 	<meta content="width=device-width" name="viewport">
-	<script src="../../../d3.v4.min.js"></script>
+	<script src="../d3.v5.min.js"></script>
 	<script src="../../../d3-selection-multi.min.js"></script>
+	<script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>  -->
 	<!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
 	<style type="text/css">
@@ -18,91 +19,7 @@
 	</style>
 </head>
 <body>
-	<svg class="svgWrapper"></svg>
-	<script>
-		
-		const initialData = [
-			{name: 'Milk', price: 3}
-		];
-
-		//Prep the text outpu of each item
-		const textFn = d => `${d.name} $${d.price}`;
-
-		//create space between each item
-		//52 because 32 for font-size, 20 between each item
-		const verticalSpacer = 52;
-
-
-		let svgWrapper = d3.select('.svgWrapper');
-		let textObj = svgWrapper.selectAll('text');
-
-		function drawText(domSelection, dataArr){
-			//selections' text
-			const selectedText = svgWrapper.selectAll('text')
-				.data(dataArr)	//appends data to the text elements
-				
-				selectedText.exit()
-					.remove();
-
-				selectedText.enter()		//adds content to the dom
-					.append('text')
-					.attrs({
-						'x': 250,
-						'y': (d,i) => 50 + verticalSpacer * i
-					})
-				.merge(selectedText)
-					.text(textFn);	//sets text on newly-appended elements
-		}
-
-		//1. Initial Drawing
-		drawText(textObj, initialData);
-
-		//2nd drawing
-		//manually adding mustard after 2 seconds
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 3.99}
-					]);
-			},
-		2000);
-
-		//3rd drawing
-		//CHANGE the cost of mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 2.99}
-					]);
-			},
-		3500);
-
-
-		//4rd drawing
-		//CHANGE the cost of mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Mustard', price: 2.99},
-						{name: 'Cupcakes', price: 4.99}
-					]);
-			},
-		4500);
-
-
-		//4rd drawing
-		//Simulate REMOVING the Mustard
-		setTimeout(() => {
-				drawText(textObj, [
-						{name: 'Milk', price: 3},
-						{name: 'Cupcakes', price: 4.99}
-					]);
-			},
-		6000);
-	</script>
+	<svg width='960' height='500' class='svgWrapper'></svg>
+	<script src='index.js'></script>
 </body>
 </html>
-
-<!-- 
-
- -->
