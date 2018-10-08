@@ -92,7 +92,7 @@ function buildChart(obj){
       'x2': d => xScale(+d.x2),
       'y2': d => yScale(+d.y2),
       'marker-end': `url(#arrow)`,
-      'class': 'arrow'
+      'class': 'svgLine'
     })
 
  });
