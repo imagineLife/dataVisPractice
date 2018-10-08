@@ -127,13 +127,19 @@ function buildChart(dataObj){
 
   let myTickFn = () => {
     circlesObj.attrs({
-      "cx" : (d) => {return d.x},
+      "cx" : (d) => {
+        // console.log('cx d')
+        // console.log(d)
+        return d.x},
       "cy" : (d) => {return d.y}
     })
   }
 
   simulation.nodes(dataObj)
     .on('tick', myTickFn)
+
+  console.log('simulation')
+  console.log(simulation.nodes())
 }
 
 function updateData(){
@@ -155,15 +161,15 @@ function updateData(){
   let resizeCirclesObj = gWrapper.selectAll('.artist-circle')
     .attr('r', d => radiusScale(d.sales));
 
-    let resizeTick = () => {
-      resizeCirclesObj.attrs({
-        "cx" : (d) => {return d.x},
-        "cy" : (d) => {return d.y}
-      })
-    }
+  let resizeTick = () => {
+    resizeCirclesObj.attrs({
+      "cx" : (d) => {return d.x},
+      "cy" : (d) => {return d.y}
+    })
+  }
 
-    simulation.nodes(thisDataObj)
-      .on('tick', resizeTick)
+  simulation.nodes(thisDataObj)
+    .on('tick', resizeTick)
 }
 
 buildChart(thisDataObj)
