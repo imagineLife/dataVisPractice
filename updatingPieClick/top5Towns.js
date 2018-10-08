@@ -273,10 +273,5 @@ var colorScale = d3.scaleOrdinal(d3.schemePastel2).domain(keys);
 //10. UPDATE the chart with the 'firstHalf' of the data
 update(getPortionOfData('Central Falls'));
 
-//was used for fancy 'auto-updating' pie
-// var inter = setInterval(function() {
-//     update(getPortionOfData());
-//   }, 3000);
-
 //11. make onClick for radio buttons
 d3.selectAll("input[name='dataset']").on("change", clickBtnFn);

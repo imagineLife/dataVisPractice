@@ -27,10 +27,6 @@ function makeD3PieFuncs(wedgeVal, w){
   return { d3PieFunc, arcFunc };
 }
 
-function randomCount(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function mergeWithFirstEqualZero(first, second){
 
   var secondSet = d3.set();
@@ -46,9 +42,94 @@ function mergeWithFirstEqualZero(first, second){
         return d3.ascending(a.religion, b.religion);
       });
 
+  console.log('sortedMerge')
+  console.log(sortedMerge)
+
   return sortedMerge;
 }
 
+function getPortionOfData(selectorVal) {
+
+  let pieData;
+  if(selectorVal === 'firstHalf'){
+    pieData = myData.slice(0,5)
+  }else{
+    pieData = myData.slice(2,7)
+  }
+
+  //SORT the selection by religion population
+  var sortedData = pieData.sort(function(a, b) {
+      return d3.ascending(a.religion, b.religion);
+    });
+
+  return sortedData;
+}
+
+function getSlicePaths(parent, className, pieFn, data, k){
+  return parent.select(className)
+  .selectAll("path")
+  .data(pieFn(data), k);
+}
+
+function clickBtnFn(){
+    let thisData = getPortionOfData(this.value);
+    console.log('thisData')
+    console.log(thisData)
+  update(thisData)
+}
+
+function update(data) {
+
+    var duration = 1000;
+
+    var oldData = svgObj.select(".pieGWrapper")
+      .selectAll("path")
+      .data().map(function(d) { 
+        console.log('mapping oldData d')
+        console.log(d)
+        return d.data });
+
+    if (oldData.length == 0) oldData = data;
+
+    var prevData = mergeWithFirstEqualZero(data, oldData);
+    var newDataWithZeros = mergeWithFirstEqualZero(oldData, data);
+
+    let oldSlice = getSlicePaths(svgObj, ".pieGWrapper", pie,prevData, pieSliceKeyName)
+
+    oldSlice.enter()
+      .insert("path")
+      .attr("class", "singleSlice")
+      .style("fill", function(d) { 
+        console.log('fill d')
+        console.log(d)
+        return colorScale(d.data.religion); })
+      .each(function(d) {
+          this._current = d;
+        });
+
+    let newSlicesWithZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,newDataWithZeros, pieSliceKeyName)
+
+    newSlicesWithZeros.transition()
+      .duration(duration)
+      .attrTween("d", function(d) {
+          var interpolate = d3.interpolate(this._current, d);
+          var curSlice = this;
+          return function(t) {
+              curSlice._current = interpolate(t);
+              return arc(curSlice._current);
+            };
+        });
+
+    let newSlicesNoZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,data, pieSliceKeyName)
+
+    newSlicesNoZeros.exit()
+      .transition()
+      .delay(duration)
+      .duration(0)
+      .remove();
+};
+
+//1. Data array
 var myData = [
   {
     "religion": "Christian",
@@ -84,6 +165,9 @@ var myData = [
   }
 ];
 
+
+//2. array of keys used in colorScale domain
+//CAN/SHOULD be re-done
 var keys = [
   "Christian"
   , "Muslim"
@@ -95,117 +179,49 @@ var keys = [
   , "Jewish"
   ];
 
-
-let curDataSection = 0;
-function makeData(selectorVal) {
-
-  let pieData;
-  if(selectorVal === 'firstHalf'){
-    pieData = myData.slice(0,5)
-  }else{
-    pieData = myData.slice(2,7)
-  }
-
-  var sortedData = pieData.sort(function(a, b) {
-      return d3.ascending(a.religion, b.religion);
-    });
-
-  return sortedData;
-}
-
-function randomCount(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getSlicePaths(parent, className, pieFn, data, k){
-  return parent.select(className)
-  .selectAll("path")
-  .data(pieFn(data), k);
-}
-
-function clickBtnFn(){
-  update(makeData(this.value))
-}
-
-var width = 250,
-  height = 250,
+//3. set arbirtary h/w/radius vals
+var width = 350,
+  height = 350,
   radius = Math.min(width, height) / 2;
 
-
+//4. make d3 elements
 let {chartDiv, svgObj, pieGWrapper} = makeD3ElementsFromParentDiv('chartDiv');
-    
-    svgObj
-      .attr("width", width)
-      .attr("height", height)
-      .attr('class', 'svgWrapper')
-  
-    pieGWrapper
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-      .attr("class", "pieGWrapper");
+   
+//5. Update svg & pieWrapper dimensions & transf 
+svgObj
+  .attr("width", width)
+  .attr("height", height)
+  .attr('class', 'svgWrapper')
 
+pieGWrapper
+  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+  .attr("class", "pieGWrapper");
+
+//6. make pie fn
 var pie = d3.pie()
   .sort(null)
   .value(function(d) {
     return d.population;
   });
 
+//7. make arc fn 
 var arc = d3.arc()
   .outerRadius(radius * 1.0)
   .innerRadius(50);
 
-var key = function(d) { return d.data.religion; };
+//8. make pie-slice-name value
+var pieSliceKeyName = function(d) { return d.data.religion; };
 
-var color = d3.scaleOrdinal(d3.schemeDark2).domain(keys);
+//9. make colorScale
+var colorScale = d3.scaleOrdinal(d3.schemePastel2).domain(keys);
 
-update(makeData('firstHalf'));
+//10. UPDATE the chart with the 'firstHalf' of the data
+update(getPortionOfData('firstHalf'));
 
+//was used for fancy 'auto-updating' pie
 // var inter = setInterval(function() {
-//     update(makeData());
+//     update(getPortionOfData());
 //   }, 3000);
 
+//11. make onClick for radio buttons
 d3.selectAll("input[name='dataset']").on("change", clickBtnFn);
-
-function update(data) {
-
-    var duration = 1000;
-
-    var oldData = svgObj.select(".pieGWrapper")
-      .selectAll("path")
-      .data().map(function(d) { return d.data });
-
-    if (oldData.length == 0) oldData = data;
-
-    var prevData = mergeWithFirstEqualZero(data, oldData);
-    var newDataWithZeros = mergeWithFirstEqualZero(oldData, data);
-
-    let oldSlice = getSlicePaths(svgObj, ".pieGWrapper", pie,prevData, key)
-
-    oldSlice.enter()
-      .insert("path")
-      .attr("class", "singleSlice")
-      .style("fill", function(d) { return color(d.data.religion); })
-      .each(function(d) {
-          this._current = d;
-        });
-
-    let newSlicesWithZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,newDataWithZeros, key)
-
-    newSlicesWithZeros.transition()
-      .duration(duration)
-      .attrTween("d", function(d) {
-          var interpolate = d3.interpolate(this._current, d);
-          var curSlice = this;
-          return function(t) {
-              curSlice._current = interpolate(t);
-              return arc(curSlice._current);
-            };
-        });
-
-    let newSlicesNoZeros = getSlicePaths(svgObj, ".pieGWrapper", pie,data, key)
-
-    newSlicesNoZeros.exit()
-      .transition()
-      .delay(duration)
-      .duration(0)
-      .remove();
-};
