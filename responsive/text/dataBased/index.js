@@ -19,7 +19,7 @@ var chartDiv = document.getElementById("chart");
         text
           .enter().append("text")
             .attr("text-anchor", "middle")
-            .text("Resizing Text!")
+            .text("DummyText here")
           .merge(text)
             .attrs({
             	"x": width / 2,
