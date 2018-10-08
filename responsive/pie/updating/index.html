@@ -17,12 +17,13 @@
 		  position: absolute;
 		  right: 10px;
 		  top: 10px;
+		  z-index: 100;
 		}
 	</style>
 	<body>
 		<form>
-		  <label><input type="radio" name="dataset" value="apples" checked> Apples</label>
-		  <label><input type="radio" name="dataset" value="oranges"> Oranges</label>
+		  <label><input class="pieInput" type="radio" name="dataset" value="apples" checked> Apples</label>
+		  <label><input class="pieInput" type="radio" name="dataset" value="oranges"> Oranges</label>
 		</form>
 		<div id="chartDiv"></div>
 		<script src="./index.js"></script>
