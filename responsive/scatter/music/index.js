@@ -14,6 +14,14 @@ const v = {
 
 }
 
+function appendGElement(parent, trans, clName){
+	return parent.append('g')
+	  .attrs({
+	  	'transform' : `translate(${trans})`,
+	  	'class' : clName
+	  });
+}
+
 //Select/Create div, svg, g
 const chartDiv = document.getElementById('chartDiv'); 	      
 const svgObj = d3.select(chartDiv).append("svg").attrs({
@@ -33,7 +41,7 @@ let cssDivWidth = chartDiv.clientWidth;
 let cssDivHeight = chartDiv.clientHeight;
 
 //get css-computed dimensions
-const divWidthLessMargins =cssDivWidth - v.margin.left - v.margin.right;
+const divWidthLessMargins = cssDivWidth - v.margin.left - v.margin.right;
 const divHeightLessMargins = cssDivHeight - v.margin.top - v.margin.bottom;
 // console.log('chart dimensions ->',divWidthLessMargins,'x',divHeightLessMargins);
 
@@ -48,23 +56,29 @@ svgObj.attrs({
 gObj.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
 
 //Build Axis Groups
-const xAxisG = gObj.append('g')
-  .attrs({
-  	'transform': `translate(0, ${divHeightLessMargins})`,
-  	'class':'axis x'
-  });
-const yAxisG = gObj.append('g')
-	.attrs({
-		'class': 'axis y',
-		// 'transform': `rotate(-90)`
-	});
-const colorLegendG = gObj.append('g')
-  .attr('transform', `translate(${divWidthLessMargins + 60}, 150)`);
-
+const xAxisG = appendGElement(gObj,`0, ${divHeightLessMargins}`,'axis x')
+const yAxisG = appendGElement(gObj,`0,0`,'axis y')
+const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, 150`,'colorLegendG');
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
 let yAxisLabel = yAxisG.append('text');
+
+function setPositionOfAxisLabel(obj, cl, xPos, yPos, trans, style, txtVal){
+	return obj
+	  .attrs({
+	  	'class': cl,
+		'x': xPos,
+	  	'y': yPos,
+	  	'transform': trans,
+	  })
+	  .style('text-anchor', 'middle')
+	  .text(txtVal)
+}
+
+setPositionOfAxisLabel(xAxisLabel,'axis-label',(divWidthLessMargins / 2),'100','',v.xLabel)
+setPositionOfAxisLabel(yAxisLabel,'axis-label',(-divHeightLessMargins / 2),(-v.margin.left / 1.5),`rotate(-90)`,v.xLabel)
+
 
 //set attrs for axis labels      
 xAxisLabel
@@ -180,22 +194,19 @@ buildChart(AllChartObj);
 
 //2. Build fn
 let resize = () => {
-console.log('resizing here');
 
 // Extract the width and height that was computed by CSS.
 	let resizedFnWidth = chartDiv.clientWidth;
 	let resizedFnHeight = chartDiv.clientHeight;
 
-	console.log('resized dimensions ->',resizedFnWidth,'x',resizedFnHeight);
-
 	//set svg dimension based on resizing attrs
 	svgObj.attrs({
-    "width" : resizedFnWidth,
-    "height" : resizedFnHeight
-});
+	    "width" : resizedFnWidth,
+	    "height" : resizedFnHeight
+	});
 
-//calc resized dimensions less margins
-let resizedWidthLessMargins = resizedFnWidth - v.margin.left - v.margin.right;
+	//calc resized dimensions less margins
+	let resizedWidthLessMargins = resizedFnWidth - v.margin.left - v.margin.right;
 	let resizedHeightLessMargins = resizedFnHeight - v.margin.top - v.margin.bottom;
 
 	//update scale ranges
@@ -203,40 +214,40 @@ let resizedWidthLessMargins = resizedFnWidth - v.margin.left - v.margin.right;
 	yScale.range([resizedHeightLessMargins, v.margin.top]);
 
 	//Update the X-AXIS
-xAxisG
-	.attrs({
-	    'transform': `translate(0, ${resizedHeightLessMargins})`,
-	    'x' : divWidthLessMargins / 2,
-	    'y' : resizedFnHeight * .1,
-	})
-	.call(xAxisD3Obj);
+	xAxisG
+		.attrs({
+		    'transform': `translate(0, ${resizedHeightLessMargins})`,
+		    'x' : divWidthLessMargins / 2,
+		    'y' : resizedFnHeight * .1,
+		})
+		.call(xAxisD3Obj);
 
-//Update the X-AXIS LABEL
-xAxisLabel
-	.attrs({
-	  'x' : resizedWidthLessMargins / 2,
-	  // 'y' : resizedFnHeight * .17
-	})
+	//Update the X-AXIS LABEL
+	xAxisLabel
+		.attrs({
+		  'x' : resizedWidthLessMargins / 2,
+		  // 'y' : resizedFnHeight * .17
+		})
 
-//Update the Y-AXIS
-yAxisG
-	.attrs({
-	    'x' : -resizedHeightLessMargins / 2,
-	    'y' : -v.margin.left / 2,
-	})
-	.call(yAxis);
+	//Update the Y-AXIS
+	yAxisG
+		.attrs({
+		    'x' : -resizedHeightLessMargins / 2,
+		    'y' : -v.margin.left / 2,
+		})
+		.call(yAxis);
 
-//Update yAxis Label
-yAxisLabel.attrs({
-	'x' : -resizedHeightLessMargins / 2,
-	'y' : -margin.left / 1.5,
-});
+	//Update yAxis Label
+	yAxisLabel.attrs({
+		'x' : -resizedHeightLessMargins / 2,
+		'y' : -v.margin.left / 1.5,
+	});
 
-//update Bubbles
-d3.selectAll('.circle').attrs({
-	'cx': d => xScale(v.xValue(d)),
-	'cy': d => yScale(v.yValue(d))
-});
+	//update Bubbles
+	d3.selectAll('.circle').attrs({
+		'cx': d => xScale(v.xValue(d)),
+		'cy': d => yScale(v.yValue(d))
+	});
 
 d3.selectAll('.yLine')
 	.attr('x2', resizedWidthLessMargins);
