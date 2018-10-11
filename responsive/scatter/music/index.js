@@ -54,8 +54,7 @@ const gObj = svgObj.append('g').attr('class','gWrapper');
 //Setup Scales
 const xScale = d3.scaleLinear();
 const yScale = d3.scaleLinear();
-const colorScale = d3.scaleOrdinal()
-.range(d3.schemeCategory10);
+const colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
 // Extract the DIV width and height that was computed by CSS.
 let cssDivWidth = chartDiv.clientWidth;
@@ -79,7 +78,7 @@ gObj.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
 //Build Axis Groups
 const xAxisG = appendGElement(gObj,`0, ${divHeightLessMargins}`,'axis x')
 const yAxisG = appendGElement(gObj,`0,0`,'axis y')
-const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, 150`,'colorLegendG');
+const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, ${divHeightLessMargins - 50}`,'colorLegendG');
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
@@ -90,15 +89,15 @@ let colorLegendLabel = colorLegendG.append('text');
 //obj, cl, xPos, yPos, trans, txtVal
 setPositionOfLabel(xAxisLabel,'axis-label',(divWidthLessMargins / 2),'100','',v.xLabel);
 setPositionOfLabel(yAxisLabel,'axis-label',(-divHeightLessMargins / 2),(-v.margin.left / 1.5),`rotate(-90)`,v.yLabel);
-setPositionOfLabel(colorLegendLabel,'legend-label', (-3), -40,'',v.colorLabel);
+setPositionOfLabel(colorLegendLabel,'legend-label', 40, -40,'',v.colorLabel);
 
 //Build Axis elements
 let xAxisD3Obj = makeAxis('Bottom', xScale, 15, -divHeightLessMargins, Math.max(divWidthLessMargins/80, 2))
 let yAxisD3Obj = makeAxis('Left',yScale, 15, -divWidthLessMargins, (Math.max(divHeightLessMargins/80, 2)))
 
-// const colorLegend = d3.legendColor()
-//   .scale(colorScale)
-//   .shape('circle');
+const colorLegend = d3.legendColor()
+  .scale(colorScale)
+  .shape('circle');
 
 const parseData = d => {
 	d.noteID = +d.noteID;
@@ -143,7 +142,7 @@ function buildChart(obj){
 	    	'cx': d => xScale(v.xValue(d)),
 	    	'cy': d => yScale(v.yValue(d)),
 	    	'fill': d => colorScale(v.colorValue(d)),
-	    	'fill-opacity': 0.3,
+	    	'fill-opacity': 0.25,
 	    	'r': 17,
 	    	'class':'circle'
 	    });
@@ -158,7 +157,14 @@ function buildChart(obj){
 			'class':'yLine',
 			'stroke-dasharray': '1, 5'
 		});
+
+		colorLegendG.call(colorLegend)
+	          .selectAll('.cell text')
+	            .attr('dy', '0.1em');
+	    d3.selectAll('.swatch').attr('opacity', .25)
 	});
+
+
 
 }
 
@@ -230,15 +236,11 @@ let resize = () => {
 	d3.selectAll('.xLine').attr('y2', -resizedHeightLessMargins);
 
 	colorLegendG
-	  .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
+	  .attr('transform', `translate(${resizedWidthLessMargins + 60}, ${resizedHeightLessMargins - 50})`);	
 
 	yAxisD3Obj.ticks(Math.max(resizedHeightLessMargins/80, 2))
 	xAxisD3Obj.ticks(Math.max(resizedWidthLessMargins/80, 2))
-	
-	yAxisG.selectAll('.tick line').attrs({
-			'class':'yLine',
-			'stroke-dasharray': '1, 5'
-		});
+
 
 }	  	
 
