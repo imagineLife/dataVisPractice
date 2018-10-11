@@ -89,12 +89,12 @@ let colorLegendLabel = colorLegendG.append('text');
 //set attrs for axis labels
 //obj, cl, xPos, yPos, trans, txtVal
 setPositionOfLabel(xAxisLabel,'axis-label',(divWidthLessMargins / 2),'100','',v.xLabel);
-setPositionOfLabel(yAxisLabel,'axis-label',(-divHeightLessMargins / 2),(-v.margin.left / 1.5),`rotate(-90)`,v.xLabel);
+setPositionOfLabel(yAxisLabel,'axis-label',(-divHeightLessMargins / 2),(-v.margin.left / 1.5),`rotate(-90)`,v.yLabel);
 setPositionOfLabel(colorLegendLabel,'legend-label', (-3), -40,'',v.colorLabel);
 
 //Build Axis elements
-let xAxisD3Obj = makeAxis('Bottom', xScale, 15, -divHeightLessMargins)
-let yAxisObj = makeAxis('Left',yScale, 15, -divWidthLessMargins, (Math.max(divHeightLessMargins/80, 2)))
+let xAxisD3Obj = makeAxis('Bottom', xScale, 15, -divHeightLessMargins, Math.max(divWidthLessMargins/80, 2))
+let yAxisD3Obj = makeAxis('Left',yScale, 15, -divWidthLessMargins, (Math.max(divHeightLessMargins/80, 2)))
 
 // const colorLegend = d3.legendColor()
 //   .scale(colorScale)
@@ -153,7 +153,7 @@ function buildChart(obj){
 			'class':'xLine',
 			'stroke-dasharray': '1, 5'
 		});
-	yAxisG.call(yAxisObj)
+	yAxisG.call(yAxisD3Obj)
 		.selectAll('.tick line').attrs({
 			'class':'yLine',
 			'stroke-dasharray': '1, 5'
@@ -211,7 +211,7 @@ let resize = () => {
 		    'x' : -resizedHeightLessMargins / 2,
 		    'y' : -v.margin.left / 2,
 		})
-		.call(yAxisObj);
+		.call(yAxisD3Obj);
 
 	//Update yAxis Label
 	yAxisLabel.attrs({
@@ -225,13 +225,16 @@ let resize = () => {
 		'cy': d => yScale(v.yValue(d))
 	});
 
-	d3.selectAll('.yLine')
-		.attr('x2', resizedWidthLessMargins);
+	d3.selectAll('.yLine').attr('x2', resizedWidthLessMargins);
+
+	d3.selectAll('.xLine').attr('y2', -resizedHeightLessMargins);
 
 	colorLegendG
 	  .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);	
 
-	yAxisObj.ticks(Math.max(resizedHeightLessMargins/80, 2))
+	yAxisD3Obj.ticks(Math.max(resizedHeightLessMargins/80, 2))
+	xAxisD3Obj.ticks(Math.max(resizedWidthLessMargins/80, 2))
+	
 	yAxisG.selectAll('.tick line').attrs({
 			'class':'yLine',
 			'stroke-dasharray': '1, 5'
