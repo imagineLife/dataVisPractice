@@ -1,18 +1,18 @@
- const xLabel = 'Starting Beat';
-const yLabel = 'Duration (in beats)';
+const v = {
+	xLabel : 'Starting Beat',
+	yLabel : 'Duration (in beats)',
+	colorLabel : 'Chord Tone',
+	xValue : d => d.startedBeat,
+	yValue : d => d.noteDuration,
+	colorValue : d => d.chordTone,
+	margin : { 
+		left: 140, 
+		right: 200,
+		top: 20,
+		bottom: 120
+	},
 
-const xValue = d => d.startedBeat;
-const yValue = d => d.noteDuration;
-
-const colorValue = d => d.chordTone;
-const colorLabel = 'Chord Tone';
-
-const margin = { 
-	left: 140, 
-	right: 200,
-	top: 20,
-	bottom: 120
-};
+}
 
 //Select/Create div, svg, g
 const chartDiv = document.getElementById('chartDiv'); 	      
@@ -33,8 +33,8 @@ let cssDivWidth = chartDiv.clientWidth;
 let cssDivHeight = chartDiv.clientHeight;
 
 //get css-computed dimensions
-const divWidthLessMargins =cssDivWidth - margin.left - margin.right;
-const divHeightLessMargins = cssDivHeight - margin.top - margin.bottom;
+const divWidthLessMargins =cssDivWidth - v.margin.left - v.margin.right;
+const divHeightLessMargins = cssDivHeight - v.margin.top - v.margin.bottom;
 // console.log('chart dimensions ->',divWidthLessMargins,'x',divHeightLessMargins);
 
 //set svg height & width from div computed dimensions
@@ -45,7 +45,7 @@ svgObj.attrs({
 });
 
 //translate the gWrapper
-gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+gObj.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
 
 //Build Axis Groups
 const xAxisG = gObj.append('g')
@@ -73,17 +73,17 @@ xAxisLabel
 	'x': (divWidthLessMargins / 2),
   	'y': '100'
   })
-  .text(xLabel);
+  .text(v.xLabel);
 
 yAxisLabel
   .attrs({
   	'class': 'axis-label',
     'x' : -divHeightLessMargins / 2,
-    'y' : -margin.left / 1.5,
+    'y' : -v.margin.left / 1.5,
     'transform' : `rotate(-90)`
   })
   .style('text-anchor', 'middle')
-  .text(yLabel);
+  .text(v.yLabel);
 
 colorLegendG.append('text')
   .attrs({
@@ -91,7 +91,7 @@ colorLegendG.append('text')
   	'x': -3,
   	'y': -40
   })
-  .text(colorLabel);
+  .text(v.colorLabel);
 
 //Build Axis elements
 const xAxisD3Obj = d3.axisBottom()
@@ -136,20 +136,20 @@ function buildChart(obj){
 
 d3.csv(obj.dataFile, parseData, data => {
 xScale
-  .domain(d3.extent(data, xValue))
+  .domain(d3.extent(data, v.xValue))
   .range([0, divWidthLessMargins]);
 
 yScale
-  .domain(d3.extent(data, yValue))
-  .range([divHeightLessMargins, margin.top])
+  .domain(d3.extent(data, v.yValue))
+  .range([divHeightLessMargins, v.margin.top])
   .nice();
 
 gObj.selectAll('circle').data(data)
   .enter().append('circle')
     .attrs({
-    	'cx': d => xScale(xValue(d)),
-    	'cy': d => yScale(yValue(d)),
-    	'fill': d => colorScale(colorValue(d)),
+    	'cx': d => xScale(v.xValue(d)),
+    	'cy': d => yScale(v.yValue(d)),
+    	'fill': d => colorScale(v.colorValue(d)),
     	'fill-opacity': 0.3,
     	'r': 17,
     	'class':'circle'
@@ -195,12 +195,12 @@ console.log('resizing here');
 });
 
 //calc resized dimensions less margins
-let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-	let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
+let resizedWidthLessMargins = resizedFnWidth - v.margin.left - v.margin.right;
+	let resizedHeightLessMargins = resizedFnHeight - v.margin.top - v.margin.bottom;
 
 	//update scale ranges
 	xScale.range([0, resizedWidthLessMargins]);
-	yScale.range([resizedHeightLessMargins, margin.top]);
+	yScale.range([resizedHeightLessMargins, v.margin.top]);
 
 	//Update the X-AXIS
 xAxisG
@@ -222,7 +222,7 @@ xAxisLabel
 yAxisG
 	.attrs({
 	    'x' : -resizedHeightLessMargins / 2,
-	    'y' : -margin.left / 2,
+	    'y' : -v.margin.left / 2,
 	})
 	.call(yAxis);
 
@@ -234,8 +234,8 @@ yAxisLabel.attrs({
 
 //update Bubbles
 d3.selectAll('.circle').attrs({
-	'cx': d => xScale(xValue(d)),
-	'cy': d => yScale(yValue(d))
+	'cx': d => xScale(v.xValue(d)),
+	'cy': d => yScale(v.yValue(d))
 });
 
 d3.selectAll('.yLine')
