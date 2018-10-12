@@ -1,13 +1,15 @@
 const v = {
 	xLabel : 'Starting Beat',
-	yLabel : 'Duration (in beats)',
+	yLabel : 'Half Steps Moved',
 	colorLabel : 'Chord Tone',
 	xValue : d => d.startedBeat,
-	yValue : d => d.noteDuration,
+	yValue : d => d.halfStepsMoved,
+	radiusValue : d => d.noteDuration,
 	colorValue : d => d.chordTone,
 	margin : { 
 		left: 140, 
-		right: 200,
+		// right: 200, put back if adding legend
+		right: 75,
 		top: 20,
 		bottom: 120
 	},
@@ -35,12 +37,13 @@ function setPositionOfLabel(obj, cl, xPos, yPos, trans, txtVal){
 }
 
 function makeAxis(pos, scaleObj, tickPadding, tickSize, ticks){
+	let theseTicks = (pos == 'Bottom') ? 8 : ticks
 	const axisType = `axis${pos}`
     return d3[axisType]()
       .scale(scaleObj)
       .tickSize(tickSize)
       .tickPadding(tickPadding)
-      .ticks(ticks)
+      .ticks(theseTicks)
 }
 
 //Select/Create div, svg, g
@@ -55,6 +58,7 @@ const gObj = svgObj.append('g').attr('class','gWrapper');
 const xScale = d3.scaleLinear();
 const yScale = d3.scaleLinear();
 const colorScale = d3.scaleOrdinal(d3.schemeDark2);
+const radiusScale = d3.scaleLinear();
 
 // Extract the DIV width and height that was computed by CSS.
 let cssDivWidth = chartDiv.clientWidth;
@@ -78,26 +82,26 @@ gObj.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
 //Build Axis Groups
 const xAxisG = appendGElement(gObj,`0, ${divHeightLessMargins}`,'axis x')
 const yAxisG = appendGElement(gObj,`0,0`,'axis y')
-const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, ${divHeightLessMargins - 50}`,'colorLegendG');
+// const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, ${divHeightLessMargins - 50}`,'colorLegendG');
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
 let yAxisLabel = yAxisG.append('text');
-let colorLegendLabel = colorLegendG.append('text');
+// let colorLegendLabel = colorLegendG.append('text');
 
 //set attrs for axis labels
 //obj, cl, xPos, yPos, trans, txtVal
 setPositionOfLabel(xAxisLabel,'axis-label',(divWidthLessMargins / 2),'100','',v.xLabel);
 setPositionOfLabel(yAxisLabel,'axis-label',(-divHeightLessMargins / 2),(-v.margin.left / 1.5),`rotate(-90)`,v.yLabel);
-setPositionOfLabel(colorLegendLabel,'legend-label', 40, -40,'',v.colorLabel);
+// setPositionOfLabel(colorLegendLabel,'legend-label', 40, -40,'',v.colorLabel);
 
 //Build Axis elements
 let xAxisD3Obj = makeAxis('Bottom', xScale, 15, -divHeightLessMargins, Math.max(divWidthLessMargins/80, 2))
 let yAxisD3Obj = makeAxis('Left',yScale, 15, -divWidthLessMargins, (Math.max(divHeightLessMargins/80, 2)))
 
-const colorLegend = d3.legendColor()
-  .scale(colorScale)
-  .shape('circle');
+// const colorLegend = d3.legendColor()
+//   .scale(colorScale)
+//   .shape('circle');
 
 const parseData = d => {
 	d.noteID = +d.noteID;
@@ -136,32 +140,39 @@ function buildChart(obj){
 	  .range([divHeightLessMargins, v.margin.top])
 	  .nice();
 
+	radiusScale
+	  .domain(d3.extent(data, v.radiusValue))
+	  .range([1, 100])
+
 	gObj.selectAll('circle').data(data)
-	  .enter().append('circle')
+	   .enter().append('circle')
 	    .attrs({
 	    	'cx': d => xScale(v.xValue(d)),
 	    	'cy': d => yScale(v.yValue(d)),
 	    	'fill': d => colorScale(v.colorValue(d)),
-	    	'fill-opacity': 0.25,
-	    	'r': 17,
+	    	'fill-opacity': 0.1,
+	    	'stroke': d => colorScale(v.colorValue(d)),
+	    	'stroke-opacity': .7,
+	    	// 'fill': 'none',
+	    	'r': d => radiusScale(v.radiusValue(d)),
 	    	'class':'circle'
-	    });
+	    })
 
 	xAxisG.call(xAxisD3Obj)
 		.selectAll('.tick line').attrs({
 			'class':'xLine',
-			'stroke-dasharray': '1, 5'
+			'stroke-dasharray': '1, 10'
 		});
 	yAxisG.call(yAxisD3Obj)
 		.selectAll('.tick line').attrs({
 			'class':'yLine',
-			'stroke-dasharray': '1, 5'
+			'stroke-dasharray': '1, 10'
 		});
 
-		colorLegendG.call(colorLegend)
-	          .selectAll('.cell text')
-	            .attr('dy', '0.1em');
-	    d3.selectAll('.swatch').attr('opacity', .25)
+		// colorLegendG.call(colorLegend)
+	 //          .selectAll('.cell text')
+	 //            .attr('dy', '0.1em');
+	 //    d3.selectAll('.swatch').attr('opacity', .3)
 	});
 
 
@@ -202,7 +213,11 @@ let resize = () => {
 		    'x' : divWidthLessMargins / 2,
 		    'y' : resizedFnHeight * .1,
 		})
-		.call(xAxisD3Obj);
+		.call(xAxisD3Obj)
+		.selectAll('.tick line').attrs({
+			'class':'xLine',
+			'stroke-dasharray': '1, 5'
+		});;
 
 	//Update the X-AXIS LABEL
 	xAxisLabel
@@ -217,7 +232,11 @@ let resize = () => {
 		    'x' : -resizedHeightLessMargins / 2,
 		    'y' : -v.margin.left / 2,
 		})
-		.call(yAxisD3Obj);
+		.call(yAxisD3Obj)
+		.selectAll('.tick line').attrs({
+			'class':'yLine',
+			'stroke-dasharray': '1, 5'
+		});
 
 	//Update yAxis Label
 	yAxisLabel.attrs({
@@ -231,16 +250,15 @@ let resize = () => {
 		'cy': d => yScale(v.yValue(d))
 	});
 
+	// colorLegendG
+	//   .attr('transform', `translate(${resizedWidthLessMargins + 60}, ${resizedHeightLessMargins - 50})`);	
+
+	yAxisD3Obj.ticks(Math.max(resizedHeightLessMargins/80, 2))
+	xAxisD3Obj.ticks(Math.min(Math.max(resizedWidthLessMargins/80, 2), 8))
+
 	d3.selectAll('.yLine').attr('x2', resizedWidthLessMargins);
 
 	d3.selectAll('.xLine').attr('y2', -resizedHeightLessMargins);
-
-	colorLegendG
-	  .attr('transform', `translate(${resizedWidthLessMargins + 60}, ${resizedHeightLessMargins - 50})`);	
-
-	yAxisD3Obj.ticks(Math.max(resizedHeightLessMargins/80, 2))
-	xAxisD3Obj.ticks(Math.max(resizedWidthLessMargins/80, 2))
-
 
 }	  	
 
