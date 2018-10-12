@@ -3,7 +3,14 @@ const v = {
 	yLabel : 'Half Steps Moved',
 	colorLabel : 'Chord Tone',
 	xValue : d => d.startedBeat,
-	yValue : d => d.halfStepsMoved,
+	yValue : d => +d.halfStepsMoved,
+	// {
+	//  if(+d.halfStepsMoved !== 0){
+	//  	return +d.halfStepsMoved ;
+	//  }else{
+	//  	return 1
+	//  }
+	// },
 	radiusValue : d => d.noteDuration,
 	colorValue : d => d.chordTone,
 	margin : { 
@@ -136,9 +143,10 @@ function buildChart(obj){
 	  .range([0, divWidthLessMargins]);
 
 	yScale
-	  .domain(d3.extent(data, v.yValue))
-	  .range([divHeightLessMargins, v.margin.top])
-	  .nice();
+	// .base(1)
+	  .domain([0,12])
+	  .range([divHeightLessMargins, v.margin.top]);
+	  // .nice();
 
 	radiusScale
 	  .domain(d3.extent(data, v.radiusValue))
@@ -216,7 +224,7 @@ let resize = () => {
 		.call(xAxisD3Obj)
 		.selectAll('.tick line').attrs({
 			'class':'xLine',
-			'stroke-dasharray': '1, 5'
+			'stroke-dasharray': '1, 10'
 		});;
 
 	//Update the X-AXIS LABEL
@@ -235,7 +243,7 @@ let resize = () => {
 		.call(yAxisD3Obj)
 		.selectAll('.tick line').attrs({
 			'class':'yLine',
-			'stroke-dasharray': '1, 5'
+			'stroke-dasharray': '1, 10'
 		});
 
 	//Update yAxis Label
