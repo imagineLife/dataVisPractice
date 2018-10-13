@@ -47,7 +47,10 @@ function dragstarted(d) {
 }
 
 function dragged(d) {
-  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+  d3.select(this).attrs({
+    "cx": d.x = d3.event.x,
+    "cy": d.y = d3.event.y
+  })
 }
 
 function dragended(d) {
@@ -67,12 +70,14 @@ var radiusScale = d3.scale.linear()
   .domain([0, 1])
   .range([0, chartRadius]);
 
-var svg = d3.select('body').append('svg')
+var svg = d3.select('#chartDiv').append('svg')
   // .call(zoom)  add if i want the zoom
-  .attr('width', width)
-  .attr('height', height)
+  .attrs({
+    'width': width,
+    'height': height
+  })
   .append('g')
-  .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
 var radiusAxis = svg.append('g')
   .attr('class', 'r axis')
@@ -81,16 +86,20 @@ var radiusAxis = svg.append('g')
   .enter().append('g').attr('class','rAxisAppendedG');
 
 var circularAxis = radiusAxis.append('circle')
-  .attr('r', radiusScale)
-  .attr('class', 'circularAxis');
+  .attrs({
+    'r': radiusScale,
+    'class': 'circularAxis'
+  });
 
-    var straightLineAxis = svg.append('g')
-      .attr('class', 'a axis')
-      .selectAll('g')
-      .data(d3.range(0, 360, 30)) // line density (minVal?, maxVal?, percent between)
-      .enter().append('g')
-      .attr('transform', d => 'rotate(' + -d + ')')
-      .attr('class','straightLineAxis');
+var straightLineAxis = svg.append('g')
+  .attr('class', 'a axis')
+  .selectAll('g')
+  .data(d3.range(0, 360, 30)) // line density (minVal?, maxVal?, percent between)
+  .enter().append('g')
+  .attrs({
+    'transform': d => 'rotate(' + -d + ')',
+    'class': 'straightLineAxis'
+  });
 
 straightLineAxis.append('line')
   .attr('x2', chartRadius);
@@ -112,10 +121,12 @@ svg.selectAll('singleCircle')
   .data(data)
   .enter()
   .append('circle')
-  .attr('class', 'singleCircle')
-  .attr('transform', d => getTransCoords(d))
-  .attr('r', d => d[2])
-  .attr('fill', (d,i) => color(i))
+  .attrs({
+    'class': 'singleCircle',
+    'transform': d => getTransCoords(d),
+    'r': d => d[2],
+    'fill': (d,i) => color(i)
+  })
   .on("click", (d) => console.log(d))
     // add to click if I want a tooltip
     //return tooltip.style("visibility", "visible");
