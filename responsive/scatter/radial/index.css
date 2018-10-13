@@ -36,10 +36,11 @@ body {
 }
 
 .circularAxis{
-	stroke: rgb(75,75,75);
+	stroke: rgb(60,60,60);
+	stroke-dasharray: 20 10;
 }
 
 .straightLineAxis{
-	stroke-dasharray: 1 10;
 	stroke: rgb(125,125,125);
+	stroke-dasharray: 1 20;
 }
