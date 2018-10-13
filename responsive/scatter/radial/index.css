@@ -12,28 +12,29 @@ body {
 }
 
 .frame {
-    fill: none;
-    stroke: #000;
-  }
-  
-  .axis text {
-    font: 10px sans-serif;
-  }
-  
-.axis line {
-  fill: none;
-  stroke: #ebebeb;
+	fill: none;
+	stroke: #000;
 }
   
+.axis text {
+	font: 10px sans-serif;
+}
+
 .axis circle {
   fill: none;
-  stroke: #aaa;
-  
-  //stroke-dasharray: 4;
 }
 
 .line {
 	fill: none;
 	stroke: orange;
 	stroke-width: 3px;
+}
+
+.circularAxis{
+	stroke: rgb(75,75,75);
+}
+
+.straightLineAxis{
+	stroke-dasharray: 1 10;
+	stroke: rgb(125,125,125);
 }
