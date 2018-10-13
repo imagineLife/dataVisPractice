@@ -3,11 +3,6 @@
 //re-map fn from...  
 //  http://stackoverflow.com/a/929107
 
-// https://en.wikipedia.org/wiki/Polar_coordinate_system
-// first is position clockwise, aka angular coordinate, polar angle, or azimuth. range from 0 - 359
-// second is ring (range 0 to 1), aka Radial Coordinate
-// third is node size radius (center to edge)
-
 const v = {
   m: {
     l: 140, 
@@ -18,21 +13,18 @@ const v = {
   }
 }
 
+// https://en.wikipedia.org/wiki/Polar_coordinate_system
+// first is position clockwise, aka angular coordinate, polar angle, or azimuth. range from 0 - 359
+// second is ring (range 0 to 1), aka Radial Coordinate
+// third is node size radius (center to edge)
 function reMap(oldValue){
   var oldMax = -359,
       newMax = (Math.PI * 2),
       newValue = (((oldValue - 90) * newMax) / oldMax);
-  console.log('oldVal ',oldValue)
-  console.log('newVal ',newValue)
+  console.log('reMap`d oldVal ',oldValue)
+  console.log('reMap`d newVal ',newValue)
   return newValue;
 }
-
-
-//DATA breakdown
-//first is 'x'
-//second is 'y'
-//third is radius
-//fourth is label
 
 // var zoom = d3.behavior.zoom()
 //     .scaleExtent([1, 10])
@@ -63,48 +55,18 @@ function getTransCoords(d){
     return 'translate(' + thisCoord + ')'
 }
 
-var width = 600,
-    height = 600,
-    chartRadius = Math.min(width, height) / 2 - 30; // radius of the whole chart
-
-var radiusScale = d3.scaleLinear()
-  .domain([0, 1])
-  .range([0, chartRadius]);
-
-var color = d3.scaleOrdinal(d3.schemeDark2);
-
-var convertedValueScale = d3.scaleLinear()
-  .domain([0,180]).range([0,360])
-
-var data = [
-  [reMap(convertedValueScale(25)), 0.2, 22, 'label 1'],
-  [reMap(convertedValueScale(90)), 1, 20, 'label 2'],
-  [reMap(convertedValueScale(120)), 0.8, 10, 'label 3'],
-  [reMap(convertedValueScale(170)), 0.4, 24, 'label 4']
-];
-
-// var svg = d3.select('#chartDiv').append('svg')
-//   // .call(zoom)  add if i want the zoom
-//   .attrs({
-//     'width': width,
-//     'height': height
-//   })
-  // .append('g')
-  //   .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
-
+//build elements with D3
 const chartDiv = document.getElementById('chartDiv');
-const svgObj = d3.select(chartDiv).append("svg")
-  .attr("class",'svgObj');
+const svgObj = d3.select(chartDiv).append("svg").attr("class",'svgObj');
 const gObj = svgObj.append('g').attr('class','gWrapper');
 
 // Extract the DIV width and height that was computed by CSS.
 let cssDivWidth = chartDiv.clientWidth;
 let cssDivHeight = chartDiv.clientHeight;
 
-//get css-computed dimensions
+//get css-computed dimensions less margins
 const divWidthLessMargins = cssDivWidth - v.m.l - v.m.r;
 const divHeightLessMargins = cssDivHeight - v.m.t - v.m.b;
-// console.log('chart dimensions ->',divWidthLessMargins,'x',divHeightLessMargins);
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
@@ -116,10 +78,38 @@ svgObj.attrs({
 //translate the gWrapper
 gObj.attr('transform', `translate(${cssDivWidth/2},${cssDivHeight/2})`);
 
+const chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2 - 30; // radius of the whole chart
 
+var radiusScale = d3.scaleLinear()
+  .domain([0, 12])
+  .range([0, chartRadius]);
 
+var colorScale = d3.scaleOrdinal(d3.schemeDark2);
+
+var convertedValueScale = d3.scaleLinear()
+  .domain([0,4.99]).range([0,360])
+
+//DATA breakdown
+//first is 'x'
+  /*
+    in the d3Line fn, x has to be...
+      1. converted to the 360 degree scale'd value (convertedValueScale)
+      2. converted to a coordinate, in prep for the d3LineFn
+  */
+//second is 'y'
+//third is radius
+//fourth is label
+var data = [
+  [.5, 3, 22, 'label 1'],
+  [1.5, 6, 20, 'label 2'],
+  [2.5, 8, 10, 'label 3'],
+  [4.5, 11, 24, 'label 4']
+];
+
+  console.log('huh?!')
+  console.log(radiusScale.ticks(5))
 var radiusAxis = gObj.append('g')
-  .attr('class', 'r axis')
+  .attr('class', 'radius axis')
   .selectAll('g')
   .data(radiusScale.ticks(5))
   .enter().append('g').attr('class','rAxisAppendedG');
@@ -131,7 +121,7 @@ var circularAxis = radiusAxis.append('circle')
   });
 
 var straightLineAxis = gObj.append('g')
-  .attr('class', 'a axis')
+  .attr('class', 'straightLine axis')
   .selectAll('g')
   .data(d3.range(0, 360, 30)) // line density (minVal?, maxVal?, percent between)
   .enter().append('g')
@@ -147,9 +137,13 @@ straightLineAxis.append('line')
   });
 
 
+
 var d3Line = d3.radialLine()
-  .radius(d => radiusScale(d[1]))
-  .angle(d => -d[0] + Math.PI / 2)
+  .radius(d => {
+    let yVal = d[1]
+    return radiusScale(yVal)
+  })
+  .angle(d => -reMap(convertedValueScale(d[0])) + Math.PI / 2)
 
 var tooltip = d3.select("body")
 	.append("div")
@@ -166,7 +160,7 @@ gObj.selectAll('singleCircle')
     'class': 'singleCircle',
     'transform': d => getTransCoords(d),
     'r': d => d[2],
-    'fill': (d,i) => color(i)
+    'fill': (d,i) => colorScale(i)
   })
   .on("click", (d) => console.log(d))
     // add to click if I want a tooltip
