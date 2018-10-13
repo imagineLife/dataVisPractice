@@ -9,58 +9,11 @@
 		<script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../dark.css">
+		<link rel="stylesheet" type="text/css" href="./index.css">
 		  <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
 	 <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
 		<title>Radial OuterSpace Improv</title>
 	</head>
-	<style type="text/css">
-		#saveButton{
-			z-index: 100
-		}
-		#chartDiv{
-			z-index: 0;
-			background-color: rgba(0,0,0,.75);
-			/*margin-top: 20px*/
-		}
-
-		body {
-		  font-family: sans-serif;
-		}
-
-		.frame {
-		    fill: none;
-		    stroke: #000;
-		  }
-		  
-		  .axis text {
-		    font: 10px sans-serif;
-		  }
-		  
-		.axis line {
-		  fill: none;
-		  stroke: #ebebeb;
-		}
-		  
-		.axis circle {
-		  fill: none;
-		  stroke: #aaa;
-		  
-		  //stroke-dasharray: 4;
-		}
-		  
-		  .axis:last-of-type circle {
-		    stroke: #333;
-		    //stroke-dasharray: none;
-		  }
-
-
-		  .line {
-		    fill: none;
-		    stroke: orange;
-		    stroke-width: 3px;
-		  }
-	</style>
-
 	<body>
 		<!-- <button id='saveButton'>Export my D3 visualization to PNG</button> -->
 		<div id="chartDiv"></div>

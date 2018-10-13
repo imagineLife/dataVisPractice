@@ -1,0 +1,39 @@
+#saveButton{
+	z-index: 100
+}
+#chartDiv{
+	z-index: 0;
+	background-color: rgba(0,0,0,.75);
+	/*margin-top: 20px*/
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.frame {
+    fill: none;
+    stroke: #000;
+  }
+  
+  .axis text {
+    font: 10px sans-serif;
+  }
+  
+.axis line {
+  fill: none;
+  stroke: #ebebeb;
+}
+  
+.axis circle {
+  fill: none;
+  stroke: #aaa;
+  
+  //stroke-dasharray: 4;
+}
+
+.line {
+	fill: none;
+	stroke: orange;
+	stroke-width: 3px;
+}
