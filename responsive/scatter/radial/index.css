@@ -4,6 +4,11 @@
 #chartDiv{
 	z-index: 0;
 	background-color: rgba(0,0,0,.75);
+	position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
 	/*margin-top: 20px*/
 }
 
