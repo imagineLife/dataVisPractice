@@ -11,7 +11,7 @@ function reMap(oldValue){
   return newValue;
 }
 
-var convertedValueScale = d3.scale.linear()
+var convertedValueScale = d3.scaleLinear()
   .domain([0,180]).range([0,360])
 
 
@@ -33,29 +33,29 @@ var data = [
   [reMap(convertedValueScale(170)), 0.4, 24, 'label 4']
 ];
 
-var zoom = d3.behavior.zoom()
-    .scaleExtent([1, 10])
-    .on("zoom", zoomed);
+// var zoom = d3.behavior.zoom()
+//     .scaleExtent([1, 10])
+//     .on("zoom", zoomed);
 
-function zoomed() {
-  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-}
+// function zoomed() {
+//   svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+// }
 
-function dragstarted(d) {
-  d3.event.sourceEvent.stopPropagation();
-  d3.select(this).classed("dragging", true);
-}
+// function dragstarted(d) {
+//   d3.event.sourceEvent.stopPropagation();
+//   d3.select(this).classed("dragging", true);
+// }
 
-function dragged(d) {
-  d3.select(this).attrs({
-    "cx": d.x = d3.event.x,
-    "cy": d.y = d3.event.y
-  })
-}
+// function dragged(d) {
+//   d3.select(this).attrs({
+//     "cx": d.x = d3.event.x,
+//     "cy": d.y = d3.event.y
+//   })
+// }
 
-function dragended(d) {
-  d3.select(this).classed("dragging", false);
-}
+// function dragended(d) {
+//   d3.select(this).classed("dragging", false);
+// }
 
 function getTransCoords(d){
   let thisCoord =  d3Line([d]).slice(1).slice(0, -1); // removes 'M' and 'Z' from string
@@ -66,7 +66,7 @@ var width = 600,
     height = 600,
     chartRadius = Math.min(width, height) / 2 - 30; // radius of the whole chart
 
-var radiusScale = d3.scale.linear()
+var radiusScale = d3.scaleLinear()
   .domain([0, 1])
   .range([0, chartRadius]);
 
@@ -104,11 +104,11 @@ var straightLineAxis = svg.append('g')
 straightLineAxis.append('line')
   .attr('x2', chartRadius);
 
-var color = d3.scale.category20();
+var color = d3.scaleOrdinal(d3.schemeDark2);
 
-var d3Line = d3.svg.line.radial()
-.radius(d => radiusScale(d[1]))
-      .angle(d => -d[0] + Math.PI / 2)
+var d3Line = d3.radialLine()
+  .radius(d => radiusScale(d[1]))
+  .angle(d => -d[0] + Math.PI / 2)
 
 var tooltip = d3.select("body")
 	.append("div")
