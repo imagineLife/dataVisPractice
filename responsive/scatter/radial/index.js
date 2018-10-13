@@ -84,6 +84,10 @@ var radiusScale = d3.scaleLinear()
   .domain([0, 12])
   .range([0, chartRadius]);
 
+var circleRadiusScale = d3.scaleLinear()
+  .domain([0,50])
+  .range([0,(chartRadius * .3)]);
+
 var colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
 var convertedValueScale = d3.scaleLinear()
@@ -100,10 +104,30 @@ var convertedValueScale = d3.scaleLinear()
 //third is radius
 //fourth is label
 var data = [
-  [.5, 3, 22, 'label 1'],
-  [1.5, 6, 20, 'label 2'],
-  [2.5, 8, 10, 'label 3'],
-  [4.5, 11, 24, 'label 4']
+  {
+    x : .5, 
+    y :3,
+    count : 6,
+    label : 'label 1'
+  },
+  {
+    x: 1.5,
+    y: 6,
+    count: 12,
+    label: 'label 2'
+  },
+  {
+    x: 2.5,
+    y: 8,
+    count: 37,
+    label: 'label 3'
+  },
+  {
+    x: 4.5,
+    y: 11,
+    count: 49,
+    label: 'label 4'
+  }
 ];
 
   console.log('huh?!')
@@ -140,10 +164,10 @@ straightLineAxis.append('line')
 
 var d3Line = d3.radialLine()
   .radius(d => {
-    let yVal = d[1]
+    let yVal = d.y
     return radiusScale(yVal)
   })
-  .angle(d => -reMap(convertedValueScale(d[0])) + Math.PI / 2)
+  .angle(d => -reMap(convertedValueScale(d.x)) + Math.PI / 2)
 
 var tooltip = d3.select("body")
 	.append("div")
@@ -159,8 +183,9 @@ gObj.selectAll('singleCircle')
   .attrs({
     'class': 'singleCircle',
     'transform': d => getTransCoords(d),
-    'r': d => d[2],
-    'fill': (d,i) => colorScale(i)
+    'r': d => circleRadiusScale(d.count),
+    'stroke': (d,i) => colorScale(i),
+    'fill':'none'
   })
   .on("click", (d) => console.log(d))
     // add to click if I want a tooltip
@@ -174,5 +199,5 @@ gObj.selectAll('singleCircle')
   .data(data)
   .enter().append("text")
   .attr('transform',d => getTransCoords(d))
-  .text(d => d[3]).attr('fill', 'white'); 
+  // .text(d => d[3]).attr('fill', 'white'); //adds an optional label if there is a 4th element in the data
 
