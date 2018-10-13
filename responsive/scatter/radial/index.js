@@ -98,11 +98,14 @@ var straightLineAxis = svg.append('g')
   .enter().append('g')
   .attrs({
     'transform': d => 'rotate(' + -d + ')',
-    'class': 'straightLineAxis'
+    'class': 'straightLineG'
   });
 
 straightLineAxis.append('line')
-  .attr('x2', chartRadius);
+  .attrs({
+    'x2': chartRadius,
+    'class': 'straightLineAxis'
+  });
 
 var color = d3.scaleOrdinal(d3.schemeDark2);
 
