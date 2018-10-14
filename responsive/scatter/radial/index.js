@@ -1,3 +1,39 @@
+function getClientDims(parentDiv, marginObj){
+
+  // Extract the DIV width and height that was computed by CSS.
+  let cssDivWidth = parentDiv.clientWidth;
+  let cssDivHeight = parentDiv.clientHeight;
+  
+  //get css-computed dimensions
+  const divWidthLessMargins =cssDivWidth - marginObj.l - marginObj.r;
+  const divHeightLessMargins = cssDivHeight - marginObj.t - marginObj.b;
+  
+  return { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins };
+}
+
+function setSVGDims(obj, w, h){
+  obj.attrs({
+    "width" : w,
+    "height" : h
+  });
+}
+
+function updateData(){
+  let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, v.m)
+  setSVGDims(svgObj, cssDivWidth, cssDivHeight);
+  gObj.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
+  chartRadius = Math.min(cssDivHeight, cssDivWidth)/ 2 - 30;
+  radiusScale.range([0, chartRadius])
+  circleRadiusScale.range([0,(chartRadius * .3)]);
+
+  circularAxis.attr('r', radiusScale);
+  d3.selectAll('.singleCircle').attrs({
+    'transform': d => getTransCoords(d),
+    'r': d => circleRadiusScale(d.count)
+  })
+
+}
+
 //POLAR AREA 
 //  http://stackoverflow.com/questions/33695073/javascript-polar-scatter-plot-using-d3-js/33710021#33710021
 //re-map fn from...  
@@ -13,6 +49,9 @@ const v = {
   }
 }
 
+
+
+
 // https://en.wikipedia.org/wiki/Polar_coordinate_system
 // first is position clockwise, aka angular coordinate, polar angle, or azimuth. range from 0 - 359
 // second is ring (range 0 to 1), aka Radial Coordinate
@@ -21,8 +60,8 @@ function reMap(oldValue){
   var oldMax = -359,
       newMax = (Math.PI * 2),
       newValue = (((oldValue - 90) * newMax) / oldMax);
-  console.log('reMap`d oldVal ',oldValue)
-  console.log('reMap`d newVal ',newValue)
+  // console.log('reMap`d oldVal ',oldValue)
+  // console.log('reMap`d newVal ',newValue)
   return newValue;
 }
 
@@ -70,15 +109,12 @@ const divHeightLessMargins = cssDivHeight - v.m.t - v.m.b;
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
-svgObj.attrs({
-  "width" : cssDivWidth,
-  "height" : cssDivHeight
-});
+setSVGDims(svgObj, cssDivWidth, cssDivHeight)
 
 //translate the gWrapper
 gObj.attr('transform', `translate(${cssDivWidth/2},${cssDivHeight/2})`);
 
-const chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2 - 30; // radius of the whole chart
+let chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2 - 30; // radius of the whole chart
 
 var radiusScale = d3.scaleLinear()
   .domain([0, 12])
@@ -201,3 +237,5 @@ gObj.selectAll('singleCircle')
   .attr('transform',d => getTransCoords(d))
   // .text(d => d[3]).attr('fill', 'white'); //adds an optional label if there is a 4th element in the data
 
+//Resise listener & fn call
+d3.select(window).on('resize',updateData);
