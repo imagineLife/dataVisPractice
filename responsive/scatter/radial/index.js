@@ -23,13 +23,13 @@ function updateData(){
   setSVGDims(svgObj, cssDivWidth, cssDivHeight);
   gObj.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
   chartRadius = Math.min(cssDivHeight, cssDivWidth)/ 2 - 30;
-  radiusScale.range([0, chartRadius])
-  circleRadiusScale.range([0,(chartRadius * .3)]);
+  yScale.range([0, chartRadius])
+  singleCircleRadiusScale.range([0,(chartRadius * .3)]);
 
-  circularAxis.attr('r', radiusScale);
+  circularAxis.attr('r', yScale);
   d3.selectAll('.singleCircle').attrs({
     'transform': d => getTransCoords(d),
-    'r': d => circleRadiusScale(d.count)
+    'r': d => singleCircleRadiusScale(d.count)
   })
 
 }
@@ -116,24 +116,24 @@ gObj.attr('transform', `translate(${cssDivWidth/2},${cssDivHeight/2})`);
 
 let chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2 - 30; // radius of the whole chart
 
-var radiusScale = d3.scaleLinear()
+var yScale = d3.scaleLinear()
   .domain([0, 12])
   .range([0, chartRadius]);
 
-var circleRadiusScale = d3.scaleLinear()
+var singleCircleRadiusScale = d3.scaleLinear()
   .domain([0,50])
   .range([0,(chartRadius * .3)]);
 
 var colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
-var convertedValueScale = d3.scaleLinear()
+var xScale = d3.scaleLinear()
   .domain([0,4.99]).range([0,360])
 
 //DATA breakdown
 //first is 'x'
   /*
     in the d3Line fn, x has to be...
-      1. converted to the 360 degree scale'd value (convertedValueScale)
+      1. converted to the 360 degree scale'd value (xScale)
       2. converted to a coordinate, in prep for the d3LineFn
   */
 //second is 'y'
@@ -167,16 +167,16 @@ var data = [
 ];
 
   console.log('huh?!')
-  console.log(radiusScale.ticks(5))
+  console.log(yScale.ticks(5))
 var radiusAxis = gObj.append('g')
   .attr('class', 'radius axis')
   .selectAll('g')
-  .data(radiusScale.ticks(5))
+  .data(yScale.ticks(5))
   .enter().append('g').attr('class','rAxisAppendedG');
 
 var circularAxis = radiusAxis.append('circle')
   .attrs({
-    'r': radiusScale,
+    'r': yScale,
     'class': 'circularAxis'
   });
 
@@ -201,9 +201,9 @@ straightLineAxis.append('line')
 var d3Line = d3.radialLine()
   .radius(d => {
     let yVal = d.y
-    return radiusScale(yVal)
+    return yScale(yVal)
   })
-  .angle(d => -reMap(convertedValueScale(d.x)) + Math.PI / 2)
+  .angle(d => -reMap(xScale(d.x)) + Math.PI / 2)
 
 var tooltip = d3.select("body")
 	.append("div")
@@ -219,7 +219,7 @@ gObj.selectAll('singleCircle')
   .attrs({
     'class': 'singleCircle',
     'transform': d => getTransCoords(d),
-    'r': d => circleRadiusScale(d.count),
+    'r': d => singleCircleRadiusScale(d.count),
     'stroke': (d,i) => colorScale(i),
     'fill':'none'
   })
