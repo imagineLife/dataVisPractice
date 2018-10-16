@@ -5,6 +5,7 @@ const colorScale = d3.scaleOrdinal()
 const radScale = d3.scaleOrdinal()
 .domain(['apple','lemon']).range([50,30])
 
+const setXPos = (d,i) => i * 120 + 60	; 
 const drawChart = (parent, { fruits }) => {
 	// const { fruits } = props;
 
@@ -15,7 +16,7 @@ const drawChart = (parent, { fruits }) => {
 		.enter().append('circle')
 		.attrs({
 			'cy' : (h/2),
-			'cx' : (d, i) => i * 120 + 60,
+			'cx' : setXPos,
 
 			//10. animated radius on element entry
 			//Setting radius to 
@@ -25,7 +26,7 @@ const drawChart = (parent, { fruits }) => {
 		.attr('fill', d => colorScale(d.type))
 			.transition().duration(1000)
 			.attrs({
-				'cx' : (d, i) => i * 120 + 60,
+				'cx' : setXPos,
 				'r': d => radScale(d.type)
 			})
 
