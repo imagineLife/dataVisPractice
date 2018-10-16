@@ -23,7 +23,14 @@ const drawChart = (parent, { fruits }) => {
 			.attr('transform', (d,i) => `translate(${((i * 120) + 60)},${(h/2)})`)
 
 	//'groupDataJoin' returns the same selection selection
-	groupDataJoin.exit().remove();
+	groupDataJoin.exit()
+		.select('circle')
+		.transition().duration(500)
+		.attr('r', 0)
+		.remove();
+	groupDataJoin.exit()
+		.select('text')
+		.remove();
 
 	//fruitCircles appended to g 
 	const fruitDataJoin = groupDataJoin.select('circle');
