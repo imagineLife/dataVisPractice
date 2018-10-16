@@ -40,3 +40,11 @@ setTimeout(() => {
 	drawChart(svgObj, { fruits });
 
 }, 4500);
+
+//5. add an ORANGE!
+setTimeout(() => {
+	let newOrange = makeFruit('orange')
+	fruits.push(newOrange)
+	drawChart(svgObj, { fruits });
+
+}, 6000);

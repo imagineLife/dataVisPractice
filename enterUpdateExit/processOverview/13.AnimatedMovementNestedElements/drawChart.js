@@ -1,9 +1,9 @@
 //32:00
 const colorScale = d3.scaleOrdinal()
-.domain(['apple','lemon']).range(['darkred','khaki']);
+.domain(['apple','lemon']).range(['darkred','khaki','orange']);
 
 const radScale = d3.scaleOrdinal()
-.domain(['apple','lemon']).range([50,30])
+.domain(['apple','lemon', 'orange']).range([50,30, 60])
 
 const setXPos = (d,i) => i * 120 + 60; 
 
@@ -25,12 +25,14 @@ const drawChart = (parent, { fruits }) => {
 	//'groupDataJoin' returns the same selection selection
 	groupDataJoin.exit()
 		.select('circle')
-		.transition().duration(500)
+		.transition().duration(350)
 		.attr('r', 0)
 		.remove();
 	groupDataJoin.exit()
 		.select('text')
 		.remove();
+
+	groupDataJoin.exit().remove();
 
 	//fruitCircles appended to g 
 	const fruitDataJoin = groupDataJoin.select('circle');
