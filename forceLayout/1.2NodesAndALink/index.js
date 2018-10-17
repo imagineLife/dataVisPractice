@@ -39,8 +39,10 @@ var links = [
 // the dimensions for this container.
 
 var svg = d3.select('body').append('svg')
-    .attr('width', width)
-    .attr('height', height);
+    .attrs({
+        'width': width,
+        'height': height
+    });
 
 // Now we create a force layout object and define its properties.
 // Those include the dimensions of the visualization and the arrays
@@ -110,19 +112,23 @@ force.on('end', function() {
     // give the node a non-zero radius so that it's visible
     // in the container.
 
-    node.attr('r', width/25)
-        .attr('cx', function(d) { return d.x; })
-        .attr('cy', function(d) { return d.y; });
+    node.attrs({
+        'r': width/25,
+        'cx': d => d.x,
+        'cy': d => d.y
+    });
 
     // We also need to update positions of the links.
     // For those elements, the force layout sets the
     // `source` and `target` properties, specifying
     // `x` and `y` values in each case.
 
-    link.attr('x1', function(d) { return d.source.x; })
-        .attr('y1', function(d) { return d.source.y; })
-        .attr('x2', function(d) { return d.target.x; })
-        .attr('y2', function(d) { return d.target.y; });
+    link.attrs({
+        'x1':d => d.source.x,
+        'y1':d => d.source.y,
+        'x2':d => d.target.x,
+        'y2':d => d.target.y
+    });
 
 });
 
