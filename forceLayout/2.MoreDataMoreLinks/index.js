@@ -47,7 +47,51 @@ var nodes = [
 // the `nodes` array of the two endpoints of the link.
 
 var links = [
-    { source: 0, target: 1 }
+    { "target": 11, "source":  0 },
+    { "target":  3, "source":  0 },
+    { "target": 10, "source":  0 },
+    { "target": 16, "source":  0 },
+    { "target":  1, "source":  0 },
+    { "target":  3, "source":  0 },
+    { "target":  9, "source":  0 },
+    { "target":  5, "source":  0 },
+    { "target": 11, "source":  0 },
+    { "target": 13, "source":  0 },
+    { "target": 16, "source":  0 },
+    { "target":  3, "source":  1 },
+    { "target":  9, "source":  1 },
+    { "target": 12, "source":  1 },
+    { "target":  4, "source":  2 },
+    { "target":  6, "source":  2 },
+    { "target":  8, "source":  2 },
+    { "target": 13, "source":  2 },
+    { "target": 10, "source":  3 },
+    { "target": 16, "source":  3 },
+    { "target":  9, "source":  3 },
+    { "target":  7, "source":  3 },
+    { "target": 11, "source":  5 },
+    { "target": 13, "source":  5 },
+    { "target": 12, "source":  5 },
+    { "target":  8, "source":  6 },
+    { "target": 13, "source":  6 },
+    { "target": 10, "source":  7 },
+    { "target": 11, "source":  7 },
+    { "target": 17, "source":  8 },
+    { "target": 13, "source":  8 },
+    { "target": 11, "source": 10 },
+    { "target": 16, "source": 10 },
+    { "target": 13, "source": 11 },
+    { "target": 14, "source": 12 },
+    { "target": 14, "source": 12 },
+    { "target": 14, "source": 12 },
+    { "target": 15, "source": 12 },
+    { "target": 16, "source": 12 },
+    { "target": 15, "source": 14 },
+    { "target": 16, "source": 14 },
+    { "target": 15, "source": 14 },
+    { "target": 16, "source": 15 },
+    { "target": 16, "source": 15 },
+    { "target": 17, "source": 16 }
 ];
 
 // Here's were the code begins. We start off by creating an SVG
@@ -64,9 +108,6 @@ var svg = d3.select('body').append('svg')
 // Those include the dimensions of the visualization and the arrays
 // of nodes and links.
 
-var force = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).distance(width/2))
-
 // There's one more property of the layout we need to define,
 // its `linkDistance`. That's generally a configurable value and,
 // for a first example, we'd normally leave it at its default.
@@ -75,8 +116,11 @@ var force = d3.forceSimulation(nodes)
 // distance (normally in pixels) that we'd like to have between
 // nodes that are connected. (It is, thus, the length we'd
 // like our links to have.)
+var force = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).distance(width/2))
 
-// force.linkDistance(width/2);
+
+
 
 // Next we'll add the nodes and links to the visualization.
 // Note that we're just sticking them into the SVG container
