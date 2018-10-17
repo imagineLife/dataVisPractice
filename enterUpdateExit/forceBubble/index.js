@@ -1,11 +1,8 @@
 function makeD3ElementsFromParentDiv(parendDivID){
   const chartDiv = document.getElementById(parendDivID);        
   const svgObj = d3.select(chartDiv).append("svg");
-  const gWrapper = svgObj.append('g')
-    .attr('class','gWrapper')
-    .style('max-height','900px');
 
-  return {chartDiv, svgObj, gWrapper};
+  return {chartDiv, svgObj};
 }
 
 function getClientDims(parentDiv, marginObj){
@@ -35,15 +32,57 @@ function randomizeData(){
   for (var i = 0; i < jz.num.randBetween(1, alphabet.length); i++){
     d1.push(d0[i]);
   }
-  d1.forEach(function(d){
+  d1.forEach(d => {
     d2.push({name: d, size: jz.num.randBetween(0, 50)})
   });
   return d2;
 }
 
-function ticked() {
-  bubbleGWrapper.attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
+function drawChart(nodes, parent) {
+  console.log('drawing chart with nodes...')
+  console.log(nodes)
+
+  // transition
+  var t = d3.transition().duration(500);
+
+  // Apply the general update pattern to the nodes.
+  bubbleDataJoin = bubbleGWrapper.selectAll('circle').data(nodes, d => d.name);
+  let bubbleDataJoinEnter = bubbleDataJoin.enter().append('circle');
+
+  bubbleDataJoin.exit()
+      .style("fill", "#b26745")
+    .transition(t)
+      .attr("r", 1e-6)
+      .remove();
+
+  bubbleDataJoin
+      .transition(t)
+        .style("fill", "#3a403d")
+        .attr("r", d => d.size);
+
+  bubbleDataJoinEnter
+      .style("fill", "#45b29d")
+      .attr("r", d => d.size)
+      .merge(bubbleDataJoin);
+
+  let simulation = d3.forceSimulation(nodes)
+  .force("charge", d3.forceManyBody().strength(-150))
+  .force("forceX", d3.forceX().strength(.1))
+  .force("forceY", d3.forceY().strength(.1))
+  .force("center", d3.forceCenter())
+  .alphaTarget(1)
+  .on("tick", () => {
+    bubbleDataJoinEnter
+      .attrs({
+        "cx": d => d.x,
+        "cy": d => d.y
+      })
+  });
+
+  // Update and drawChart the simulation.
+  simulation.nodes(nodes)
+    .force("collide", d3.forceCollide().strength(1).radius(d => d.size + 10).iterations(1));
+
 }
 
 let thisDataObj = [
@@ -104,44 +143,12 @@ const margin = {
   top: 40,
   bottom: 40
 };
+
 const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+
 let radiusScale = d3.scaleSqrt();
-//forceY & forceX to default 0
-// let simulation = d3.forceSimulation()
-//   .force("yforce", d3.forceY().strength(.03))
-//   .force("xforce", d3.forceX().strength(.03));
 
-const {chartDiv, svgObj, gWrapper} = makeD3ElementsFromParentDiv('chart');
-
-// function updateData(){
-//     gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
-//     let smallestResizeVal = Math.min(cssDivHeight, cssDivWidth)
-//     // console.log(smallestResizeVal)
-
-//     radiusScale.range([0,(smallestResizeVal/4)])
-
-//     simulation
-//       .force("myCollide", d3.forceCollide((d) => { return radiusScale(d.sales)}))
-//       .alpha(.5)
-//       .restart();
-
-
-//   let resizeCirclesObj = gWrapper.selectAll('.artist-circle')
-//     .attr('r', d => radiusScale(d.sales));
-
-//   let resizeTick = () => {
-//     resizeCirclesObj.attrs({
-//       "cx" : (d) => {return d.x},
-//       "cy" : (d) => {return d.y}
-//     })
-//   }
-
-//   simulation.nodes(thisDataObj)
-//     .on('tick', resizeTick)
-// }
-
-// buildChart(thisDataObj)
-
+const {chartDiv, svgObj} = makeD3ElementsFromParentDiv('chart');
 
 
 var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -149,15 +156,11 @@ var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 var width = window.innerWidth,
     height = window.innerHeight;
 
-var nodes = randomizeData();
+// var nodes = randomizeData();
+// console.log('nodes...')
+// console.log(nodes)
 
-var simulation = d3.forceSimulation(nodes)
-  .force("charge", d3.forceManyBody().strength(-150))
-  .force("forceX", d3.forceX().strength(.1))
-  .force("forceY", d3.forceY().strength(.1))
-  .force("center", d3.forceCenter())
-  .alphaTarget(1)
-  .on("tick", ticked);
+let bubbleDataJoin;
 
 let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
 svgObj.attrs({
@@ -166,51 +169,17 @@ svgObj.attrs({
   'class': 'svgWrapper'
 });
 
-gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`);
-
-bubbleGWrapper = gWrapper.append("g")
+let bubbleGWrapper = svgObj.append("g")
   .attrs({
-    "stroke": "#fff",
-    "stroke-width": 1.5,
-    'class': 'nodeG'
-  })
-  .selectAll(".node");
+    'class': 'gWrapper',
+    'transform': `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`
+});
 
-d3.interval(function(){
-  restart(randomizeData())
-}, 2500);
+drawChart(randomizeData())
 
-function restart(nodes) {
-
-  // transition
-  var t = d3.transition()
-      .duration(750);
-
-  // Apply the general update pattern to the nodes.
-  bubbleGWrapper = bubbleGWrapper.data(nodes, function(d) { return d.name;});
-
-  bubbleGWrapper.exit()
-      .style("fill", "#b26745")
-    .transition(t)
-      .attr("r", 1e-6)
-      .remove();
-
-  bubbleGWrapper
-      .transition(t)
-        .style("fill", "#3a403d")
-        .attr("r", function(d){ return d.size; });
-
-  bubbleGWrapper = bubbleGWrapper.enter().append("circle")
-      .style("fill", "#45b29d")
-      .attr("r", function(d){ return d.size })
-      .merge(bubbleGWrapper);
-
-  // Update and restart the simulation.
-  simulation.nodes(nodes)
-    .force("collide", d3.forceCollide().strength(1).radius(function(d){ return d.size + 10; }).iterations(1));
-
-}
-
+d3.interval(() => {
+  drawChart(randomizeData())
+}, 2750);
 
 //Resise listener & fn call
 // d3.select(window).on('resize',updateData);
