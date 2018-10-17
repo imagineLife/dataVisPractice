@@ -49,7 +49,7 @@ var svg = d3.select('body').append('svg')
 // of nodes and links.
 
 var force = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).distance(200))
+    .force("link", d3.forceLink(links).distance(width/2))
 
 // There's one more property of the layout we need to define,
 // its `linkDistance`. That's generally a configurable value and,
