@@ -41,6 +41,11 @@ function randomizeData(){
   return d2;
 }
 
+function ticked() {
+  bubbleGWrapper.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+}
+
 let thisDataObj = [
    {
    "id": "SteelyDan",
@@ -108,53 +113,6 @@ let radiusScale = d3.scaleSqrt();
 
 const {chartDiv, svgObj, gWrapper} = makeD3ElementsFromParentDiv('chart');
 
-function buildChart(dataObj){
-
-  let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
-
-  let smallestViewSize = Math.min(cssDivHeight, cssDivWidth)
-  svgObj.attrs({
-    'width':cssDivWidth,
-    'height':cssDivHeight,
-    'class': 'svgWrapper'
-  });
-
-  //svg translate to middle
-  gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
-
-  radiusScale
-    .domain(d3.extent(dataObj, (d) => {return +d.sales}))
-    .range([0,(smallestViewSize/4)])
-
-  simulation.force("myCollide", d3.forceCollide((d) => { return radiusScale(d.sales)}));
-
-  let circlesObj = gWrapper.selectAll('.artists')
-      .data(dataObj)
-      .enter()
-      .append('circle')
-      .attrs({
-        'class' : d => `artist-circle ${d.name}`,
-        'r'     : d => radiusScale(d.sales),
-        'fill'  : (d) => colorScale(d.sales)
-      });
-
-  let myTickFn = () => {
-    circlesObj.attrs({
-      "cx" : (d) => {
-        // console.log('cx d')
-        // console.log(d)
-        return d.x},
-      "cy" : (d) => {return d.y}
-    })
-  }
-
-  simulation.nodes(dataObj)
-    .on('tick', myTickFn)
-
-  console.log('simulation')
-  console.log(simulation.nodes())
-}
-
 // function updateData(){
 //     gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
 //     let smallestResizeVal = Math.min(cssDivHeight, cssDivWidth)
@@ -194,29 +152,29 @@ var width = window.innerWidth,
 var nodes = randomizeData();
 
 var simulation = d3.forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(-150))
-    .force("forceX", d3.forceX().strength(.1))
-    .force("forceY", d3.forceY().strength(.1))
-    .force("center", d3.forceCenter())
-    .alphaTarget(1)
-    .on("tick", ticked);
+  .force("charge", d3.forceManyBody().strength(-150))
+  .force("forceX", d3.forceX().strength(.1))
+  .force("forceY", d3.forceY().strength(.1))
+  .force("center", d3.forceCenter())
+  .alphaTarget(1)
+  .on("tick", ticked);
 
-    let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
-    svgObj.attrs({
-      'width':cssDivWidth,
-      'height':cssDivHeight,
-      'class': 'svgWrapper'
-    });
+let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
+svgObj.attrs({
+  'width':cssDivWidth,
+  'height':cssDivHeight,
+  'class': 'svgWrapper'
+});
 
-    gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`);
+gWrapper.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`);
 
-    nodeGWrapper = gWrapper.append("g")
-      .attrs({
-        "stroke": "#fff",
-        "stroke-width": 1.5,
-        'class': 'nodeG'
-      })
-      .selectAll(".node");
+bubbleGWrapper = gWrapper.append("g")
+  .attrs({
+    "stroke": "#fff",
+    "stroke-width": 1.5,
+    'class': 'nodeG'
+  })
+  .selectAll(".node");
 
 d3.interval(function(){
   restart(randomizeData())
@@ -229,33 +187,27 @@ function restart(nodes) {
       .duration(750);
 
   // Apply the general update pattern to the nodes.
-  nodeGWrapper = nodeGWrapper.data(nodes, function(d) { return d.name;});
+  bubbleGWrapper = bubbleGWrapper.data(nodes, function(d) { return d.name;});
 
-  nodeGWrapper.exit()
+  bubbleGWrapper.exit()
       .style("fill", "#b26745")
     .transition(t)
       .attr("r", 1e-6)
       .remove();
 
-  nodeGWrapper
+  bubbleGWrapper
       .transition(t)
         .style("fill", "#3a403d")
         .attr("r", function(d){ return d.size; });
 
-  nodeGWrapper = nodeGWrapper.enter().append("circle")
+  bubbleGWrapper = bubbleGWrapper.enter().append("circle")
       .style("fill", "#45b29d")
       .attr("r", function(d){ return d.size })
-      .merge(nodeGWrapper);
+      .merge(bubbleGWrapper);
 
   // Update and restart the simulation.
   simulation.nodes(nodes)
     .force("collide", d3.forceCollide().strength(1).radius(function(d){ return d.size + 10; }).iterations(1));
-
-}
-
-function ticked() {
-  nodeGWrapper.attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
 
 }
 
