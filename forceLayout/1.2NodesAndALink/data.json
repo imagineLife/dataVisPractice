@@ -1,0 +1,50 @@
+[
+   {
+   "id": "SteelyDan",
+   "name": "SteelyDan",
+   "sales": 40,
+   "decade":"pre"
+},
+{
+   "id": "Beyonce",
+   "name": "Beyonce",
+   "sales": 34,
+   "decade":"post"
+},
+{
+   "id": "Madonna",
+   "name": "Madonna",
+   "sales": 300,
+   "decade":"pre"
+},
+{
+   "id": "AdamLevine",
+   "name": "AdamLevine",
+   "sales": 20,
+   "decade":"post"
+},
+{
+   "id": "Hall&Oats",
+   "name": "Hall&Oats",
+   "sales": 125,
+   "decade":"pre"
+},
+{
+   "id": "NickiMinaj",
+   "name": "NickiMinaj",
+   "sales": 80,
+   "decade":"post"
+},
+{
+   "id": "Drake",
+   "name": "Drake",
+   "sales": 10,
+   "decade":"post"
+},
+{
+   "id": "Bieber",
+   "name": "Bieber",
+   "sales": 25,
+   "decade":"post"
+}
+]
