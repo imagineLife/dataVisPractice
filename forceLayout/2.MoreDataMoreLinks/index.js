@@ -3,7 +3,7 @@
 // http://jsDataV.is
 
 var width = 640,
-    height = 480;
+    height = 640;
 
 // Define the data for the example. In general, a force layout
 // requires two data arrays. The first array, here named `nodes`,
