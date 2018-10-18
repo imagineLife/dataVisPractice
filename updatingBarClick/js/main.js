@@ -162,15 +162,22 @@ function update(data, townName) {
             'class' :'xTickLabel'
         })
 
-    // JOIN new data with old elements.
+/*
+    Enter update exit deal
+*/
+
+//1. select & JOIN new data with old dom elements.
     var rects = chartG.selectAll(".singleRect")
         .data(mappedRaces, (d) => d.race).attr('fill','darkkhaki');
-    // EXIT old elements not present in new data.
-    // ENTER new elements
+    
+
+//2. PLACEHOLDERS for
+// EXIT old elements not present in new data.
+// ENTER new elements
     let exitData = rects.exit();
     let enterData = rects.enter();
 
-    // exitData
+//3. exitData
     rects.exit()
         // .attr("fill", "darkkhaki")
     .transition().duration(700)
@@ -178,8 +185,7 @@ function update(data, townName) {
         .attr("height", 0)
         .remove();
 
-    // ENTER new elements present in new data...
-    // enterData
+//4. ENTER new elements present in new data...enterData
     rects.enter()
         .append("rect")
         .attrs({
@@ -193,9 +199,8 @@ function update(data, townName) {
         })
         .transition().duration(700) 
 
-
-        // MERGE AND UPDATE NEW data with 
-        // already-present elements present in new data.
+//5. MERGE AND UPDATE NEW data with
+// already-present elements present in new data.
         rects.merge(rects)
         .transition().duration(700)
             .attrs({
