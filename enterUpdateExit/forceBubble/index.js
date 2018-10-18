@@ -33,7 +33,10 @@ function randomizeData(){
     d1.push(d0[i]);
   }
   d1.forEach(d => {
-    d2.push({name: d, size: jz.num.randBetween(0, 50)})
+    d2.push({
+      name: d,
+      size: jz.num.randBetween(0, 50)
+    })
   });
   return d2;
 }
@@ -155,10 +158,6 @@ var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 var width = window.innerWidth,
     height = window.innerHeight;
-
-// var nodes = randomizeData();
-// console.log('nodes...')
-// console.log(nodes)
 
 let bubbleDataJoin;
 
