@@ -7,28 +7,26 @@ class App extends React.Component{
   	super(props)
 
   	this.state = {
-  		ballLeft: true
+  		isLeft: true
   	}
 
-  	this.ballJump = this.ballJump.bind(this)
+  	this.ballLeftTF = this.ballLeftTF.bind(this)
   }
 
-  ballJump(){
+  ballLeftTF(){
   	this.setState({
-  		ballLeft: !this.state.ballLeft
+  		isLeft: !this.state.isLeft
   	})
   }
 
   render(){
-  	const { ballLeft } = this.state;
-  	console.log('ballLEft')
-  	console.log(this.state.ballLeft)
+  	const { isLeft } = this.state;
+  	console.log('isLeft')
+  	console.log(this.state.isLeft)
   	  return (
-	    <div>
-        <svg style={{ width: "300", height: "300px" }} onClick={this.ballJump}>
-        	<Ball x={ballLeft ? 15 : 250} />
+        <svg style={{ width: "300", height: "50px" }} onClick={this.ballLeftTF}>
+        	<Ball x={isLeft ? 15 : 250} y={40} />
         </svg>
-      </div>
 	  );
   }
 };
