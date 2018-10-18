@@ -175,9 +175,7 @@ d3Sim.on('end', () => {
 });
 
 
-setTimeout(() => {
-    d3Sim.stop()    
-}, 300)
+d3Sim.stop()    
 
 // Now let's take care of the user interaction controls.
 // We'll add functions to respond to clicks on the individual
