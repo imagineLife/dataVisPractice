@@ -21,9 +21,9 @@ body {
 	stroke: #000;
 }
   
-.axis text {
+/*.axis text {
 	font: 10px sans-serif;
-}
+}*/
 
 .axis circle {
   fill: none;
@@ -36,8 +36,8 @@ body {
 }
 
 .circularAxis{
-	stroke: rgb(60,60,60);
-	stroke-dasharray: 20 10;
+	stroke: rgb(125,125,125);
+	stroke-dasharray: 1 20;
 }
 
 .straightLineAxis{
