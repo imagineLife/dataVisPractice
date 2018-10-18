@@ -1,3 +1,13 @@
+function makeD3ElementsFromParentDiv(parendDivID){
+  const chartDiv = document.getElementById(parendDivID);        
+  const svgObj = d3.select(chartDiv).append("svg");
+  const gWrapper = svgObj.append('g')
+    .attr('class','gWrapper')
+    .style('max-height','900px');
+
+  return {chartDiv, svgObj, gWrapper};
+}
+
 const v = {
 	xLabel : 'Starting Beat',
 	yLabel : 'Half Steps Moved',
@@ -54,12 +64,7 @@ function makeAxis(pos, scaleObj, tickPadding, tickSize, ticks){
 }
 
 //Select/Create div, svg, g
-const chartDiv = document.getElementById('chartDiv'); 	      
-const svgObj = d3.select(chartDiv).append("svg").attrs({
-	// "class":obj.svgClass,
-	"border": '2px solid green'
-});
-const gObj = svgObj.append('g').attr('class','gWrapper');
+const { chartDiv, svgObj, gWrapper } = makeD3ElementsFromParentDiv('chartDiv')
 
 //Setup Scales
 const xScale = d3.scaleLinear();
@@ -84,12 +89,12 @@ svgObj.attrs({
 });
 
 //translate the gWrapper
-gObj.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
+gWrapper.attr('transform', `translate(${v.margin.left},${v.margin.top})`);
 
 //Build Axis Groups
-const xAxisG = appendGElement(gObj,`0, ${divHeightLessMargins}`,'axis x')
-const yAxisG = appendGElement(gObj,`0,0`,'axis y')
-// const colorLegendG = appendGElement(gObj,`${divWidthLessMargins + 60}, ${divHeightLessMargins - 50}`,'colorLegendG');
+const xAxisG = appendGElement(gWrapper,`0, ${divHeightLessMargins}`,'axis x')
+const yAxisG = appendGElement(gWrapper,`0,0`,'axis y')
+// const colorLegendG = appendGElement(gWrapper,`${divWidthLessMargins + 60}, ${divHeightLessMargins - 50}`,'colorLegendG');
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
@@ -150,9 +155,9 @@ function buildChart(obj){
 
 	radiusScale
 	  .domain(d3.extent(data, v.radiusValue))
-	  .range([1, 100])
+	  .range([1, 120])
 
-	gObj.selectAll('circle').data(data)
+	gWrapper.selectAll('circle').data(data)
 	   .enter().append('circle')
 	    .attrs({
 	    	'cx': d => xScale(v.xValue(d)),
