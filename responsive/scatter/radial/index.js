@@ -22,14 +22,14 @@ function updateData(){
   let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, v.m)
   setSVGDims(svgObj, cssDivWidth, cssDivHeight);
   gObj.attr('transform', `translate(${cssDivWidth / 2},${cssDivHeight / 2 })`)
-  chartRadius = Math.min(cssDivHeight, cssDivWidth)/ 2 - 30;
-  yScale.range([0, chartRadius])
+  chartRadius = Math.min(cssDivHeight, cssDivWidth)/ 2 * .9;
+  yScale.range([chartRadius, 0])
   singleCircleRadiusScale.range([0,(chartRadius * .3)]);
 
   circularAxis.attr('r', yScale);
   d3.selectAll('.singleCircle').attrs({
     'transform': d => getTransCoords(d),
-    'r': d => singleCircleRadiusScale(d.count)
+    'r': d => singleCircleRadiusScale(d.noteDuration)
   })
 
 }
@@ -99,36 +99,6 @@ const chartDiv = document.getElementById('chartDiv');
 const svgObj = d3.select(chartDiv).append("svg").attr("class",'svgObj');
 const gObj = svgObj.append('g').attr('class','gWrapper');
 
-// Extract the DIV width and height that was computed by CSS.
-let cssDivWidth = chartDiv.clientWidth;
-let cssDivHeight = chartDiv.clientHeight;
-
-//get css-computed dimensions less margins
-const divWidthLessMargins = cssDivWidth - v.m.l - v.m.r;
-const divHeightLessMargins = cssDivHeight - v.m.t - v.m.b;
-
-//set svg height & width from div computed dimensions
-//NOTE: can be the divLessMargins, for 'padding' effect
-setSVGDims(svgObj, cssDivWidth, cssDivHeight)
-
-//translate the gWrapper
-gObj.attr('transform', `translate(${cssDivWidth/2},${cssDivHeight/2})`);
-
-let chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2 - 30; // radius of the whole chart
-
-var yScale = d3.scaleLinear()
-  .domain([0, 12])
-  .range([0, chartRadius]);
-
-var singleCircleRadiusScale = d3.scaleLinear()
-  .domain([0,50])
-  .range([0,(chartRadius * .3)]);
-
-var colorScale = d3.scaleOrdinal(d3.schemeDark2);
-
-var xScale = d3.scaleLinear()
-  .domain([0,4.99]).range([0,360])
-
 //DATA breakdown
 //first is 'x'
   /*
@@ -139,7 +109,7 @@ var xScale = d3.scaleLinear()
 //second is 'y'
 //third is radius
 //fourth is label
-var data = [
+var dummyData = [
   {
     x : .5, 
     y :3,
@@ -166,76 +136,121 @@ var data = [
   }
 ];
 
-  console.log('huh?!')
-  console.log(yScale.ticks(5))
-var radiusAxis = gObj.append('g')
-  .attr('class', 'radius axis')
-  .selectAll('g')
-  .data(yScale.ticks(5))
-  .enter().append('g').attr('class','rAxisAppendedG');
+var d3Line = d3.radialLine();
+var yScale = d3.scaleLinear();
+var singleCircleRadiusScale = d3.scaleLinear();
+var xScale = d3.scaleLinear();
+var colorScale = d3.scaleOrdinal(d3.schemeDark2);
+var circularAxis;
 
-var circularAxis = radiusAxis.append('circle')
-  .attrs({
-    'r': yScale,
-    'class': 'circularAxis'
-  });
+function buildChart(data){
+  // Extract the DIV width and height that was computed by CSS.
+  let cssDivWidth = chartDiv.clientWidth;
+  let cssDivHeight = chartDiv.clientHeight;
 
-var straightLineAxis = gObj.append('g')
-  .attr('class', 'straightLine axis')
-  .selectAll('g')
-  .data(d3.range(0, 360, 30)) // line density (minVal?, maxVal?, percent between)
-  .enter().append('g')
-  .attrs({
-    'transform': d => 'rotate(' + -d + ')',
-    'class': 'straightLineG'
-  });
+  //get css-computed dimensions less margins
+  const divWidthLessMargins = cssDivWidth - v.m.l - v.m.r;
+  const divHeightLessMargins = cssDivHeight - v.m.t - v.m.b;
 
-straightLineAxis.append('line')
-  .attrs({
-    'x2': chartRadius,
-    'class': 'straightLineAxis'
-  });
+  //set svg height & width from div computed dimensions
+  //NOTE: can be the divLessMargins, for 'padding' effect
+  setSVGDims(svgObj, cssDivWidth, cssDivHeight)
 
+  //translate the gWrapper
+  gObj.attr('transform', `translate(${cssDivWidth/2},${cssDivHeight/2})`);
 
+  let chartRadius = Math.min(cssDivWidth, cssDivHeight) / 2  * .9; // radius of the whole chart
 
-var d3Line = d3.radialLine()
-  .radius(d => {
-    let yVal = d.y
-    return yScale(yVal)
-  })
-  .angle(d => -reMap(xScale(d.x)) + Math.PI / 2)
+  
+  yScale.domain([0,12])
+    .range([chartRadius, 0]);
 
-var tooltip = d3.select("body")
-	.append("div")
-	.style("position", "absolute")
-	.style("z-index", "10")
-	.style("visibility", "hidden")
-	.text("a simple tooltip");
-
-gObj.selectAll('singleCircle')
-  .data(data)
-  .enter()
-  .append('circle')
-  .attrs({
-    'class': 'singleCircle',
-    'transform': d => getTransCoords(d),
-    'r': d => singleCircleRadiusScale(d.count),
-    'stroke': (d,i) => colorScale(i),
-    'fill':'none'
-  })
-  .on("click", (d) => console.log(d))
-    // add to click if I want a tooltip
-    //return tooltip.style("visibility", "visible");
-  // });
+  
+  singleCircleRadiusScale.domain(d3.extent(data, d => d.noteDuration))
+    .range([0,120]);
 
 
+  // console.log('xScaleDomain')
+  // console.log(d3.extent(data, d => d.startedBeat))
+  xScale.domain([1,4.999]).range([0,360])
 
-// adding labels
-gObj.selectAll('singleCircle')
-  .data(data)
-  .enter().append("text")
-  .attr('transform',d => getTransCoords(d))
-  // .text(d => d[3]).attr('fill', 'white'); //adds an optional label if there is a 4th element in the data
+  var radiusAxis = gObj.append('g')
+    .attr('class', 'radius axis')
+    .selectAll('g')
+    .data(yScale.ticks(5))
+    .enter().append('g').attr('class','rAxisAppendedG');
+
+  circularAxis = radiusAxis.append('circle')
+    .attrs({
+      'r': yScale,
+      'class': 'circularAxis'
+    });
+
+  var straightLineAxis = gObj.append('g')
+    .attr('class', 'straightLine axis')
+    .selectAll('g')
+    .data(d3.range(0, 360, 45)) // line density (minVal?, maxVal?, percent between)
+    .enter().append('g')
+    .attrs({
+      'transform': d => 'rotate(' + -d + ')',
+      'class': 'straightLineG'
+    });
+
+  straightLineAxis.append('line')
+    .attrs({
+      'x2': chartRadius,
+      'class': 'straightLineAxis'
+    });
+
+
+
+  d3Line.radius(d => {
+      let yVal = +d.halfStepsMoved
+      return yScale(yVal)
+    })
+    .angle(d => -reMap(xScale(d.startedBeat)) + Math.PI / 2)
+
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .text("a simple tooltip");
+
+  gObj.selectAll('singleCircle')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attrs({
+      'class': 'singleCircle',
+      'transform': d => getTransCoords(d),
+      'r': d => singleCircleRadiusScale(d.noteDuration),
+      'stroke': (d,i) => colorScale(d.chordTone),
+      'stroke-opacity': .7,
+      'fill': (d) => colorScale(d.chordTone),
+      'fill-opacity': 0.1,
+      // 'fill':'none'
+    })
+    .on("click", (d) => console.log(d))
+      // add to click if I want a tooltip
+      //return tooltip.style("visibility", "visible");
+    // });
+
+
+
+  // adding labels
+  gObj.selectAll('singleCircle')
+    .data(data)
+    .enter().append("text")
+    .attr('transform',d => getTransCoords(d))
+    // .text(d => d[3]).attr('fill', 'white'); //adds an optional label if there is a 4th element in the data
+
+}
+
+fetch('data.json').then(res =>
+  res.json().then(res => {
+    buildChart(res);
+  }))
 
 //Resise listener & fn call
 d3.select(window).on('resize',updateData);
