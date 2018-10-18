@@ -1,0 +1,4574 @@
+[
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1.16,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 1.29,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 3.33,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 3.66,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 9
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 8
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 9
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1,
+    "halfStepsMoved": 8
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1.16,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1.32,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 3,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 2.25,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 2.75,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.25,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.75,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 4.25,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 4.75,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.25,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.75,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.25,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.75,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 19
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 2.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 14
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 2.2,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 2.3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4.2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4.3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4,
+    "halfStepsMoved": 13
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 4.2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4.3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.2,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4.2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 4.3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 2.4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 4.33,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 4.66,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.16,
+    "startedBeat": 1.2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.16,
+    "startedBeat": 1.3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 1.3,
+    "halfStepsMoved": 12
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 1.7,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.8,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2.3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2.7,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 4.8,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 4.3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.7,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 1.8,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.7,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 10
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 15
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 9
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 18
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 9
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 3.8,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 8
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.33,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 4.66,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 2,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 16
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 2.3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 2.7,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 19
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 2,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 14
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4,
+    "halfStepsMoved": 8
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.7,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 2.8,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 1.8,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 18
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 4.8,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.25,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 11
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.25,
+    "startedBeat": 4.8,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.2,
+    "startedBeat": 1.1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.2,
+    "startedBeat": 1.3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.1,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.2,
+    "startedBeat": 1.6,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.7,
+    "startedBeat": 1.8,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 1
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 1,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 2,
+    "startedBeat": 1,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 6
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1,
+    "startedBeat": 3,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 4
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 0
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 1.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 1.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 2.5,
+    "halfStepsMoved": 8
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 1.5,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 1,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 1.33,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 1.66,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2.33,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2.66,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 3,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 3.33,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 3.66,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.33,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 4.66,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 1,
+    "halfStepsMoved": 7
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 1.33,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.33,
+    "startedBeat": 1.66,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2,
+    "halfStepsMoved": 2
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.33,
+    "startedBeat": 2.33,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.83,
+    "startedBeat": 2.66,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 0.5,
+    "startedBeat": 3.5,
+    "halfStepsMoved": 3
+  },
+  {
+    "chordTone": 0,
+    "noteDuration": 0.5,
+    "startedBeat": 4,
+    "halfStepsMoved": 5
+  },
+  {
+    "chordTone": 1,
+    "noteDuration": 4.5,
+    "startedBeat": 4.5,
+    "halfStepsMoved": 7
+  }
+]
