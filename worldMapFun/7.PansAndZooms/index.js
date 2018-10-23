@@ -53,9 +53,9 @@ svgObj.call(d3.zoom().on('zoom', function(){
 
 let tsvDdata, jsonData;
 
-d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/110m.tsv').then(dataRes => {
+d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv').then(dataRes => {
 	tsvData = dataRes;
-	d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json').then(jsonRes => {
+	d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
 		jsonData = jsonRes;
 		buildChart(tsvData, jsonData);
 	})
