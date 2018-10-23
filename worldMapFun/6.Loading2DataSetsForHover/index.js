@@ -7,10 +7,20 @@ const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
 
-function showCountryName(d){ console.log(d)}
+function showCountryName(d){ 
+	console.log(d)
+}
 
 function buildChart(tsvData, jsonData){
 	const countries = topojson.feature(jsonData, jsonData.objects.countries);
+
+	//a lookup-table of country names to ids
+	//accumulator gets returned by reduce
+	//initial val of accumulator is {} at end of reduce fn
+	const countryName = tsvData.reduce((accumulator, d) => {
+		accumulator[d.iso_n3] = d.name;
+		return accumulator;
+	}, {})
 	
 	//data-join for countries
 	const countryPaths = svgObj.selectAll('path')
@@ -23,8 +33,8 @@ function buildChart(tsvData, jsonData){
 	.attr('class','countryPath')
 
 		//append the title for mouseover 'tooltip'
-		// .append('title')
-		// .text(showCountryName);
+		.append('title')
+		.text(d => countryName[d.id]);
 }
 
 const pathGenerator = d3.geoPath().projection(geoNatural);
