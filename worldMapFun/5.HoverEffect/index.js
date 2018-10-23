@@ -7,6 +7,7 @@ const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
 
+function showCountryName(d){ console.log(d)}
 
 const pathGenerator = d3.geoPath().projection(geoNatural);
 
@@ -26,5 +27,9 @@ d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json').then(data => {
 	countryPaths.enter().append('path')
 	//set d based on country
 	.attr('d', d => pathGenerator(d))
-	.attr('class','countryPath');
+	.attr('class','countryPath')
+
+		//append the title for mouseover 'tooltip'
+		.append('title')
+		.text(showCountryName);
 })
