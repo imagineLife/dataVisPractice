@@ -1,15 +1,24 @@
-const xLabel = 'Year';
-const yLabel = 'Population';
+const vars ={
+	xLabel : 'Year',
+	yLabel : 'Population',
+	xValue : d => d.date,
+	yValue : d => d.close,
+	margin : { 
+		left: 140, 
+		right: 50,
+		top: 50,
+		bottom: 120
+	}
 
-const xValue = d => d.year;
-const yValue = d => d.population;
+}
 
-const margin = { 
-	left: 140, 
-	right: 50,
-	top: 50,
-	bottom: 120
-};
+function appendGElement(parent, trans, cl){
+	return parent.append('g')
+ .attrs({
+   'transform': trans,
+   'class':cl
+ });
+}
 
 //Select/Create div, svg, g
 const chartDiv = document.getElementById('chartDiv');     
@@ -30,8 +39,8 @@ let parentDivWidth = chartDiv.clientWidth;
 let parentDivHeight = chartDiv.clientHeight;
 
 //get css-computed dimensions
-const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
-const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
+const divWidthLessMargins =parentDivWidth - vars.margin.left - vars.margin.right;
+const divHeightLessMargins = parentDivHeight - vars.margin.top - vars.margin.bottom;
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
@@ -41,42 +50,31 @@ svgObj.attrs({
 });
 
 //translate the gWrapper
-gObj.attr('transform', `translate(${margin.left},${margin.top})`);
+gObj.attr('transform', `translate(${vars.margin.left},${vars.margin.top})`);
 
 //Build Axis Groups
-const xAxisG = gObj.append('g')
- .attrs({
-   'transform': `translate(0, ${divHeightLessMargins})`,
-   'class':'axis x'
- });
-
-const yAxisG = gObj.append('g')
-.attrs({
-   'class': 'axis y'
-});
+const xAxisG = appendGElement(gObj, `translate(0, ${divHeightLessMargins})`, 'axis x')
+const yAxisG = appendGElement(gObj, ``, 'axis y')
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
 let yAxisLabel = yAxisG.append('text');
 
-//set attrs for axis labels      
-xAxisLabel
- .attrs({
-   'class': 'axis-label',
-   'x': (divWidthLessMargins / 2),
-   'y': '100'
- })
- .text(xLabel);
+function setAxisLabelAttrs(labelObj, cl, xVal, yVal, trans, txtAnc, txt){
+	return labelObj
+	 .attrs({
+	   'class': cl,
+	   'x': xVal,
+	   'y': yVal,
+	   'transform': trans
+	 })
+	 .style('text-anchor', txtAnc)
+	 .text(txt);
+}
 
-yAxisLabel
- .attrs({
-   'class': 'axis-label',
-   'x' : -divHeightLessMargins / 2,
-   'y' : -margin.left / 1.5,
-   'transform' : `rotate(-90)`
- })
- .style('text-anchor', 'middle')
- .text(yLabel);
+//set attrs for axis labels      
+setAxisLabelAttrs(xAxisLabel, 'axis-label', (divWidthLessMargins / 2), '100', '', '', vars.xLabel)
+setAxisLabelAttrs(yAxisLabel, 'axis-label', (-divHeightLessMargins / 2), (-vars.margin.left / 1.5), `rotate(-90)`, 'middle', vars.yLabel)
 
 //Build Axis elements
 const xAxis = d3.axisBottom()
@@ -134,16 +132,12 @@ let parsedData;
 
        // scale the range of the data
 	   xScale
-	   	.domain(d3.extent(data, function(d) { return d.date; }));
+	   	.domain(d3.extent(data, vars.xValue ))
+	   	.range([0, divWidthLessMargins]);
 	   yScale
-	   	.domain([0, d3.max(data, function(d) { return d.close; })]);
+	   	.domain([0, d3.max(data, vars.yValue )])
+	   	.range([divHeightLessMargins, vars.margin.top]);
        
-       xScale
-         .range([0, divWidthLessMargins]);
-
-       yScale
-         .range([divHeightLessMargins, margin.top])
-         .nice();
 
        line.attr('d', lineObj(data) );
 
@@ -197,12 +191,12 @@ let parsedData;
        });
 
        //calc resized dimensions less margins
-       let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-       let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
+       let resizedWidthLessMargins = resizedFnWidth - vars.margin.left - vars.margin.right;
+       let resizedHeightLessMargins = resizedFnHeight - vars.margin.top - vars.margin.bottom;
 
        //update scale ranges
        xScale.range([0, resizedWidthLessMargins]);
-       yScale.range([resizedHeightLessMargins, margin.top]);
+       yScale.range([resizedHeightLessMargins, vars.margin.top]);
        
        //Update the X-AXIS
        xAxisG
@@ -223,17 +217,17 @@ let parsedData;
        yAxisG
            .attrs({
                'x' : -resizedHeightLessMargins / 2,
-               'y' : -margin.left / 2,
+               'y' : -vars.margin.left / 2,
            })
            .call(yAxis);
 
        //Update yAxis Label
        yAxisLabel.attrs({
            'x' : -resizedHeightLessMargins / 2,
-           'y' : -margin.left / 1.5,
+           'y' : -vars.margin.left / 1.5,
        });
 
-       //update yLines
+       //update gridLines
        d3.selectAll('.yLine')
            .attr('x2', resizedWidthLessMargins);
        
@@ -243,6 +237,7 @@ let parsedData;
 	   //update Line
 	   line.attr("d", lineObj(parsedData));
 
+	   //update beginning of area 
 	   areaObj.y0(resizedHeightLessMargins)
 
 	   //update Area
