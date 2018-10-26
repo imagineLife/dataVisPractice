@@ -113,13 +113,12 @@ function update(data) {
 
   const groupEnterDataJoin = groupDataJoin.enter().append('g');
     groupEnterDataJoin.merge(groupDataJoin)
-    .attr('class', 'groupDataJoin')
 
   groupDataJoin.exit().remove();
 
 
   // pie slice 
-  var singleSliceDataJoin = groupEnterDataJoin.select("path")
+  var singleSliceDataJoin = groupDataJoin.select("path")
 
   // enter
   groupEnterDataJoin.append("path")
@@ -130,6 +129,8 @@ function update(data) {
     .merge(singleSliceDataJoin)
     .transition().duration(1000)
     .attrTween("d", arcTween)
+
+
 
   //LABELS
   let textY = 0;
