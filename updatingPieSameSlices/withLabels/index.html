@@ -34,18 +34,36 @@
 		.labelVal{
 			font-weight: normal
 		}
+
+		label{
+			cursor: pointer;
+		}
+
+		label:hover{
+			text-decoration: underline;
+		}
 	</style>
 	<body>
 		<form>
-		  <label><input class="pieInput" type="radio" id="CentralFallsButton" name="dataset" value="Central Falls" checked> Central Falls</label>
 
-		  <label><input class="pieInput" type="radio" id="PawtucketButton" name="dataset" value="Pawtucket">Pawtucket</label>
+		  <label for="CentralFallsButton"><input class="pieInput" type="radio" id="CentralFallsButton" name="dataset" value="Central Falls" checked> Central Falls</label>
+
+		  <label for="PawtucketButton">
+		  	<input class="pieInput" type="radio" id="PawtucketButton" name="dataset" value="Pawtucket">Pawtucket
+		  </label>
 		  
-		  <label><input class="pieInput" type="radio" id="ProvidenceButton" name="dataset" value="Providence">Providence</label>
+		  <label for="ProvidenceButton">
+		  	<input class="pieInput" type="radio" id="ProvidenceButton" name="dataset" value="Providence">Providence
+		  </label>
 		  
-		  <label><input class="pieInput" type="radio" id="WoonsocketButton" name="dataset" value="Woonsocket">Woonsocket</label>
+		  <label for="WoonsocketButton">
+		  	<input class="pieInput" type="radio" id="WoonsocketButton" name="dataset" value="Woonsocket">Woonsocket
+		  </label>
 		  
-		  <label><input class="pieInput" type="radio" id="WestWarwickButton" name="dataset" value="West Warwick">West Warwick</label>
+		  <label for="WestWarwickButton">
+		  	<input class="pieInput" type="radio" id="WestWarwickButton" name="dataset" value="West Warwick">West Warwick
+		  </label>
+
 		</form>
 		<div id="chartDiv" />
 		<h2>About</h2>
