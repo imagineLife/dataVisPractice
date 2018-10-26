@@ -80,8 +80,14 @@ function placeLabels(data,ind){
   if(ind === 0) return 75
 }
 
+function turnPopToPercentText(num, tot){ return `${Math.round((num/tot) * 100)}%`}
+
 function update(data) {
-  
+  let totalPop;
+  data.forEach(d => {
+    totalPop = (totalPop || 0) +d.popval 
+  })
+
   //prep updated dimensions
   let { updateW, updateH, updateRadius } = getDims(window, s.m)
 
@@ -130,19 +136,14 @@ function update(data) {
       'class': 'boldTextLabel'
     })
     .merge(textDataJoin)
-    .text(d => {
-      console.log('text d')
-      console.log(d)
-      let thisText = `${d.data.keyname}`
-      return thisText
-    })
+    .text(d => d.data.keyname)
     .append('tspan')
     .attrs({
       'class': 'labelVal',
       'x' : (d, i) => ((i * 200) - 145),
       'y' : textY + 20
     })
-    .text(d => d.data.popval)
+    .text(d => turnPopToPercentText(d.data.popval, totalPop))
 
 };
 
