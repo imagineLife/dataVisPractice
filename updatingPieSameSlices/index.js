@@ -101,29 +101,19 @@ function update(data) {
 
 
   // join
-  var singleSlice = pieGWrapper.selectAll(".singleSlice")
-      .data(pieFn(data), (d) => { 
-        // console.log('singleSlice d')
-        // console.log(d)
-        return d.data.keyname});
-
-  // update
-  singleSlice 
-    .transition()
-      .duration(750)
-      .attrTween("d", arcTween);
+  var singleSliceDataJoin = pieGWrapper.selectAll(".singleSlice")
+      .data(pieFn(data), (d) => d.data.keyname);
 
   // enter
-  singleSlice.enter()
+  singleSliceDataJoin.enter()
     .append("path")
     .attrs({
       "class": "singleSlice",
-      "fill": (d, i) => colorScale(i),
-      "d": arcFn
+      "fill": (d, i) => colorScale(i)
     })
-    .each(d => this._current = d)
-    .transition().duration(700);
-
+    .merge(singleSliceDataJoin)
+    .transition().duration(1000)
+    .attrTween("d", arcTween)
 };
 
 //1. Data array
