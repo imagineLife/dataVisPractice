@@ -106,14 +106,23 @@ function update(data) {
       "class": "pieGWrapper"
     });
 
+  //pie slice & label group wrappers
+  const groupDataJoin = pieGWrapper.selectAll('g')
+    .data(pieFn(data), (d) => d.data.keyname)
+    .attr('class', 'groupDataJoin');
 
-  // join
-  var singleSliceDataJoin = pieGWrapper.selectAll(".singleSlice")
-      .data(pieFn(data), (d) => d.data.keyname);
+  const groupEnterDataJoin = groupDataJoin.enter().append('g');
+    groupEnterDataJoin.merge(groupDataJoin)
+    .attr('class', 'groupDataJoin')
+
+  groupDataJoin.exit().remove();
+
+
+  // pie slice 
+  var singleSliceDataJoin = groupEnterDataJoin.select("path")
 
   // enter
-  singleSliceDataJoin.enter()
-    .append("path")
+  groupEnterDataJoin.append("path")
     .attrs({
       "class": "singleSlice",
       "fill": (d, i) => colorScale(i)
@@ -126,7 +135,7 @@ function update(data) {
   let textY = 0;
 
   const textDataJoin = pieGWrapper.selectAll('text')
-    .data(pieFn(data));
+    .data(pieFn(data), (d) => d.data.keyname)
   
   textDataJoin
     .enter().append('text')
