@@ -127,7 +127,7 @@ function update(data) {
       "fill": (d, i) => colorScale(i)
     })
     .merge(singleSliceDataJoin)
-    .transition().duration(1000)
+    .transition().ease(d3.easeElastic).duration(1000)
     .attrTween("d", arcTween)
 
 
@@ -135,13 +135,11 @@ function update(data) {
   //LABELS
   let textY = 0;
 
-  const textDataJoin = pieGWrapper.selectAll('text')
-    .data(pieFn(data), (d) => d.data.keyname)
+  const textDataJoin = groupDataJoin.select('text')
   
-  textDataJoin
-    .enter().append('text')
+  groupEnterDataJoin.append('text')
     .attrs({
-      'x' : (d, i) => ((i * 200) - 145),
+      'x' : (d, i) => (-i * 200) + 75,
       'y' : textY,
       'class': 'boldTextLabel'
     })
@@ -150,11 +148,10 @@ function update(data) {
     .append('tspan')
     .attrs({
       'class': 'labelVal',
-      'x' : (d, i) => ((i * 200) - 145),
+      'x' : (d, i) => (-i * 200) + 75,
       'y' : textY + 20
     })
     .text(d => turnPopToPercentText(d.data.popval, totalPop))
-
 };
 
 //1. Data array
