@@ -177,14 +177,6 @@ function update(data, townName) {
     let exitData = rects.exit();
     let enterData = rects.enter();
 
-//3. exitData
-    rects.exit()
-        // .attr("fill", "darkkhaki")
-    .transition().duration(700)
-        .attr("y", yScale(0))
-        .attr("height", 0)
-        .remove();
-
 //4. ENTER new elements present in new data...enterData
     rects.enter()
         .append("rect")
@@ -197,7 +189,6 @@ function update(data, townName) {
             'class': 'singleRect',
             'id': (d) => d.race
         })
-        .transition().duration(700) 
 
 //5. MERGE AND UPDATE NEW data with
 // already-present elements present in new data.
