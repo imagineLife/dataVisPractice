@@ -8,6 +8,8 @@ const geoNatural = d3.geoNaturalEarth1();
 const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
+const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+const pathGenerator = d3.geoPath().projection(geoNatural);
 
 function showCountryName(d){ 
 	console.log(d)
@@ -15,8 +17,8 @@ function showCountryName(d){
 
 function buildChart(countries){
 
-
-
+	//set colorScale domain
+	colorScale.domain(countries.features.map(d => d.properties.economy))
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
@@ -27,15 +29,13 @@ function buildChart(countries){
 	.attrs({
 		'd': d => pathGenerator(d), //set d based on country
 		'class':'countryPath',
-		'fill':'orange'
+		// 'fill': d => colorScale(d.properties.name) //Rainbow man
+		'fill': d => colorScale(d.properties.economy)
 	})
 	//append the title for mouseover 'tooltip'
 	.append('title')
 	.text(d => d.properties.name);
 }
-
-const pathGenerator = d3.geoPath().projection(geoNatural);
-
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')
 
@@ -51,7 +51,5 @@ svgObj.call(d3.zoom().on('zoom', function(){
 
 
 loadAndProcessData().then(countries => {
-	console.log('IN load & Process!!')
 	buildChart(countries)
-
 })
