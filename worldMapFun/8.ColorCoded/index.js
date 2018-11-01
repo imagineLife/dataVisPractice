@@ -13,23 +13,10 @@ function showCountryName(d){
 	console.log(d)
 }
 
-function buildChart(tsvData, jsonData){
+function buildChart(countries){
 
 
-	//get row-by-ID function
-	//updates this method, makes less specific to name
-	const rowById = tsvData.reduce((accumulator, d) => {
-		accumulator[d.iso_n3] = d;
-		return accumulator;
-	}, {})
 
-
-	//define countries from json Data
-	const countries = topojson.feature(jsonData, jsonData.objects.countries);
-
-	countries.features.forEach(d => {
-		Object.assign(d.properties, rowById[d.id])
-	})
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
@@ -68,14 +55,31 @@ function loadAndProcessData(){
 			let tsvData = dataRes;
 			return d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
 				let jsonData = jsonRes;
-				res({tsvData: tsvData, jsonData: jsonRes});
+
+
+				//get row-by-ID function
+				//updates this method, makes less specific to name
+				const rowById = tsvData.reduce((accumulator, d) => {
+					accumulator[d.iso_n3] = d;
+					return accumulator;
+				}, {})
+
+
+				//define countries from json Data
+				const countries = topojson.feature(jsonData, jsonData.objects.countries);
+
+				countries.features.forEach(d => {
+					Object.assign(d.properties, rowById[d.id])
+				})
+
+				res(countries);
 			})
 		});
 	})
 }
 
-loadAndProcessData().then(d => {
+loadAndProcessData().then(countries => {
 	console.log('IN load & Process!!')
-	buildChart(d.tsvData,d.jsonData)
+	buildChart(countries)
 
 })
