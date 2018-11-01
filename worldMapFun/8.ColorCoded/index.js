@@ -11,14 +11,13 @@ const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 const pathGenerator = d3.geoPath().projection(geoNatural);
 
-function showCountryName(d){ 
-	console.log(d)
-}
-
 function buildChart(countries){
 
+	//
+	const colorVal = d => colorScale(d.properties.economy);
+
 	//set colorScale domain
-	colorScale.domain(countries.features.map(d => d.properties.economy))
+	colorScale.domain(countries.features.map(colorVal))
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
@@ -29,8 +28,8 @@ function buildChart(countries){
 	.attrs({
 		'd': d => pathGenerator(d), //set d based on country
 		'class':'countryPath',
-		// 'fill': d => colorScale(d.properties.name) //Rainbow man
-		'fill': d => colorScale(d.properties.economy)
+		// 'fill': d => colorScale(d.properties.name) //Rainbow
+		'fill': d => colorScale(colorVal(d))
 	})
 	//append the title for mouseover 'tooltip'
 	.append('title')
