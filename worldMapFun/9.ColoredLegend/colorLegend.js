@@ -1,4 +1,4 @@
-const buildColorLegend = (selection, props) => {
+const buildColorLegend = (parent, props) => {
   const {                      
     colorScale,                
     circleRadius,
@@ -7,21 +7,23 @@ const buildColorLegend = (selection, props) => {
     backgroundRectWidth        
   } = props;                   
   
-  const backgroundRect = selection.selectAll('rect')
+  const backgroundRect = parent.selectAll('rect')
     .data([null]);             
   const n = colorScale.domain().length; 
   backgroundRect.enter().append('rect')
     .merge(backgroundRect)
-      .attr('x', -circleRadius * 2)   
-      .attr('y', -circleRadius * 2)   
-      .attr('rx', circleRadius * 2)   
-      .attr('width', backgroundRectWidth)
-      .attr('height', spacing * n + circleRadius * 2) 
-      .attr('fill', 'white')
-      .attr('opacity', 0.8);
+      .attrs({
+        'x': -circleRadius * 2,
+        'y': -circleRadius * 2, 
+        'rx': circleRadius * 2,   
+        'width': backgroundRectWidth,
+        'height': spacing * n + circleRadius * 2, 
+        'fill': 'white',
+        'opacity': 0.8
+      });
   
 
-  const groups = selection.selectAll('.tick')
+  const groups = parent.selectAll('.tick')
     .data(colorScale.domain());
   const groupsEnter = groups
     .enter().append('g')

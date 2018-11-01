@@ -13,7 +13,7 @@ function buildChart(countries){
 		colorScale,
 		circleRadius: 10,
 		spacing: 25,
-		textOffset: 40
+		textOffset: 15
 	});
 	
 	//data-join for countries to paths
@@ -53,6 +53,18 @@ const colorVal = d => colorScale(d.properties.economy);
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')
 
+
+let colorLegendBox = svgObj.append('rect')
+	.attrs({
+		'class': 'legendBox',
+		'x': 5,
+		'y': 300,
+		'width': 264,
+		'height': '195',
+		'fill' : 'rgba(255,255,255,.8)',
+		'rx': 25,
+		'ry': 25
+	})
 
 //color legend g wrapper
 let colorLegendG = svgObj.append('g').attrs({
