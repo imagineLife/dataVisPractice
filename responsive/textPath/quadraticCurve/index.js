@@ -3,7 +3,7 @@
   var svgObj = d3.select(chartDiv).append("svg");
   var path = svgObj.append('path')
   var txtElement = svgObj.append('text')
-  var txtPath = txtElement.append("textPath")
+  var txtPath = txtElement.append("textPath").attr('class','txtPath')
 
 
 function drawPathAndText(divID, txt){
@@ -11,19 +11,22 @@ function drawPathAndText(divID, txt){
           var width = chartDiv.clientWidth,
               height = chartDiv.clientHeight;
 
-          let lineB = width * .1
-          let lineE = width * .9
+          //x-position of beginning & end
+          let lineB = width * .05
+          let lineE = width * .95
 
-          let midH = height * .5
-          let qH = height * .15
-          let tqH = height
+          //heights, close to top, close to bottom
+          let qH = height * .1
+          let tqH = height * .75
           
-          let qW = width * .25
-          let tqW = width * .75
+          //mid-width
           let midW = width / 2
+          let midH = height / 2
 
-              console.log('width')
-              console.log(width)
+          let twoW = width * .2
+          let fourW = width * .4
+          let sixW = width * .6
+          let eightW = width * .8
 
       svgObj.attrs({
         "width": width,
@@ -33,7 +36,10 @@ function drawPathAndText(divID, txt){
   //Create an SVG path (based on bl.ocks.org/mbostock/2565344)
     path.attrs({
       "id": "wavy", //Unique id of the path
-      "d": `M${lineB} ${qH} C ${midW} ${tqH}, ${midW} ${tqH}, ${lineE} ${qH}` //SVG path
+          //M is beginning point, x,y
+      "d": `M${lineB} ${tqH} 
+            Q ${midW} ${qH} ${lineE} ${tqH}` 
+            //Q is the x,y of the reference point followed by x,y of the end point
     }) 
     .style("fill", "none")
     .style("stroke", "#AAAAAA");
