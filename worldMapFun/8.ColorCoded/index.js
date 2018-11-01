@@ -40,7 +40,7 @@ function buildChart(countries){
 		'd': d => pathGenerator(d), //set d based on country
 		'class':'countryPath',
 		// 'fill': d => colorScale(d.properties.name) //Rainbow
-		'fill': d => colorScale(d.properties.economy)
+		'fill': d => colorScale(colorVal(d))
 	})
 	//append the title for mouseover 'tooltip'
 	.append('title')
