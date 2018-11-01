@@ -26,7 +26,13 @@ function buildChart(countries){
 		'd': d => pathGenerator(d), //set d based on country
 		'class':'countryPath',
 		// 'fill': d => colorScale(d.properties.name) //Rainbow
-		'fill': d => colorScale(colorVal(d))
+		'fill': d => {
+			console.log('fill colorVal(d)')
+			console.log(colorScale(d.properties.economy))
+			console.log('d.properties.economy')
+			console.log(d.properties.economy)
+			return colorScale(colorVal(d))
+		}
 	})
 	//append the title for mouseover 'tooltip'
 	.append('title')
@@ -49,7 +55,7 @@ const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
 
-const colorVal = d => colorScale(d.properties.economy);
+const colorVal = d => d.properties.economy;
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')
 

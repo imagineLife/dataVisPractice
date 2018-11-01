@@ -24,7 +24,7 @@ const buildColorLegend = (parent, props) => {
   
 
   const groups = parent.selectAll('.tick')
-    .data(colorScale.domain());
+    .data(colorScale.domain().sort());
   const groupsEnter = groups
     .enter().append('g')
       .attr('class', 'tick');

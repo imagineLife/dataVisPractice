@@ -11,18 +11,24 @@ const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
 
-const colorVal = d => colorScale(d.properties.economy);
+const colorVal = d => d.properties.economy;
 
 function buildChart(countries){
 
-	let mappedColors = countries.features.map(d => {
+	let mappedEconomies = countries.features.map(d => {
 		return d.properties.economy
 	})
 
+	console.log('mappedEconomies')
+	console.log(mappedEconomies)
+
 	colorScale
-		.domain(mappedColors)
+		.domain(mappedEconomies)
 		.domain(colorScale.domain().sort().reverse())
 		.range(d3.schemeSpectral[7])
+
+	console.log(colorScale.domain())
+	console.log(colorScale.range())
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
@@ -34,11 +40,11 @@ function buildChart(countries){
 		'd': d => pathGenerator(d), //set d based on country
 		'class':'countryPath',
 		// 'fill': d => colorScale(d.properties.name) //Rainbow
-		'fill': d => colorScale(colorVal(d))
+		'fill': d => colorScale(d.properties.economy)
 	})
 	//append the title for mouseover 'tooltip'
 	.append('title')
-	.text(d => d.properties.name);
+	.text(d => `${d.properties.name}: ${d.properties.economy}`);
 }
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')
