@@ -48,35 +48,7 @@ svgObj.call(d3.zoom().on('zoom', function(){
 	gObj.attr("transform", d3.event.transform);
 }));
 
-function loadAndProcessData(){
 
-	return new Promise((res, rej) => {
-		return d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv').then(dataRes => {
-			let tsvData = dataRes;
-			return d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
-				let jsonData = jsonRes;
-
-
-				//get row-by-ID function
-				//updates this method, makes less specific to name
-				const rowById = tsvData.reduce((accumulator, d) => {
-					accumulator[d.iso_n3] = d;
-					return accumulator;
-				}, {})
-
-
-				//define countries from json Data
-				const countries = topojson.feature(jsonData, jsonData.objects.countries);
-
-				countries.features.forEach(d => {
-					Object.assign(d.properties, rowById[d.id])
-				})
-
-				res(countries);
-			})
-		});
-	})
-}
 
 loadAndProcessData().then(countries => {
 	console.log('IN load & Process!!')
