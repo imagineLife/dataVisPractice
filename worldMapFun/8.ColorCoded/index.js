@@ -61,12 +61,25 @@ svgObj.call(d3.zoom().on('zoom', function(){
 	gObj.attr("transform", d3.event.transform);
 }));
 
-let tsvDdata, jsonData;
+let tsvData, jsonData;
 
-d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv').then(dataRes => {
-	tsvData = dataRes;
-	d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
-		jsonData = jsonRes;
-		buildChart(tsvData, jsonData);
+function loadAndProcessData(){
+	return new Promise((res, rej) => {
+		console.log('in promise')
+		return d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv').then(dataRes => {
+			tsvData = dataRes;
+			return d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
+				jsonData = jsonRes;
+				// buildChart(tsvData, jsonData);
+				console.log('done w promise')
+				res({tsvData: tsvData, jsonData: jsonRes});
+			})
+		});
 	})
-});
+}
+
+loadAndProcessData().then(d => {
+	console.log('IN load & Process!!')
+	buildChart(tsvData,jsonData)
+
+})
