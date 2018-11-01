@@ -8,16 +8,21 @@ const geoNatural = d3.geoNaturalEarth1();
 const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
-const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
+
+const colorVal = d => colorScale(d.properties.economy);
 
 function buildChart(countries){
 
-	//
-	const colorVal = d => colorScale(d.properties.economy);
+	let mappedColors = countries.features.map(d => {
+		return d.properties.economy
+	})
 
-	//set colorScale domain
-	colorScale.domain(countries.features.map(colorVal))
+	colorScale
+		.domain(mappedColors)
+		.domain(colorScale.domain().sort().reverse())
+		.range(d3.schemeSpectral[7])
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
@@ -48,7 +53,7 @@ svgObj.call(d3.zoom().on('zoom', function(){
 }));
 
 
-
+//run the project
 loadAndProcessData().then(countries => {
 	buildChart(countries)
 })
