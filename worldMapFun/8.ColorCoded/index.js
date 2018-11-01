@@ -23,7 +23,7 @@ function buildChart(tsvData, jsonData){
 		return accumulator;
 	}, {})
 
-		
+
 	//define countries from json Data
 	const countries = topojson.feature(jsonData, jsonData.objects.countries);
 
@@ -39,12 +39,12 @@ function buildChart(tsvData, jsonData){
 	countryPaths.enter().append('path')
 	.attrs({
 		'd': d => pathGenerator(d), //set d based on country
-		'class':'countryPath'
+		'class':'countryPath',
+		'fill':'orange'
 	})
-
-		//append the title for mouseover 'tooltip'
-		.append('title')
-		.text(d => d.properties.name);
+	//append the title for mouseover 'tooltip'
+	.append('title')
+	.text(d => d.properties.name);
 }
 
 const pathGenerator = d3.geoPath().projection(geoNatural);
