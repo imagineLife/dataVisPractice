@@ -1,6 +1,6 @@
-function buildChart(countries){
+function buildChart(){
 
-	let mappedColors = countries.features.map(d => {
+	let mappedColors = stateCountryFeats.map(d => {
 		return d.properties.economy
 	})
 
@@ -19,7 +19,7 @@ function buildChart(countries){
 	
 	//data-join for countries to paths
 	const countryPaths = gObj.selectAll('path')
-		.data(countries.features);
+		.data(stateCountryFeats);
 
 	//append a path for each country
 	countryPaths.enter().append('path')
@@ -50,6 +50,7 @@ const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
 const colorVal = d => d.properties.economy;
 let selectedLegendVal;
+let stateCountryFeats;
 const selectedLegend = (d) => {
 	selectedLegendVal = d;
 	console.log({selectedLegendVal})
@@ -90,5 +91,6 @@ svgObj.call(d3.zoom().on('zoom', function(){
 
 //run the project
 loadAndProcessData().then(countries => {
-	buildChart(countries)
+	stateCountryFeats = countries.features;
+	buildChart()
 })
