@@ -14,7 +14,8 @@ function buildChart(){
 		circleRadius: 10,
 		spacing: 25,
 		textOffset: 15,
-		selectedLegend
+		selectedLegendVal,
+
 	});
 	
 	//data-join for countries to paths
