@@ -21,7 +21,8 @@ function buildChart(){
 	mapG.call(buildMap, {
 		stateCountryFeats,
 		colorScale,
-		colorVal	
+		colorVal,
+		selectedLegendVal	
 	})
 	
 
