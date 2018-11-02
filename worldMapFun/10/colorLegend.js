@@ -43,7 +43,9 @@ const buildColorLegend = (parent, props) => {
         }
 
       })
-      .on('click', (d) => selectedLegend(d));
+      .on('click', (d) => selectedLegend(
+        d === selectedLegendVal ? null : d
+      ));
 
   groups.exit().remove();
   
