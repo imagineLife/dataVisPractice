@@ -1,0 +1,16 @@
+HERE...
+- make legend clickable
+	- 'highlight' the selected legend value
+
+
+
+- Implement unidirectional dataflow
+	OVERVIEW
+	
+
+
+- make the selected legend corresponding countries 'highlighted'
+
+
+
+- move the choropleth map to its own function
