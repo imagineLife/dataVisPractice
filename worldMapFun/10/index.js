@@ -1,5 +1,14 @@
 function buildChart(){
 
+	//new path
+	gObj.append('path')
+		.attr('d', pathGenerator({type: 'Sphere'}))
+		.attr('class', 'globeSpherePath');
+
+	svgObj.call(d3.zoom().on('zoom', function(){
+		gObj.attr("transform", d3.event.transform);
+	}));
+
 	let mappedColors = stateCountryFeats.map(d => {
 		return d.properties.economy
 	})
@@ -77,17 +86,6 @@ let colorLegendG = svgObj.append('g').attrs({
 	'class': 'colorLegendG',
 	'transform': 'translate(25,325)'
 	});
-
-
-//new path
-gObj.append('path')
-	.attr('d', pathGenerator({type: 'Sphere'}))
-	.attr('class', 'globeSpherePath');
-
-svgObj.call(d3.zoom().on('zoom', function(){
-	gObj.attr("transform", d3.event.transform);
-}));
-
 
 
 //run the project
