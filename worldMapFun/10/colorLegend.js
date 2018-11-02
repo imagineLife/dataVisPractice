@@ -5,7 +5,8 @@ const buildColorLegend = (parent, props) => {
     spacing,                   
     textOffset,
     backgroundRectWidth,
-    selectedLegend       
+    selectedLegend,
+    selectedLegendVal       
   } = props;                   
   
   const backgroundRect = parent.selectAll('rect')
@@ -33,9 +34,15 @@ const buildColorLegend = (parent, props) => {
   
   groupsEnter
     .merge(groups)
-      .attr('transform', (d, i) =>    
-        `translate(0, ${i * spacing})`  
-      )
+      .attrs({
+        'transform': (d, i) => `translate(0, ${i * spacing})`, 
+        'opacity' : d => {
+          return (!selectedLegendVal || d === selectedLegendVal) 
+            ? 1 
+            : .25
+        }
+
+      })
       .on('click', (d) => selectedLegend(d));
 
   groups.exit().remove();

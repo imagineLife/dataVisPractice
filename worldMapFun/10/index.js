@@ -14,8 +14,8 @@ function buildChart(){
 		circleRadius: 10,
 		spacing: 25,
 		textOffset: 15,
+		selectedLegend,
 		selectedLegendVal,
-
 	});
 	
 	//data-join for countries to paths
@@ -54,7 +54,7 @@ let selectedLegendVal;
 let stateCountryFeats;
 const selectedLegend = (d) => {
 	selectedLegendVal = d;
-	console.log({selectedLegendVal})
+	buildChart()
 }
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')

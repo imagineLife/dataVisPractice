@@ -20,10 +20,12 @@ HERE...
 		- pass the onCLick selectLegend fn
 	- Set a 'stateful' countries value, which hold the result of the fetched data
 		- USE this stateful coutriesfeatures value in the buildChart function
-		
+
 
 - make the selected legend corresponding countries 'highlighted'
-
+	- update rendering to 'fade-out' non-selected values
+		- pass selectedCategory into props of call legend method
+		- make default opacity .25, selected opacity 1
 
 - move the choropleth map to its own function
 	
