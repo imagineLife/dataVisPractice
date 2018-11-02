@@ -3,14 +3,25 @@ HERE...
 	- 'highlight' the selected legend value
 
 
-
 - Implement unidirectional dataflow
 	OVERVIEW
-	
+	- create a 'stateful' value called 'selectedCategory'
+		stores the selected legend val
+	- create a 'stateful' value called 'selectLegend'
+		gets passed to map-drawing logic
+		SETS the other 'selectedCategory' val
+	- onClick
+		- set the state 'selectedCategory' val
+		- re-draw the map, with newly update 'selectedCategory' value
+	-Update the map rendering fn
+		- pass the onCLick selectLegend fn
+
+
+	0. make selectLegend fn in 'parent' scope of index.js
+	1. in index.js pass onClick selectLegend to the colorLegend.call params
 
 
 - make the selected legend corresponding countries 'highlighted'
-
 
 
 - move the choropleth map to its own function

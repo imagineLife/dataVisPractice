@@ -4,7 +4,8 @@ const buildColorLegend = (parent, props) => {
     circleRadius,
     spacing,                   
     textOffset,
-    backgroundRectWidth        
+    backgroundRectWidth,
+    selectedLegend       
   } = props;                   
   
   const backgroundRect = parent.selectAll('rect')
@@ -35,9 +36,8 @@ const buildColorLegend = (parent, props) => {
       .attr('transform', (d, i) =>    
         `translate(0, ${i * spacing})`  
       )
-      .on('click', () => {
-        console.log('clicked!')
-      });
+      .on('click', (d) => selectedLegend(d));
+
   groups.exit().remove();
   
   groupsEnter.append('circle')

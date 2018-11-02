@@ -13,7 +13,8 @@ function buildChart(countries){
 		colorScale,
 		circleRadius: 10,
 		spacing: 25,
-		textOffset: 15
+		textOffset: 15,
+		selectedLegend
 	});
 	
 	//data-join for countries to paths
@@ -48,8 +49,11 @@ const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
-
 const colorVal = d => d.properties.economy;
+const selectedLegend = (d) => {
+	console.log('selectLegend')
+	console.log(d)
+}
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')
 
