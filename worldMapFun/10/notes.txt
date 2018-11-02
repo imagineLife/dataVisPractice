@@ -1,3 +1,6 @@
+11:30ish
+https://youtu.be/E9PhCimWSVQ?t=711
+
 HERE...
 - make legend clickable
 	- 'highlight' the selected legend value
@@ -13,8 +16,20 @@ HERE...
 	- onClick
 		- set the state 'selectedCategory' val
 		- re-draw the map, with newly update 'selectedCategory' value
-	-Update the map rendering fn
+	- Update the map rendering fn
 		- pass the onCLick selectLegend fn
+	- Set a 'stateful' countries value, which hold the result of the fetched data
+		- USE this stateful coutriesfeatures value in the buildChart function
+		
+
+- make the selected legend corresponding countries 'highlighted'
+
+
+- move the choropleth map to its own function
+	
+	create a render function that renders the colorLegend AND a choroPlethMap fn
+
+
 
 
 	onClick selectLegend stateful function dev
@@ -27,10 +42,3 @@ HERE...
 	1. in index.js make selectedLegendVal
 	2. onClick in parent scope set selectedLegendVal to d
 		for dev output as console.log({selkectedLegendVal})
-	3. 
-
-
-- make the selected legend corresponding countries 'highlighted'
-
-
-- move the choropleth map to its own function
