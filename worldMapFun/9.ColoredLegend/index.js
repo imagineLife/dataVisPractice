@@ -53,7 +53,7 @@ const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
 const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal();
-const pathGenerator = d3.geoPath().projection(geoNatural);
+const pathGenerator = d3.geoPath().projection(geoOrth);
 
 const colorVal = d => d.properties.economy;
 
