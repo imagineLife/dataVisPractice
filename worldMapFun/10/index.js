@@ -42,7 +42,6 @@ const svgObj = d3.select('.svgWrapper');
 //swap these in the .projection-passer in pathGenerator
 //checkout d3-map-projection for EVEN MORE projections
 const geoNatural = d3.geoNaturalEarth1();
-
 //this one is the globe!
 const geoOrth = d3.geoOrthographic();
 const geoStereo = d3.geoStereographic();
@@ -50,9 +49,10 @@ const geoEquiRect = d3.geoEquirectangular();
 const colorScale = d3.scaleOrdinal();
 const pathGenerator = d3.geoPath().projection(geoNatural);
 const colorVal = d => d.properties.economy;
+let selectedLegendVal;
 const selectedLegend = (d) => {
-	console.log('selectLegend')
-	console.log(d)
+	selectedLegendVal = d;
+	console.log({selectedLegendVal})
 }
 
 let gObj = svgObj.append('g').attr('pointer-events', 'all')

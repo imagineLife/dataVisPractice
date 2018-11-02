@@ -17,8 +17,17 @@ HERE...
 		- pass the onCLick selectLegend fn
 
 
-	0. make selectLegend fn in 'parent' scope of index.js
-	1. in index.js pass onClick selectLegend to the colorLegend.call params
+	onClick selectLegend stateful function dev
+	1. make selectLegend fn in 'parent' scope of index.js
+	2. in index.js pass onClick selectLegend to the colorLegend.call params
+	3. in colorLegend.js add selectLegend to props destructured vals
+	4. in colorLegend.js call the selectLegend fn on the .on('click') method
+
+	stateful selectedLegendVal
+	1. in index.js make selectedLegendVal
+	2. onClick in parent scope set selectedLegendVal to d
+		for dev output as console.log({selkectedLegendVal})
+	3. 
 
 
 - make the selected legend corresponding countries 'highlighted'
