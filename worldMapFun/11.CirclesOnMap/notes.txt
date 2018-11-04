@@ -1,0 +1,46 @@
+11:30ish
+https://youtu.be/E9PhCimWSVQ?t=711
+
+HERE...
+- make legend clickable
+	- 'highlight' the selected legend value
+
+
+- Implement unidirectional dataflow
+	OVERVIEW
+	- create a 'stateful' value called 'selectedCategory'
+		stores the selected legend val
+	- create a 'stateful' value called 'selectLegend'
+		gets passed to map-drawing logic
+		SETS the other 'selectedCategory' val
+	- onClick
+		- set the state 'selectedCategory' val
+		- re-draw the map, with newly update 'selectedCategory' value
+	- Update the map rendering fn
+		- pass the onCLick selectLegend fn
+	- Set a 'stateful' countries value, which hold the result of the fetched data
+		- USE this stateful coutriesfeatures value in the buildChart function
+
+
+- make the selected legend corresponding countries 'highlighted'
+	- update rendering to 'fade-out' non-selected values
+		- pass selectedCategory into props of call legend method
+		- make default opacity .25, selected opacity 1
+
+- move the choropleth map to its own function
+	
+	create a render function that renders the colorLegend AND a choroPlethMap fn
+
+
+
+
+	onClick selectLegend stateful function dev
+	1. make selectLegend fn in 'parent' scope of index.js
+	2. in index.js pass onClick selectLegend to the colorLegend.call params
+	3. in colorLegend.js add selectLegend to props destructured vals
+	4. in colorLegend.js call the selectLegend fn on the .on('click') method
+
+	stateful selectedLegendVal
+	1. in index.js make selectedLegendVal
+	2. onClick in parent scope set selectedLegendVal to d
+		for dev output as console.log({selkectedLegendVal})
