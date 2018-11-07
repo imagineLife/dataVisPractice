@@ -56,7 +56,11 @@ const buildMap = (parent, props) => {
 		.attrs({
 			'class':'dataCircle',
 			'cx': d => geoNatural(d3.geoCentroid(d))[0],
-			'cy': d => geoNatural(d3.geoCentroid(d))[1]
+			'cy': d => geoNatural(d3.geoCentroid(d))[1],
+			'r': 10,
+			'fill': 'limegreen',
+			'opacity': .5
+
 		})
 
 
