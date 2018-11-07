@@ -27,10 +27,17 @@ function loadAndProcessData(){
 				const countries = topojson.feature(jsonData, jsonData.objects.countries);
 
 				countries.features.forEach(d => {
-					Object.assign(d.properties, getRowById[+d.id])
+					Object.assign(d.properties, getRowById[+d.id]);
 				})
 
-				res(countries);
+				const countryFeatsWPop = countries.features
+					.filter(d => d.properties['2018'])
+					.map(d => d.properties['2018'] = +d.properties['2018'].replace(/ /g, ''))
+				const resObj = {
+					features: countries.features,
+					countryFeatsWPop
+				}
+				res(resObj);
 			})
 		});
 	})
