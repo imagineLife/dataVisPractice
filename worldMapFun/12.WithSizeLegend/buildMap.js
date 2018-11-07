@@ -13,6 +13,19 @@ const buildMap = (parent, props) => {
 		.domain([0, d3.max(stateCountryFeats, radiusValue)])
 		.range([0,40]);
 
+	//legend
+	parent.append('g')
+		.attrs({
+			'transform' :'translate(600,100)',
+			'class':'legendWrapper'
+		})
+		.call(sizeLegend, {
+			radiusScale,
+			spacing: 80,
+			textOffset: 10,
+			numTicks: 5,
+			circleFill: 'rgba(0,0,0,.5)'
+		})
 	//new path
 	//appends on FIRST invocation of map fn, NOT on subsequent updates
 	thisGEnter.append('path')
