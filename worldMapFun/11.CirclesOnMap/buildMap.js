@@ -5,14 +5,16 @@ const buildMap = (parent, props) => {
 
 	const {
 		stateCountryFeats,
-		colorScale,
-		colorVal,
 		selectedLegendVal
 	} = props;
 
 	const thisGSelection = parent.selectAll('g').data([null]);
 	const thisGEnter = thisGSelection.enter().append('g');
 	const thisGMerged = thisGSelection.merge(thisGEnter)
+	const radiusValue = d => d.properties["2018"]
+	const radiusScale = d3.scaleSqrt()
+		.domain([0, d3.max(stateCountryFeats, radiusValue)])
+		.range([0,20]);
 
 	//new path
 	//appends on FIRST invocation of map fn, NOT on subsequent updates
@@ -57,7 +59,7 @@ const buildMap = (parent, props) => {
 			'class':'dataCircle',
 			'cx': d => geoNatural(d3.geoCentroid(d))[0],
 			'cy': d => geoNatural(d3.geoCentroid(d))[1],
-			'r': 10,
+			'r': d => radiusScale(d.properties["2018"]),
 			'fill': 'limegreen',
 			'opacity': .5
 
