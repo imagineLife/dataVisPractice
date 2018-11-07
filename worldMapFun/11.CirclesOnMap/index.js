@@ -23,8 +23,6 @@ let mapG = svgObj.append('g').attr('pointer-events', 'all')
 
 //run the project
 loadAndProcessData().then(countries => {
-	console.log('loaded res')
-	console.log(countries)
 	stateCountryFeats = countries.features;
 	countryFeatsWPop = countries.countryFeatsWPop;
 	buildChart()
