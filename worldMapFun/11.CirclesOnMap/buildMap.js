@@ -47,4 +47,16 @@ const buildMap = (parent, props) => {
 	countryPathsEnter.append('title')
 		.text(d => `${d.properties.name}: ${d.properties.economy}`);
 
+
+	//data-join for CIRCLES
+	const circlesDataJoin = thisGMerged.selectAll('.dataCircle').data(stateCountryFeats);
+
+	//append a path for each country
+	let circleDataEnter = circlesDataJoin.enter().append('circle')
+		.attrs({
+			'class':'dataCircle',
+			'cx': d => console.log(d3.geoCentroid(d))
+		})
+
+
 }
