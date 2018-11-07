@@ -39,7 +39,7 @@ const buildMap = (parent, props) => {
 				return (!selectedLegendVal ||  selectedLegendVal === colorVal(d)) ? 1 : 0.25;
 	        },
 			'd': d => pathGenerator(d), //set d based on country;
-			'fill': d => colorScale(colorVal(d))
+			'fill': d => d.properties["2018"] ? 'green' : 'red'
 		})
 		.classed('highlightedCountryPath', d => (selectedLegendVal && colorVal(d)))
 	
