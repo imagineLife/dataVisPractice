@@ -5,11 +5,9 @@ function loadAndProcessData(){
 		//load tsv data, assign to var
 		return d3.csv('./data.csv').then(dataRes => {
 			let csvData = dataRes;
-			console.log('loaded csv data')
-			console.log(csvData)
 
 			//load json data, assign to var
-			return d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
+			return d3.json('https://unpkg.com/visionscarto-world-atlas@0.0.4/world/50m.json').then(jsonRes => {
 				let jsonData = jsonRes;
 
 				/*
@@ -29,7 +27,7 @@ function loadAndProcessData(){
 				const countries = topojson.feature(jsonData, jsonData.objects.countries);
 
 				countries.features.forEach(d => {
-					Object.assign(d.properties, getRowById[d.id])
+					Object.assign(d.properties, getRowById[+d.id])
 				})
 
 				res(countries);
