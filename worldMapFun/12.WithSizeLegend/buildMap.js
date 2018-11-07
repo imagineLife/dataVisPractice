@@ -9,6 +9,7 @@ const buildMap = (parent, props) => {
 	const thisGEnter = thisGSelection.enter().append('g');
 	const thisGMerged = thisGSelection.merge(thisGEnter)
 	const radiusValue = d => d.properties["2018"]
+	const popFormat = d3.format(',');
 	const radiusScale = d3.scaleSqrt()
 		.domain([0, d3.max(stateCountryFeats, radiusValue)])
 		.range([0,40]);
@@ -21,9 +22,10 @@ const buildMap = (parent, props) => {
 		})
 		.call(sizeLegend, {
 			radiusScale,
-			spacing: 80,
+			spacing: 45,
 			textOffset: 10,
 			numTicks: 5,
+			tickFormat: popFormat,
 			circleFill: 'rgba(0,0,0,.5)'
 		})
 	//new path
