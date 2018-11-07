@@ -3,10 +3,7 @@ const pathGenerator = d3.geoPath().projection(geoNatural);
 
 const buildMap = (parent, props) => {
 
-	const {
-		stateCountryFeats,
-		selectedLegendVal
-	} = props;
+	const { stateCountryFeats, countryFeatsWPop } = props;
 
 	const thisGSelection = parent.selectAll('g').data([null]);
 	const thisGEnter = thisGSelection.enter().append('g');
@@ -14,7 +11,7 @@ const buildMap = (parent, props) => {
 	const radiusValue = d => d.properties["2018"]
 	const radiusScale = d3.scaleSqrt()
 		.domain([0, d3.max(stateCountryFeats, radiusValue)])
-		.range([0,20]);
+		.range([0,40]);
 
 	//new path
 	//appends on FIRST invocation of map fn, NOT on subsequent updates
@@ -51,14 +48,20 @@ const buildMap = (parent, props) => {
 
 
 	//data-join for CIRCLES
-	const circlesDataJoin = thisGMerged.selectAll('.dataCircle').data(stateCountryFeats);
+	const circlesDataJoin = thisGMerged.selectAll('.dataCircle').data(countryFeatsWPop);
+
+	//add key/value to data
+	//for use in cx & cy position of circles
+	countryFeatsWPop.forEach(d => {
+		d.properties.projected = geoNatural(d3.geoCentroid(d));
+	})
 
 	//append a path for each country
 	let circleDataEnter = circlesDataJoin.enter().append('circle')
 		.attrs({
 			'class':'dataCircle',
-			'cx': d => geoNatural(d3.geoCentroid(d))[0],
-			'cy': d => geoNatural(d3.geoCentroid(d))[1],
+			'cx': d => d.properties.projected[0],
+			'cy': d => d.properties.projected[1],
 			'r': d => radiusScale(d.properties["2018"]),
 			'fill': 'limegreen',
 			'opacity': .5
