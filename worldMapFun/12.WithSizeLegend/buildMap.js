@@ -6,28 +6,14 @@ const buildMap = (parent, props) => {
 	const { stateCountryFeats, countryFeatsWPop } = props;
 
 	const thisGSelection = parent.selectAll('g').data([null]);
-	const thisGEnter = thisGSelection.enter().append('g');
+	const thisGEnter = thisGSelection.enter().append('g').attr('class','thisGEnter');
 	const thisGMerged = thisGSelection.merge(thisGEnter)
 	const radiusValue = d => d.properties["2018"]
 	const popFormat = d3.format(',');
 	const radiusScale = d3.scaleSqrt()
 		.domain([0, d3.max(stateCountryFeats, radiusValue)])
-		.range([0,40]);
+		.range([0,25]);
 
-	//legend
-	parent.append('g')
-		.attrs({
-			'transform' :'translate(600,100)',
-			'class':'legendWrapper'
-		})
-		.call(sizeLegend, {
-			radiusScale,
-			spacing: 45,
-			textOffset: 10,
-			numTicks: 5,
-			tickFormat: popFormat,
-			circleFill: 'rgba(0,0,0,.5)'
-		})
 	//new path
 	//appends on FIRST invocation of map fn, NOT on subsequent updates
 	thisGEnter.append('path')
@@ -56,6 +42,15 @@ const buildMap = (parent, props) => {
 			'fill': d => d.properties["2018"] ? 'green' : 'red'
 		})
 		.classed('highlightedCountryPath', d => (selectedLegendVal && colorVal(d)))
+		.append('title')
+	      .text(d => 
+	        isNaN(radiusValue(d))
+	          ? 'Missing data'
+	          : [
+	            d.properties['Region, subregion, country or area *'],
+	            popFormat(radiusValue(d))
+	          ].join(': ')
+	      );
 	
 	//append the title for mouseover 'tooltip'
 	countryPathsEnter.append('title')
@@ -81,6 +76,22 @@ const buildMap = (parent, props) => {
 			'fill': 'limegreen',
 			'opacity': .5
 
+		})
+
+	//legend
+	thisGMerged.append('g')
+		.attrs({
+			'transform' :'translate(50,150)',
+			'class':'legendWrapper',
+			'z-index': '100'
+		})
+		.call(sizeLegend, {
+			radiusScale,
+			spacing: 35,
+			textOffset: 10,
+			numTicks: 5,
+			tickFormat: popFormat,
+			circleFill: 'rgba(0,0,0,.5)'
 		})
 
 
