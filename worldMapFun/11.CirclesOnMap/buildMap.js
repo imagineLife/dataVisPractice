@@ -55,7 +55,7 @@ const buildMap = (parent, props) => {
 	let circleDataEnter = circlesDataJoin.enter().append('circle')
 		.attrs({
 			'class':'dataCircle',
-			'cx': d => console.log(d3.geoCentroid(d))
+			'cx': d => console.log(geoNatural(d3.geoCentroid(d)))
 		})
 
 
