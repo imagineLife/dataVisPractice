@@ -1,0 +1,33 @@
+GOALS
+Visualize quantitative info using circles on a map
+Put circles on a map
+Match Identifiers between files
+Handling & visualizing missing data
+Computing & projecting centroids of geographic areas
+visualizing pop using area of circles
+
+
+Investigate CSV Data
+1. find csv data
+2. add d3.csv(data.csv) to file
+3. COMMENT the guts of the json file-loading in load&Process
+4. console.log the csv data to INSPECT the csv res
+
+Remove color references
+	colorScale
+	colorLegend
+	colorVal
+
+Update json source
+
+Add circles to map
+	- Copy countryPaths & countryPathsEnter methods & make circlesDataJoin & circlesDataenter
+	
+	- get center of country by using d3.geoCentroid(d) on each circleDataJoin enter selection
+		this produces lat & long
+	
+	- convert lat & long to pixel coordinates
+		- wrap the d3.geoCentroid(d) in my geoNatural projection to get...
+		geoNatural(d3.geoCentroid(d))
+
+	
