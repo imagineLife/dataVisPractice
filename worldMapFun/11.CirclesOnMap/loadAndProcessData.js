@@ -3,8 +3,10 @@ function loadAndProcessData(){
 	return new Promise((res, rej) => {
 
 		//load tsv data, assign to var
-		return d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv').then(dataRes => {
-			let tsvData = dataRes;
+		return d3.csv('./data.csv').then(dataRes => {
+			let csvData = dataRes;
+			console.log('loaded csv data')
+			console.log(csvData)
 
 			//load json data, assign to var
 			return d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json').then(jsonRes => {
@@ -17,7 +19,7 @@ function loadAndProcessData(){
 					adding the country row data to a 'properties' key
 					
 				*/
-				const getRowById = tsvData.reduce((accumulator, d) => {
+				const getRowById = csvData.reduce((accumulator, d) => {
 					accumulator[d.iso_n3] = d;
 					return accumulator;
 				}, {})
