@@ -25,8 +25,11 @@ const sizeLegend = (parent, props) => {
   
   groupsEnter.append('circle')
     .merge(groups.select('circle'))
-      .attr('r', radiusScale)
-      .attr('fill', circleFill);
+      .attrs({
+        'r': radiusScale,
+        'fill': circleFill,
+        'class':'sizeLegendCircle'
+      });
   
   groupsEnter.append('text')
     .merge(groups.select('text'))
