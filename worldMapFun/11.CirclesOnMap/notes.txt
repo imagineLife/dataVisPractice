@@ -6,3 +6,10 @@ Handling & visualizing missing data
 Computing & projecting centroids of geographic areas
 visualizing pop using area of circles
 
+
+Investigate CSV Data
+1. find csv data
+2. add d3.csv(data.csv) to file
+3. COMMENT the guts of the json file-loading in load&Process
+4. console.log the csv data to INSPECT the csv res
+
