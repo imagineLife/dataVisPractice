@@ -20,7 +20,7 @@ function loadAndProcessData(){
 					
 				*/
 				const getRowById = csvData.reduce((accumulator, d) => {
-					accumulator[d.iso_n3] = d;
+					accumulator[d["Country code"]] = d;
 					return accumulator;
 				}, {})
 
