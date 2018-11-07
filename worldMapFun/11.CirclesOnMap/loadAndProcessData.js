@@ -32,10 +32,14 @@ function loadAndProcessData(){
 
 				const countryFeatsWPop = countries.features
 					.filter(d => d.properties['2018'])
-					.map(d => d.properties['2018'] = +d.properties['2018'].replace(/ /g, ''))
+					.map(d => {
+						d.properties["2018"] = +d.properties['2018'].replace(/ /g, '')
+						return d
+					})
+
 				const resObj = {
 					features: countries.features,
-					countryFeatsWPop
+					countryFeatsWPop: countryFeatsWPop
 				}
 				res(resObj);
 			})
