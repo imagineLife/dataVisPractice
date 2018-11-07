@@ -19,7 +19,10 @@ let countryFeatsWPop;
 // 	buildChart()
 // }
 
-let mapG = svgObj.append('g').attr('pointer-events', 'all')
+let mapG = svgObj.append('g').attrs({
+	'pointer-events': 'all',
+	'class': 'mapG'	
+})
 
 //run the project
 loadAndProcessData().then(countries => {
