@@ -37,13 +37,48 @@ function setSVGDims(obj, w, h){
 	});
 }
 
-let AllChartObj = {
-	svgClass: '.svgWrapper',
-	dataFile:'data.csv'
+function inputValChanged(t, d3PF){
+	if(t){
+
+		pieWedgeValue = (t.value === 'oranges') ? d => d['oranges'] : d => d['apples']; 
+	}
+
+	buildChart(AllChartObj)
+
+    // path = path.data(pie); // compute the new angles
+    // path.attr("d", arc); // redraw the arcs
 }
 
-const pieWedgeValue = d => d.population;
-const colorValue = d => d.religion;
+let dataObject = [
+	{
+		"apples": 53245,
+		"oranges": 200
+	},
+	{
+		"apples": 28479,
+		"oranges": 200
+	},
+	{
+		"apples": 19697,
+		"oranges": 200
+	},
+	{
+		"apples": 24037,
+		"oranges": 200
+	},
+	{
+		"apples": 40245,
+		"oranges": 200
+	}
+];
+
+let AllChartObj = {
+	svgClass: '.svgWrapper',
+	jsonData: dataObject
+}
+
+let pieWedgeValue = d => d['apples'];
+const colorValue = d => d.oranges;
 const colorLabel = 'Religion';
 const margin = { 
 	left: 20, 
@@ -52,72 +87,70 @@ const margin = {
 	bottom: 40
 };
 
-
-const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
-
-let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
-
-//pie & arc functions
-const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, divWidthLessMargins)
-
-//setup pie G element
-pieG.attrs({
-		'transform': `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`,
-		'class':'pieGWrapper'
-	})
-	.style('max-height', '900px')
-
-//set svg height & width from div computed dimensions
-setSVGDims(svgObj, cssDivWidth, cssDivHeight);
-
-
-//Setup Scales
-const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
-
-const parseData = d => {
-	d.population = +d.population;
-	return d;
-};
-
-let arcs;
-
 function buildChart(obj){
 
-	d3.csv(obj.dataFile, parseData, data => {
-		
-		colorScale.domain(data.map(colorValue));
-		
-		arcs = d3PieFunc(data);
+	//Setup Scales
+	const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
 
-		pieG.selectAll('path')
-			.data(arcs)
-			.enter()
-			.append('path')
-			.attrs({
-				'd': arcFunc,
-				'fill': d => colorScale(colorValue(d.data))
-			});
+	let arcs;
+	let jsonData = obj.jsonData;
 
-	})
+	const {chartDiv, svgObj, pieG} = makeD3ElementsFromParentDiv('chartDiv');
+
+	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin);
+
+	//pie & arc functions
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, divWidthLessMargins)
+
+	//setup pie G element
+	pieG.attrs({
+			'transform': `translate(${cssDivWidth/2}, ${cssDivHeight/2 })`,
+			'class':'pieGWrapper'
+		})
+		.style('max-height', '900px')
+
+	//set svg height & width from div computed dimensions
+	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
+
+
+	colorScale.domain(jsonData.map(colorValue));
+	arcs = d3PieFunc(jsonData);
+	pieG.selectAll('path')
+		.data(arcs)
+		.enter()
+		.append('path')
+		.attrs({
+			'd': arcFunc,
+			'fill': (d,i) => colorScale(i),
+		});
+
+
+	d3.selectAll('input')
+		.on('click', function(){
+			inputValChanged(this, d3PieFunc)
+		})
 }
 
-buildChart(AllChartObj);
-
-//2. Build fn
-let resize = () => {
+function resize(){
 
 	let { cssDivWidth, cssDivHeight, divWidthLessMargins, divHeightLessMargins } = getClientDims(chartDiv, margin)
 
+	const svgObj = d3.select('svg'), pieG = d3.select('.pieGWrapper');
 	//set svg dimension based on resizing attrs
 	setSVGDims(svgObj, cssDivWidth, cssDivHeight);
-	let resizedRadiusVal = (divWidthLessMargins/2) * .7;
-	let biggestRadius = (resizedRadiusVal < 221) ? resizedRadiusVal : 220;
+	const { d3PieFunc, arcFunc } = makeD3PieFuncs(pieWedgeValue, divWidthLessMargins)
+
+	let curResizeVal = (divWidthLessMargins/2) * .7;
+
+	let biggestRadius = (curResizeVal < 221) ? curResizeVal : 220; 
     arcFunc.outerRadius(biggestRadius);
 
-    pieG.attr('transform', `translate(${divWidthLessMargins/2}, ${divHeightLessMargins/2 })`);
+    pieG.attr('transform', `translate(${cssDivWidth/2}, ${cssDivHeight/2 })`);
     pieG.selectAll('path').attr('d', arcFunc)
 
-}	  	
+}
+
+buildChart(AllChartObj);  	
 
 //Resise listener & fn call
 d3.select(window).on('resize',resize);
