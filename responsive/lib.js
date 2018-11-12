@@ -79,3 +79,10 @@ lib.resetAxisG = (axisG, transform, xPos, yPos, caller) => {
    })
    .call(caller);
 }
+
+lib.updateAxisLabelXY = (labelObj, xPos, yPos) => {
+	return labelObj.attrs({
+       'x' : xPos,
+       'y' : yPos,
+   });
+}

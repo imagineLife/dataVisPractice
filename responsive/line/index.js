@@ -129,14 +129,10 @@ let resize = () => {
     lib.resetAxisG(xAxisG, `translate(0, ${divHeightLessMargins})`, (divWidthLessMargins / 2), (divHeightLessMargins * .1), xAxis)
     lib.resetAxisG(yAxisG, ``, (-divHeightLessMargins / 2), (-margin.left / 2), yAxis)
 
-   //Update the X-AXIS LABEL
-   xAxisLabel.attr('x', divWidthLessMargins / 2)
+    //update axis label positions
+    lib.updateAxisLabelXY(xAxisLabel, divWidthLessMargins / 2, 100 )
+    lib.updateAxisLabelXY(yAxisLabel, (-divHeightLessMargins / 2), (-margin.left / 1.5))
 
-   //Update yAxis Label
-   yAxisLabel.attrs({
-       'x' : -divHeightLessMargins / 2,
-       'y' : -margin.left / 1.5,
-   });
 
    //update yLines
    d3.selectAll('.yLine').attr('x2', divWidthLessMargins);
