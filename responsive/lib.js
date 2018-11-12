@@ -21,6 +21,14 @@ lib.getDimsFromParent = (parent, m) => {
   return { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins }
 }
 
+lib.appendAxisObjToParent = (axisObj, parent, className) => {
+  return parent.call(axisObj)
+    .selectAll('.tick line').attrs({
+      'class':className,
+      'stroke-dasharray': '1, 5'
+    });
+}
+
 lib.appendGElement = (parent, trans, cl) => {
 	return parent.append('g')
  .attrs({

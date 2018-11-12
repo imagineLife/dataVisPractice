@@ -87,11 +87,8 @@ function buildChart(obj){
 
    linePath.attr('d', lineObj(data) );
 
-   xAxisG.call(xAxis)
-       .selectAll('.tick line').attrs({
-           'class':'xLine',
-           'stroke-dasharray': '1, 5'
-       });
+   lib.appendAxisObjToParent(xAxis, xAxisG, 'xLine');
+   lib.appendAxisObjToParent(yAxis, yAxisG, 'yLine');
 
  xAxisG.selectAll('.tick text')
      .attrs({
@@ -102,12 +99,6 @@ function buildChart(obj){
        'y': 15,
        'dy':0
      })
-
-   yAxisG.call(yAxis)
-       .selectAll('.tick line').attrs({
-           'class':'yLine',
-           'stroke-dasharray': '1, 5'
-       });
 
  });
 
