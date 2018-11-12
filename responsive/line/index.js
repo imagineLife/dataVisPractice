@@ -1,23 +1,3 @@
-function makeAxisG(parent, transformation, className){
-	return parent.append('g')
-	.attrs({
-		'transform': transformation,
-		'class':className
-	});
-
-}
-
-function resetAxisG(axisG, transform, xPos, yPos, caller){
-	return axisG
-   .attrs({
-       'transform': transform,
-       'x' : xPos,
-       'y' : yPos,
-   })
-   .call(caller);
-}
-
-
 const xLabel = 'Year';
 const yLabel = 'Population';
 const xValue = d => d.year;
@@ -38,13 +18,7 @@ const gObj = svgObj.append('g').attr('class','gWrapper');
 const xScale = d3.scaleTime();
 const yScale = d3.scaleLinear();
 
-// Extract the DIV width and height that was computed by CSS.
-let parentDivWidth = chartDiv.clientWidth;
-let parentDivHeight = chartDiv.clientHeight;
-
-//get css-computed dimensions
-const divWidthLessMargins =parentDivWidth - margin.left - margin.right;
-const divHeightLessMargins = parentDivHeight - margin.top - margin.bottom;
+let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
@@ -57,24 +31,12 @@ svgObj.attrs({
 gObj.attr('transform', `translate(${margin.left},${margin.top})`);
 
 //Build Axis Groups
-const xAxisG = makeAxisG(gObj, `translate(0, ${divHeightLessMargins})`, 'axis x');
-const yAxisG = makeAxisG(gObj, ``, 'axis y');
-
-function makeAxisLabel(parent, className, xPos, yPos, textVal, transformation){
-	return parent.append('text')
-	.attrs({
-		'class': className,
-		'x': xPos,
-		'y': yPos,
-		'transform': transformation
-	})
-	.style('text-anchor', 'middle')
-	.text(textVal);
-}
+const xAxisG = lib.makeAxisG(gObj, `translate(0, ${divHeightLessMargins})`, 'axis x');
+const yAxisG = lib.makeAxisG(gObj, ``, 'axis y');
 
 //set Make axis-label text
-xAxisLabel = makeAxisLabel(xAxisG, 'axis-label', (divWidthLessMargins / 2), 100, xLabel, '');
-yAxisLabel = makeAxisLabel(yAxisG, 'axis-label', (-divHeightLessMargins / 2), (-margin.left / 1.5), yLabel, `rotate(-90)`);
+xAxisLabel = lib.makeAxisLabel(xAxisG, 'axis-label', (divWidthLessMargins / 2), 100, '', '', xLabel);
+yAxisLabel = lib.makeAxisLabel(yAxisG, 'axis-label', (-divHeightLessMargins / 2), (-margin.left / 1.5), `rotate(-90)`, 'middle', yLabel);
 
 //Build Axis elements
 const xAxis = d3.axisBottom()
@@ -163,41 +125,35 @@ buildChart(AllChartObj);
 //2. Build fn
 let resize = () => {
    
-   // Extract the width and height that was computed by CSS.
-   let resizedFnWidth = chartDiv.clientWidth;
-   let resizedFnHeight = chartDiv.clientHeight;
+   let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
 
    //set svg dimension based on resizing attrs
    svgObj.attrs({
-       "width" : resizedFnWidth,
-       "height" : resizedFnHeight
+       "width" : parentDivWidth,
+       "height" : parentDivHeight
    });
 
-   //calc resized dimensions less margins
-   let resizedWidthLessMargins = resizedFnWidth - margin.left - margin.right;
-   let resizedHeightLessMargins = resizedFnHeight - margin.top - margin.bottom;
-
    //update scale ranges
-   xScale.range([0, resizedWidthLessMargins]);
-   yScale.range([resizedHeightLessMargins, margin.top]);
+   xScale.range([0, divWidthLessMargins]);
+   yScale.range([divHeightLessMargins, margin.top]);
    
    //Update the X & Y axis
-    resetAxisG(xAxisG, `translate(0, ${resizedHeightLessMargins})`, (divWidthLessMargins / 2), (resizedHeightLessMargins * .1), xAxis)
-    resetAxisG(yAxisG, ``, (-resizedHeightLessMargins / 2), (-margin.left / 2), yAxis)
+    lib.resetAxisG(xAxisG, `translate(0, ${divHeightLessMargins})`, (divWidthLessMargins / 2), (divHeightLessMargins * .1), xAxis)
+    lib.resetAxisG(yAxisG, ``, (-divHeightLessMargins / 2), (-margin.left / 2), yAxis)
 
    //Update the X-AXIS LABEL
-   xAxisLabel.attr('x', resizedWidthLessMargins / 2)
+   xAxisLabel.attr('x', divWidthLessMargins / 2)
 
    //Update yAxis Label
    yAxisLabel.attrs({
-       'x' : -resizedHeightLessMargins / 2,
+       'x' : -divHeightLessMargins / 2,
        'y' : -margin.left / 1.5,
    });
 
    //update yLines
-   d3.selectAll('.yLine').attr('x2', resizedWidthLessMargins);
+   d3.selectAll('.yLine').attr('x2', divWidthLessMargins);
    
-   d3.selectAll('.xLine').attr('y2', -resizedHeightLessMargins);
+   d3.selectAll('.xLine').attr('y2', -divHeightLessMargins);
    
    //update Line
    linePath.attr("d", lineObj(parsedData));
