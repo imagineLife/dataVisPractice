@@ -1,5 +1,14 @@
 let lib = {};
 
+lib.makeD3ObjsFromParentID = (parentID) => {
+  //Select/Create div, svg, g
+  const chartDiv = document.getElementById(parentID);     
+  const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
+  const gObj = svgObj.append('g').attr('class','gWrapper');
+
+  return {chartDiv, svgObj, gObj}
+}
+
 lib.getDimsFromParent = (parent, m) => {
   // Extract the DIV width and height that was computed by CSS.
   let parentDivWidth = parent.clientWidth;
