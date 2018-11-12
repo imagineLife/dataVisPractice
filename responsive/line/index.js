@@ -9,10 +9,7 @@ const margin = {
 	bottom: 120
 };
 
-//Select/Create div, svg, g
-const chartDiv = document.getElementById('chartDiv');     
-const svgObj = d3.select(chartDiv).append("svg").attr("border", '2px solid green');
-const gObj = svgObj.append('g').attr('class','gWrapper');
+let {chartDiv, svgObj, gObj} = lib.makeD3ObjsFromParentID('chartDiv');
 
 //Setup Scales
 const xScale = d3.scaleTime();
