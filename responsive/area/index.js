@@ -12,13 +12,7 @@ const vars ={
 
 }
 
-function appendGElement(parent, trans, cl){
-	return parent.append('g')
- .attrs({
-   'transform': trans,
-   'class':cl
- });
-}
+
 
 //Select/Create div, svg, g
 const chartDiv = document.getElementById('chartDiv');     
@@ -53,28 +47,16 @@ svgObj.attrs({
 gObj.attr('transform', `translate(${vars.margin.left},${vars.margin.top})`);
 
 //Build Axis Groups
-const xAxisG = appendGElement(gObj, `translate(0, ${divHeightLessMargins})`, 'axis x')
-const yAxisG = appendGElement(gObj, ``, 'axis y')
+const xAxisG = lib.appendGElement(gObj, `translate(0, ${divHeightLessMargins})`, 'axis x')
+const yAxisG = lib.appendGElement(gObj, ``, 'axis y')
 
 //set placeholder for axis labels      
 let xAxisLabel = xAxisG.append('text');
 let yAxisLabel = yAxisG.append('text');
 
-function setAxisLabelAttrs(labelObj, cl, xVal, yVal, trans, txtAnc, txt){
-	return labelObj
-	 .attrs({
-	   'class': cl,
-	   'x': xVal,
-	   'y': yVal,
-	   'transform': trans
-	 })
-	 .style('text-anchor', txtAnc)
-	 .text(txt);
-}
-
 //set attrs for axis labels      
-setAxisLabelAttrs(xAxisLabel, 'axis-label', (divWidthLessMargins / 2), '100', '', '', vars.xLabel)
-setAxisLabelAttrs(yAxisLabel, 'axis-label', (-divHeightLessMargins / 2), (-vars.margin.left / 1.5), `rotate(-90)`, 'middle', vars.yLabel)
+lib.setAxisLabelAttrs(xAxisLabel, 'axis-label', (divWidthLessMargins / 2), '100', '', '', vars.xLabel)
+lib.setAxisLabelAttrs(yAxisLabel, 'axis-label', (-divHeightLessMargins / 2), (-vars.margin.left / 1.5), `rotate(-90)`, 'middle', vars.yLabel)
 
 //Build Axis elements
 const xAxis = d3.axisBottom()
