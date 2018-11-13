@@ -7,8 +7,6 @@
   <script src="../../../d3.v5.min.js"></script>
   <script src="../../../../d3-selection-multi.min.js"></script>
   <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>  -->
-  <!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
   <style type="text/css">
     .svgWrapper{
       /*height: 650px;*/
@@ -18,21 +16,31 @@
     }
 
     #chartDiv{
-        position: absolute;
+        position: relative;
         left: 0px;
         right: 0px;
         top: 0px;
         bottom: 0px;
     }
     .statePath{
-      fill: lightgreen;
       stroke: black;
       stroke-opacity: .2;
+    }
+
+    .top10Towns{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+
     }
   </style>
 </head>
 <body>
   <div id="chartDiv"></div>
+  <table class='top10Towns'>
+    <caption>Top 10 Permitted Towns, 2018</caption>
+    <tbody class="tableBody"></tbody>
+  </table>
   <!-- <svg width='960' height='750' class='svgWrapper'></svg> -->
   <script src='./loadAndProcessData.js'></script>
   <script src='../../lib.js'></script>
