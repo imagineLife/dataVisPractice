@@ -9,21 +9,13 @@ function resize(){
 
 }
 
-function buildChart(permitData, townShapeData){
-    let geometriesWithoutWater = townShapeData.objects.townLayer.geometries.filter(removeWater)
-
-    //Connecticut topojson
-    var connecticut = topojson.feature(townShapeData, {
-        type: "GeometryCollection",
-        geometries: geometriesWithoutWater
-    });
-
-    //projection and path
-    projection.fitExtent([[20, 20], [700, 580]], connecticut);
+function buildChart(towns){
+    
+    projection.fitExtent([[20, 20], [700, 580]], towns);
     
     //data-join for countries
     const townPaths = gObj.selectAll('path')
-        .data(connecticut.features);
+        .data(towns.features);
 
     //append a path for each country
     townPaths.enter().append('path')
@@ -37,7 +29,7 @@ function buildChart(permitData, townShapeData){
 
 
 let removeWater = (d) => d.properties["NAME10"].indexOf('defined') < 0;
-let showTownName = d => d.properties["NAME10"];
+let showTownName = d => `${d.properties["NAME10"]}: ${d.properties.permits}`;
 const margin = { 
     left: 20, 
     right: 20,
@@ -65,7 +57,12 @@ d3.csv('./data.csv').then(csvData => {
 
     d3.json('CTstate.json').then(data => {
         townShapes = data;
-        buildChart(townVals, townShapes);
+        // buildChart(towns);
+        loadAndProcessData().then(res => {
+            console.log('load&Process res')
+            console.log(res.features)
+            buildChart(res);
+        });
     })
 })
 
