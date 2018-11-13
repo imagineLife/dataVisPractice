@@ -30,10 +30,13 @@ gObj.attr('transform', `scale(${parentDivWidth/900}) translate(${parentDivWidth 
 
 d3.json('CTstate.json').then(data => {
 
+    let geometriesWithoutWater = data.objects.townLayer.geometries.filter(d => d.properties["NAME10"].indexOf('defined') < 0 )
+
+    console.log(geometriesWithoutWater)
     //Connecticut topojson
     var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
-        geometries: data.objects.townLayer.geometries
+        geometries: geometriesWithoutWater
     });
 
     //projection and path
