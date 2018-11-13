@@ -9,7 +9,7 @@ function resize(){
 }
 
 let removeWater = (d) => d.properties["NAME10"].indexOf('defined') < 0;
-
+let showTownName = d => d.properties["NAME10"];
 const margin = { 
     left: 20, 
     right: 20,
@@ -51,7 +51,10 @@ d3.json('CTstate.json').then(data => {
     townPaths.enter().append('path')
     //set d based on country
     .attr('d', d => pathGenerator(d))
-    .attr('class','statePath');
+    .attr('class','statePath')
+    .on('click', d => console.log(d.properties["NAME10"]))
+    .append('title')
+        .text(showTownName);
 })
 
 //Add Resise listener & fn call
