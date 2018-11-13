@@ -1,6 +1,13 @@
-// const svgObj = d3.select('.svgWrapper');
-// const svgW = +svgObj.attr('width');
-// const svgH = +svgObj.attr('height');
+function resize(){
+    
+    let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
+
+    svgObj.attr("height", parentDivWidth * .95);
+    gObj.attr('transform', `scale(${parentDivWidth/900}) translate(${parentDivWidth * .03 },0)`);
+    d3.selectAll('.statePath').attr('d', d => pathGenerator(d))
+
+}
+
 const margin = { 
     left: 20, 
     right: 20,
@@ -9,30 +16,28 @@ const margin = {
 };
 let {chartDiv, svgObj, gObj} = lib.makeD3ObjsFromParentID('chartDiv');
 let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
+var projection = d3.geoAlbersUsa();
+const pathGenerator = d3.geoPath().projection(projection);
 
 //set svg height & width from div computed dimensions
 //NOTE: can be the divLessMargins, for 'padding' effect
 svgObj.attrs({
     "width" : '100%',
-    "height" : parentDivWidth * .9
+    "height" : parentDivWidth * .95
 });
 
-gObj.attr('transform',`scale(${parentDivWidth/900})`);
+gObj.attr('transform', `scale(${parentDivWidth/900}) translate(${parentDivWidth * .03},0)`);
 
 d3.json('CTstate.json').then(data => {
-    console.log(data)
 
-        // Connecticut topojson
+    //Connecticut topojson
     var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
         geometries: data.objects.townLayer.geometries
     });
 
-    // projection and path
-    var projection = d3.geoAlbersUsa()
-        .fitExtent([[20, 20], [700, 580]], connecticut);
-
-    const pathGenerator = d3.geoPath().projection(projection);
+    //projection and path
+    projection.fitExtent([[20, 20], [700, 580]], connecticut);
     
     //data-join for countries
     const townPaths = gObj.selectAll('path')
@@ -44,3 +49,6 @@ d3.json('CTstate.json').then(data => {
     .attr('d', d => pathGenerator(d))
     .attr('class','statePath');
 })
+
+//Add Resise listener & fn call
+window.addEventListener("resize", resize);
