@@ -8,6 +8,8 @@ function resize(){
 
 }
 
+let removeWater = (d) => d.properties["NAME10"].indexOf('defined') < 0;
+
 const margin = { 
     left: 20, 
     right: 20,
@@ -30,9 +32,8 @@ gObj.attr('transform', `scale(${parentDivWidth/900}) translate(${parentDivWidth 
 
 d3.json('CTstate.json').then(data => {
 
-    let geometriesWithoutWater = data.objects.townLayer.geometries.filter(d => d.properties["NAME10"].indexOf('defined') < 0 )
+    let geometriesWithoutWater = data.objects.townLayer.geometries.filter(removeWater)
 
-    console.log(geometriesWithoutWater)
     //Connecticut topojson
     var connecticut = topojson.feature(data, {
         type: "GeometryCollection",
