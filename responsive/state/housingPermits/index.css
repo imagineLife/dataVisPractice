@@ -1,0 +1,50 @@
+.svgWrapper{
+  font-size: 32pt;
+  font-family: sans-serif;
+}
+
+#chartDiv{
+    position: relative;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+.statePath{
+  stroke: black;
+  stroke-opacity: .2;
+  cursor: pointer;
+}
+
+.statePath:hover{
+  stroke-opacity:1;
+}
+
+.top10Towns{
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-family: sans-serif;
+  border: 2px solid rgba(0,0,0,.3);
+  border-radius: 20px;
+  padding: 3px;
+  margin: 0 auto;
+}
+
+.top10Towns > tbody > tr{
+  line-height: 1.4;
+  border:.5px solid rgba(0,0,0,.3);
+}
+
+caption{
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 400px){
+  .top10Towns{
+    width: 345px;
+  }
+}
+
