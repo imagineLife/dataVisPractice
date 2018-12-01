@@ -64,11 +64,6 @@ function connectAxisToParent(parent, transformation, className){
 		})
 }
 
-function makeTxtStr(myTxt){
-
-	return `<strong>${myTxt}</strong> <span style="color:red;">${d[myTxt]}</span><br>`
-}
-
 function drawAndUpdateCircles(data) {
     // Standard transition timeVar for the visualization
     var t = d3.transition().duration(150).ease(d3.easeLinear);
@@ -148,50 +143,6 @@ let xAxisG = connectAxisToParent(gWrapper, transformString, 'xAxisG');
 	xAxisG.call(xAxisObj)
 let yAxisG = connectAxisToParent(gWrapper, `translate(0, 0)`, 'yAxisG');
 	yAxisG.call(yAxisObj)
-
-let myToolTip = d3.tip().attr('class', 'd3ToolTip')
-	.html(d => {
-		return makeTxtStr('country')
-		console.log('txt is ')
-		console.log(txt)
-	})
-
-gWrapper.call(myToolTip)
-/*
-LEGEND HERE!
-*/
-let legendGWrapper = gWrapper.append('g')
-	.attr('transform', `translate(${(widthLessMargins - 10)}, ${(heightLessMargins - 125)})`)
-
-const continents = ['europe','asia','americas','africa']
-
-//make legend-row groups 1-per-continent
-continents.forEach((c,ind) => {
-	
-	let legendRow = legendGWrapper.append('g')
-		.attrs({
-			'class': `legendG ${c}`,
-			//add 20px for non-overlapping
-			'transform': `translate(0, ${(ind * 20)})`
-		})
-
-
-	legendRow.append('rect').attrs({
-		'width': 10,
-		'height': 10,
-		'fill': colorScale(c)
-	})
-
-	legendRow.append('text').attrs({
-		'x': -10,
-		'y': 10,
-		'text-anchor': 'end'
-	}).style('text-transformation', 'capitalization')
-	.text(c)
-
-})
-
-
 
 d3.json("data/data.json").then((data) => {
 

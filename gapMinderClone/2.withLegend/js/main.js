@@ -64,6 +64,11 @@ function connectAxisToParent(parent, transformation, className){
 		})
 }
 
+function makeTxtStr(myTxt){
+
+	return `<strong>${myTxt}</strong> <span style="color:red;">${d[myTxt]}</span><br>`
+}
+
 function drawAndUpdateCircles(data) {
     // Standard transition timeVar for the visualization
     var t = d3.transition().duration(150).ease(d3.easeLinear);
@@ -144,6 +149,14 @@ let xAxisG = connectAxisToParent(gWrapper, transformString, 'xAxisG');
 let yAxisG = connectAxisToParent(gWrapper, `translate(0, 0)`, 'yAxisG');
 	yAxisG.call(yAxisObj)
 
+let myToolTip = d3.tip().attr('class', 'd3ToolTip')
+	.html(d => {
+		return makeTxtStr('country')
+		console.log('txt is ')
+		console.log(txt)
+	})
+
+gWrapper.call(myToolTip)
 /*
 LEGEND HERE!
 */
