@@ -120,8 +120,12 @@ function drawAndUpdateCircles(data) {
             	"r" : (d) => Math.sqrt(radiusScale(d.population) / Math.PI)
             })
 
-    // drawAndUpdateCircles the time label
+    // update the time label & the slider label
     timeAxisLabel.text(+(timeVar + 1800))
+    d3.select("#yearSliderLabel").text(timeVar + 1800)
+
+    //update position of slider
+	$('#date-slider').slider('value', +(timeVar + 1800));
 }
 
 let timeVar = 0,
@@ -263,6 +267,17 @@ resetBtn.on('click', () => {
 
 continentSelector.on('change', () => {
 	drawAndUpdateCircles(formattedData[timeVar])	
+})
+
+//Slider
+$("#date-slider").slider({
+	max:2014,
+	min: 1800,
+	step: 1,
+	slide: (e, ui) => {
+		let relativeTimeVal = ui.value - 1800;
+		drawAndUpdateCircles(formattedData[relativeTimeVal])
+	}
 })
 
 //http://localhost:8080/gapMinderClone/
