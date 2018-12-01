@@ -232,5 +232,10 @@ d3.json("data/data.json").then((data) => {
 
 })
 
+//play-button click method
+d3.select('#play-button')
+	.on('click', () => {
+		console.log('clicked!')
+	})
 
 //http://localhost:8080/gapMinderClone/
