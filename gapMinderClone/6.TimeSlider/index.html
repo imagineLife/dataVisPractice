@@ -21,12 +21,20 @@
 
     <div class="container">
 
-        <!-- BUTTONS-->
         <div class="row">
             
+            <!-- BUTTONS-->
             <div class="col-md-6">
                 <button id="play-button" class="btn btn-primary">Play</button>
                 <button id="reset-button" class="btn btn-primary">Reset</button>
+
+                <!-- SLIDER -->
+                <div id="slider-div">
+                    <label for="year">Year:
+                        <span id="year">1800</span>
+                    </label>
+                    <div id="date-slider"></div>
+                </div>
             </div>
 
             <!-- SELECTABLE BOX-->
@@ -42,10 +50,6 @@
 
         </div>
 
-
-
-
-
         <!-- CHART-->
         <div class="row">
             <div class="col-md-6">
@@ -57,6 +61,7 @@
 
 <!-- External JS libraries -->
 <script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="../../d3-selection-multi.min.js"></script>

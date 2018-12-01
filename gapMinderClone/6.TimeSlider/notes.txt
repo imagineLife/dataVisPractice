@@ -1,5 +1,13 @@
 GOALS
 
-Make a Continent Filter
-	- add a filter to the update function
-	- update thevis at the current time
+Introduce a jQueryUI slider
+	can select a RANGE of values
+	can select a single value
+
+	Silider options
+		0-100
+		step
+		range (to select a range or not, t/f)
+		value (default set val, can be valueS when its a range-selector)
+		start & stop & slide & change events
+			
