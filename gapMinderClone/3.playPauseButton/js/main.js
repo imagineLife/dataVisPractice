@@ -69,6 +69,11 @@ function makeTxtStr(myTxt){
 	return `<strong>${myTxt}</strong> <span style="color:red;">${d[myTxt]}</span><br>`
 }
 
+function stepForward(){
+	timeVar = (timeVar < 214) ? timeVar+1 : 0
+	drawAndUpdateCircles(formattedData[timeVar]);   
+}
+
 function drawAndUpdateCircles(data) {
     // Standard transition timeVar for the visualization
     var t = d3.transition().duration(150).ease(d3.easeLinear);
