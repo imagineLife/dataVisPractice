@@ -78,6 +78,19 @@ function drawAndUpdateCircles(data) {
     // Standard transition timeVar for the visualization
     var t = d3.transition().duration(150).ease(d3.easeLinear);
 
+
+    //continent-selection & filtering
+    let curFilterSelection = continentSelector.node().value;
+
+    //
+    let filteredData = data.filter(d => {
+    	if(curFilterSelection == 'all'){
+    		return true
+    	}
+    	if(curFilterSelection !== 'all'){
+    		return d.continent == curFilterSelection
+    	}
+    })
     // JOIN new data with old elements
     //ALSO note the data method
     /*
@@ -85,7 +98,7 @@ function drawAndUpdateCircles(data) {
 		track items based on their country value, rather than their indexs in the arrays
     */
     var circles = gWrapper.selectAll("circle")
-	    .data(data, (d) => d.country);
+	    .data(filteredData, (d) => d.country);
 
     // EXIT old elements not present in new data.
     circles.exit()
@@ -115,7 +128,8 @@ let timeVar = 0,
  	formattedData, 
  	loopInt,
  	playPauseBtn = d3.select('#play-button'),
- 	resetBtn = d3.select('#reset-button');
+ 	resetBtn = d3.select('#reset-button'),
+ 	continentSelector = d3.select('#continent-select');
 
 //calculate svg dimensions less margins
 const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
@@ -245,6 +259,10 @@ playPauseBtn.on('click', () => {
 resetBtn.on('click', () => {
 	timeVar = 0;
 	drawAndUpdateCircles(formattedData[0])
+})
+
+continentSelector.on('change', () => {
+	drawAndUpdateCircles(formattedData[timeVar])	
 })
 
 //http://localhost:8080/gapMinderClone/

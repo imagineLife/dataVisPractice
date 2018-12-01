@@ -1,5 +1,5 @@
 GOALS
 
-Make a Reset button
-	- sets the chart & interval loop to 0 / start
-	- updates the year label to 1800
+Make a Continent Filter
+	- add a filter to the update function
+	- update thevis at the current time
