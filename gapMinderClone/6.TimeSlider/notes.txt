@@ -1,0 +1,5 @@
+GOALS
+
+Make a Continent Filter
+	- add a filter to the update function
+	- update thevis at the current time
