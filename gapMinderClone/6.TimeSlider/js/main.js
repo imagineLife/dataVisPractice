@@ -124,6 +124,8 @@ function drawAndUpdateCircles(data) {
     timeAxisLabel.text(+(timeVar + 1800))
     d3.select("#yearSliderLabel").text(timeVar + 1800)
 
+    console.log('timeVar')
+    console.log(timeVar)
     //update position of slider
 	$('#date-slider').slider('value', +(timeVar + 1800));
 }
@@ -275,8 +277,8 @@ $("#date-slider").slider({
 	min: 1800,
 	step: 1,
 	slide: (e, ui) => {
-		let relativeTimeVal = ui.value - 1800;
-		drawAndUpdateCircles(formattedData[relativeTimeVal])
+		timeVar = ui.value - 1800;
+		drawAndUpdateCircles(formattedData[timeVar])
 	}
 })
 
