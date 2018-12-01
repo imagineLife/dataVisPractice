@@ -1,0 +1,14 @@
+GOALS
+
+Make a play/pause button
+	- onMouseClick event
+	- starts/stops the loop
+	- changes the text of the button (start or stop)
+
+Make a Reset button
+	- sets the chart & interval loop to 0 / start
+	- updates the year label to 1800
+
+Make a Continent Filter
+	- add a filter to the update function
+	- update thevis at the current time
