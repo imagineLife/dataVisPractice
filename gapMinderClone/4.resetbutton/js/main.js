@@ -114,7 +114,8 @@ function drawAndUpdateCircles(data) {
 let timeVar = 0,
  	formattedData, 
  	loopInt,
- 	playPauseBtn = d3.select('#play-button');
+ 	playPauseBtn = d3.select('#play-button'),
+ 	resetBtn = d3.select('#reset-button');
 
 //calculate svg dimensions less margins
 const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
@@ -238,6 +239,12 @@ playPauseBtn.on('click', () => {
 		playPauseBtn.text('Play')
 		clearInterval(loopInt)
 	}
+})
+
+//reset-button click method
+resetBtn.on('click', () => {
+	timeVar = 0;
+	drawAndUpdateCircles(formattedData[0])
 })
 
 //http://localhost:8080/gapMinderClone/
