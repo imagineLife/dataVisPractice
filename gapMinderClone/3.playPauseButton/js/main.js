@@ -111,7 +111,10 @@ function drawAndUpdateCircles(data) {
     timeAxisLabel.text(+(timeVar + 1800))
 }
 
-let timeVar = 0, formattedData, loopInt;
+let timeVar = 0,
+ 	formattedData, 
+ 	loopInt,
+ 	playPauseBtn = d3.select('#play-button');
 
 //calculate svg dimensions less margins
 const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
@@ -224,8 +227,6 @@ d3.json("data/data.json").then((data) => {
 })
 
 //play-button click method
-let playPauseBtn = d3.select('#play-button')
-
 playPauseBtn.on('click', () => {
 	let btnTxt = playPauseBtn.text();
 
