@@ -111,7 +111,7 @@ function drawAndUpdateCircles(data) {
     timeAxisLabel.text(+(timeVar + 1800))
 }
 
-let timeVar = 0, formattedData;
+let timeVar = 0, formattedData, loopInt;
 
 //calculate svg dimensions less margins
 const heightLessMargins = v.setHeight - v.margin.t - v.margin.b;
@@ -221,21 +221,12 @@ d3.json("data/data.json").then((data) => {
 
     return true
 
-}).then(() => {
-
-	// Run the code every 0.1 second
-	setInterval(() => {  
-	    // At the end of our data, loop back
-	    timeVar = (timeVar < 214) ? timeVar+1 : 0
-	    drawAndUpdateCircles(formattedData[timeVar]);            
-	}, 150);
-
 })
 
 //play-button click method
 d3.select('#play-button')
 	.on('click', () => {
-		console.log('clicked!')
+		loopInt = setInterval(stepForward, 100)
 	})
 
 //http://localhost:8080/gapMinderClone/
