@@ -224,10 +224,14 @@ d3.json("data/data.json").then((data) => {
 })
 
 //play-button click method
-d3.select('#play-button')
-	.on('click', () => {
-		d3.select('#play-button').text('Pause')
-		loopInt = setInterval(stepForward, 100)
+let playPauseBtn = d3.select('#play-button')
+let btnTxt = playPauseBtn.text();
+
+	playPauseBtn.on('click', () => {
+		if(btnTxt == 'Play'){
+			playPauseBtn.text('Pause')
+			loopInt = setInterval(stepForward, 100)
+		}
 	})
 
 //http://localhost:8080/gapMinderClone/
