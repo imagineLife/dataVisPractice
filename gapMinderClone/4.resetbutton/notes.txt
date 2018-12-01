@@ -1,0 +1,6 @@
+GOALS
+
+Make a play/pause button
+	- onMouseClick event
+	- starts/stops the loop
+	- changes the text of the button (start or stop)
