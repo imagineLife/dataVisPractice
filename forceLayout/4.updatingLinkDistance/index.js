@@ -59,7 +59,7 @@ var svg = d3.select('body').append('svg')
 
 // forceLayout 
 d3Sim = d3.forceSimulation(nodeData)
-    // .force("link", d3.forceLink(linkData).distance(width/2))
+    .force("link", d3.forceLink(linkData).distance(height/2))
     // .force('x', 0)
     // .force('y', 0)
 
