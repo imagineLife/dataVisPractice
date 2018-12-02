@@ -16,15 +16,50 @@ function initForce(){
      //1. clear svg
      svg.selectAll('*').remove();
 
-
-
 }
 
+function tickFn(){
+
+    // In full speed we simply set the new positions
+    if(d3Sim.isFullSpeed){
+        
+        nodes.attrs({
+            'cx': d => d.x,
+            'cy': d => d.y
+        });
+    
+        links.attrs({
+            'x1':d => d.source.x,
+            'y1':d => d.source.y,
+            'x2':d => d.target.x,
+            'y2':d => d.target.y
+        });
+
+    }else{
+        nodes.transition(d3.easeLinear).duration(animStepInt).attrs({
+            'r': width/25,
+            'cx': d => d.x,
+            'cy': d => d.y
+        });
+
+        links.transition(d3.easeLinear).duration(animStepInt).attrs({
+            'x1':d => d.source.x,
+            'y1':d => d.source.y,
+            'x2':d => d.target.x,
+            'y2':d => d.target.y
+        });
+    }
+
+    if (!d3Sim.fullSpeed) {
+        console.log("STOPPED!")
+        d3Sim.stop();
+    }
+}
 
 //animStepInt how fast/sow the animation executes in ms
 let width = 640,
     height = 640, 
-    animStepInt = 400,
+    animStepInt = 100,
     d3Sim = null,
     nodes = null,
     links = null;
@@ -47,10 +82,6 @@ var linkData = [
     { source: 2, target: 3, graph: 1 }
 ];
 
-// Here's were the code begins. We start off by creating an SVG
-// container to hold the visualization. We only need to specify
-// the dimensions for this container.
-
 var svg = d3.select('body').append('svg')
     .attrs({
         'width': width,
@@ -60,27 +91,6 @@ var svg = d3.select('body').append('svg')
 // forceLayout 
 d3Sim = d3.forceSimulation(nodeData)
     .force("link", d3.forceLink(linkData).distance(height/2))
-    // .force('x', 0)
-    // .force('y', 0)
-
-    // .force("link", d3.forceLink(linkData).id(function(d, ind) { 
-    //         console.log('fn d')
-    //         console.log(d)
-    //         return ind; 
-    //     }).distance(100).strength(1))
-    // .force("charge", d3.forceManyBody())
-    // .force("center", d3.forceCenter(width / 2, height / 2));
-
-
-
-// Next we'll add the nodes and links to the visualization.
-// Note that we're just sticking them into the SVG container
-// at this point. We start with the links. The order here is
-// important because we want the nodes to appear "on top of"
-// the links. SVG doesn't really have a convenient equivalent
-// to HTML's `z-index`; instead it relies on the order of the
-// elements in the markup. By adding the nodes _after_ the
-// links we ensure that nodes appear on top of links.
 
 links = svg.selectAll('.link')
     .data(linkData)
@@ -100,49 +110,11 @@ nodes = svg.selectAll('.node')
     .enter().append('circle')
     .attr('class', 'node');
 
-d3Sim.on('tick', () => {
-    nodes.transition(d3.easeLinear).duration(animStepInt).attrs({
-        'r': width/25,
-        'cx': d => d.x,
-        'cy': d => d.y
-    });
-
-    links.attrs({
-        'x1':d => d.source.x,
-        'y1':d => d.source.y,
-        'x2':d => d.target.x,
-        'y2':d => d.target.y
-    });
-});
+d3Sim.on('tick', tickFn);
 
 
-setTimeout(() => d3Sim.stop(), 10)    
-
-// Now let's take care of the user interaction controls.
-// We'll add functions to respond to clicks on the individual
-// buttons.
-
-// When the user clicks on the "Advance" button, we
-// start the force layout (The tick handler will stop
-// the layout after one iteration.)
-
-d3.select('advance').on('click', () => {
-    console.log('advance clicked!')
-});
-
-// When the user clicks on the "Play" button, we're
-// going to run the force layout until it concludes.
-
-d3.select('#slow').on('click', function() {
-
-    console.log('clicked')
-    startAndStopAnimation();
-    // Indicate that the animation is in progress.
-
-    animating = true;
-
-    // Get the animation rolling
-
-    // d3Sim.start();
-
-});
+//interesting 'workaround' for initial animation speed-up
+// setTimeout(() => {
+//     console.log('here')
+//     d3Sim.stop(), 10
+// })
