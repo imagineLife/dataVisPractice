@@ -1,13 +1,14 @@
+// Dynamically update the position of the nodes/links as time passes
 function tickFn(d){
-  console.log('ticking!')
-  links.attrs({
+  // console.log('ticking!')
+  link.attrs({
     "x1": d => d.source.x,
     "y1": d => d.source.y,
     "x2": d => d.target.x,
     "y2": d => d.target.y
   });
 
-  nodes
+  node
     .attr("cx", d => d.x)
     .attr("cy", d => d.y);
 }
@@ -16,7 +17,7 @@ function drawChart(chartData){
   console.log('drawingChart!')
   console.log(chartData)
 
-  var link = svgObj.append("g")
+  link = svgObj.append("g")
     .attr("class", "links")
     .selectAll("line")
     .data(chartData.links)
@@ -24,7 +25,7 @@ function drawChart(chartData){
     .attr("stroke-width", (d) => Math.sqrt(d.value));
   
   // Add circles for every node in the dataset
-  var node = svgObj.append("g")
+  node = svgObj.append("g")
     .attr("class", "nodes")
     .selectAll("circle")
     .data(chartData.nodes)
@@ -44,31 +45,18 @@ function drawChart(chartData){
   // Attach nodes to the simulation, add listener on the "tick" event
   forceSim
     .nodes(chartData.nodes)
-    .on("tick", (d) => ticked(d));
+    .on("tick", (d) => tickFn(d));
   
   // Associate the lines with the "link" force
   forceSim.force("link")
     .links(chartData.links)
-  
-  // Dynamically update the position of the nodes/links as time passes
-  function ticked(d) {
-    link
-      .attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-    node
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; });
-  }
-
-
 }
 
 let svgObj = d3.select('svg'),
 svgWidth = +svgObj.attr('width'),
 svgHeight = +svgObj.attr('height'),
-colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+colorScale = d3.scaleOrdinal(d3.schemeCategory20),
+links, nodes;
 
 // Add "forces" to the simulation here
     var forceSim = d3.forceSimulation()
