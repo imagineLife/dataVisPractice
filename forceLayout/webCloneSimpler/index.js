@@ -1,11 +1,22 @@
 function drawChart(chartData){
   console.log('drawingChart!')
   console.log(chartData)
+
+  let linkObj = svgObj.append('g')
+    .attr('class', 'linksGWrapper')
+    .selectAll('line')
+    .data(chartData.links)
+    .enter()
+      .append('line')
+      .attrs({
+        'class': 'linkLine',
+        'stroke-width': d => Math.sqrt(d.value)
+      })
 }
 
-let svgOb = d3.select('svg'),
-svgWidth = +svgOb.attr('width'),
-svgHeight = +svgOb.attr('height'),
+let svgObj = d3.select('svg'),
+svgWidth = +svgObj.attr('width'),
+svgHeight = +svgObj.attr('height'),
 color = d3.scaleOrdinal(d3.schemeCategory20);
 
 let forceSim = d3.forceSimulation()
