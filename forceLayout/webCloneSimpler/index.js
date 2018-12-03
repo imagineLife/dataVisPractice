@@ -31,7 +31,7 @@ function drawChart(chartData){
     .data(chartData.nodes)
     .enter().append("circle")
     .attr("r", 5)
-    .attr("fill", function(d) { return colorScale(d.group); })
+    .attr("fill", d => colorScale(d.group))
     // .call(d3.drag()
     //     .on("start", dragstarted)
     //     .on("drag", dragged)
@@ -40,7 +40,7 @@ function drawChart(chartData){
   
   // Basic tooltips
   node.append("title")
-    .text(function(d) { return d.id; });
+    .text(d => d.id);
   
   // Attach nodes to the simulation, add listener on the "tick" event
   forceSim
@@ -52,29 +52,37 @@ function drawChart(chartData){
     .links(chartData.links)
 }
 
+//1. select & create d3 vars
 let svgObj = d3.select('svg'),
 svgWidth = +svgObj.attr('width'),
 svgHeight = +svgObj.attr('height'),
-colorScale = d3.scaleOrdinal(d3.schemeCategory20),
-links, nodes;
+colorScale = d3.scaleOrdinal(d3.schemeCategory20), links, nodes;
 
-// Add "forces" to the simulation here
-    var forceSim = d3.forceSimulation()
-        .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2))
-        .force("charge", d3.forceManyBody().strength(-50))
-        .force("collide", d3.forceCollide(10).strength(0.9))
-        .force("link", d3.forceLink().id(function(d) { return d.id; }));
+//2. Create forceSimulation & Add "forces" to the simulation here
+var forceSim = d3.forceSimulation()
+
+    //balance in the middle
+    .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2))
     
-    d3.json("./data.json", function(error, graph) {
-        if (error) throw error;
-        console.log(graph);
-        // Add lines for every link in the dataset
-        drawChart(graph)
-        
-    });
-    // Change the value of alpha, so things move around when we drag a node
-    function dragstarted(d) {
-    if (!d3.event.active) forceSim.alphaTarget(0.7).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    }
+    //SPREAD out
+    .force("charge", d3.forceManyBody().strength(-50))
+    
+    //keep them from colliding
+    .force("collide", d3.forceCollide(10).strength(0.9))
+    
+    //a link simulation
+    .force("link", d3.forceLink().id(d => d.id));
+
+d3.json("./data.json", (error, graph) => {
+    if (error) throw error;
+    console.log(graph);
+    // Add lines for every link in the dataset
+    drawChart(graph)
+    
+});
+// Change the value of alpha, so things move around when we drag a node
+function dragstarted(d) {
+  if (!d3.event.active) forceSim.alphaTarget(0.7).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+}
