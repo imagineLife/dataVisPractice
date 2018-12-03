@@ -1,3 +1,7 @@
+function tickFn(){
+  console.log('ticking!')
+}
+
 function drawChart(chartData){
   console.log('drawingChart!')
   console.log(chartData)
@@ -26,6 +30,11 @@ function drawChart(chartData){
         'r': 5,
         'fill': d => colorScale(d.group)
       })
+
+  // Attach nodes to the simulation, add listener on the "tick" event
+  forceSim
+      .nodes(chartData.nodes)
+      .on('tick', tickFn)
 
 
 }
