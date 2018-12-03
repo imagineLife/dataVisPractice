@@ -13,11 +13,11 @@ let mySort = (a, b) => a.height - b.height;
 let setText = (d) => d.id.substring(d.id.lastIndexOf(".") + 1);
 
 function buildChart(data){
-  var rootNodeData = stratify(data).sort(mySort);
+  var stratRootData = stratify(data).sort(mySort);
 
   // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
   var link = gObj.selectAll(".link")
-    .data(tree(rootNodeData).links())
+    .data(tree(stratRootData).links())
     .enter().append("path")
       .attrs({
         "class": "link",
@@ -26,11 +26,9 @@ function buildChart(data){
           .y(d => d.x)
       });
 
-      console.log('rootNodeData.descendants()')
-      console.log(rootNodeData.descendants())
   // Add groups for each node in the hierarchy with circles and text labels
   var node = gObj.selectAll(".node")
-    .data(rootNodeData.descendants())
+    .data(stratRootData.descendants())
     .enter().append("g")
         .attrs({
           "class": d => "node" + (d.children ? " node--mid" : " node--final"),
