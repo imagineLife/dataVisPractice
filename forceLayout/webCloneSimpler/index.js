@@ -1,14 +1,14 @@
 // Dynamically update the position of the nodes/links as time passes
 function tickFn(d){
   // console.log('ticking!')
-  link.attrs({
+  links.attrs({
     "x1": d => d.source.x,
     "y1": d => d.source.y,
     "x2": d => d.target.x,
     "y2": d => d.target.y
   });
 
-  node
+  nodes
     .attr("cx", d => d.x)
     .attr("cy", d => d.y);
 }
@@ -17,21 +17,24 @@ function drawChart(chartData){
   console.log('drawingChart!')
   console.log(chartData)
 
-  link = svgObj.append("g")
-    .attr("class", "links")
+  //set 
+  links = linkGWrapper
     .selectAll("line")
     .data(chartData.links)
     .enter().append("line")
-    .attr("stroke-width", (d) => Math.sqrt(d.value));
+    .attr("stroke-width", (d) => Math.sqrt(d.value))
+    .attr('class', 'linkLine');
   
   // Add circles for every node in the dataset
-  node = svgObj.append("g")
-    .attr("class", "nodes")
+  nodes = nodeGWrapper
     .selectAll("circle")
     .data(chartData.nodes)
     .enter().append("circle")
-    .attr("r", 5)
-    .attr("fill", d => colorScale(d.group))
+    .attrs({
+      "r": 5,
+      "fill": d => colorScale(d.group),
+      'class': 'circleNode'
+    })
     // .call(d3.drag()
     //     .on("start", dragstarted)
     //     .on("drag", dragged)
@@ -39,7 +42,7 @@ function drawChart(chartData){
     // );
   
   // Basic tooltips
-  node.append("title")
+  nodes.append("title")
     .text(d => d.id);
   
   // Attach nodes to the simulation, add listener on the "tick" event
@@ -57,6 +60,10 @@ let svgObj = d3.select('svg'),
 svgWidth = +svgObj.attr('width'),
 svgHeight = +svgObj.attr('height'),
 colorScale = d3.scaleOrdinal(d3.schemeCategory20), links, nodes;
+let linkGWrapper = svgObj.append("g")
+  .attr("class", "linkGWrapper");
+let nodeGWrapper = svgObj.append('g')
+  .attr('class', 'nodeGWrapper');
 
 //2. Create forceSimulation & Add "forces" to the simulation here
 var forceSim = d3.forceSimulation()
@@ -75,8 +82,8 @@ var forceSim = d3.forceSimulation()
 
 d3.json("./data.json", (error, graph) => {
     if (error) throw error;
-    console.log(graph);
-    // Add lines for every link in the dataset
+
+    //draw the chart with the data!
     drawChart(graph)
     
 });
