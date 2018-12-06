@@ -2,12 +2,19 @@
 function sumByCount(d) {
     return d.children ? 0 : 1;
 }
+
 // Return the size of the node
 function sumBySize(d) {
     return d.size;
 }
 
-
+function makeHierarchy(data,sumFn){
+    //convert the data to the hierarchical format
+    return d3.hierarchy(data)
+    .eachBefore((d) => d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name)
+    .sum(sumFn)
+    .sort((a, b)=> b.height - a.height || b.value - a.value);
+}
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -26,12 +33,10 @@ var treemap = d3.treemap()
 d3.json("./data.json", function(error, data) {
     if (error) throw error;
 
-    // Since we are dealing with hierarchical data, need to convert the data to the right format
-    var root = d3.hierarchy(data)
-        .eachBefore((d) => d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name)
-        .sum(sumBySize)
-        .sort((a, b)=> b.height - a.height || b.value - a.value);
-    
+    let root = makeHierarchy(data, sumBySize)
+    console.log('root')
+    console.log(root)
+
     // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
     treemap(root);
     
@@ -39,34 +44,42 @@ d3.json("./data.json", function(error, data) {
         .data(root.leaves());
 
         cellDataJoinEnter = cellDataJoin.enter().append("g")
-            .attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; });
+            .attrs({
+                'transform': d => `translate(${d.x0},${d.y0})`,
+                'class': 'dataJoinGWrapper'
+            });
     
     // Add rectanges for each of the boxes that were generated
     cellDataJoinEnter.append("rect")
-        .attr("id", function(d) { return d.data.id; })
-        .attr("width", function(d) { return d.x1 - d.x0; })
-        .attr("height", function(d) { return d.y1 - d.y0; })
-        .attr("fill", function(d) { return color(d.parent.data.id); });
+        .attrs({
+            "id": d => d.data.id,
+            "width": d => d.x1 - d.x0,
+            "height": d => d.y1 - d.y0,
+            "fill": d => color(d.parent.data.id),
+            "class": 'enterRect'
+        });
     
-    // Make sure that text labels don't overflow into adjacent boxes
+    //Clip-Path: Make sure that text labels don't overflow into adjacent boxes
     cellDataJoinEnter.append("clipPath")
         .attr("id", function(d) { return "clip-" + d.data.id; })
         .append("use")
             .attr("xlink:href", function(d) { return "#" + d.data.id; });
     
-    // Add text labels - each word goes on its own line
+    //Text-Label: Add text labels - each word goes on its own line
     cellDataJoinEnter.append("text")
         .attr("clip-path", function(d) { return "url(#clip-" + d.data.id + ")"; })
         .selectAll("tspan")
         .data(function(d) { return d.data.name.split(/(?=[A-Z][^A-Z])/g); })
         .enter().append("tspan")
-            .attr("x", 4)
-            .attr("y", function(d, i) { return 13 + i * 10; })
-            .text(function(d) { return d; });
+            .attrs({
+                "x": 4,
+                "y": (d, i) => 13 + i * 10
+            })
+            .text(d => d);
     
     // Simple way to make tooltips
     cellDataJoinEnter.append("title")
-        .text(function(d) { return d.data.id + "\n" + format(d.value); });
+        .text(d => d.data.id + "\n" + format(d.value));
     
     // Add an input to select between different summing methods
     d3.selectAll("input")
@@ -80,7 +93,9 @@ d3.json("./data.json", function(error, data) {
         cellDataJoinEnter.transition().duration(750)
             .attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
             .select("rect")
-                .attr("width", function(d) { return d.x1 - d.x0; })
-                .attr("height", function(d) { return d.y1 - d.y0; });
+                .attrs({
+                    "width": d => d.x1 - d.x0,
+                    "height": d => d.y1 - d.y0
+                });
     }
 });
