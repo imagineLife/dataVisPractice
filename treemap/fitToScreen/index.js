@@ -26,17 +26,25 @@ function sumBySize(d) {
     return d.size;
 }
 
-function makeHierarchy(data,sumFn){
-    //convert the data to the hierarchical format
-    return d3.hierarchy(data)
-    .eachBefore((d) => {
-        // console.log('eachBefore d')
-        // console.log(d)
+function prepData(data, sumFn){
+
+        //stratify data
+    var stratRootData = d3.stratify()
+        .id(d => d.name)
+        .parentId(d => d.parent)
+        (data);
+
+    let hierarched = stratRootData.eachBefore((d) => {
+    // console.log('eachBefore d')
+    // console.log(d)
         d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name
         return d
     })
     .sum(sumFn)
     .sort((a, b)=> b.height - a.height || b.value - a.value);
+
+    treemap(hierarched);
+    return hierarched;
 }
 
 const margin = { left: 20, right: 20, top: 20, bottom: 20 };
@@ -62,28 +70,8 @@ var treemap = d3.treemap()
 
 d3.json("./data.json", function(error, data) {
     if (error) throw error;
-    
-    // let root = makeHierarchy(data, sumBySize)
 
-    // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
-    // treemap(root);
-
-    //stratify data
-    var stratRootData = d3.stratify()
-        .id(d => d.name)
-        .parentId(d => d.parent)
-        (data);
-
-    let hierarched = stratRootData.eachBefore((d) => {
-    // console.log('eachBefore d')
-    // console.log(d)
-        d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name
-        return d
-    })
-    .sum(sumBySize)
-    .sort((a, b)=> b.height - a.height || b.value - a.value);
-
-    treemap(hierarched);
+    let hierarched = prepData(data, sumBySize)
     
     var cellDataJoin = svgObj.selectAll("g")
         // root.leaves() are the children of the root
@@ -151,3 +139,6 @@ d3.json("./data.json", function(error, data) {
                 });
     }
 });
+
+// Call the resize function whenever a resize event occurs
+// d3.select(window).on('resize', resize);
