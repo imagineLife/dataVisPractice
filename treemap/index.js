@@ -21,7 +21,7 @@ var svg = d3.select("svg"),
     height = +svg.attr("height");
 
 var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
-    color = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
+    colorScale = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
     format = d3.format(",d");
 
 var treemap = d3.treemap()
@@ -41,6 +41,7 @@ d3.json("./data.json", function(error, data) {
     treemap(root);
     
     var cellDataJoin = svg.selectAll("g")
+        // root.leaves() are the children of the root
         .data(root.leaves());
 
         cellDataJoinEnter = cellDataJoin.enter().append("g")
@@ -55,7 +56,7 @@ d3.json("./data.json", function(error, data) {
             "id": d => d.data.id,
             "width": d => d.x1 - d.x0,
             "height": d => d.y1 - d.y0,
-            "fill": d => color(d.parent.data.id),
+            "fill": d => colorScale(d.parent.data.id),
             "class": 'enterRect'
         });
     
