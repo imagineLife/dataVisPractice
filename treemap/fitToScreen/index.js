@@ -1,25 +1,9 @@
-let getParentFromD = (d) => d.id.substring(0, d.id.lastIndexOf("."));
-
 function makeObjsFromParent(parent){
   let chartObj = d3.select('#chartDiv'),
   svgObj = chartObj.append('svg'),
   svgW = +svgObj.attr("width"),
-  svgH = +svgObj.attr("height"),
-  gObj = svgObj.append("g");
-  return {chartObj, svgObj, svgW, svgH, gObj}
-}
-
-function prepData(data){
-  
-  //stratify data
-  var stratRootData = d3.stratify()
-    .id(d => d.name)
-    .parentId(d => d.parent)
-    (data);
-
-  //build nodes using hierarchy
-  var nodes = d3.hierarchy(data, d => d.children);
-  return {stratRootData, nodes};
+  svgH = +svgObj.attr("height");
+  return {chartObj, svgObj, svgW, svgH}
 }
 
 function getDimsFromParent(p){
@@ -32,72 +16,32 @@ function getDimsFromParent(p){
   return {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins}
 }
 
-function resize(){
-  gObj.selectAll('*').remove()
-
-  let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
-
-  //set svg dims
-  svgObj.attrs({
-    'height': heightLessMargins,
-    'width': widthLessMargins,
-    'transform': `translate(${margin.left},${margin.top})`
-  })
-
-  //transform gObj
-  gObj.attr('transform', `translate(${75},${margin.top})`)
-
-  //reset three dims
-  tree.size([heightLessMargins, widthLessMargins - 200])
-
-  buildChart(rootData, storedNodes)
+// Return the number of descendants that the node has
+function sumByCount(d) {
+    return d.children ? 0 : 1;
 }
 
-function buildChart(stratRootData, nodes){
+// Return the size of the node
+function sumBySize(d) {
+    return d.size;
+}
 
-  // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
-  var linkDataJoin = gObj.selectAll(".link")
-    .data(tree(stratRootData).links());
-
-    //set link paths & link path data
-    linkDataJoin
-      .enter().append("path")
-        .attr("class", "link")
-      .merge(linkDataJoin)
-        .attr(
-          "d", d3.linkHorizontal().x(d => d.y).y(d => d.x)
-        );
-
-  // Set node DataJoin
-  var nodeDataJoin = gObj.selectAll(".node")
-    .data(stratRootData.descendants());
-
-  //build nodeEnter for appending cnode circle & text
-  let nodeEnter = nodeDataJoin.enter().append("g")
-    .merge(nodeDataJoin)
-    .attrs({
-      "class": d => "node" + (d.children ? " node--mid" : " node--final"),
-      "transform": d => `translate(${d.y},${d.x})`
+function makeHierarchy(data,sumFn){
+    //convert the data to the hierarchical format
+    return d3.hierarchy(data)
+    .eachBefore((d) => {
+        // console.log('eachBefore d')
+        // console.log(d)
+        d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name
+        return d
     })
-
-  //build circles
-  let nodeCircle = nodeEnter.append("circle").attr("r", 2.5);
-
-  //build node Text
-  let nodeTxt = nodeEnter.append("text")
-    .attrs({
-      "dy": 3,
-      "x": d => d.children ? -8 : 8,
-      "y": d => (d.children && d.parent !== null) ? -8 : 0,
-      'class':'nodeText'
-    })
-    .style("text-anchor", d => d.children ? "end" : "start")
-    .text((d) => d.id);
+    .sum(sumFn)
+    .sort((a, b)=> b.height - a.height || b.value - a.value);
 }
 
 const margin = { left: 20, right: 20, top: 20, bottom: 20 };
 let rootData, storedNodes;
-let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
+let {chartObj, svgObj, svgW, svgH} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
 
 svgObj.attrs({
@@ -106,23 +50,104 @@ svgObj.attrs({
   'transform': `translate(${margin.left},${margin.top})`
 })
 
-gObj.attr('transform', `translate(${75},${margin.top})`)
+var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
+    colorScale = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
+    format = d3.format(",d");
 
-let tree = d3.tree()
-  .size([heightLessMargins, widthLessMargins - 200]);
-
-var stratify = d3.stratify()
-  .parentId(getParentFromD);
+var treemap = d3.treemap()
+    .tile(d3.treemapResquarify)
+    .size([resizedWidth, resizedHeight])
+    .round(true)
+    .paddingInner(1);
 
 d3.json("./data.json", function(error, data) {
-  if (error) throw error;
+    if (error) throw error;
+    
+    // let root = makeHierarchy(data, sumBySize)
 
-  let {stratRootData, nodes} = prepData(data);
-  
-  rootData = stratRootData;
-  storedNodes = nodes;
-  buildChart(stratRootData, nodes);
+    // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
+    // treemap(root);
+
+    //stratify data
+    var stratRootData = d3.stratify()
+        .id(d => d.name)
+        .parentId(d => d.parent)
+        (data);
+
+    let hierarched = stratRootData.eachBefore((d) => {
+    // console.log('eachBefore d')
+    // console.log(d)
+        d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name
+        return d
+    })
+    .sum(sumBySize)
+    .sort((a, b)=> b.height - a.height || b.value - a.value);
+
+    treemap(hierarched);
+    
+    var cellDataJoin = svgObj.selectAll("g")
+        // root.leaves() are the children of the root
+        .data(hierarched.leaves());
+
+        cellDataJoinEnter = cellDataJoin.enter().append("g")
+            .attrs({
+                'transform': d => `translate(${d.x0},${d.y0})`,
+                'class': 'dataJoinGWrapper'
+            });
+    
+    // Add rectanges for each of the boxes that were generated
+    cellDataJoinEnter.append("rect")
+        .attrs({
+            "id": d => d.data.id,
+            "width": d => d.x1 - d.x0,
+            "height": d => d.y1 - d.y0,
+            "fill": d => colorScale(d.parent.data.id),
+            "class": 'enterRect'
+        });
+    
+    //Clip-Path: Make sure that text labels don't overflow into adjacent boxes
+    cellDataJoinEnter.append("clipPath")
+        .attr("id", function(d) { return "clip-" + d.data.id; })
+        .append("use")
+            .attr("xlink:href", function(d) { return "#" + d.data.id; });
+    
+    //Text-Label: Add text labels - each word goes on its own line
+    cellDataJoinEnter.append("text")
+        .attr("clip-path", function(d) { return "url(#clip-" + d.data.id + ")"; })
+        .selectAll("tspan")
+        .data(function(d) { return d.data.name.split(/(?=[A-Z][^A-Z])/g); })
+        .enter().append("tspan")
+            .attrs({
+                "x": 4,
+                "y": (d, i) => 13 + i * 10
+            })
+            .text(d => d);
+    
+    // Simple way to make tooltips
+    cellDataJoinEnter.append("title")
+        .text(d => d.data.id + "\n" + format(d.value));
+    
+    // Add an input to select between different summing methods
+    d3.selectAll("input")
+        .data([sumBySize, sumByCount], function(d) { return d ? d.name : this.value; })
+        .on("change", changed);
+    
+    function changed(sum, e) {
+        console.log('sum')
+        console.log(sum)
+        console.log('e')
+        console.log(e)
+        
+        
+        // Give the treemap a new root, which uses a different summing function
+        treemap(hierarched.sum(sum));
+        // Update the size and position of each of the rectangles
+        cellDataJoinEnter.transition().duration(750)
+            .attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
+            .select("rect")
+                .attrs({
+                    "width": d => d.x1 - d.x0,
+                    "height": d => d.y1 - d.y0
+                });
+    }
 });
-
-// Call the resize function whenever a resize event occurs
-d3.select(window).on('resize', resize);
