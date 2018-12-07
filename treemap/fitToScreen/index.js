@@ -26,6 +26,27 @@ function sumBySize(d) {
     return d.size;
 }
 
+function resize(){
+    console.log('resizing!')
+    svgObj.selectAll('*').remove();
+
+    let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
+
+      //set svg dims
+    svgObj.attrs({
+        'height': heightLessMargins,
+        'width': widthLessMargins,
+        'transform': `translate(${margin.left},${margin.top})`
+    })
+
+    //reset three dims
+    treemap.size([widthLessMargins, heightLessMargins])
+
+    buildChart(globalData)
+
+
+}
+
 function prepData(data, sumFn){
 
         //stratify data
@@ -47,35 +68,12 @@ function prepData(data, sumFn){
     return hierarched;
 }
 
-const margin = { left: 20, right: 20, top: 20, bottom: 20 };
-let rootData, storedNodes;
-let {chartObj, svgObj, svgW, svgH} = makeObjsFromParent('chartDiv');  
-let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
-
-svgObj.attrs({
-  'height': heightLessMargins,
-  'width': widthLessMargins,
-  'transform': `translate(${margin.left},${margin.top})`
-})
-
-var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
-    colorScale = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
-    format = d3.format(",d");
-
-var treemap = d3.treemap()
-    .tile(d3.treemapResquarify)
-    .size([resizedWidth, resizedHeight])
-    .round(true)
-    .paddingInner(1);
-
-d3.json("./data.json", function(error, data) {
-    if (error) throw error;
-
-    let hierarched = prepData(data, sumBySize)
+function buildChart(data){
+        let preppedData = prepData(data, sumBySize)
     
     var cellDataJoin = svgObj.selectAll("g")
         // root.leaves() are the children of the root
-        .data(hierarched.leaves());
+        .data(preppedData.leaves());
 
         cellDataJoinEnter = cellDataJoin.enter().append("g")
             .attrs({
@@ -114,31 +112,37 @@ d3.json("./data.json", function(error, data) {
     // Simple way to make tooltips
     cellDataJoinEnter.append("title")
         .text(d => d.data.id + "\n" + format(d.value));
-    
-    // Add an input to select between different summing methods
-    d3.selectAll("input")
-        .data([sumBySize, sumByCount], function(d) { return d ? d.name : this.value; })
-        .on("change", changed);
-    
-    function changed(sum, e) {
-        console.log('sum')
-        console.log(sum)
-        console.log('e')
-        console.log(e)
-        
-        
-        // Give the treemap a new root, which uses a different summing function
-        treemap(hierarched.sum(sum));
-        // Update the size and position of each of the rectangles
-        cellDataJoinEnter.transition().duration(750)
-            .attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
-            .select("rect")
-                .attrs({
-                    "width": d => d.x1 - d.x0,
-                    "height": d => d.y1 - d.y0
-                });
-    }
+}
+
+const margin = { left: 20, right: 20, top: 20, bottom: 20 };
+let rootData, storedNodes;
+let {chartObj, svgObj, svgW, svgH} = makeObjsFromParent('chartDiv');  
+let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
+
+svgObj.attrs({
+  'height': heightLessMargins,
+  'width': widthLessMargins,
+  'transform': `translate(${margin.left},${margin.top})`
+})
+
+var fader = function(color) { return d3.interpolateRgb(color, "#fff")(0.2); },
+    colorScale = d3.scaleOrdinal(d3.schemeCategory20.map(fader)),
+    format = d3.format(",d");
+
+var treemap = d3.treemap()
+    .tile(d3.treemapResquarify)
+    .size([resizedWidth, resizedHeight])
+    .round(true)
+    .paddingInner(1);
+
+let globalData;
+
+d3.json("./data.json", function(error, data) {
+    if (error) throw error;
+
+    globalData = data;
+    buildChart(globalData);
 });
 
 // Call the resize function whenever a resize event occurs
-// d3.select(window).on('resize', resize);
+d3.select(window).on('resize', resize);
