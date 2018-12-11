@@ -14,12 +14,25 @@ var pack = d3.pack()
     .size([width - 2, height - 2])
     .padding(3);
 
+let sortFn = (a,b) => b.value - a.value;
+let valFn = d => d.value;
+let nodeFn = d => d.node;
+let makeRoot = (data) => {
+  return stratify(data)
+    .sum(valFn)
+    .sort(sortFn);
+}
+let hovered = (hover) => {
+  return d => {
+    d3.selectAll(d.ancestors().map(nodeFn)
+    ).classed("node--hover", hover);
+  }
+}
+
 d3.csv("data.csv", (error, data) => {
   if (error) throw error;
 
-  var root = stratify(data)
-      .sum(d => d.value)
-      .sort((a, b) => b.value - a.value);
+  var root = makeRoot(data);
 
   pack(root);
 
@@ -31,27 +44,27 @@ d3.csv("data.csv", (error, data) => {
         "class": d => "nodeGWrapper node" + (!d.children ? " node--leaf" : d.depth ? "" : " node--root")
       })
       .each(function(d) {
-        console.log('each node g THIS') 
-        console.log(this)
+        // console.log('each node g THIS') 
+        // console.log(this)
         return d.node = this })
       .on("mouseover", hovered(true))
       .on("mouseout", hovered(false));
 
   node.append("circle")
-      .attrs({
-        "id": d => "node-" + d.id,
-        "r": d => d.r
-      })
-      .style("fill", d => color(d.depth))
+    .attrs({
+      "id": d => "node-" + d.id,
+      "r": d => d.r
+    })
+    .style("fill", d => color(d.depth))
 
-  var leaf = node.filter(d => !d.children);
+  var childlessNodes = node.filter(d => !d.children);
 
-  leaf.append("clipPath")
+  childlessNodes.append("clipPath")
       .attr("id", d => "clip-" + d.id)
     .append("use")
       .attr("xlink:href", d => `#node-${d.id}`);
 
-  leaf.append("text")
+  childlessNodes.append("text")
       .attr("clip-path", d => `url(#clip-${d.id})`)
     .selectAll("tspan")
     .data(d => d.id.substring(d.id.lastIndexOf(".") + 1).split(/(?=[A-Z][^A-Z])/g))
@@ -65,14 +78,3 @@ d3.csv("data.csv", (error, data) => {
   node.append("title")
       .text(d => d.id + "\n" + format(d.value));
 });
-
-function hovered(hover) {
-  return d => {
-    d3
-      .selectAll(d.ancestors()
-        .map(function(d) { 
-          return d.node; 
-        })
-      ).classed("node--hover", hover);
-  }
-}
