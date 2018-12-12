@@ -111,6 +111,26 @@ function buildChart(data){
       .text(d => d.id + "\n" + format(d.value));
 }
 
+function resize(){
+    console.log('resizing!')
+    svgObj.selectAll('*').remove();
+
+    let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
+
+      //set svg dims
+    svgObj.attrs({
+        'height': heightLessMargins,
+        'width': widthLessMargins,
+        'transform': `translate(${margin.left},${margin.top})`
+    })
+
+    //reset three dims
+    pack.size([widthLessMargins - 2, heightLessMargins - 2])
+
+    buildChart(globalData)
+
+}
+
 let globalData;
 
 d3.csv("data.csv", (error, data) => {
@@ -120,3 +140,6 @@ d3.csv("data.csv", (error, data) => {
   buildChart(globalData);
   
 });
+
+// Call the resize function whenever a resize event occurs
+d3.select(window).on('resize', resize);
