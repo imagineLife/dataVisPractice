@@ -60,15 +60,16 @@ let hovered = (hover) => {
   }
 }
 
-d3.csv("data.csv", (error, data) => {
-  if (error) throw error;
+function prepData(data){
+  var rootData = makeRoot(data);
+  return pack(rootData);
+}
 
-  var root = makeRoot(data);
-
-  pack(root);
+function buildChart(data){
+  let rootData = prepData(data)
 
   var node = svgObj.selectAll("g")
-    .data(root.descendants())
+    .data(rootData.descendants())
     .enter().append("g")
       .attrs({
         "transform": d => `translate(${d.x},${d.y})`,
@@ -108,4 +109,14 @@ d3.csv("data.csv", (error, data) => {
 
   node.append("title")
       .text(d => d.id + "\n" + format(d.value));
+}
+
+let globalData;
+
+d3.csv("data.csv", (error, data) => {
+  if (error) throw error;
+
+  globalData = data;
+  buildChart(globalData);
+  
 });

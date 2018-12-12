@@ -1,6 +1,6 @@
 let sortFn = (a,b) => b.value - a.value;
 let valFn = d => d.value;
-let nodeFn = d => d.node;
+let nodeFn = d => d.thisNode;
 let allButLastSegment = d => d.id.substring(0, d.id.lastIndexOf("."));
 
 var svg = d3.select("svg"),
@@ -48,7 +48,7 @@ d3.csv("data.csv", (error, data) => {
       .each(function(d) {
         // console.log('each node g THIS') 
         // console.log(this)
-        return d.node = this })
+        return d.thisNode = this })
       .on("mouseover", hovered(true))
       .on("mouseout", hovered(false));
 
