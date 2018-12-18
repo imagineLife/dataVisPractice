@@ -8,12 +8,12 @@ text {
   stroke-width: 1.5px;
 }
 
-.partition{
+.singlePath{
 	cursor: pointer;
 	opacity: .7;
 	stroke: #fff;
 }
 
-.partition:hover{
+.singlePath:hover{
 	opacity: 1;
 }

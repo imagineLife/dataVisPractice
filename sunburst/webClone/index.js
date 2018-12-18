@@ -40,17 +40,22 @@ function buildChart(data){
 
     let rootedData = makeRoot(data);
 
-    // Put it all together
-    let myPath = gObj.selectAll('path')
-      .data(rootedData.descendants())
-      .enter().append('path')
-        .attrs({
-          "display": d => d.depth ? null : "none",
-          "d": arcFn,
-          'class':'partition'
-        })
-        .style("fill", d => colorScale((d.children ? d : d.parent).data.name));
-    myPath.append('title')
-      .text(d => `${d.data.name}: ${d.value}`);
+     // Add a <g> element for each node in thd data, then append <path> elements and draw lines based on the arc
+    // variable calculations. Last, color the lines and the slices.
+    let sliceGs = gObj.selectAll('g')
+        .data(rootedData.descendants());
+    
+    let slicePaths = sliceGs.enter()
+          .append('g')
+          .attr("class", "sliceGWrapper")
+    
+    let singlePath = slicePaths.append('path')
+      .attrs({
+        "display": d => d.depth ? null : "none",
+        "d": arcFn,
+        'class':'singlePath'
+      })
+      .style('stroke', '#fff')
+      .style("fill", function (d) { return colorScale((d.children ? d : d.parent).data.name); });
 
 }
