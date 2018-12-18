@@ -45,11 +45,11 @@ function buildChart(data){
     let sliceGs = gObj.selectAll('g')
         .data(rootedData.descendants());
     
-    let slicePaths = sliceGs.enter()
+    let sliceGs = sliceGs.enter()
           .append('g')
           .attr("class", "sliceGWrapper")
     
-    let singlePath = slicePaths.append('path')
+    let singlePath = sliceGs.append('path')
       .attrs({
         "display": d => d.depth ? null : "none",
         "d": arcFn,
