@@ -30,6 +30,29 @@ function makeRoot(data){
   return pt(root);
 }
 
+/*
+
+  Calculate the correct distance to rotate each label based on its location in the sunburst.
+  @param {Node} d
+  @return {Number}
+
+  TRANSLATE: "translate(" + arc.centroid(d) + ")" moves the reference point for this <text> element to the center of each arc (the variable we defined above). 
+  The centroid command from d3 computes the midpoint [x, y] of each arc.
+  ROTATE: "rotate(" + computeTextRotation(d) + ")" then we'll rotate our <text> element a specified number of degrees. We'll do that calc in a separate function below.
+
+*/
+
+function computeTextRotation(d) {
+    var angle = (d.x0 + d.x1) / Math.PI * 90;
+
+    // Avoid upside-down labels
+    return (angle < 120 || angle > 270) ? angle : angle + 180;  // labels as rims
+}
+
+function transformText(d){
+  return "translate(" + arcFn.centroid(d) + ")rotate(" + computeTextRotation(d) + ")"
+}
+
 d3.json('./data.json', data => {
   buildChart(data)
 })
@@ -42,10 +65,10 @@ function buildChart(data){
 
      // Add a <g> element for each node in thd data, then append <path> elements and draw lines based on the arc
     // variable calculations. Last, color the lines and the slices.
-    let sliceGs = gObj.selectAll('g')
+    let sliceDataJoin = gObj.selectAll('g')
         .data(rootedData.descendants());
     
-    let sliceGs = sliceGs.enter()
+    let sliceGs = sliceDataJoin.enter()
           .append('g')
           .attr("class", "sliceGWrapper")
     
@@ -58,4 +81,11 @@ function buildChart(data){
       .style('stroke', '#fff')
       .style("fill", function (d) { return colorScale((d.children ? d : d.parent).data.name); });
 
+    // Populate the <text> elements with our data-driven titles.
+    gObj.selectAll(".sliceGWrapper")
+      .append("text")
+      .attr("transform", transformText)
+      .attr("dx", "-20") // radius margin
+      .attr("dy", ".5em") // rotation align
+      .text(d => d.parent ? d.data.name : "");
 }
