@@ -25,7 +25,8 @@ var arcFn = d3.arc()
 function makeRoot(data){
   // Find data root
   var root = d3.hierarchy(data)
-      .sum(d => +d.size);
+      .sum(d => +d.size)
+      .sort((a,b) => b.value - a.value);
 
   // Size arcs
   return pt(root);
