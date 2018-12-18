@@ -5,10 +5,11 @@ var radius = Math.min(width, height) / 2;
 var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
 // Create primary <g> element
-var g = d3.select('svg')
+var chartDiv = d3.select('.chartDiv')
+var svgObj = chartDiv.append('svg')
     .attr('width', width)
     .attr('height', height)
-    .append('g')
+var gObj = svgObj.append('g')
     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
 // Data strucure
@@ -35,12 +36,11 @@ d3.json('./data.json', data => {
 })
 
 function buildChart(data){
-  console.log('BUILD CHART!');
 
     let rootedData = makeRoot(data);
 
     // Put it all together
-    let myPath = g.selectAll('path')
+    let myPath = gObj.selectAll('path')
       .data(rootedData.descendants())
       .enter().append('path')
         .attrs({
@@ -48,13 +48,8 @@ function buildChart(data){
           "d": arcFn,
           'class':'partition'
         })
-        .style('stroke', '#fff')
         .style("fill", d => colorScale((d.children ? d : d.parent).data.name));
     myPath.append('title')
-      .text(d => {
-        console.log('d')
-        console.log(d)
-        return `${d.data.name}: ${d.value}`
-      });
+      .text(d => `${d.data.name}: ${d.value}`);
 
 }

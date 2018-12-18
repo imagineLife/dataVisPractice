@@ -11,6 +11,7 @@ text {
 .partition{
 	cursor: pointer;
 	opacity: .7;
+	stroke: #fff;
 }
 
 .partition:hover{
