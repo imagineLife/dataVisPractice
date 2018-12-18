@@ -17,3 +17,7 @@ text {
 .singlePath:hover{
 	opacity: 1;
 }
+
+.sliceText{
+	pointer-events: none;
+}

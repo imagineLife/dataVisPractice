@@ -85,9 +85,12 @@ function buildChart(data){
     // Populate the <text> elements with our data-driven titles.
     gObj.selectAll(".sliceGWrapper")
       .append("text")
-      .attr("transform", transformText)
+      .attrs({
+        "transform": transformText,
       // .attr("dx", "-10") // radius margin OPTIONAL?!
-      .attr("dy", ".5em") // rotation align
-      .attr('text-ancor', 'middle')
+        "dy": ".5em", // rotation align
+        'text-ancor': 'middle',
+        'class': 'sliceText'
+      })
       .text(d => d.parent ? d.data.name : "");
 }
