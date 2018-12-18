@@ -13,8 +13,7 @@ var gObj = svgObj.append('g')
     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
 // Data strucure
-var partition = d3.partition()
-    .size([2 * Math.PI, radius]);
+var pt = d3.partition();
 
 var arcFn = d3.arc()
     .startAngle(d => d.x0)
@@ -28,7 +27,7 @@ function makeRoot(data){
       .sum(d => +d.size);
 
   // Size arcs
-  return partition(root);
+  return pt(root);
 }
 
 d3.json('./data.json', data => {
@@ -36,6 +35,8 @@ d3.json('./data.json', data => {
 })
 
 function buildChart(data){
+
+    pt.size([2 * Math.PI, radius]);
 
     let rootedData = makeRoot(data);
 
