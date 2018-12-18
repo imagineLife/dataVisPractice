@@ -85,7 +85,8 @@ function buildChart(data){
     gObj.selectAll(".sliceGWrapper")
       .append("text")
       .attr("transform", transformText)
-      .attr("dx", "-20") // radius margin
+      // .attr("dx", "-10") // radius margin
       .attr("dy", ".5em") // rotation align
+      .attr('text-ancor', 'middle')
       .text(d => d.parent ? d.data.name : "");
 }
