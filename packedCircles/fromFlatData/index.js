@@ -17,7 +17,7 @@ function getDimsFromParent(p){
 }
 
 let sortFn = (a,b) => b.value - a.value;
-let valFn = d => d.size;
+let valFn = d => d.value;
 let nodeFn = d => d.thisNode;
 let allButLastSegment = d => d.parent//d.id.substring(0, d.id.lastIndexOf("."));
 
@@ -32,28 +32,24 @@ svgObj.attrs({
   'transform': `translate(${margin.left},${margin.top})`
 })
 
-console.log('resizedWidth')
-console.log(resizedWidth)
-
-
 var format = d3.format(",d");
 
 var color = d3.scaleSequential(d3.interpolateMagma)
     .domain([-4, 4]);
 
-var stratify = d3.stratify().parentId(d => d.parent);
+var stratify = d3.stratify()//.parentId(d => d.parent);
 
 var pack = d3.pack()
     .size([widthLessMargins - 2, heightLessMargins - 2])
     .padding(3);
 
-let makeRoot = (data) => {
-  return stratify(data)
-    .id(d => d.name)
-    .parentId(d => d.parent)
-    .sum(valFn)
-    .sort(sortFn);
-}
+// let makeRoot = (data) => {
+//   return stratify(data)
+//     .id(d => d.name)
+//     .parentId(d => d.parent)
+//     .sum(valFn)
+//     .sort(sortFn);
+// }
 
 let hovered = (hover) => {
   return d => {
@@ -74,64 +70,51 @@ function buildChart(data){
   var stratRootData = d3.stratify()
     .id(d => d.name)
     .parentId(d => d.parent)
-    (data);
+    (data)
+    .sum(d => d.value)
+    .sort((a,b) => a.value - b.value);
     
-  let rootData = pack(data)
+      //make a ROOT?!
+    var root = d3.hierarchy(stratRootData)  // <-- 1
+    .sum(function (d) { return d.value});  // <-- 2
 
-console.log('rootData')
-   console.log(rootData)
+  let packedData = pack(root)
    
   var node = svgObj.selectAll("g")
-    .data(rootData.descendants())
+    .data(packedData.descendants())
     .enter().append("g")
       .attrs({
         "transform": d => `translate(${d.x},${d.y})`,
         "class": d => "nodeGWrapper node" + (!d.children ? " node--leaf" : d.depth ? "" : " node--root")
       })
       .each(function(d) {
-        // console.log('each node g THIS') 
-        // console.log(this)
         return d.thisNode = this })
       .on("mouseover", hovered(true))
       .on("mouseout", hovered(false));
 
   node.append("circle")
     .attrs({
-      "id": d => "node-" + d.id,
+      "id": d => "node-" + d.name,
       "r": d => d.r
     })
     .style("fill", d => color(d.depth))
 
-  var childlessNodes = node.filter(d => !d.children);
+  var childlessNode = node.filter(d => !d.children);
 
-  childlessNodes.append("clipPath")
-      .attr("id", d => "clip-" + d.id)
+  childlessNode.append("clipPath")
+      .attr("id", d => "clip-" + d.data.id)
     .append("use")
-      .attr("xlink:href", d => `#node-${d.id}`);
+      .attr("xlink:href", d => `#node-${d.data.id}`);
 
-  childlessNodes.append("text")
-      .attr("clip-path", d => `url(#clip-${d.id})`)
-    .selectAll("tspan")
-    .data(d => {
-      console.log('d')
-      console.log(d)
-      
-      return d.id
-      // d.id.substring(d.id.lastIndexOf(".") + 1).split(/(?=[A-Z][^A-Z])/g)})
-    })
-    .enter().append("tspan")
-      .attrs({
-        "x": 0,
-        "y": (d, i, nodes) => 13 + (i - nodes.length / 2 - 0.5) * 10
-      })
-      .text(d => d);
+  childlessNode.append("text")
+      .attr("clip-path", d => `url(#clip-${d.data.id})`)
+      .text(d => d.data.id);
 
   node.append("title")
-      .text(d => d.id + "\n" + format(d.value));
+      .text(d => d.data.id + "\n" + format(d.value));
 }
 
 function resize(){
-    console.log('resizing!')
     svgObj.selectAll('*').remove();
 
     let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
@@ -144,10 +127,9 @@ function resize(){
     })
 
     //reset three dims
-    pack.size([widthLessMargins - 2, heightLessMargins - 2])
+    pack.size([widthLessMargins - 20, heightLessMargins - 20])
 
     buildChart(globalData)
-
 }
 
 let globalData;
