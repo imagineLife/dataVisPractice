@@ -16,16 +16,42 @@ var gObj = svgObj.append('g')
 // Data strucure
 var pt = d3.partition();
 
+
+/*NOTE
+  At each small step of the animation, 
+   d3 needs to know what our startAngle (x0)
+    and endAngle (x1) were originally 
+    (so that when d3 re-calculates the arc,
+     D3 have a starting point.
+*/
+
 var arcFn = d3.arc()
-    .startAngle(d => d.x0)
-    .endAngle(d => d.x1)
-    .innerRadius(d => d.y0)
-    .outerRadius(d => d.y1);
+  .startAngle(d => {
+    //save the "start" states for our angles
+    d.x0s = d.x0; 
+    return d.x0
+  })
+  .endAngle(d => {
+    //save the "start" states for our angles 
+    d.x1s = d.x1; 
+    return d.x1; 
+  })
+  .innerRadius(d => d.y0)
+  .outerRadius(d => d.y1);
+
+var rootedData = null, sliceGs = null;
 
 function makeRoot(data){
   // Find data root
   var root = d3.hierarchy(data)
       .sum(d => +d.size)
+
+      /*
+       sorts each node in comparison
+        to its siblings using the requested comparison.
+         In our case, we're comparing the "value" attribute
+          that we just created for each partition in .sum()
+       */
       .sort((a,b) => b.value - a.value);
 
   // Size arcs
@@ -55,24 +81,81 @@ function transformText(d){
   return "translate(" + arcFn.centroid(d) + ")rotate(" + computeTextRotation(d) + ")"
 }
 
-d3.json('./data.json', data => {
-  buildChart(data)
-})
+function arcTweenPath(a, i) {  
+
+  function tween(t) { 
+    var b = interp(t);  
+    a.x0s = b.x0;  
+    a.x1s = b.x1;  
+    return arcFn(b);
+  }  
+  // interpolate docs
+  // https://github.com/d3/d3-interpolate#d3-interpolate
+    var interp = d3.interpolate({ 
+      x0: a.x0s, 
+      x1: a.x1s 
+    }, a);
+    
+    return tween;  // <-- 6
+}
+
+function arcTweenText(a, i) {
+
+    var interp = d3.interpolate({ 
+      x0: a.x0s, 
+      x1: a.x1s 
+    }, a);
+    function tween(t) {
+        var b = interp(t);
+        return "translate(" + arcFn.centroid(b) + ")rotate(" + computeTextRotation(b) + ")";
+    }
+    return tween;
+}
+
+function toggleOrder() {
+
+    // Determine how to size the slices.
+    if (this.value === "size") {  // <-- 2
+      rootedData.sum(function (d) { return d.size; });  // <-- 3
+    } else {  // <-- 2
+      rootedData.count();  // <-- 4
+    }
+    rootedData.sort(function(a, b) { return b[this.value] - b[this.value]; });  // <-- 5
+
+    pt(rootedData);  // <-- 6
+
+    sliceGs.selectAll("path")
+      .transition()
+      .duration(1350)
+      .ease(d3.easeElastic)
+      //attrTween docs
+    //https://github.com/d3/d3-transition#transition_attrTween
+      .attrTween("d", arcTweenPath);
+    sliceGs.selectAll("text")
+      .transition()
+      .duration(1350)
+      .ease(d3.easeElastic)
+      //attrTween docs
+      //https://github.com/d3/d3-transition#transition_attrTween
+      .attrTween("transform", arcTweenText);  // <-- 8
+
+}
+
 
 function buildChart(data){
 
     pt.size([2 * Math.PI, radius]);
 
-    let rootedData = makeRoot(data);
+    rootedData = makeRoot(data);
 
      // Add a <g> element for each node in thd data, then append <path> elements and draw lines based on the arc
     // variable calculations. Last, color the lines and the slices.
     let sliceDataJoin = gObj.selectAll('g')
-        .data(rootedData.descendants());
+      .data(rootedData.descendants());
     
-    let sliceGs = sliceDataJoin.enter()
-          .append('g')
-          .attr("class", "sliceGWrapper")
+    sliceGs = sliceDataJoin.enter()
+      .append('g')
+      .attr("class", "sliceGWrapper")
     
     let singlePath = sliceGs.append('path')
       .attrs({
@@ -94,4 +177,12 @@ function buildChart(data){
         'class': 'sliceText'
       })
       .text(d => d.parent ? d.data.name : "");
+
+
+    d3.selectAll(".sizeSelect").on("click", toggleOrder);
 }
+
+
+d3.json('./data.json', data => {
+  buildChart(data)
+})
