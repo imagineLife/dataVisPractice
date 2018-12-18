@@ -10,7 +10,8 @@ var svgObj = chartDiv.append('svg')
     .attr('width', width)
     .attr('height', height)
 var gObj = svgObj.append('g')
-    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+    .attr('class', 'gWrapper');
 
 // Data strucure
 var pt = d3.partition();
@@ -85,7 +86,7 @@ function buildChart(data){
     gObj.selectAll(".sliceGWrapper")
       .append("text")
       .attr("transform", transformText)
-      // .attr("dx", "-10") // radius margin
+      // .attr("dx", "-10") // radius margin OPTIONAL?!
       .attr("dy", ".5em") // rotation align
       .attr('text-ancor', 'middle')
       .text(d => d.parent ? d.data.name : "");
