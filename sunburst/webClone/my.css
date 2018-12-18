@@ -7,3 +7,12 @@ text {
   stroke: #000;
   stroke-width: 1.5px;
 }
+
+.partition{
+	cursor: pointer;
+	opacity: .7;
+}
+
+.partition:hover{
+	opacity: 1;
+}

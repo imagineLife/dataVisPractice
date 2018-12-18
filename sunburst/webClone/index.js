@@ -45,7 +45,8 @@ function buildChart(data){
       .enter().append('path')
         .attrs({
           "display": d => d.depth ? null : "none",
-          "d": arcFn
+          "d": arcFn,
+          'class':'partition'
         })
         .style('stroke', '#fff')
         .style("fill", d => colorScale((d.children ? d : d.parent).data.name));
