@@ -4,7 +4,9 @@ const dName = d => d.name;
 const dPar = d => d.parent;
 const dChild = d => d.children;
 const dDatNm = d => d.data.name;
+const dID = d => d.id;
 const transNode = d => `translate(${d.y},${d.x})`;
+
 function makeObjsFromParent(parent){
   let chartObj = d3.select('#chartDiv'),
   svgObj = chartObj.append('svg'),
@@ -38,10 +40,7 @@ function getDimsFromParent(p){
 }
 
 // Collapse the node and all it's children
-function collapse(d) {
-  console.log('COLLAPSING d.id')
-  console.log(d.id)
-  
+function collapse(d) {  
   if(d.children && !openedChildren.includes(d.id)) {
     d._children = d.children
     d._children.forEach(collapse)
@@ -51,26 +50,15 @@ function collapse(d) {
 
 // Creates a curved (diagonal) path from parent to the child nodes
 function diagShape(s, d) {
-  // console.log('s')
-  // console.log(s)
-  // console.log('d')
-  // console.log(d)
-  // console.log('- - - - -');
-  
-
   path = `M ${s.y} ${s.x}
           C ${(s.y + d.y) / 2} ${s.x},
             ${(s.y + d.y) / 2} ${d.x},
             ${d.y} ${d.x}`
-
   return path
 }
 
 // Toggle children on click.
 function nodeClick(d) {
-  console.log('nodeClick d.id')
-  console.log(d.id)
-
   openedChildren.push(d.id)
   
   if (d.children) {
@@ -136,7 +124,7 @@ function buildChart(stratRootData, nodes){
   // Add Circle for the nodes
   nodeEnter.append('circle')
       .attrs({
-        'class': 'node',
+        'class': 'nodeCircle',
         'r': 1e-6
       })
       .style("fill", d => d._children ? "lightsteelblue" : "#fff");
@@ -159,7 +147,7 @@ function buildChart(stratRootData, nodes){
     .attr("transform", transNode);
 
   // Update the node attributes and style
-  nodeUpdate.select('circle.node')
+  nodeUpdate.select('.nodeCircle')
     .attr('r', 10)
     .style("fill", d => d._children ? "lightsteelblue" : "#fff")
     .attr('cursor', 'pointer');
@@ -182,7 +170,7 @@ function buildChart(stratRootData, nodes){
   
 
   var link = gObj.selectAll('path.link')
-      .data(links, d => d.id);
+      .data(links, dID);
 
   // Enter any new links at the parent's previous position.
   var linkEnter = link.enter().insert('path', "g")
@@ -217,7 +205,7 @@ function buildChart(stratRootData, nodes){
 }
 
 const margin = { left: 85, right: 20, top: 0, bottom: 20 };
-let rootData, storedNodes, transDur = 150;
+let rootData, storedNodes, transDur = 350;
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
 let openedChildren = [];
