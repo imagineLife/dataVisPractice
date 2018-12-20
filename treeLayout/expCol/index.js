@@ -34,10 +34,10 @@ function getDimsFromParent(p){
 
 // Collapse the node and all it's children
 function collapse(d) {
-  console.log('collapsing d')
-  console.log(d)
+  console.log('COLLAPSING d.id')
+  console.log(d.id)
   
-  if(d.children) {
+  if(d.children && !openedChildren.includes(d.id)) {
     d._children = d.children
     d._children.forEach(collapse)
     d.children = null
@@ -46,6 +46,12 @@ function collapse(d) {
 
 // Creates a curved (diagonal) path from parent to the child nodes
 function diagShape(s, d) {
+  // console.log('s')
+  // console.log(s)
+  // console.log('d')
+  // console.log(d)
+  // console.log('- - - - -');
+  
 
   path = `M ${s.y} ${s.x}
           C ${(s.y + d.y) / 2} ${s.x},
@@ -57,6 +63,11 @@ function diagShape(s, d) {
 
 // Toggle children on click.
 function nodeClick(d) {
+  console.log('nodeClick d.id')
+  console.log(d.id)
+
+  openedChildren.push(d.id)
+  
   if (d.children) {
       d._children = d.children;
       d.children = null;
@@ -64,10 +75,8 @@ function nodeClick(d) {
       d.children = d._children;
       d._children = null;
     }
-  console.log('d')
-  console.log(d)
   
-  update(d);
+  buildChart(rootData, storedNodes);
 }
 
 function resize(){
@@ -77,13 +86,13 @@ function resize(){
 
   //set svg dims
   svgObj.attrs({
-    'height': heightLessMargins,
-    'width': widthLessMargins,
-    'transform': `translate(${margin.left},${margin.top})`
+    'height': resizedHeight,
+    'width': resizedWidth,
+    'transform': `translate(${50},${margin.top})`
   })
 
   //transform gObj
-  gObj.attr('transform', `translate(${75},${margin.top})`)
+  gObj.attr('transform', `translate(${margin.left},${margin.top})`)
 
   //reset three dims
   treeLayout.size([heightLessMargins, widthLessMargins - 200])
@@ -93,61 +102,131 @@ function resize(){
 
 function buildChart(stratRootData, nodes){
 
-  stratRootData.x0 = resizedHeight / 2;
-  stratRootData.y0 = 0
+  // Assigns the x and y position for the nodes
+  var treeData = treeLayout(stratRootData);
 
-  // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
-  var linkDataJoin = gObj.selectAll(".link")
-    .data(treeLayout(stratRootData).links());
+  // Compute the new tree layout.
+  var nodes = treeData.descendants(),
+      links = treeData.descendants().slice(1);
 
-    //set link paths & link path data
-    linkDataJoin
-      .enter().append("path")
-        .attr("class", "link")
-      .merge(linkDataJoin)
-        .attr(
-          "d", d3.linkHorizontal().x(d => d.y).y(d => d.x)
-        );
+  // Normalize for fixed-depth.
+  // nodes.forEach(d => d.y = d.depth * 180);
 
-  // Set node DataJoin
-  var nodeDataJoin = gObj.selectAll(".node")
-    .data(stratRootData.descendants());
 
-  //build nodeEnter for appending cnode circle & text
-  let nodeEnter = nodeDataJoin.enter().append("g")
-    .merge(nodeDataJoin)
+  // ****************** Nodes section ***************************
+  // ************************************************************
+
+
+  // Update the nodes...
+  var nodeDataJoin = gObj.selectAll('g.node')
+      .data(nodes, function(d) {return d.id || (d.id = ++i); });
+
+  // Enter any new modes at the parent's previous position.
+  var nodeEnter = nodeDataJoin.enter().append('g')
     .attrs({
-      "class": d => "node" + (d.children ? " node--mid" : " node--final"),
-      "transform": d => `translate(${d.y},${d.x})`
+      'class': 'node',
+      'transform': d => `translate(${d.x},${d.y})`
     })
+    .on('click', nodeClick);
 
-  //build circles
-  let nodeCircle = nodeEnter.append("circle").attr("r", 2.5);
+  // Add Circle for the nodes
+  nodeEnter.append('circle')
+      .attrs({
+        'class': 'node',
+        'r': 1e-6
+      })
+      .style("fill", d => d._children ? "lightsteelblue" : "#fff");
 
-  //build node Text
-  let nodeTxt = nodeEnter.append("text")
-    .attrs({
-      "dy": 3,
-      "x": d => d.children ? -8 : 8,
-      "y": d => (d.children && d.parent !== null) ? -8 : 0,
-      'class':'nodeText'
-    })
-    .style("text-anchor", d => d.children ? "end" : "start")
-    .text((d) => d.id);
+  // Add labels for the nodes
+  nodeEnter.append('text')
+      .attrs({
+        "dy": ".35em",
+        "x": d => d.children || d._children ? -13 : 13,
+        "text-anchor": d => d.children || d._children ? "end" : "start"
+      })
+      .text(d => d.data.name);
+
+  // UPDATE
+  var nodeUpdate = nodeEnter.merge(nodeDataJoin);
+
+  // Transition to the proper position for the node
+  nodeUpdate.transition()
+    .duration(transDur)
+    .attr("transform", d => `translate(${d.y},${d.x})`);
+
+  // Update the node attributes and style
+  nodeUpdate.select('circle.node')
+    .attr('r', 10)
+    .style("fill", d => d._children ? "lightsteelblue" : "#fff")
+    .attr('cursor', 'pointer');
+
+  // Remove any exiting nodes
+  var nodeExit = nodeDataJoin.exit().transition()
+      .duration(transDur)
+      .attr("transform", function(d) {
+          return "translate(" + d.y + "," + d.x + ")";
+      })
+      .remove();
+
+  // On exit reduce the node circles size to 0
+  nodeExit.select('circle').attr('r', 1e-6);
+
+  // On exit reduce the opacity of text labels
+  nodeExit.select('text').style('fill-opacity', 1e-6);
+
+
+  // ****************** links section ***************************
+  // ************************************************************
+  
+
+  var link = gObj.selectAll('path.link')
+      .data(links, d => d.id);
+
+  // Enter any new links at the parent's previous position.
+  var linkEnter = link.enter().insert('path', "g")
+      .attr("class", "link")
+      .attr('d', d => {
+        var o = {x: d.x0, y: d.y0}
+        return diagShape(o, o)
+      });
+
+  // UPDATE
+  var linkUpdate = linkEnter.merge(link);
+
+  // Transition back to the parent element position
+  linkUpdate.transition()
+      .duration(transDur)
+      .attr('d', function(d){ return diagShape(d, d.parent) });
+
+  // Remove any exiting links
+  var linkExit = link.exit().transition()
+      .duration(transDur)
+      .attr('d', function(d) {
+        var o = {x: d.x, y: d.y}
+        return diagShape(o, o)
+      })
+      .remove();
+
+  // Store the old positions for transition.
+  nodes.forEach(function(d){
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
 }
 
-const margin = { left: 20, right: 20, top: 20, bottom: 20 };
+const margin = { left: 85, right: 20, top: 0, bottom: 20 };
 let rootData, storedNodes, transDur = 350;
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
+let openedChildren = [];
 
 svgObj.attrs({
-  'height': heightLessMargins,
-  'width': widthLessMargins,
-  'transform': `translate(${margin.left},${margin.top})`
+  'height': resizedHeight,
+  'width': resizedWidth,
+  'transform': `translate(${20},${margin.top})`
 })
 
-gObj.attr('transform', `translate(${75},${margin.top})`)
+gObj.attr('transform', `translate(${margin.left},${margin.top})`)
 
 let treeLayout = d3.tree()
   .size([heightLessMargins, widthLessMargins - 200]);
@@ -163,9 +242,6 @@ d3.json("./data.json", function(error, data) {
   rootData = stratRootData;
   storedNodes = nodes;
 
-  // Collapse the node and all it's children
-  rootData.children.forEach(collapse);
-  
   buildChart(rootData, nodes);
 });
 
