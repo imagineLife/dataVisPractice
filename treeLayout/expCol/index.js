@@ -1,5 +1,10 @@
-let getParentFromD = (d) => d.id.substring(0, d.id.lastIndexOf("."));
-
+const getParentFromD = (d) => d.id.substring(0, d.id.lastIndexOf("."));
+const startOrEnd = d => d.children || d._children ? "end" : "start";
+const dName = d => d.name;
+const dPar = d => d.parent;
+const dChild = d => d.children;
+const dDatNm = d => d.data.name;
+const transNode = d => `translate(${d.y},${d.x})`;
 function makeObjsFromParent(parent){
   let chartObj = d3.select('#chartDiv'),
   svgObj = chartObj.append('svg'),
@@ -13,12 +18,12 @@ function prepData(data){
   
   //stratify data
   var stratRootData = d3.stratify()
-    .id(d => d.name)
-    .parentId(d => d.parent)
+    .id(dName)
+    .parentId(dPar)
     (data);
 
   //build nodes using hierarchy
-  var nodes = d3.hierarchy(data, d => d.children);
+  var nodes = d3.hierarchy(data, dChild);
   return {stratRootData, nodes};
 }
 
@@ -80,7 +85,6 @@ function nodeClick(d) {
 }
 
 function resize(){
-  gObj.selectAll('*').remove()
 
   let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
 
@@ -88,7 +92,7 @@ function resize(){
   svgObj.attrs({
     'height': resizedHeight,
     'width': resizedWidth,
-    'transform': `translate(${50},${margin.top})`
+    'transform': `translate(${margin.left},${margin.top})`
   })
 
   //transform gObj
@@ -125,7 +129,7 @@ function buildChart(stratRootData, nodes){
   var nodeEnter = nodeDataJoin.enter().append('g')
     .attrs({
       'class': 'node',
-      'transform': d => `translate(${d.x},${d.y})`
+      'transform': transNode
     })
     .on('click', nodeClick);
 
@@ -142,9 +146,9 @@ function buildChart(stratRootData, nodes){
       .attrs({
         "dy": ".35em",
         "x": d => d.children || d._children ? -13 : 13,
-        "text-anchor": d => d.children || d._children ? "end" : "start"
+        "text-anchor": startOrEnd
       })
-      .text(d => d.data.name);
+      .text(dDatNm);
 
   // UPDATE
   var nodeUpdate = nodeEnter.merge(nodeDataJoin);
@@ -152,7 +156,7 @@ function buildChart(stratRootData, nodes){
   // Transition to the proper position for the node
   nodeUpdate.transition()
     .duration(transDur)
-    .attr("transform", d => `translate(${d.y},${d.x})`);
+    .attr("transform", transNode);
 
   // Update the node attributes and style
   nodeUpdate.select('circle.node')
@@ -163,9 +167,7 @@ function buildChart(stratRootData, nodes){
   // Remove any exiting nodes
   var nodeExit = nodeDataJoin.exit().transition()
       .duration(transDur)
-      .attr("transform", function(d) {
-          return "translate(" + d.y + "," + d.x + ")";
-      })
+      .attr("transform", transNode)
       .remove();
 
   // On exit reduce the node circles size to 0
@@ -186,7 +188,7 @@ function buildChart(stratRootData, nodes){
   var linkEnter = link.enter().insert('path', "g")
       .attr("class", "link")
       .attr('d', d => {
-        var o = {x: d.x0, y: d.y0}
+        var o = {x: d.x, y: d.y}
         return diagShape(o, o)
       });
 
@@ -215,7 +217,7 @@ function buildChart(stratRootData, nodes){
 }
 
 const margin = { left: 85, right: 20, top: 0, bottom: 20 };
-let rootData, storedNodes, transDur = 350;
+let rootData, storedNodes, transDur = 150;
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
 let openedChildren = [];
@@ -223,7 +225,7 @@ let openedChildren = [];
 svgObj.attrs({
   'height': resizedHeight,
   'width': resizedWidth,
-  'transform': `translate(${20},${margin.top})`
+  'transform': `translate(${margin.left},${margin.top})`
 })
 
 gObj.attr('transform', `translate(${margin.left},${margin.top})`)
