@@ -48,7 +48,7 @@ function resize(){
   gObj.attr('transform', `translate(${75},${margin.top})`)
 
   //reset three dims
-  tree.size([heightLessMargins, widthLessMargins - 200])
+  treeLayout.size([heightLessMargins, widthLessMargins - 200])
 
   buildChart(rootData, storedNodes)
 }
@@ -57,7 +57,7 @@ function buildChart(stratRootData, nodes){
 
   // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
   var linkDataJoin = gObj.selectAll(".link")
-    .data(tree(stratRootData).links());
+    .data(treeLayout(stratRootData).links());
 
     //set link paths & link path data
     linkDataJoin
@@ -108,7 +108,7 @@ svgObj.attrs({
 
 gObj.attr('transform', `translate(${75},${margin.top})`)
 
-let tree = d3.tree()
+let treeLayout = d3.tree()
   .size([heightLessMargins, widthLessMargins - 200]);
 
 var stratify = d3.stratify()
