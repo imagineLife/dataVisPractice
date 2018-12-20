@@ -32,6 +32,17 @@ function getDimsFromParent(p){
   return {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins}
 }
 
+// Creates a curved (diagonal) path from parent to the child nodes
+function diagShape(s, d) {
+
+  path = `M ${s.y} ${s.x}
+          C ${(s.y + d.y) / 2} ${s.x},
+            ${(s.y + d.y) / 2} ${d.x},
+            ${d.y} ${d.x}`
+
+  return path
+}
+
 function resize(){
   gObj.selectAll('*').remove()
 
@@ -96,7 +107,7 @@ function buildChart(stratRootData, nodes){
 }
 
 const margin = { left: 20, right: 20, top: 20, bottom: 20 };
-let rootData, storedNodes;
+let rootData, storedNodes, transDur = 350;
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
 
