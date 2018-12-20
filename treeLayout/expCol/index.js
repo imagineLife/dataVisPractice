@@ -34,6 +34,9 @@ function getDimsFromParent(p){
 
 // Collapse the node and all it's children
 function collapse(d) {
+  console.log('collapsing d')
+  console.log(d)
+  
   if(d.children) {
     d._children = d.children
     d._children.forEach(collapse)
@@ -161,6 +164,8 @@ d3.json("./data.json", function(error, data) {
   storedNodes = nodes;
 
   // Collapse the node and all it's children
+  rootData.children.forEach(collapse);
+  
   buildChart(rootData, nodes);
 });
 
