@@ -32,6 +32,15 @@ function getDimsFromParent(p){
   return {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins}
 }
 
+// Collapse the node and all it's children
+function collapse(d) {
+  if(d.children) {
+    d._children = d.children
+    d._children.forEach(collapse)
+    d.children = null
+  }
+}
+
 // Creates a curved (diagonal) path from parent to the child nodes
 function diagShape(s, d) {
 
@@ -150,6 +159,8 @@ d3.json("./data.json", function(error, data) {
   
   rootData = stratRootData;
   storedNodes = nodes;
+
+  // Collapse the node and all it's children
   buildChart(rootData, nodes);
 });
 
