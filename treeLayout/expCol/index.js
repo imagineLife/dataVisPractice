@@ -52,6 +52,9 @@ function nodeClick(d) {
       d.children = d._children;
       d._children = null;
     }
+  console.log('d')
+  console.log(d)
+  
   update(d);
 }
 
@@ -77,6 +80,9 @@ function resize(){
 }
 
 function buildChart(stratRootData, nodes){
+
+  stratRootData.x0 = resizedHeight / 2;
+  stratRootData.y0 = 0
 
   // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
   var linkDataJoin = gObj.selectAll(".link")
@@ -144,7 +150,7 @@ d3.json("./data.json", function(error, data) {
   
   rootData = stratRootData;
   storedNodes = nodes;
-  buildChart(stratRootData, nodes);
+  buildChart(rootData, nodes);
 });
 
 // Call the resize function whenever a resize event occurs
