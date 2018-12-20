@@ -43,6 +43,18 @@ function diagShape(s, d) {
   return path
 }
 
+// Toggle children on click.
+function nodeClick(d) {
+  if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+  update(d);
+}
+
 function resize(){
   gObj.selectAll('*').remove()
 
