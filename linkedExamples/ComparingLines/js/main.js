@@ -1,3 +1,22 @@
+function prepData(data){
+    let obj = {};
+    for (var coin in data) {
+        if (!data.hasOwnProperty(coin)) {
+            continue;
+        }
+        obj[coin] = data[coin].filter(function(d){
+            return !(d["price_usd"] == null)
+        })
+        obj[coin].forEach(function(d){
+            d["price_usd"] = +d["price_usd"];
+            d["24h_vol"] = +d["24h_vol"];
+            d["market_cap"] = +d["market_cap"];
+            d["date"] = parseTime(d["date"])
+        });
+    }
+    return obj;
+}
+
 var filteredData;
 var lineChart1,
     lineChart2,
@@ -27,22 +46,7 @@ $("#date-slider").slider({
 
 d3.json("data/data.json").then(function(data){
 
-    // Prepare and clean data
-    filteredData = {};
-    for (var coin in data) {
-        if (!data.hasOwnProperty(coin)) {
-            continue;
-        }
-        filteredData[coin] = data[coin].filter(function(d){
-            return !(d["price_usd"] == null)
-        })
-        filteredData[coin].forEach(function(d){
-            d["price_usd"] = +d["price_usd"];
-            d["24h_vol"] = +d["24h_vol"];
-            d["market_cap"] = +d["market_cap"];
-            d["date"] = parseTime(d["date"])
-        });
-    }
+    filteredData = prepData(data)
 
     lineChart1 = new LineChart("#chart-area1", "bitcoin");
     lineChart2 = new LineChart("#chart-area2", "ethereum");
@@ -53,9 +57,9 @@ d3.json("data/data.json").then(function(data){
 })
 
 function updateCharts(){
-    lineChart1.wrangleData()
-    lineChart2.wrangleData()
-    lineChart3.wrangleData()
-    lineChart4.wrangleData()
-    lineChart5.wrangleData()
+    wrangleData()
+    wrangleData()
+    wrangleData()
+    wrangleData()
+    wrangleData()
 }
