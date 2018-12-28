@@ -2,40 +2,37 @@ let xScale = x = d3.scaleTime()
 let yScale = d3.scaleLinear() 
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
-let yVariable, dataFiltered, xAxisG, yAxisG, gObj, svgObj, margin = { left:50, right:20, top:50, bottom:20 };
+let yVariable, dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(1000); }
+// Filter data based on selections
+const height = 250, 
+      width = 300, 
+      heightLM = height - margin.top - margin.bottom,
+      widthLM = width - margin.left - margin.right;
 
-LineChart = function(_parentElement, _coin){
+LineChart = function(_parentElement, coinData){
     this.parentElement = _parentElement;
-    this.coin = _coin
 
-    this.initVis();
+    this.initVis(coinData);
 };
 
-LineChart.prototype.initVis = function(){
+LineChart.prototype.initVis = function(coinData){
     var vis = this;
-
-    vis.height = 250;
-    vis.width = 300;
-    vis.heightLM = 250 - margin.top - margin.bottom;
-    vis.widthLM = 300 - margin.left - margin.right;
-    
 
     svgObj = d3.select(vis.parentElement)
         .append("svg")
         .attrs({
-            "width": vis.width,
-            "height": vis.height
+            "width": width,
+            "height": height
         });
+
     gObj = svgObj.append("g")
         .attr("transform", "translate(" + margin.left + 
             ", " + margin.top + ")");
 
-    
-
     vis.bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
-    vis.linePath = gObj.append("path")
+    linePath = gObj.append("path")
         .attrs({
             "class": "line",
             "fill": "none",
@@ -45,56 +42,55 @@ LineChart.prototype.initVis = function(){
 
     gObj.append("text")
         .attrs({
-            "x": vis.widthLM/2,
+            "x": widthLM/2,
             "y": 0,
             "text-anchor": "middle"
         })
-        .text(vis.coin)
+        .text(Object.keys(coinData))
 
-    xScale.range([0, vis.widthLM]);
-    yScale.range([vis.heightLM, 0]);
+    xScale.range([0, widthLM]);
+    yScale.range([heightLM, 0]);
 
     xAxisG = gObj.append("g")
         .attr("class", "xAxisG x axis")
-        .attr("transform", "translate(0," + vis.heightLM +")");
+        .attr("transform", "translate(0," + heightLM +")");
     yAxisG = gObj.append("g")
         .attr("class", "yAxisG y axis");
         
-    wrangleData(vis.coin);
+    wrangleData(coinData);
 };
 
 
-function wrangleData(coinName){
+function wrangleData(coinData, sliderTimeVals){
+    let timeVals = (!sliderTimeVals) ? [1368331200000, 1509422400000] : sliderTimeVals;
+    let dataKey = Object.keys(coinData)[0]
 
     yVariable = $("#var-select").val()
-
-    // Filter data based on selections
-    let sliderValues = $("#date-slider").slider("values")
     
-    dataFiltered = filteredData[coinName].filter(function(d) {
-        return ((d.date >= sliderValues[0]) && (d.date <= sliderValues[1]))
+    let sliderFilteredData = coinData[dataKey].filter(function(d) {
+        return ((d.date >= timeVals[0]) && (d.date <= timeVals[1]))
     })
 
-    updateVis(coinName);
+    updateVis(dataKey, sliderFilteredData);
 };
 
 
-const updateVis = function(coinName){
-    //works
-    // console.log('coinName')
-    // console.log(coinName)
+const updateVis = function(coinName, coinData){
+
+    console.log('UPDATING!');
+
+    lineDataJoin = gObj.selectAll('path')
+    .data(Object.keys(coinData)[0]);
+    console.log('lineDataJoin')
+    console.log(lineDataJoin)
     
     var vis = this;
 
     // Update scales
-    xScale.domain(d3.extent(dataFiltered, d => d.date));
-
-    //works
-    // console.log('xScale.domain()')
-    // console.log(xScale.domain())
+    xScale.domain(d3.extent(coinData, d => d.date));
     
-    yScale.domain([d3.min(dataFiltered, d => d[yVariable]) / 1.005, 
-        d3.max(dataFiltered, d => d[yVariable]) * 1.005]);
+    yScale.domain([d3.min(coinData, d => d[yVariable]) / 1.005, 
+        d3.max(coinData, d => d[yVariable]) * 1.005]);
 
     // Fix for y-axis format values
     var formatSi = d3.format(".2s");
@@ -125,14 +121,14 @@ const updateVis = function(coinName){
         .attrs({
             "class": "x-hover-line hover-line",
             "y1": 0,
-            "y2": vis.heightLM
+            "y2": heightLM
         });
 
     focus.append("line")
         .attrs({
             "class": "y-hover-line hover-line",
             "x1": 0,
-            "x2": vis.widthLM
+            "x2": widthLM
         });
 
     focus.append("circle")
@@ -148,8 +144,8 @@ const updateVis = function(coinName){
         .attrs({
             "transform": `translate(${margin.left},${margin.top})`,
             "class": "overlay " + coinName,
-            "width": vis.widthLM,
-            "height": vis.heightLM
+            "width": widthLM,
+            "height": heightLM
         })
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
@@ -157,13 +153,13 @@ const updateVis = function(coinName){
 
     function mousemove() {
         var x0 = xScale.invert(d3.mouse(this)[0]),
-            i = vis.bisectDate(dataFiltered, x0, 1),
-            d0 = dataFiltered[i - 1],
-            d1 = dataFiltered[i],
+            i = vis.bisectDate(coinData, x0, 1),
+            d0 = coinData[i - 1],
+            d1 = coinData[i],
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
         focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d[yVariable]) + ")");
         focus.select("text").text(function() { return d3.format("$,")(d[yVariable].toFixed(2)); });
-        focus.select(".x-hover-line").attr("y2", vis.heightLM - yScale(d[yVariable]));
+        focus.select(".x-hover-line").attr("y2", heightLM - yScale(d[yVariable]));
         focus.select(".y-hover-line").attr("x2", -xScale(d.date));
     }
 
@@ -172,8 +168,7 @@ const updateVis = function(coinName){
         .y(function(d) { 
             return yScale(d[yVariable]); });
 
-    gObj.select(".line")
-        .transition(vis.t)
-        .attr("d", line(dataFiltered));
+    linePath.transition(t())
+        .attr("d", line(coinData));
 
 };
