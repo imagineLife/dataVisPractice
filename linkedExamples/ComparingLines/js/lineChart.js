@@ -15,14 +15,18 @@ LineChart = function(_parentElement, _coin){
 LineChart.prototype.initVis = function(){
     var vis = this;
 
+    vis.height = 250;
+    vis.width = 300;
+    vis.heightLM = 250 - margin.top - margin.bottom;
+    vis.widthLM = 300 - margin.left - margin.right;
     
-    vis.height = 250 - margin.top - margin.bottom;
-    vis.width = 300 - margin.left - margin.right;
 
     svgObj = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + margin.left + margin.right)
-        .attr("height", vis.height + margin.top + margin.bottom);
+        .attrs({
+            "width": vis.width,
+            "height": vis.height
+        });
     gObj = svgObj.append("g")
         .attr("transform", "translate(" + margin.left + 
             ", " + margin.top + ")");
@@ -40,17 +44,19 @@ LineChart.prototype.initVis = function(){
         });
 
     gObj.append("text")
-        .attr("x", vis.width/2)
-        .attr("y", 0)
-        .attr("text-anchor", "middle")
+        .attrs({
+            "x": vis.widthLM/2,
+            "y": 0,
+            "text-anchor": "middle"
+        })
         .text(vis.coin)
 
-    xScale.range([0, vis.width]);
-    yScale.range([vis.height, 0]);
+    xScale.range([0, vis.widthLM]);
+    yScale.range([vis.heightLM, 0]);
 
     xAxisG = gObj.append("g")
         .attr("class", "xAxisG x axis")
-        .attr("transform", "translate(0," + vis.height +")");
+        .attr("transform", "translate(0," + vis.heightLM +")");
     yAxisG = gObj.append("g")
         .attr("class", "yAxisG y axis");
         
@@ -74,12 +80,21 @@ function wrangleData(coinName){
 
 
 const updateVis = function(coinName){
+    //works
+    // console.log('coinName')
+    // console.log(coinName)
+    
     var vis = this;
 
     // Update scales
-    xScale.domain(d3.extent(dataFiltered, function(d) { return d.date; }));
-    yScale.domain([d3.min(dataFiltered, function(d) { return d[yVariable]; }) / 1.005, 
-        d3.max(dataFiltered, function(d) { return d[yVariable]; }) * 1.005]);
+    xScale.domain(d3.extent(dataFiltered, d => d.date));
+
+    //works
+    // console.log('xScale.domain()')
+    // console.log(xScale.domain())
+    
+    yScale.domain([d3.min(dataFiltered, d => d[yVariable]) / 1.005, 
+        d3.max(dataFiltered, d => d[yVariable]) * 1.005]);
 
     // Fix for y-axis format values
     var formatSi = d3.format(".2s");
@@ -107,27 +122,35 @@ const updateVis = function(coinName){
         .style("display", "none");
 
     focus.append("line")
-        .attr("class", "x-hover-line hover-line")
-        .attr("y1", 0)
-        .attr("y2", vis.height);
+        .attrs({
+            "class": "x-hover-line hover-line",
+            "y1": 0,
+            "y2": vis.heightLM
+        });
 
     focus.append("line")
-        .attr("class", "y-hover-line hover-line")
-        .attr("x1", 0)
-        .attr("x2", vis.width);
+        .attrs({
+            "class": "y-hover-line hover-line",
+            "x1": 0,
+            "x2": vis.widthLM
+        });
 
     focus.append("circle")
         .attr("r", 5);
 
     focus.append("text")
-        .attr("x", 15)
-        .attr("dy", ".31em");
+        .attrs({
+            "x": 15,
+            "dy": ".31em"
+        });
 
     svgObj.append("rect")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("class", "overlay " + coinName)
-        .attr("width", vis.width)
-        .attr("height", vis.height)
+        .attrs({
+            "transform": `translate(${margin.left},${margin.top})`,
+            "class": "overlay " + coinName,
+            "width": vis.widthLM,
+            "height": vis.heightLM
+        })
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
         .on("mousemove", mousemove);
@@ -140,7 +163,7 @@ const updateVis = function(coinName){
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
         focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d[yVariable]) + ")");
         focus.select("text").text(function() { return d3.format("$,")(d[yVariable].toFixed(2)); });
-        focus.select(".x-hover-line").attr("y2", vis.height - yScale(d[yVariable]));
+        focus.select(".x-hover-line").attr("y2", vis.heightLM - yScale(d[yVariable]));
         focus.select(".y-hover-line").attr("x2", -xScale(d.date));
     }
 
