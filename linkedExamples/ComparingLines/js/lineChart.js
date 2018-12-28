@@ -1,18 +1,14 @@
-LineChart = function(_parentElement, _coin){
-    this.parentElement = _parentElement;
-    this.coin = _coin
-
-    this.initVis();
-};
-
-LineChart.prototype.initVis = function(){
+LineChart = function(parentElement, coinToUse, data){
+    console.log('data')
+    console.log(data)
+    
     var vis = this;
 
     vis.margin = { left:50, right:20, top:50, bottom:20 };
     vis.height = 250 - vis.margin.top - vis.margin.bottom;
     vis.width = 300 - vis.margin.left - vis.margin.right;
 
-    vis.svg = d3.select(vis.parentElement)
+    vis.svg = d3.select(parentElement)
         .append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
@@ -34,7 +30,7 @@ LineChart.prototype.initVis = function(){
         .attr("x", vis.width/2)
         .attr("y", 0)
         .attr("text-anchor", "middle")
-        .text(vis.coin)
+        .text(coinToUse)
 
     vis.x = d3.scaleTime().range([0, vis.width]);
     vis.y = d3.scaleLinear().range([vis.height, 0]);
@@ -48,32 +44,36 @@ LineChart.prototype.initVis = function(){
     vis.yAxis = vis.g.append("g")
         .attr("class", "y axis");
 
-    vis.wrangleData();
+    vis.wrangleData(data, coinToUse);
 };
 
 
-LineChart.prototype.wrangleData = function(){
+LineChart.prototype.wrangleData = function(data, coinName){
     var vis = this;
+    console.log('data[coinName]')
+    console.log(data[coinName])
+    
 
     vis.yVariable = $("#var-select").val()
 
     // Filter data based on selections
     vis.sliderValues = $("#date-slider").slider("values")
-    vis.dataFiltered = filteredData[vis.coin].filter(function(d) {
-        return ((d.date >= vis.sliderValues[0]) && (d.date <= vis.sliderValues[1]))
-    })
-
-    vis.updateVis();
+    if(data[coinName]){
+        let dataFiltered = data[coinName].filter(function(d) {
+            return ((d.date >= vis.sliderValues[0]) && (d.date <= vis.sliderValues[1]))
+        })
+        vis.updateVis(dataFiltered, coinName);
+    }
 };
 
 
-LineChart.prototype.updateVis = function(){
+LineChart.prototype.updateVis = function(data, coinName){
     var vis = this;
 
     // Update scales
-    vis.x.domain(d3.extent(vis.dataFiltered, function(d) { return d.date; }));
-    vis.y.domain([d3.min(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) / 1.005, 
-        d3.max(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) * 1.005]);
+    vis.x.domain(d3.extent(data, function(d) { return d.date; }));
+    vis.y.domain([d3.min(data, function(d) { return d[vis.yVariable]; }) / 1.005, 
+        d3.max(data, function(d) { return d[vis.yVariable]; }) * 1.005]);
 
     // Fix for y-axis format values
     var formatSi = d3.format(".2s");
@@ -93,11 +93,11 @@ LineChart.prototype.updateVis = function(){
     vis.yAxis.transition(vis.t()).call(vis.yAxisCall.tickFormat(formatAbbreviation));
 
     // Discard old tooltip elements
-    d3.select(".focus."+vis.coin).remove();
-    d3.select(".overlay."+vis.coin).remove();
+    d3.select(".focus."+coinName).remove();
+    d3.select(".overlay."+coinName).remove();
 
     var focus = vis.g.append("g")
-        .attr("class", "focus " + vis.coin)
+        .attr("class", "focus " + coinName)
         .style("display", "none");
 
     focus.append("line")
@@ -119,7 +119,7 @@ LineChart.prototype.updateVis = function(){
 
     vis.svg.append("rect")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
-        .attr("class", "overlay " + vis.coin)
+        .attr("class", "overlay " + coinName)
         .attr("width", vis.width)
         .attr("height", vis.height)
         .on("mouseover", function() { focus.style("display", null); })
@@ -128,9 +128,9 @@ LineChart.prototype.updateVis = function(){
 
     function mousemove() {
         var x0 = vis.x.invert(d3.mouse(this)[0]),
-            i = vis.bisectDate(vis.dataFiltered, x0, 1),
-            d0 = vis.dataFiltered[i - 1],
-            d1 = vis.dataFiltered[i],
+            i = vis.bisectDate(data, x0, 1),
+            d0 = data[i - 1],
+            d1 = data[i],
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
         focus.attr("transform", "translate(" + vis.x(d.date) + "," + vis.y(d[vis.yVariable]) + ")");
         focus.select("text").text(function() { return d3.format("$,")(d[vis.yVariable].toFixed(2)); });
@@ -144,6 +144,6 @@ LineChart.prototype.updateVis = function(){
 
     vis.g.select(".line")
         .transition(vis.t)
-        .attr("d", line(vis.dataFiltered));
+        .attr("d", line(data));
 
 };
