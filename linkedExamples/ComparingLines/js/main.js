@@ -57,9 +57,9 @@ d3.json("data/data.json").then(function(data){
 })
 
 function updateCharts(){
-    wrangleData()
-    wrangleData()
-    wrangleData()
-    wrangleData()
-    wrangleData()
+    wrangleData("bitcoin")
+    wrangleData("ethereum")
+    wrangleData("bitcoin_cash")
+    wrangleData("litecoin")
+    wrangleData("ripple")
 }
