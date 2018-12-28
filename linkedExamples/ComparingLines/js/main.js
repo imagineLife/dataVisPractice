@@ -25,6 +25,7 @@ var lineChart1,
     lineChart5;
 var parseTime = d3.timeParse("%d/%m/%Y");
 var formatTime = d3.timeFormat("%d/%m/%Y");
+let bitData, ethData, bitCashData, liteData, ripData;
 
 // Event listeners
 $("#coin-select").on("change", updateCharts)
@@ -38,28 +39,34 @@ $("#date-slider").slider({
     step: 86400000, // One day
     values: [parseTime("12/5/2013").getTime(), parseTime("31/10/2017").getTime()],
     slide: function(event, ui){
+        let newVals = $("#date-slider").slider("values");
         $("#dateLabel1").text(formatTime(new Date(ui.values[0])));
         $("#dateLabel2").text(formatTime(new Date(ui.values[1])));
-        updateCharts();
+        updateCharts(newVals);
     }
 });
 
 d3.json("data/data.json").then(function(data){
 
     filteredData = prepData(data)
+    bitData = {bitcoin: filteredData.bitcoin};
+    ethData = {ethereum: filteredData.ethereum};
+    bitCashData = {bitcoin_cash: filteredData.bitcoin_cash};
+    liteData = {litecoin: filteredData.litecoin};
+    ripData = {ripple: filteredData.ripple};
 
-    lineChart1 = new LineChart("#chart-area1", "bitcoin");
-    lineChart2 = new LineChart("#chart-area2", "ethereum");
-    lineChart3 = new LineChart("#chart-area3", "bitcoin_cash");
-    lineChart4 = new LineChart("#chart-area4", "litecoin");
-    lineChart5 = new LineChart("#chart-area5", "ripple");
+    lineChart1 = new LineChart("#chart-area1", bitData);
+    lineChart2 = new LineChart("#chart-area2", ethData);
+    lineChart3 = new LineChart("#chart-area3", bitCashData);
+    lineChart4 = new LineChart("#chart-area4", liteData);
+    lineChart5 = new LineChart("#chart-area5", ripData);
 
 })
 
-function updateCharts(){
-    wrangleData("bitcoin")
-    wrangleData("ethereum")
-    wrangleData("bitcoin_cash")
-    wrangleData("litecoin")
-    wrangleData("ripple")
+function updateCharts(sliderTimeVals){
+    wrangleData(bitData, sliderTimeVals)
+    wrangleData(ethData, sliderTimeVals)
+    wrangleData(bitCashData, sliderTimeVals)
+    wrangleData(liteData,sliderTimeVals)
+    wrangleData(ripData,sliderTimeVals)
 }
