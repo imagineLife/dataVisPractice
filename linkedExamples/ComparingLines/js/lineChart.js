@@ -4,6 +4,7 @@ let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let yVariable, dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(1000); }
+const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 // Filter data based on selections
 const height = 250, 
       width = 300, 
@@ -11,36 +12,32 @@ const height = 250,
       widthLM = width - margin.left - margin.right;
 
 LineChart = function(_parentElement, coinData){
-    this.parentElement = _parentElement;
 
-    this.initVis(coinData);
+    this.initVis(_parentElement, coinData);
 };
 
-LineChart.prototype.initVis = function(coinData){
-    var vis = this;
+LineChart.prototype.initVis = function(parent, coinData){
+    console.log('coinData')
+    console.log(coinData)
+    let thisCoinName = Object.keys(coinData)[0]
+    
+    
 
-    svgObj = d3.select(vis.parentElement)
+    svgObj = d3.select(parent)
         .append("svg")
         .attrs({
             "width": width,
-            "height": height
+            "height": height,
+            'class': `${thisCoinName}svgWrapper`
         });
 
-    gObj = svgObj.append("g")
-        .attr("transform", "translate(" + margin.left + 
-            ", " + margin.top + ")");
-
-    vis.bisectDate = d3.bisector(function(d) { return d.date; }).left;
-
-    linePath = gObj.append("path")
+    thisGObj = svgObj.append("g")
         .attrs({
-            "class": "line",
-            "fill": "none",
-            "stroke": "grey",
-            "stroke-width": "3px"
+            "transform": `translate(${margin.left},${margin.top})`,
+            'class': `gWrapper ${thisCoinName}`
         });
 
-    gObj.append("text")
+    thisGObj.append("text")
         .attrs({
             "x": widthLM/2,
             "y": 0,
@@ -51,11 +48,11 @@ LineChart.prototype.initVis = function(coinData){
     xScale.range([0, widthLM]);
     yScale.range([heightLM, 0]);
 
-    xAxisG = gObj.append("g")
-        .attr("class", "xAxisG x axis")
+    xAxisG = thisGObj.append("g")
+        .attr("class", `${thisCoinName}xAxisG x axis`)
         .attr("transform", "translate(0," + heightLM +")");
-    yAxisG = gObj.append("g")
-        .attr("class", "yAxisG y axis");
+    yAxisG = thisGObj.append("g")
+        .attr("class", `${thisCoinName}yAxisG y axis`);
         
     wrangleData(coinData);
 };
@@ -79,11 +76,6 @@ const updateVis = function(coinName, coinData){
 
     console.log('UPDATING!');
 
-    lineDataJoin = gObj.selectAll('path')
-    .data(Object.keys(coinData)[0]);
-    console.log('lineDataJoin')
-    console.log(lineDataJoin)
-    
     var vis = this;
 
     // Update scales
@@ -105,7 +97,9 @@ const updateVis = function(coinName, coinData){
 
     // Update axes
     xAxisObj.scale(xScale);
-    xAxisG.transition(t()).call(xAxisObj);
+    
+    let thisXAxisG = d3.select(`.${coinName}xAxisG`)
+    thisXAxisG.transition(t()).call(xAxisObj);
     yAxisObj.scale(yScale);
     yAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
 
@@ -113,13 +107,19 @@ const updateVis = function(coinName, coinData){
     d3.select(".focus."+coinName).remove();
     d3.select(".overlay."+coinName).remove();
 
-    var focus = gObj.append("g")
-        .attr("class", "focus " + coinName)
+    let thisGObj = d3.select(`g.${coinName}`)
+    thisGObj.selectAll(`path`).remove()
+
+    console.log('thisGObj')
+    console.log(thisGObj)
+    
+    var focus = thisGObj.append("g")
+        .attr("class", `${coinName}focus`)
         .style("display", "none");
 
     focus.append("line")
         .attrs({
-            "class": "x-hover-line hover-line",
+            "class": `x-hover-line hover-line`,
             "y1": 0,
             "y2": heightLM
         });
@@ -143,7 +143,7 @@ const updateVis = function(coinName, coinData){
     svgObj.append("rect")
         .attrs({
             "transform": `translate(${margin.left},${margin.top})`,
-            "class": "overlay " + coinName,
+            "class": `${coinName}ovly overlay`,
             "width": widthLM,
             "height": heightLM
         })
@@ -152,8 +152,10 @@ const updateVis = function(coinName, coinData){
         .on("mousemove", mousemove);
 
     function mousemove() {
+        console.log('MOVING MOUSE!');
+        console.log(this);
         var x0 = xScale.invert(d3.mouse(this)[0]),
-            i = vis.bisectDate(coinData, x0, 1),
+            i = bisectDate(coinData, x0, 1),
             d0 = coinData[i - 1],
             d1 = coinData[i],
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
@@ -168,7 +170,41 @@ const updateVis = function(coinName, coinData){
         .y(function(d) { 
             return yScale(d[yVariable]); });
 
+    linePath = thisGObj.append("path")
+    .attrs({
+        "class": `line ${coinName}`,
+        "fill": "none",
+        "stroke": "grey",
+        "stroke-width": "3px"
+    });
+
     linePath.transition(t())
         .attr("d", line(coinData));
+
+/*
+    works, but SLOW!
+    //path enter-update-exit pattern
+    //path data-join
+    lineDataJoin = thisGObj.selectAll('path')
+    .data(coinData);
+    
+    // console.log('lineDataJoin.enter()')
+    // console.log(lineDataJoin.enter())
+    
+    //path ENTER
+    lineDataJoin
+        .enter().append('path')
+        .attrs({
+            "class": "line",
+            "fill": "none",
+            "stroke": "grey",
+            "stroke-width": "3px",
+            "d": line(coinData)
+        })
+        .merge(lineDataJoin).attr("d", line(coinData))
+    
+    lineDataJoin.exit().remove()
+
+*/
 
 };
