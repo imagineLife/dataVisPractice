@@ -32,10 +32,18 @@ let bitData, ethData, bitCashData, liteData, ripData;
 
 // Event listeners
 $("#coin-select").on("change", () => {
-    updateCharts;   
+    updateVis(bitData)
+    updateVis(ethData)
+    updateVis(bitCashData)
+    updateVis(liteData)
+    updateVis(ripData)   
 })
 $("#var-select").on("change", () => {
-    updateCharts;   
+    updateVis(bitData)
+    updateVis(ethData)
+    updateVis(bitCashData)
+    updateVis(liteData)
+    updateVis(ripData)   
 })
 
 // Add jQuery UI slider
@@ -49,7 +57,11 @@ $("#date-slider").slider({
         let newVals = $("#date-slider").slider("values");
         $("#dateLabel1").text(state.formatTime(new Date(ui.values[0])));
         $("#dateLabel2").text(state.formatTime(new Date(ui.values[1])));
-        updateCharts(newVals);
+        updateVis(bitData, newVals)
+        updateVis(ethData, newVals)
+        updateVis(bitCashData, newVals)
+        updateVis(liteData,newVals)
+        updateVis(ripData,newVals)
     }
 });
 
@@ -69,11 +81,3 @@ d3.json("data/data.json").then(function(data){
     state.lineChart5 = new LineChart("#chart-area5", ripData);
 
 })
-
-function updateCharts(sliderTimeVals){
-    updateVis(bitData, sliderTimeVals)
-    updateVis(ethData, sliderTimeVals)
-    updateVis(bitCashData, sliderTimeVals)
-    updateVis(liteData,sliderTimeVals)
-    updateVis(ripData,sliderTimeVals)
-}
