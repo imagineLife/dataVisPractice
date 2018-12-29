@@ -1,3 +1,11 @@
+function appendAndTransG(parent, trans,cl){
+    return parent.append('g')
+        .attrs({
+            "transform": trans,
+            'class': cl
+        });
+}
+
 let xScale = x = d3.scaleTime()
 let yScale = d3.scaleLinear() 
 let yAxisObj = d3.axisLeft()
@@ -27,11 +35,7 @@ LineChart.prototype.initVis = function(parent, coinData){
             'class': `${thisCoinName}SvgWrapper`
         });
 
-    thisGObj = svgObj.append("g")
-        .attrs({
-            "transform": `translate(${margin.left},${margin.top})`,
-            'class': `gWrapper ${thisCoinName}`
-        });
+    thisGObj = appendAndTransG(svgObj, `translate(${margin.left},${margin.top})`, `gWrapper ${thisCoinName}`);
 
     thisGObj.append("text")
         .attrs({
@@ -44,11 +48,8 @@ LineChart.prototype.initVis = function(parent, coinData){
     xScale.range([0, widthLM]);
     yScale.range([heightLM, 0]);
 
-    xAxisG = thisGObj.append("g")
-        .attr("class", `${thisCoinName}xAxisG x axis`)
-        .attr("transform", "translate(0," + heightLM +")");
-    yAxisG = thisGObj.append("g")
-        .attr("class", `${thisCoinName}yAxisG y axis`);
+    xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${thisCoinName}xAxisG x axis`);
+    yAxisG = appendAndTransG(thisGObj, null, `${thisCoinName}yAxisG y axis`);
         
     updateVis(coinData);
 };
