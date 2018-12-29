@@ -6,7 +6,7 @@ function appendAndTransG(parent, trans,cl){
         });
 }
 
-function prepCoinStats(data){
+function filterCoinStats(data, timeVals){
     let coinName = Object.keys(data)[0]
     let sliderFilteredData = data[coinName].filter(function(d) {
         return ((d.date >= timeVals[0]) && (d.date <= timeVals[1]))
@@ -67,7 +67,7 @@ const updateVis = function(coinData, sliderTimeVals){
 
     let timeVals = (!sliderTimeVals) ? [1368331200000, 1509422400000] : sliderTimeVals;
 
-    let { coinName, sliderFilteredData } = prepCoinStats(coinData)
+    let { coinName, sliderFilteredData } = filterCoinStats(coinData, timeVals)
 
     yVariable = $("#var-select").val()
 
