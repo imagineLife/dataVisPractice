@@ -6,6 +6,18 @@ function appendAndTransG(parent, trans,cl){
         });
 }
 
+function formatAbbreviation(x) {
+  var s = formatSi(x);
+  switch (s[s.length - 1]) {
+    case "G": return s.slice(0, -1) + "B";
+    case "k": return s.slice(0, -1) + "K";
+  }
+  return s;
+}
+
+// Fix for y-axis format values
+const formatSi = d3.format(".2s");
+
 function filterCoinStats(data, timeVals){
     let coinName = Object.keys(data)[0]
     let sliderFilteredData = data[coinName].filter(function(d) {
@@ -78,17 +90,6 @@ const updateVis = function(coinData, sliderTimeVals){
     
     yScale.domain([d3.min(sliderFilteredData, d => d[yVariable]) / 1.005, 
         d3.max(sliderFilteredData, d => d[yVariable]) * 1.005]);
-
-    // Fix for y-axis format values
-    var formatSi = d3.format(".2s");
-    function formatAbbreviation(x) {
-      var s = formatSi(x);
-      switch (s[s.length - 1]) {
-        case "G": return s.slice(0, -1) + "B";
-        case "k": return s.slice(0, -1) + "K";
-      }
-      return s;
-    }
 
     // Update axes
     let thisXAxisG = d3.select(`.${coinName}xAxisG`),
