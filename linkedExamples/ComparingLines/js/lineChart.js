@@ -17,8 +17,6 @@ LineChart = function(_parentElement, coinData){
 };
 
 LineChart.prototype.initVis = function(parent, coinData){
-    console.log('coinData')
-    console.log(coinData)
     let thisCoinName = Object.keys(coinData)[0]
     
     
@@ -96,12 +94,12 @@ const updateVis = function(coinName, coinData){
     }
 
     // Update axes
+    let thisXAxisG = d3.select(`.${coinName}xAxisG`),
+        thisYAxisG = d3.select(`.${coinName}yAxisG`);
     xAxisObj.scale(xScale);
-    
-    let thisXAxisG = d3.select(`.${coinName}xAxisG`)
-    thisXAxisG.transition(t()).call(xAxisObj);
     yAxisObj.scale(yScale);
-    yAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
+    thisXAxisG.transition(t()).call(xAxisObj);
+    thisYAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
 
     // Discard old tooltip elements
     d3.select(".focus."+coinName).remove();
@@ -109,9 +107,6 @@ const updateVis = function(coinName, coinData){
 
     let thisGObj = d3.select(`g.${coinName}`)
     thisGObj.selectAll(`path`).remove()
-
-    console.log('thisGObj')
-    console.log(thisGObj)
     
     var focus = thisGObj.append("g")
         .attr("class", `${coinName}focus`)
@@ -152,8 +147,6 @@ const updateVis = function(coinName, coinData){
         .on("mousemove", mousemove);
 
     function mousemove() {
-        console.log('MOVING MOUSE!');
-        console.log(this);
         var x0 = xScale.invert(d3.mouse(this)[0]),
             i = bisectDate(coinData, x0, 1),
             d0 = coinData[i - 1],
