@@ -31,7 +31,8 @@
 
 .line {
   fill: none;
-  stroke-width: 2px;
+  stroke-width: 1px;
+  stroke: rgba(128,128,128,1);
 }
 
 .overlay {
