@@ -31,7 +31,7 @@ const formatDollar = d3.format("$,");
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
-const t = function() { return d3.transition().duration(1000); }
+const t = function() { return d3.transition().duration(400); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 // Filter data based on selections
 const height = 250, 
@@ -76,11 +76,13 @@ const initVis = function(parent, coinData){
 
 const updateVis = function(coinData, sliderTimeVals){
 
+    if(state.yVariable == null){
+        state.yVariable = $("#measurement-select").val()
+    }
+
     let timeVals = (!sliderTimeVals) ? [1368331200000, 1509422400000] : sliderTimeVals;
 
     let { coinName, sliderFilteredData } = filterCoinStats(coinData, timeVals)
-
-    state.yVariable = $("#measurement-select").val()
 
     var vis = this;
 
@@ -104,7 +106,7 @@ const updateVis = function(coinData, sliderTimeVals){
     let thisGObj = d3.select(`g.${coinName}`)
     thisGObj.selectAll(`path`).remove()
     thisGObj.selectAll(`.focus${coinName}`).remove()
-    d3.select(` ${coinName}ovly`).remove();
+    d3.select(`.${coinName}ovly`).remove();
 
     const line = d3.line()
         .x(function(d) { return state.xScales[coinName](d.date); })
