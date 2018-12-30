@@ -24,6 +24,11 @@ function filterCoinStats(data, timeVals){
     return { coinName, sliderFilteredData }
 }
 
+function setFocusDisplay(setting, coinName){
+    let thisFocus = d3.select(`.focus${coinName}`)
+    return thisFocus.style("display", setting)
+}
+
 // Fix for y-axis format values
 const formatSi = d3.format(".2s");
 const formatDollar = d3.format("$,");
@@ -99,10 +104,8 @@ const updateVis = function(coinData, sliderTimeVals){
     yAxisObj.scale(state.yScales[coinName]);
     thisXAxisG.transition(t()).call(xAxisObj);
     thisYAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
-
-    // Discard old tooltip elements
     
-
+    //remove previous path, focuses, & overlays
     let thisGObj = d3.select(`g.${coinName}`)
     thisGObj.selectAll(`path`).remove()
     thisGObj.selectAll(`.focus${coinName}`).remove()
@@ -127,6 +130,7 @@ const updateVis = function(coinData, sliderTimeVals){
 
     focus = appendAndTransG(thisGObj, null, `focus${coinName}`).style("display", "none");
 
+
     focus.append("line")
         .attrs({
             "class": `${coinName}xHovLine x-hover-line hover-line`,
@@ -148,7 +152,6 @@ const updateVis = function(coinData, sliderTimeVals){
         .attrs({
             "x": 15,
             "dy": ".31em",
-
         });
 
     d3.select(`.${coinName}SvgWrapper`).append("rect")
@@ -158,14 +161,8 @@ const updateVis = function(coinData, sliderTimeVals){
             "width": widthLM,
             "height": heightLM
         })
-        .on("mouseover", () => {
-            let thisFocus = d3.select(`.focus${coinName}`)
-            return thisFocus.style("display", null)
-        })
-        .on("mouseout", () => {
-            let thisFocus = d3.select(`.focus${coinName}`)
-            return thisFocus.style("display", 'none')
-        })
+        .on("mouseover", () => setFocusDisplay(null, coinName))
+        .on("mouseout", () => setFocusDisplay('none', coinName))
         .on("mousemove", mousemove);
 
     function mousemove() {
