@@ -25,7 +25,15 @@ let state = {
     lineChart4: null,
     lineChart5: null,
     parseTime: d3.timeParse("%d/%m/%Y"),
-    formatTime: d3.timeFormat("%d/%m/%Y")
+    formatTime: d3.timeFormat("%d/%m/%Y"),
+    yVariable: null,
+    yScales: {
+        bitcoin: d3.scaleLinear(),
+        ethereum: d3.scaleLinear(),
+        bitcoin_cash: d3.scaleLinear(),
+        litecoin: d3.scaleLinear(),
+        ripple: d3.scaleLinear(),
+    }
 }
 
 let bitData, ethData, bitCashData, liteData, ripData;

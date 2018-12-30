@@ -7,16 +7,13 @@ function appendAndTransG(parent, trans,cl){
 }
 
 function formatAbbreviation(x) {
-  var s = formatSi(x);
+  const s = formatSi(x);
   switch (s[s.length - 1]) {
     case "G": return s.slice(0, -1) + "B";
     case "k": return s.slice(0, -1) + "K";
   }
   return s;
 }
-
-// Fix for y-axis format values
-const formatSi = d3.format(".2s");
 
 function filterCoinStats(data, timeVals){
     let coinName = Object.keys(data)[0]
@@ -27,11 +24,13 @@ function filterCoinStats(data, timeVals){
     return { coinName, sliderFilteredData }
 }
 
+// Fix for y-axis format values
+const formatSi = d3.format(".2s");
+
 let xScale = x = d3.scaleTime()
-let yScale = d3.scaleLinear() 
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
-let yVariable, dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
+let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(1000); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 // Filter data based on selections
@@ -53,7 +52,7 @@ LineChart.prototype.initVis = function(parent, coinData){
         .attrs({
             "width": width,
             "height": height,
-            'class': `${thisCoinName}SvgWrapper`
+            'class': `${thisCoinName}SvgWrapper svgWrapper`
         });
 
     thisGObj = appendAndTransG(svgObj, `translate(${margin.left},${margin.top})`, `gWrapper ${thisCoinName}`);
@@ -67,7 +66,7 @@ LineChart.prototype.initVis = function(parent, coinData){
         .text(Object.keys(coinData))
 
     xScale.range([0, widthLM]);
-    yScale.range([heightLM, 0]);
+    state.yScales[thisCoinName].range([heightLM, 0]);
 
     xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${thisCoinName}xAxisG x axis`);
     yAxisG = appendAndTransG(thisGObj, null, `${thisCoinName}yAxisG y axis`);
@@ -81,88 +80,37 @@ const updateVis = function(coinData, sliderTimeVals){
 
     let { coinName, sliderFilteredData } = filterCoinStats(coinData, timeVals)
 
-    yVariable = $("#var-select").val()
+    state.yVariable = $("#var-select").val()
 
     var vis = this;
 
     // Update scales
     xScale.domain(d3.extent(sliderFilteredData, d => d.date));
     
-    yScale.domain([d3.min(sliderFilteredData, d => d[yVariable]) / 1.005, 
-        d3.max(sliderFilteredData, d => d[yVariable]) * 1.005]);
+    state.yScales[coinName].domain([d3.min(sliderFilteredData, d => d[state.yVariable]) / 1.005, 
+        d3.max(sliderFilteredData, d => d[state.yVariable]) * 1.005]);
 
     // Update axes
     let thisXAxisG = d3.select(`.${coinName}xAxisG`),
         thisYAxisG = d3.select(`.${coinName}yAxisG`);
     xAxisObj.scale(xScale);
-    yAxisObj.scale(yScale);
+    yAxisObj.scale(state.yScales[coinName]);
     thisXAxisG.transition(t()).call(xAxisObj);
     thisYAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
 
     // Discard old tooltip elements
-    // d3.select(`.focus${coinName}`).remove();
-    // d3.select(".overlay."+coinName).remove();
+    
 
     let thisGObj = d3.select(`g.${coinName}`)
     thisGObj.selectAll(`path`).remove()
     thisGObj.selectAll(`.focus${coinName}`).remove()
-    
-    focus = thisGObj.append("g")
-        .attr("class", `focus${coinName}`)
-        .style("display", "none");
+    d3.select(` ${coinName}ovly`).remove();
 
-    focus.append("line")
-        .attrs({
-            "class": `${coinName}xHovLine x-hover-line hover-line`,
-            "y1": 0,
-            "y2": heightLM,
-            'stroke': 'blue'
-        });
-
-    focus.append("line")
-        .attrs({
-            "class": `${coinName}yHovLine y-hover-line hover-line`,
-            "x1": 0,
-            "x2": widthLM,
-            'stroke': 'orange'
-        });
-
-    focus.append("circle")
-        .attr("r", 5);
-
-    focus.append("text")
-        .attrs({
-            "x": 15,
-            "dy": ".31em"
-        });
-
-    svgObj.append("rect")
-        .attrs({
-            "transform": `translate(${margin.left},${margin.top})`,
-            "class": `${coinName}ovly overlay`,
-            "width": widthLM,
-            "height": heightLM
-        })
-        .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove);
-
-    function mousemove() {
-        var x0 = xScale.invert(d3.mouse(this)[0]),
-            i = bisectDate(sliderFilteredData, x0, 1),
-            d0 = sliderFilteredData[i - 1],
-            d1 = sliderFilteredData[i],
-            d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
-        focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d[yVariable]) + ")");
-        focus.select("text").text(function() { return d3.format("$,")(d[yVariable].toFixed(2)); });
-        focus.select(".x-hover-line").attr("y2", heightLM - yScale(d[yVariable]));
-        focus.select(".y-hover-line").attr("x2", -xScale(d.date));
-    }
-
-    var line = d3.line()
+    const line = d3.line()
         .x(function(d) { return xScale(d.date); })
         .y(function(d) { 
-            return yScale(d[yVariable]); });
+        return state.yScales[coinName](d[state.yVariable]); 
+    });
 
     linePath = thisGObj.append("path")
     .attrs({
@@ -175,30 +123,60 @@ const updateVis = function(coinData, sliderTimeVals){
     linePath.transition(t())
         .attr("d", line(sliderFilteredData));
 
-/*
-    works, but SLOW!
-    //path enter-update-exit pattern
-    //path data-join
-    lineDataJoin = thisGObj.selectAll('path')
-    .data(sliderFilteredData);
-    
-    // console.log('lineDataJoin.enter()')
-    // console.log(lineDataJoin.enter())
-    
-    //path ENTER
-    lineDataJoin
-        .enter().append('path')
+    focus = appendAndTransG(thisGObj, null, `focus${coinName}`).style("display", "none");
+
+    focus.append("line")
         .attrs({
-            "class": "line",
-            "fill": "none",
-            "stroke": "grey",
-            "stroke-width": "3px",
-            "d": line(sliderFilteredData)
+            "class": `${coinName}xHovLine x-hover-line hover-line`,
+            "y1": 0,
+            "y2": heightLM
+        });
+
+    focus.append("line")
+        .attrs({
+            "class": `${coinName}yHovLine y-hover-line hover-line`,
+            "x1": 0,
+            "x2": widthLM
+        });
+
+    focus.append("circle")
+        .attr("r", 5);
+
+    focus.append("text")
+        .attrs({
+            "x": 15,
+            "dy": ".31em"
+        });
+
+    d3.select(`.${coinName}SvgWrapper`).append("rect")
+        .attrs({
+            "transform": `translate(${margin.left},${margin.top})`,
+            "class": `${coinName}ovly overlay`,
+            "width": widthLM,
+            "height": heightLM
         })
-        .merge(lineDataJoin).attr("d", line(sliderFilteredData))
-    
-    lineDataJoin.exit().remove()
+        .on("mouseover", () => {
+            let thisFocus = d3.select(`.focus${coinName}`)
+            return thisFocus.style("display", null)
+        })
+        .on("mouseout", () => {
+            let thisFocus = d3.select(`.focus${coinName}`)
+            return thisFocus.style("display", 'none')
+        })
+        .on("mousemove", mousemove);
 
-*/
-
+    function mousemove() {
+        let thisFocus = d3.select(`.focus${coinName}`)
+        
+        var x0 = xScale.invert(d3.mouse(this)[0]),
+            i = bisectDate(sliderFilteredData, x0, 1),
+            d0 = sliderFilteredData[i - 1],
+            d1 = sliderFilteredData[i],
+            d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
+            
+        thisFocus.attr("transform", `translate(${xScale(d.date)},${state.yScales[coinName](d[state.yVariable])})`);
+        thisFocus.select("text").text(() => d3.format("$,")(d[state.yVariable].toFixed(2)));
+        thisFocus.select(`.${coinName}xHovLine`).attr("y2", heightLM - state.yScales[coinName](d[state.yVariable]));
+        thisFocus.select(`.${coinName}yHovLine`).attr("x2", -xScale(d.date));
+    }
 };
