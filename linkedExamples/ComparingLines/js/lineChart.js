@@ -40,7 +40,7 @@ const formatDollar = d3.format("$,");
 
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
-let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
+let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(350); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
@@ -82,19 +82,21 @@ const initVis = function(parent, coinData){
 
 const updateVis = function(coinData, sliderTimeVals){
 
+    /*
+        set chart params if not already selected
+    */
     if(state.yVariable == null){
         state.yVariable = $("#measurement-select").val()
     }
-
     let timeVals = (!sliderTimeVals) ? [1368331200000, 1509422400000] : sliderTimeVals;
 
+    //get filtered chart data from parameters
     let { coinName, sliderFilteredData } = filterCoinStats(coinData, timeVals)
 
-    var vis = this;
-
-    // Update scales
+    /*
+        Update scales
+    */
     state.xScales[coinName].domain(d3.extent(sliderFilteredData, d => d.date));
-    
     state.yScales[coinName].domain([d3.min(sliderFilteredData, d => d[state.yVariable]) / 1.005, 
         d3.max(sliderFilteredData, d => d[state.yVariable]) * 1.005]);
 
@@ -119,13 +121,19 @@ const updateVis = function(coinData, sliderTimeVals){
     });
 
     linePath = thisGObj.append("path")
-    .attr("class", `line ${coinName} line${coinName} chartLine`);
+        .attr("class", `line ${coinName} line${coinName} chartLine`);
 
     linePath.transition(t())
         .attr("d", line(sliderFilteredData));
 
+    /*
+        build & configthe 'focus' elements, for mouseover interaction
+        x-hover line
+        y-hover line
+        hover circle
+        hover text
+    */
     focus = appendAndTransG(thisGObj, null, `focus${coinName}`).style("display", "none");
-
 
     focus.append("line")
         .attrs({
@@ -150,6 +158,10 @@ const updateVis = function(coinData, sliderTimeVals){
             "dy": ".31em",
         });
 
+    /*
+        build & config the hidden rect for hover interaction
+    */
+
     d3.select(`.${coinName}SvgWrapper`).append("rect")
         .attrs({
             "transform": `translate(${margin.left},${margin.top})`,
@@ -161,7 +173,6 @@ const updateVis = function(coinData, sliderTimeVals){
         .on("mouseout", () => setFocusDisplay('none', coinName, [1,1]))
         .on("mousemove", mousemove);
 
-        //coinName, sliderFilteredData
     function mousemove() {
         let thisFocus = d3.select(`.focus${coinName}`)
         
