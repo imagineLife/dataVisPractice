@@ -4,6 +4,10 @@
   display: block;
 }
 
+.svgWrapper{
+  overflow: unset;
+}
+
 #logo {
   height:50px;
 }
@@ -36,13 +40,13 @@
 }
 
 circle {
-  fill: #F1F3F3;
-  stroke: #777;
-  stroke-width: 3px;
+  fill: rgba(48, 190, 220, 0.2);
+  stroke: #2042e8;
+  stroke-width: 2px;
 }
   
 .hover-line {
-  /*stroke: #777;*/
+  stroke: #777;
   stroke-width: 2px;
   stroke-dasharray: 3,3;
 }
