@@ -50,15 +50,8 @@ let state = {
 
 }
 
-// Event listeners
-$("#coin-select").on("change", () => {
-    updateVis(state.bitData)
-    updateVis(state.ethData)
-    updateVis(state.bitCashData)
-    updateVis(state.liteData)
-    updateVis(state.ripData)   
-})
-$("#var-select").on("change", () => {
+// Coin-Name Selector
+$("#measurement-select").on("change", () => {
     updateVis(state.bitData)
     updateVis(state.ethData)
     updateVis(state.bitCashData)
@@ -100,10 +93,10 @@ d3.json("data/data.json").then(function(data){
     state.liteData = {litecoin: state.filteredData.litecoin};
     state.ripData = {ripple: state.filteredData.ripple};
 
-    state.chart1 = new LineChart("#chart-area1", state.bitData);
-    state.chart2 = new LineChart("#chart-area2", state.ethData);
-    state.chart3 = new LineChart("#chart-area3", state.bitCashData);
-    state.chart4 = new LineChart("#chart-area4", state.liteData);
-    state.chart5 = new LineChart("#chart-area5", state.ripData);
+    state.chart1 = initVis("#chart-area1", state.bitData);
+    state.chart2 = initVis("#chart-area2", state.ethData);
+    state.chart3 = initVis("#chart-area3", state.bitCashData);
+    state.chart4 = initVis("#chart-area4", state.liteData);
+    state.chart5 = initVis("#chart-area5", state.ripData);
 
 })
