@@ -47,7 +47,7 @@ circle {
 }
   
 .hover-line {
-  stroke: rgba(120,120,120,.4);
+  stroke: rgba(50, 200, 255, 0.75);
   stroke-width: 1px;
   stroke-dasharray: 10,10;
 }
