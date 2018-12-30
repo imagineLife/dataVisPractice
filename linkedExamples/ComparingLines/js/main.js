@@ -40,26 +40,30 @@ let state = {
         bitcoin_cash: d3.scaleTime(),
         litecoin: d3.scaleTime(),
         ripple: d3.scaleTime(),
-    }
+    },
+    sliderVals: null,
+    bitData: null, 
+    ethData: null, 
+    bitCashData: null, 
+    liteData: null, 
+    ripData: null
 
 }
 
-let bitData, ethData, bitCashData, liteData, ripData;
-
 // Event listeners
 $("#coin-select").on("change", () => {
-    updateVis(bitData)
-    updateVis(ethData)
-    updateVis(bitCashData)
-    updateVis(liteData)
-    updateVis(ripData)   
+    updateVis(state.bitData)
+    updateVis(state.ethData)
+    updateVis(state.bitCashData)
+    updateVis(state.liteData)
+    updateVis(state.ripData)   
 })
 $("#var-select").on("change", () => {
-    updateVis(bitData)
-    updateVis(ethData)
-    updateVis(bitCashData)
-    updateVis(liteData)
-    updateVis(ripData)   
+    updateVis(state.bitData)
+    updateVis(state.ethData)
+    updateVis(state.bitCashData)
+    updateVis(state.liteData)
+    updateVis(state.ripData)   
 })
 
 // Add jQuery UI slider
@@ -70,30 +74,36 @@ $("#date-slider").slider({
     step: 86400000, // One day
     values: [state.parseTime("12/5/2013").getTime(), state.parseTime("31/10/2017").getTime()],
     slide: function(event, ui){
-        let newVals = $("#date-slider").slider("values");
+
+        //set state slider vals
+        state.sliderVals = $("#date-slider").slider("values");
+
+        //set text of date-label above slider
         $("#dateLabel1").text(state.formatTime(new Date(ui.values[0])));
         $("#dateLabel2").text(state.formatTime(new Date(ui.values[1])));
-        updateVis(bitData, newVals)
-        updateVis(ethData, newVals)
-        updateVis(bitCashData, newVals)
-        updateVis(liteData,newVals)
-        updateVis(ripData,newVals)
+
+        //trigger chart updating
+        updateVis(state.bitData, state.sliderVals)
+        updateVis(state.ethData, state.sliderVals)
+        updateVis(state.bitCashData, state.sliderVals)
+        updateVis(state.liteData,state.sliderVals)
+        updateVis(state.ripData,state.sliderVals)
     }
 });
 
 d3.json("data/data.json").then(function(data){
 
     state.filteredData = prepData(data)
-    bitData = {bitcoin: state.filteredData.bitcoin};
-    ethData = {ethereum: state.filteredData.ethereum};
-    bitCashData = {bitcoin_cash: state.filteredData.bitcoin_cash};
-    liteData = {litecoin: state.filteredData.litecoin};
-    ripData = {ripple: state.filteredData.ripple};
+    state.bitData = {bitcoin: state.filteredData.bitcoin};
+    state.ethData = {ethereum: state.filteredData.ethereum};
+    state.bitCashData = {bitcoin_cash: state.filteredData.bitcoin_cash};
+    state.liteData = {litecoin: state.filteredData.litecoin};
+    state.ripData = {ripple: state.filteredData.ripple};
 
-    state.chart1 = new LineChart("#chart-area1", bitData);
-    state.chart2 = new LineChart("#chart-area2", ethData);
-    state.chart3 = new LineChart("#chart-area3", bitCashData);
-    state.chart4 = new LineChart("#chart-area4", liteData);
-    state.chart5 = new LineChart("#chart-area5", ripData);
+    state.chart1 = new LineChart("#chart-area1", state.bitData);
+    state.chart2 = new LineChart("#chart-area2", state.ethData);
+    state.chart3 = new LineChart("#chart-area3", state.bitCashData);
+    state.chart4 = new LineChart("#chart-area4", state.liteData);
+    state.chart5 = new LineChart("#chart-area5", state.ripData);
 
 })
