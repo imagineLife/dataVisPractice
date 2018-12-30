@@ -40,15 +40,16 @@
 }
 
 circle {
-  fill: rgba(48, 190, 220, 0.2);
-  stroke: #2042e8;
+  fill: rgba(50, 200, 255, 0.2);
+  stroke: rgb(30,120,225);
+  stroke-dasharray: 5 2;
   stroke-width: 2px;
 }
   
 .hover-line {
-  stroke: #777;
-  stroke-width: 2px;
-  stroke-dasharray: 3,3;
+  stroke: rgba(120,120,120,.4);
+  stroke-width: 1px;
+  stroke-dasharray: 10,10;
 }
 
 #selections .col-md-4 {
