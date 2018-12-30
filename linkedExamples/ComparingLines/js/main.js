@@ -52,6 +52,9 @@ let state = {
 
 // Coin-Name Selector
 $("#measurement-select").on("change", () => {
+
+    state.yVariable = $("#measurement-select").val()
+    
     updateVis(state.bitData, state.sliderVals)
     updateVis(state.ethData, state.sliderVals)
     updateVis(state.bitCashData, state.sliderVals)
