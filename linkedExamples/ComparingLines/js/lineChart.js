@@ -24,7 +24,12 @@ function filterCoinStats(data, timeVals){
     return { coinName, sliderFilteredData }
 }
 
-function setFocusDisplay(setting, coinName){
+function setFocusDisplay(setting, coinName, arr){
+    
+    //dim all other lines
+    d3.selectAll('.chartLine').transition(t()).style('stroke', `rgba(128,128,128,${arr[0]})`);
+    d3.select(`.line${coinName}`).transition(t()).style('stroke', `rgba(128,128,128,${arr[1]})`);
+
     let thisFocus = d3.select(`.focus${coinName}`)
     return thisFocus.style("display", setting)
 }
@@ -36,7 +41,7 @@ const formatDollar = d3.format("$,");
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
-const t = function() { return d3.transition().duration(400); }
+const t = function() { return d3.transition().duration(350); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
 // Filter data based on selections
@@ -114,12 +119,7 @@ const updateVis = function(coinData, sliderTimeVals){
     });
 
     linePath = thisGObj.append("path")
-    .attrs({
-        "class": `line ${coinName}`,
-        "fill": "none",
-        "stroke": "grey",
-        "stroke-width": "3px"
-    });
+    .attr("class", `line ${coinName} line${coinName} chartLine`);
 
     linePath.transition(t())
         .attr("d", line(sliderFilteredData));
@@ -157,8 +157,8 @@ const updateVis = function(coinData, sliderTimeVals){
             "width": widthLM,
             "height": heightLM
         })
-        .on("mouseover", () => setFocusDisplay(null, coinName))
-        .on("mouseout", () => setFocusDisplay('none', coinName))
+        .on("mouseover", () => setFocusDisplay(null, coinName, [.2,1]))
+        .on("mouseout", () => setFocusDisplay('none', coinName, [1,1]))
         .on("mousemove", mousemove);
 
         //coinName, sliderFilteredData
