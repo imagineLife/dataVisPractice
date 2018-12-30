@@ -39,12 +39,12 @@ const height = 250,
       heightLM = height - margin.top - margin.bottom,
       widthLM = width - margin.left - margin.right;
 
-LineChart = function(_parentElement, coinData){
+// LineChart = function(_parentElement, coinData){
 
-    this.initVis(_parentElement, coinData);
-};
+//     this.initVis(_parentElement, coinData);
+// };
 
-LineChart.prototype.initVis = function(parent, coinData){
+const initVis = function(parent, coinData){
     let thisCoinName = Object.keys(coinData)[0]
 
     svgObj = d3.select(parent)
@@ -80,7 +80,7 @@ const updateVis = function(coinData, sliderTimeVals){
 
     let { coinName, sliderFilteredData } = filterCoinStats(coinData, timeVals)
 
-    state.yVariable = $("#var-select").val()
+    state.yVariable = $("#measurement-select").val()
 
     var vis = this;
 
