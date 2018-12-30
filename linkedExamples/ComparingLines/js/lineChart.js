@@ -38,16 +38,12 @@ let xAxisObj = d3.axisBottom().ticks(4);
 let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(400); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
 // Filter data based on selections
 const height = 250, 
       width = 300, 
       heightLM = height - margin.top - margin.bottom,
       widthLM = width - margin.left - margin.right;
-
-// LineChart = function(_parentElement, coinData){
-
-//     this.initVis(_parentElement, coinData);
-// };
 
 const initVis = function(parent, coinData){
     let thisCoinName = Object.keys(coinData)[0]
@@ -165,6 +161,7 @@ const updateVis = function(coinData, sliderTimeVals){
         .on("mouseout", () => setFocusDisplay('none', coinName))
         .on("mousemove", mousemove);
 
+        //coinName, sliderFilteredData
     function mousemove() {
         let thisFocus = d3.select(`.focus${coinName}`)
         
