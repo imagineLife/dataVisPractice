@@ -52,11 +52,11 @@ let state = {
 
 // Coin-Name Selector
 $("#measurement-select").on("change", () => {
-    updateVis(state.bitData)
-    updateVis(state.ethData)
-    updateVis(state.bitCashData)
-    updateVis(state.liteData)
-    updateVis(state.ripData)   
+    updateVis(state.bitData, state.sliderVals)
+    updateVis(state.ethData, state.sliderVals)
+    updateVis(state.bitCashData, state.sliderVals)
+    updateVis(state.liteData, state.sliderVals)
+    updateVis(state.ripData, state.sliderVals)   
 })
 
 // Add jQuery UI slider
