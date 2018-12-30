@@ -26,8 +26,8 @@ function filterCoinStats(data, timeVals){
 
 // Fix for y-axis format values
 const formatSi = d3.format(".2s");
+const formatDollar = d3.format("$,");
 
-let xScale = x = d3.scaleTime()
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let dataFiltered, xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
@@ -65,7 +65,7 @@ LineChart.prototype.initVis = function(parent, coinData){
         })
         .text(Object.keys(coinData))
 
-    xScale.range([0, widthLM]);
+    state.xScales[thisCoinName].range([0, widthLM]);
     state.yScales[thisCoinName].range([heightLM, 0]);
 
     xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${thisCoinName}xAxisG x axis`);
@@ -85,7 +85,7 @@ const updateVis = function(coinData, sliderTimeVals){
     var vis = this;
 
     // Update scales
-    xScale.domain(d3.extent(sliderFilteredData, d => d.date));
+    state.xScales[coinName].domain(d3.extent(sliderFilteredData, d => d.date));
     
     state.yScales[coinName].domain([d3.min(sliderFilteredData, d => d[state.yVariable]) / 1.005, 
         d3.max(sliderFilteredData, d => d[state.yVariable]) * 1.005]);
@@ -93,7 +93,7 @@ const updateVis = function(coinData, sliderTimeVals){
     // Update axes
     let thisXAxisG = d3.select(`.${coinName}xAxisG`),
         thisYAxisG = d3.select(`.${coinName}yAxisG`);
-    xAxisObj.scale(xScale);
+    xAxisObj.scale(state.xScales[coinName]);
     yAxisObj.scale(state.yScales[coinName]);
     thisXAxisG.transition(t()).call(xAxisObj);
     thisYAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
@@ -107,7 +107,7 @@ const updateVis = function(coinData, sliderTimeVals){
     d3.select(` ${coinName}ovly`).remove();
 
     const line = d3.line()
-        .x(function(d) { return xScale(d.date); })
+        .x(function(d) { return state.xScales[coinName](d.date); })
         .y(function(d) { 
         return state.yScales[coinName](d[state.yVariable]); 
     });
@@ -140,12 +140,13 @@ const updateVis = function(coinData, sliderTimeVals){
         });
 
     focus.append("circle")
-        .attr("r", 5);
+        .attr("r", 8);
 
     focus.append("text")
         .attrs({
             "x": 15,
-            "dy": ".31em"
+            "dy": ".31em",
+
         });
 
     d3.select(`.${coinName}SvgWrapper`).append("rect")
@@ -168,15 +169,17 @@ const updateVis = function(coinData, sliderTimeVals){
     function mousemove() {
         let thisFocus = d3.select(`.focus${coinName}`)
         
-        var x0 = xScale.invert(d3.mouse(this)[0]),
+        var x0 = state.xScales[coinName].invert(d3.mouse(this)[0]),
             i = bisectDate(sliderFilteredData, x0, 1),
             d0 = sliderFilteredData[i - 1],
             d1 = sliderFilteredData[i],
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
             
-        thisFocus.attr("transform", `translate(${xScale(d.date)},${state.yScales[coinName](d[state.yVariable])})`);
-        thisFocus.select("text").text(() => d3.format("$,")(d[state.yVariable].toFixed(2)));
+        thisFocus.attr("transform", `translate(${state.xScales[coinName](d.date)},${state.yScales[coinName](d[state.yVariable])})`);
+        thisFocus.select("text").text(() => {
+            return formatDollar(d[state.yVariable].toFixed(2))
+        });
         thisFocus.select(`.${coinName}xHovLine`).attr("y2", heightLM - state.yScales[coinName](d[state.yVariable]));
-        thisFocus.select(`.${coinName}yHovLine`).attr("x2", -xScale(d.date));
+        thisFocus.select(`.${coinName}yHovLine`).attr("x2", -state.xScales[coinName](d.date));
     }
 };

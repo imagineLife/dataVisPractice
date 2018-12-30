@@ -19,11 +19,11 @@ function prepData(data){
 
 let state = {
     filteredData: null,
-    lineChart1: null,
-    lineChart2: null,
-    lineChart3: null,
-    lineChart4: null,
-    lineChart5: null,
+    chart1: null,
+    chart2: null,
+    chart3: null,
+    chart4: null,
+    chart5: null,
     parseTime: d3.timeParse("%d/%m/%Y"),
     formatTime: d3.timeFormat("%d/%m/%Y"),
     yVariable: null,
@@ -33,7 +33,15 @@ let state = {
         bitcoin_cash: d3.scaleLinear(),
         litecoin: d3.scaleLinear(),
         ripple: d3.scaleLinear(),
+    },
+    xScales: {
+        bitcoin: d3.scaleTime(),
+        ethereum: d3.scaleTime(),
+        bitcoin_cash: d3.scaleTime(),
+        litecoin: d3.scaleTime(),
+        ripple: d3.scaleTime(),
     }
+
 }
 
 let bitData, ethData, bitCashData, liteData, ripData;
@@ -82,10 +90,10 @@ d3.json("data/data.json").then(function(data){
     liteData = {litecoin: state.filteredData.litecoin};
     ripData = {ripple: state.filteredData.ripple};
 
-    state.lineChart1 = new LineChart("#chart-area1", bitData);
-    state.lineChart2 = new LineChart("#chart-area2", ethData);
-    state.lineChart3 = new LineChart("#chart-area3", bitCashData);
-    state.lineChart4 = new LineChart("#chart-area4", liteData);
-    state.lineChart5 = new LineChart("#chart-area5", ripData);
+    state.chart1 = new LineChart("#chart-area1", bitData);
+    state.chart2 = new LineChart("#chart-area2", ethData);
+    state.chart3 = new LineChart("#chart-area3", bitCashData);
+    state.chart4 = new LineChart("#chart-area4", liteData);
+    state.chart5 = new LineChart("#chart-area5", ripData);
 
 })
