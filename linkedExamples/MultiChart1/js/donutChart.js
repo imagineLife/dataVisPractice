@@ -1,44 +1,49 @@
-DonutChart = function(_parentElement, _variable){
+const DonutChart = function(_parentElement, _variable){
+    this.initVis(_parentElement, _variable);
+};
+
+DonutChart.prototype.initVis = function(_parentElement,_variable){
+    
+    var vis = this;
+
     this.parentElement = _parentElement;
     this.variable = _variable;
 
-    this.initVis();
-};
-
-DonutChart.prototype.initVis = function(){
-    var vis = this;
-
-	vis.margin = { left:0, right:0, top:40, bottom:0 };
-	vis.width = 250 - vis.margin.left - vis.margin.right;
-	vis.height = 250 - vis.margin.top - vis.margin.bottom;
-	vis.radius = Math.min(vis.width, vis.height) / 2;
+	const width = 250 - state.margin.pie.l - state.margin.pie.r;
+	const height = 250 - state.margin.pie.t - state.margin.pie.b;
+	const pieRadius = Math.min(width, height) / 2;
 
 	vis.pie = d3.pie()
 		.padAngle(0.03)
-		.value(function(d) { return d.data[vis.variable]; })
+		.value(d => d.data[vis.variable])
 		.sort(null);
 
 	vis.arc = d3.arc()
-		.innerRadius(vis.radius - 60)
-		.outerRadius(vis.radius - 30);
+		.innerRadius(pieRadius - 80)
+		.outerRadius(pieRadius - 30);
 
-    vis.svg = d3.select(vis.parentElement)
+    const svgObj = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
-    vis.g = vis.svg.append("g")
-        .attr("transform", "translate(" + (vis.margin.left + (vis.width / 2)) + 
-            ", " + (vis.margin.top + (vis.height / 2)) + ")");
+        .attrs({
+            "width": width + state.margin.pie.l + state.margin.pie.r,
+            "height": height + state.margin.pie.t + state.margin.pie.b,
+            'class': `${_variable}SVGWrapper`
+        });
+
+    vis.g = svgObj.append("g")
+        .attr("transform", `translate(${(state.margin.pie.l + (width / 2))},${(state.margin.pie.t + (height / 2))})`);
 
     vis.g.append("text")
-        .attr("y", -vis.height/2)
-        .attr("x", -vis.width/2)
-        .attr("font-size", "15px")
-        .attr("text-anchor", "start")
+        .attrs({
+            "y": -height/2,
+            "x": -width/2,
+            "font-size": "15px",
+            "text-anchor": "start"
+        })
         .text(vis.variable == "market_cap" ? 
         	"Market Capitalization" : "24 Hour Trading Volume");
 
-    vis.updateDonut();
+    vis.updateDonut(_variable);
 }
 
 DonutChart.prototype.updateDonut = function(){
