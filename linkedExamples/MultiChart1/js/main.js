@@ -83,14 +83,13 @@ $("#date-slider").slider({
 });
 
 function arcClicked(arc){
+    
     state.activeCoin = arc.data.coin;    
     $("#coin-select").val(state.activeCoin);
-    coinChanged();
-}
+    
 
-function coinChanged(){
-    donutChart1.updateDonut("#donut-area1", "24h_vol");
-    donutChart2.updateDonut("#donut-area2", "market_cap");
+    donutChart1.updateDonut("donut-area1", "24h_vol");
+    donutChart2.updateDonut("donut-area2", "market_cap");
     lineChart.wrangleData();
 }
 
