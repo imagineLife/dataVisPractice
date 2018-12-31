@@ -18,6 +18,7 @@ function prepData(data){
 }
 
 let state = {
+    activeCoin: null,
     filteredData: null,
     chart1: null,
     chart2: null,
@@ -80,7 +81,8 @@ $("#date-slider").slider({
 });
 
 function arcClicked(arc){
-    $("#coin-select").val(arc.data.coin);
+    state.activeCoin = arc.data.coin;    
+    $("#coin-select").val(state.activeCoin);
     coinChanged();
 }
 

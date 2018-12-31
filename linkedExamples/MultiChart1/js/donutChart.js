@@ -44,13 +44,14 @@ DonutChart.prototype.initVis = function(){
 DonutChart.prototype.wrangleData = function(){
     var vis = this;
 
-    vis.activeCoin = $("#coin-select").val();
-
-    vis.updateVis();
+    vis.updateDonut();
 }
 
-DonutChart.prototype.updateVis = function(){
+DonutChart.prototype.updateDonut = function(){
     var vis = this;
+    if(state.activeCoin == null){
+        state.activeCoin = $("#coin-select").val();
+    }
 
     vis.path = vis.g.selectAll("path");
 
@@ -73,7 +74,7 @@ DonutChart.prototype.updateVis = function(){
         .duration(750)
         .attrTween("d", arcTween)
         .attr("fill-opacity", function(d) {
-        	return (d.data.coin == vis.activeCoin) ? 1 : 0.3;
+        	return (d.data.coin == state.activeCoin) ? 1 : 0.3;
         })
 
     // ENTER new elements in the array.
@@ -82,7 +83,7 @@ DonutChart.prototype.updateVis = function(){
         .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
         .attr("fill", function(d) {  return color(d.data.coin) })
         .attr("fill-opacity", function(d) {
-        	return (d.data.coin == vis.activeCoin) ? 1 : 0.3;
+        	return (d.data.coin == state.activeCoin) ? 1 : 0.3;
         })
         .on("click", arcClicked)
         .transition()
