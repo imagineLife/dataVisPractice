@@ -2,27 +2,24 @@ const DonutChart = function(_parentElement, _variable){
     this.initVis(_parentElement, _variable);
 };
 
+
+const pieFn = d3.pie()
+    .padAngle(0.03)
+    .sort(null);
+
 DonutChart.prototype.initVis = function(_parentElement,_variable){
     
     var vis = this;
-
-    this.parentElement = _parentElement;
-    this.variable = _variable;
 
     const width = 250 - state.margin.pie.l - state.margin.pie.r;
     const height = 250 - state.margin.pie.t - state.margin.pie.b;
     const pieRadius = Math.min(width, height) / 2;
 
-    vis.pie = d3.pie()
-        .padAngle(0.03)
-        .value(d => d.data[vis.variable])
-        .sort(null);
-
     vis.arc = d3.arc()
         .innerRadius(pieRadius - 80)
         .outerRadius(pieRadius - 30);
 
-    const svgObj = d3.select(vis.parentElement)
+    const svgObj = d3.select(_parentElement)
         .append("svg")
         .attrs({
             "width": width + state.margin.pie.l + state.margin.pie.r,
@@ -40,13 +37,13 @@ DonutChart.prototype.initVis = function(_parentElement,_variable){
             "font-size": "15px",
             "text-anchor": "start"
         })
-        .text(vis.variable == "market_cap" ? 
+        .text(_variable == "market_cap" ? 
             "Market Capitalization" : "24 Hour Trading Volume");
 
-    vis.updateDonut(_variable);
+    vis.updateDonut(_parentElement, _variable);
 }
 
-DonutChart.prototype.updateDonut = function(){
+DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
     var vis = this;
     
     if(state.activeCoin == null){
@@ -56,7 +53,7 @@ DonutChart.prototype.updateDonut = function(){
     vis.path = vis.g.selectAll("path");
 
     vis.data0 = vis.path.data();
-    vis.data1 = vis.pie(donutData);
+    vis.data1 = pieFn.value(d => d.data[pieVarTxt])(donutData);
 
     // JOIN elements with new data.
     vis.path = vis.path.data(vis.data1, key);
