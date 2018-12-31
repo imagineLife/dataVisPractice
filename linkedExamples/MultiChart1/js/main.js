@@ -19,7 +19,7 @@ function prepData(data){
 
 let state = {
     activeCoin: null,
-    filteredData: null,
+    filteredData: {},
     chart1: null,
     chart2: null,
     chart3: null,
@@ -87,8 +87,8 @@ function arcClicked(arc){
 }
 
 function coinChanged(){
-    donutChart1.wrangleData();
-    donutChart2.wrangleData();
+    donutChart1.updateDonut();
+    donutChart2.updateDonut();
     lineChart.wrangleData();
 }
 
@@ -98,10 +98,10 @@ d3.json("data/data.json").then(function(data){
         if (!data.hasOwnProperty(coin)) {
             continue;
         }
-        filteredData[coin] = data[coin].filter(function(d){
+        state.filteredData[coin] = data[coin].filter(function(d){
             return !(d["price_usd"] == null)
         })
-        filteredData[coin].forEach(function(d){
+        state.filteredData[coin].forEach(function(d){
             d["price_usd"] = +d["price_usd"];
             d["24h_vol"] = +d["24h_vol"];
             d["market_cap"] = +d["market_cap"];
@@ -109,7 +109,7 @@ d3.json("data/data.json").then(function(data){
         });
         donutData.push({
             "coin": coin,
-            "data": filteredData[coin].slice(-1)[0]
+            "data": state.filteredData[coin].slice(-1)[0]
         })
     }
 

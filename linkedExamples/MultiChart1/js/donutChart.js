@@ -38,17 +38,12 @@ DonutChart.prototype.initVis = function(){
         .text(vis.variable == "market_cap" ? 
         	"Market Capitalization" : "24 Hour Trading Volume");
 
-    vis.wrangleData();
-}
-
-DonutChart.prototype.wrangleData = function(){
-    var vis = this;
-
     vis.updateDonut();
 }
 
 DonutChart.prototype.updateDonut = function(){
     var vis = this;
+    
     if(state.activeCoin == null){
         state.activeCoin = $("#coin-select").val();
     }
