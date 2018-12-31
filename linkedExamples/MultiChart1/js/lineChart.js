@@ -97,7 +97,7 @@ LineChart.prototype.wrangleData = function(){
 
     // Filter data based on selections
     vis.sliderValues = $("#date-slider").slider("values")
-    vis.dataFiltered = filteredData[vis.coin].filter(function(d) {
+    vis.dataFiltered = state.filteredData[vis.coin].filter(function(d) {
         return ((d.date >= vis.sliderValues[0]) && (d.date <= vis.sliderValues[1]))
     })
 
