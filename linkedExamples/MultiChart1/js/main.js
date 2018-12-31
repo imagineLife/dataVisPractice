@@ -20,11 +20,10 @@ function prepData(data){
 let state = {
     activeCoin: null,
     filteredData: {},
-    chart1: null,
-    chart2: null,
-    chart3: null,
-    chart4: null,
-    chart5: null,
+    charts:{
+        pie:{},
+        line:{}
+    },
     parseTime: d3.timeParse("%d/%m/%Y"),
     formatTime: d3.timeFormat("%d/%m/%Y"),
     yVariable: null,
@@ -90,8 +89,8 @@ function arcClicked(arc){
 }
 
 function coinChanged(){
-    donutChart1.updateDonut();
-    donutChart2.updateDonut();
+    donutChart1.updateDonut("#donut-area1", "24h_vol");
+    donutChart2.updateDonut("#donut-area2", "market_cap");
     lineChart.wrangleData();
 }
 
