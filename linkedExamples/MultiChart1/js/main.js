@@ -47,7 +47,10 @@ let state = {
     ethData: null, 
     bitCashData: null, 
     liteData: null, 
-    ripData: null
+    ripData: null,
+    margin:{
+        pie:{ t:40, r:0, b:0, l:0 }
+    }
 }
 
 // Global variables
