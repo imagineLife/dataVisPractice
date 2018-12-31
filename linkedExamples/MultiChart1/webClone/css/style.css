@@ -1,0 +1,59 @@
+#chart-area svg {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.svgWrapper{
+  overflow: unset;
+}
+
+#logo {
+  height:50px;
+}
+
+.navbar-brand {
+  height: 60px;
+  padding: 5px 0px;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #D4D8DA;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1px;
+  stroke: rgba(128,128,128,1);
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+circle {
+  fill: rgba(50, 200, 255, 0.2);
+  stroke: rgb(30,120,225);
+  stroke-dasharray: 5 2;
+  stroke-width: 2px;
+}
+  
+.hover-line {
+  stroke: rgba(50, 200, 255, 0.75);
+  stroke-width: 1px;
+  stroke-dasharray: 10,10;
+}
+
+#selections .col-md-4 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
