@@ -1,5 +1,9 @@
 const key = d => d.data.coin;
 
+let pieFn = d3.pie()
+    .padAngle(0.03)
+    .sort(null);
+
 const DonutChart = function(_parentElement, _variable){
     this.updateDonut(_parentElement, _variable);
 };
@@ -12,11 +16,6 @@ DonutChart.prototype.updateDonut = function(parent, pieVar){
     const width = 250 - state.margin.pie.l - state.margin.pie.r;
     const height = 250 - state.margin.pie.t - state.margin.pie.b;
     const pieRadius = Math.min(width, height) / 2;
-
-    vis.pie = d3.pie()
-        .padAngle(0.03)
-        .value(d => d.data[pieVar])
-        .sort(null);
 
     vis.arc = d3.arc()
         .innerRadius(pieRadius - 80)
@@ -53,7 +52,7 @@ DonutChart.prototype.updateDonut = function(parent, pieVar){
     let thisPiePath = thisPieG.selectAll("path");
     
     vis.data0 = thisPiePath.data();
-    vis.data1 = vis.pie(donutData);
+    vis.data1 = pieFn.value(d => d.data[pieVar])(donutData);
 
     // JOIN elements with new data.
     thisPiePath = thisPiePath.data(vis.data1, key);
