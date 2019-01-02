@@ -73,7 +73,6 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
     // ENTER new elements in the array.
     piePathsDataJoin.enter()
         .append("path")
-        .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
         .attr("fill", function(d) {  return color(d.data.coin) })
         .attr("fill-opacity", function(d) {
             return (d.data.coin == state.activeCoin) ? 1 : 0.3;
@@ -85,35 +84,6 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
 
     function key(d){
         return d.data.coin;
-    }
-
-    function findNeighborArc(i, data0, data1, key) {
-        var d;
-        return (d = findPreceding(i, vis.data0, vis.data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
-            : (d = findFollowing(i, vis.data0, vis.data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
-            : null;
-    }
-
-    // Find the element in data0 that joins the highest preceding element in data1.
-    function findPreceding(i, data0, data1, key) {
-        var m = vis.data0.length;
-        while (--i >= 0) {
-            var k = key(vis.data1[i]);
-            for (var j = 0; j < m; ++j) {
-                if (key(vis.data0[j]) === k) return vis.data0[j];
-            }
-        }
-    }
-
-    // Find the element in data0 that joins the lowest following element in data1.
-    function findFollowing(i, data0, data1, key) {
-        var n = vis.data1.length, m = vis.data0.length;
-        while (++i < n) {
-            var k = key(vis.data1[i]);
-            for (var j = 0; j < m; ++j) {
-                if (key(vis.data0[j]) === k) return vis.data0[j];
-            }
-        }
     }
 
     function arcTween(d) {
