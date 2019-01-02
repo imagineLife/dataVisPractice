@@ -2,6 +2,7 @@ const DonutChart = function(_parentElement, _variable){
     this.initVis(_parentElement, _variable);
 };
 
+const coinKey = d => d.data.coin;
 
 const pieFn = d3.pie()
     .padAngle(0.03)
@@ -56,11 +57,10 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
 
     const piePaths = vis.g.selectAll("path");
 
-    vis.data0 = piePaths.data();
-    vis.data1 = pieFn.value(d => d.data[pieVarTxt])(donutData);
+    let pieData = pieFn.value(d => d.data[pieVarTxt])(donutData);
 
     // JOIN elements with new data.
-    piePathsDataJoin = piePaths.data(vis.data1, key);
+    piePathsDataJoin = piePaths.data(pieData, coinKey);
     
     // UPDATE elements still on the screen.
     piePathsDataJoin.transition()
@@ -81,10 +81,6 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
         .transition()
         .duration(750)
             .attrTween("d", arcTween);
-
-    function key(d){
-        return d.data.coin;
-    }
 
     function arcTween(d) {
         var i = d3.interpolate(this._current, d);

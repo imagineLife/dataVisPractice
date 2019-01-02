@@ -1,11 +1,7 @@
-#chart-area svg {
+#donut-area1 svg, #donut-area2 svg {
   margin-left: auto;
   margin-right: auto;
   display: block;
-}
-
-.svgWrapper{
-  overflow: unset;
 }
 
 #logo {
@@ -31,8 +27,7 @@
 
 .line {
   fill: none;
-  stroke-width: 1px;
-  stroke: rgba(128,128,128,1);
+  stroke-width: 2px;
 }
 
 .overlay {
@@ -40,17 +35,16 @@
   pointer-events: all;
 }
 
-circle {
-  fill: rgba(50, 200, 255, 0.2);
-  stroke: rgb(30,120,225);
-  stroke-dasharray: 5 2;
-  stroke-width: 2px;
+.focus circle {
+  fill: #F1F3F3;
+  stroke: #777;
+  stroke-width: 3px;
 }
   
 .hover-line {
-  stroke: rgba(50, 200, 255, 0.75);
-  stroke-width: 1px;
-  stroke-dasharray: 10,10;
+  stroke: #777;
+  stroke-width: 2px;
+  stroke-dasharray: 3,3;
 }
 
 #selections .col-md-4 {
