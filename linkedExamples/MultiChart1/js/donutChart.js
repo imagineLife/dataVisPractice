@@ -50,24 +50,20 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
         state.activeCoin = $("#coin-select").val();
     }
 
-    vis.path = vis.g.selectAll("path");
+    let thisSVG = d3.select(parent);
+    let thisG = thisSVG.select('g')
 
-    vis.data0 = vis.path.data();
+
+    const piePaths = vis.g.selectAll("path");
+
+    vis.data0 = piePaths.data();
     vis.data1 = pieFn.value(d => d.data[pieVarTxt])(donutData);
 
     // JOIN elements with new data.
-    vis.path = vis.path.data(vis.data1, key);
-
-    // EXIT old elements from the screen.
-    vis.path.exit()
-        .datum(function(d, i) { return findNeighborArc(i, vis.data1, vis.data0, key) || d; })
-        .transition()
-        .duration(750)
-        .attrTween("d", arcTween)
-        .remove();
+    piePathsDataJoin = piePaths.data(vis.data1, key);
     
     // UPDATE elements still on the screen.
-    vis.path.transition()
+    piePathsDataJoin.transition()
         .duration(750)
         .attrTween("d", arcTween)
         .attr("fill-opacity", function(d) {
@@ -75,7 +71,7 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
         })
 
     // ENTER new elements in the array.
-    vis.path.enter()
+    piePathsDataJoin.enter()
         .append("path")
         .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
         .attr("fill", function(d) {  return color(d.data.coin) })
