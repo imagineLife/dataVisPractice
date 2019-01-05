@@ -37,13 +37,11 @@ function getDimsFromParent(p, m){
 }
 
  // Variables
-var width = 500;
-var height = 500;
-var radius = Math.min(width, height) / 2;
-const margin = { left: 20, right: 20, top: 20, bottom: 20 };
+const margin = { left: 20, right: 20, top: 0, bottom: 20 };
 var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv, margin);
+const radius = Math.min(widthLessMargins, heightLessMargins) / 2;
 
 svgObj.attrs({
   'height': heightLessMargins,
