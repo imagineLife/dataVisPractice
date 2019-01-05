@@ -1,6 +1,4 @@
 function makeRoot(data){
-  console.log('makeRoot data')
-  console.log(data)
   // Find data root
   var root = d3.hierarchy(data)
       .sum(d => +d.size)
@@ -36,12 +34,29 @@ function getDimsFromParent(p, m){
   return {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins}
 }
 
+function resize(){
+  let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv, margin);
+  const resizedRadius = Math.min(widthLessMargins, heightLessMargins) / 2;
+  radius = resizedRadius;
+  //set svg dims
+  svgObj.attrs({
+    'height': heightLessMargins,
+    'width': widthLessMargins,
+    'transform': `translate(${margin.left},${margin.top})`
+  })
+
+  //transform gObj
+  gObj.attr('transform', `translate(${widthLessMargins/2},${heightLessMargins/2})`)
+
+  buildChart(originalData)
+}
+
  // Variables
 const margin = { left: 20, right: 20, top: 0, bottom: 20 };
 var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 let {chartObj, svgObj, svgW, svgH, gObj} = makeObjsFromParent('chartDiv');  
 let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv, margin);
-const radius = Math.min(widthLessMargins, heightLessMargins) / 2;
+let radius = Math.min(widthLessMargins, heightLessMargins) / 2;
 
 svgObj.attrs({
   'height': heightLessMargins,
@@ -77,7 +92,7 @@ var arcFn = d3.arc()
   .innerRadius(d => d.y0)
   .outerRadius(d => d.y1);
 
-var rootedData = null, sliceGs = null;
+var rootedData = null, sliceGs = null, originalData = null;
 
 /*
 
@@ -165,14 +180,12 @@ function toggleOrder() {
 
 function buildChart(data){
 
+    originalData = data
+    
     pt.size([2 * Math.PI, radius]);
-    // console.log('buildChart data')
-    // console.log(data)
-    
     rootedData = makeRoot(data);
-    console.log('rootedData')
-    console.log(rootedData)
-    
+
+    gObj.selectAll('*').remove()
 
      // Add a <g> element for each node in thd data, then append <path> elements and draw lines based on the arc
     // variable calculations. Last, color the lines and the slices.
@@ -212,3 +225,6 @@ function buildChart(data){
 d3.json('./data.json', data => {
   buildChart(data)
 })
+
+// Call the resize function whenever a resize event occurs
+d3.select(window).on('resize', resize);
