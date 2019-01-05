@@ -1,0 +1,31 @@
+#chartDiv{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+
+text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.node--hover circle {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.singlePath{
+	cursor: pointer;
+	opacity: .7;
+	stroke: #fff;
+}
+
+.singlePath:hover{
+	opacity: 1;
+}
+
+.sliceText{
+	pointer-events: none;
+}

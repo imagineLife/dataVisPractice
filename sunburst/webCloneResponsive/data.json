@@ -1,0 +1,24 @@
+{
+  "name": "TOPICS", "children": [{
+      "name": "Topic A",
+      "children": [
+        {"name": "Sub A1", "size": 15},
+        {"name": "Sub A2", "size": 14}, 
+        {"name": "Sub A3", "size": 13},
+        {"name": "Sub A4", "size": 11}
+      ]
+  }, {
+      "name": "Topic B",
+      "children": [
+        {"name": "Sub B1", "size": 8}, 
+        {"name": "Sub B2", "size": 7}, 
+        {"name": "Sub B3", "size": 6}
+      ]
+  }, {
+      "name": "Topic C",
+      "children": [
+        {"name": "Sub C1", "size": 2}, 
+        {"name": "Sub C2", "size": 9}
+      ]
+  }]
+}
