@@ -2,7 +2,7 @@
     position: absolute;
     left: 0px;
     right: 0px;
-    top: 0px;
+    top: 50px;
     bottom: 0px;
 }
 
@@ -28,4 +28,12 @@ text {
 
 .sliceText{
 	pointer-events: none;
+}
+
+label{
+  cursor: pointer;
+}
+
+label:hover{
+  text-decoration: underline;
 }
