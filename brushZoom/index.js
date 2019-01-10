@@ -23,14 +23,14 @@ var svgObj = d3.select(chartDiv)
         'height': parentDivHeight,
         'class':'svgObj'
       }),
-    width = parentDivWidth - state.margin.left - state.margin.right,
-    height = parentDivHeight * .75;
+    widthLessMargins = parentDivWidth - state.margin.left - state.margin.right,
+    heightLessMargins = parentDivHeight * .75;
 
 var parseDate = d3.timeParse("%b %Y");
 
-var x = d3.scaleTime().range([0, width]),
-    x2 = d3.scaleTime().range([0, width]),
-    y = d3.scaleLinear().range([height, 0]),
+var x = d3.scaleTime().range([0, widthLessMargins]),
+    x2 = d3.scaleTime().range([0, widthLessMargins]),
+    y = d3.scaleLinear().range([heightLessMargins, 0]),
     y2 = d3.scaleLinear().range([state.margin.top, 0]);
 
 var xAxis = d3.axisBottom(x),
@@ -38,19 +38,19 @@ var xAxis = d3.axisBottom(x),
     yAxis = d3.axisLeft(y);
 
 var brush = d3.brushX()
-    .extent([[0, 0], [width, state.margin.top]])
+    .extent([[0, 0], [widthLessMargins, state.margin.top]])
     .on("brush end", brushed);
 
 var zoom = d3.zoom()
     .scaleExtent([1, Infinity])
-    .translateExtent([[0, 0], [width, height]])
-    .extent([[0, 0], [width, height]])
+    .translateExtent([[0, 0], [widthLessMargins, heightLessMargins]])
+    .extent([[0, 0], [widthLessMargins, heightLessMargins]])
     .on("zoom", zoomed);
 
 var areaFn = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return x(d.date); })
-    .y0(height)
+    .y0(heightLessMargins)
     .y1(function(d) { return y(d.price); });
 
 var area2Fn = d3.area()
@@ -63,8 +63,8 @@ svgObj.append("defs").append("clipPath")
     .attr("id", "clip")
   .append("rect")
     .attrs({
-      "width": width,
-      "height": height
+      "width": widthLessMargins,
+      "height": heightLessMargins
   });
 
 var focus = svgObj.append("g")
@@ -97,7 +97,7 @@ d3.csv("./data.csv", type, function(error, data) {
   focus.append("g")
       .attrs({
         "class": "axis axis--x",
-        "transform": `translate(0,${height})`
+        "transform": `translate(0,${heightLessMargins})`
       })
       .call(xAxis);
 
@@ -127,8 +127,8 @@ d3.csv("./data.csv", type, function(error, data) {
   svgObj.append("rect")
       .attrs({
         "class": "zoom",
-        "width": width,
-        "height": height,
+        "width": widthLessMargins,
+        "height": heightLessMargins,
         "transform": `translate(${state.margin.left},${state.margin.top})`
       })
       .call(zoom);
@@ -141,7 +141,7 @@ function brushed() {
   focus.select(".area").attr("d", areaFn);
   focus.select(".axis--x").call(xAxis);
   svgObj.select(".zoom").call(zoom.transform, d3.zoomIdentity
-      .scale(width / (s[1] - s[0]))
+      .scale(widthLessMargins / (s[1] - s[0]))
       .translate(-s[0], 0));
 }
 
