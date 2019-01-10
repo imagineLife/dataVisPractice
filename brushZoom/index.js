@@ -39,9 +39,8 @@ svgObj.attrs({
 gObj.attr('transform', `translate(${state.margin.left},${state.margin.top})`);
 
 
-var margin = {top: 20, right: 20, bottom: divHeightLessMargins * .75, left: 40},
-    margin2 = {top: divHeightLessMargins * .85, right: 20, bottom: 30, left: 40},
-    height = +svgObj.attr("height") - margin.top - margin.bottom,
+var margin2 = {top: divHeightLessMargins * .85, right: 20, bottom: 30, left: 40},
+    height = +svgObj.attr("height") - state.margin.top - divHeightLessMargins * .75,
     height2 = +svgObj.attr("height") - margin2.top - margin2.bottom;
 
 var parseDate = d3.timeParse("%b %Y");
@@ -49,7 +48,7 @@ var parseDate = d3.timeParse("%b %Y");
 var xScale = d3.scaleTime().range([state.margin.left, divWidthLessMargins]),
     xScale2 = d3.scaleTime().range([state.margin.left, divWidthLessMargins]),
     yScale = d3.scaleLinear().range([height, state.margin.top]),
-    y2 = d3.scaleLinear().range([height2, state.margin.top]);
+    yScale2 = d3.scaleLinear().range([height2, state.margin.top]);
 
 var xAxis = d3.axisBottom(xScale),
     xAxis2 = d3.axisBottom(xScale2),
@@ -75,7 +74,7 @@ var area2 = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return xScale2(d.date); })
     .y0(height2)
-    .y1(function(d) { return y2(d.price); });
+    .y1(function(d) { return yScale2(d.price); });
 
 svgObj.append("defs").append("clipPath")
     .attr("id", "clip")
@@ -85,7 +84,7 @@ svgObj.append("defs").append("clipPath")
 
 var focus = svgObj.append("g")
     .attr("class", "focus")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + state.margin.left + "," + state.margin.top + ")");
 
 var context = svgObj.append("g")
     .attr("class", "context")
@@ -94,19 +93,23 @@ var context = svgObj.append("g")
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
 
-  xScale.domain(d3.extent(data, function(d) { return d.date; }));
-  yScale.domain([0, d3.max(data, function(d) { return d.price; })]);
+  xScale.domain(d3.extent(data, d => d.date));
+  yScale.domain([0, d3.max(data, d => d.price)]);
   xScale2.domain(xScale.domain());
-  y2.domain(yScale.domain());
+  yScale2.domain(yScale.domain());
 
   focus.append("path")
       .datum(data)
-      .attr("class", "area")
-      .attr("d", area);
+      .attrs({
+        "class": "area",
+        "d": area
+      });
 
   focus.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
+      .attrs({
+        "class": "axis axis--x",
+        "transform": `translate(0,${height})`
+      })
       .call(xAxis);
 
   focus.append("g")
@@ -115,12 +118,16 @@ d3.csv("./data.csv", type, function(error, data) {
 
   context.append("path")
       .datum(data)
-      .attr("class", "area")
-      .attr("d", area2);
+      .attrs({
+        "class": "area",
+        "d": area2
+      });
 
   context.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height2 + ")")
+      .attrs({
+        "class": "axis axis--x",
+        "transform": `translate(0,${height2})`
+      })
       .call(xAxis2);
 
   context.append("g")
@@ -129,10 +136,12 @@ d3.csv("./data.csv", type, function(error, data) {
       .call(brush.move, xScale.range());
 
   svgObj.append("rect")
-      .attr("class", "zoom")
-      .attr("width", divWidthLessMargins)
-      .attr("height", height)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attrs({
+        "class": "zoom",
+        "width": divWidthLessMargins,
+        "height": height,
+        "transform": `translate(${state.margin.left},${state.margin.top})`
+      })
       .call(zoom);
 });
 
