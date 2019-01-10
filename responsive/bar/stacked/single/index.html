@@ -73,24 +73,19 @@
 
   //1. re-parse data
   //  will result in a single array of objects
-  var data = rawData.reduce(function(acc, cur) {
+  var dataToUse = rawData.reduce(function(acc, cur) {
     for (var key in cur) {
         acc[0][key] = cur[key];
     }
       return acc
-    }, [{}] );
-
-//3. isolate data from parsed data
-  //capture the number of keys in the dataset
-  let dataToUse = data[0];
-  // console.log('dataToUse ->',dataToUse);
+    }, [{}] )[0];
 
   let numberOfKeysInData = Object.keys(dataToUse).length;
   // console.log('numberOfKeysInData ->',numberOfKeysInData);
 
 
 //4. get keys array from data using d3 magic
-  let keysArr = d3.keys(data[0]);
+  let keysArr = d3.keys(dataToUse);
   //console.log('keys array is ->',keysArr);
 
 
@@ -101,7 +96,7 @@
 
 
 //6. calculate total height of bar
-  BarTotalVal = d3.max(stack(data), function(layer) {
+  BarTotalVal = d3.max(stack([dataToUse]), function(layer) {
     return d3.max(layer, function(d) {
   //    console.log('layer--->', layer)
       var x = d[0],
@@ -125,7 +120,7 @@
       .range(d3.schemeCategory10);
 
 //9. set d3 stacked data to var
-  var d3StackedData = stack(data);
+  var d3StackedData = stack([dataToUse]);
    // console.log('d3StackedData ->',d3StackedData); 
 
     //10. build svg var
