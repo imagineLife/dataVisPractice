@@ -1,16 +1,16 @@
 .tick text, .legendCells text {
 	fill: #8E8883;
-	font-size: 14pt;
+	font-size: 12pt;
 	font-family: sans-serif;
 }
 .axis-label, .legend-label {
 	fill: #635F5D;
-	font-size: 10pt;
+	font-size: 8apt;
 	font-family: sans-serif;
 }
 
 .pieLegend .legendCells text{
-	font-size: 10px;
+	font-size: 8apx;
 }
 
 .line {
@@ -20,5 +20,12 @@
 }
 
 .area {
-  fill: lightsteelblue;
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
 }
