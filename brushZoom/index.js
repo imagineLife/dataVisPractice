@@ -1,4 +1,4 @@
-const vars ={
+const state = {
 	xLabel : 'Year',
 	yLabel : 'Population',
 	xValue : d => d.date,
@@ -18,6 +18,26 @@ const svgObj = d3.select(chartDiv).append("svg").attrs({
   'border': '2px solid green',
   'class': 'area'
 });
+const gObj = svgObj.append('g').attr('class','gWrapper');
+
+// Extract the DIV width and height that was computed by CSS.
+let parentDivWidth = chartDiv.clientWidth;
+let parentDivHeight = chartDiv.clientHeight;
+
+//get css-computed dimensions
+const divWidthLessMargins =parentDivWidth - state.margin.left - state.margin.right;
+const divHeightLessMargins = parentDivHeight - state.margin.top - state.margin.bottom;
+
+//set svg height & width from div computed dimensions
+//NOTE: can be the divLessMargins, for 'padding' effect
+svgObj.attrs({
+  "width" : parentDivWidth,
+  "height" : parentDivHeight
+});
+
+//translate the gWrapper
+gObj.attr('transform', `translate(${state.margin.left},${state.margin.top})`);
+
 
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 110, left: 40},
