@@ -6,23 +6,26 @@ const state = {
 	height: 500,
   width: 960,
   margin : { 
-		left: 100, 
+		left: 75, 
 		right: 25,
 		top: 35,
 		bottom: 35
 	}
 }
 
-var svg = d3.select("#chartDiv")
+let chartDiv = document.getElementById('chartDiv');
+// Extract the DIV width and height that was computed by CSS.
+let parentDivWidth = chartDiv.clientWidth;
+let parentDivHeight = chartDiv.clientHeight;
+
+var svgObj = d3.select(chartDiv)
       .append('svg')
       .attrs({
-        'width': state.width,
-        'height': state.height,
+        'width': parentDivWidth,
+        'height': parentDivHeight,
         'class':'svgObj'
       }),
-    margin = {bottom: 110},
-    margin2 = {top: 430},
-    width = state.width - state.margin.left - state.margin.right,
+    width = parentDivWidth - state.margin.left - state.margin.right,
     height = state.height * .7;
 
 var parseDate = d3.timeParse("%b %Y");
@@ -46,19 +49,19 @@ var zoom = d3.zoom()
     .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
 
-var area = d3.area()
+var areaFn = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return x(d.date); })
     .y0(height)
     .y1(function(d) { return y(d.price); });
 
-var area2 = d3.area()
+var area2Fn = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return x2(d.date); })
     .y0(state.margin.top)
     .y1(function(d) { return y2(d.price); });
 
-svg.append("defs").append("clipPath")
+svgObj.append("defs").append("clipPath")
     .attr("id", "clip")
   .append("rect")
     .attrs({
@@ -66,16 +69,16 @@ svg.append("defs").append("clipPath")
       "height": height
   });
 
-var focus = svg.append("g")
+var focus = svgObj.append("g")
     .attrs({
       "class": "focus",
       "transform": `translate(${state.margin.left},${state.margin.top})`
     });
 
-var context = svg.append("g")
+var context = svgObj.append("g")
     .attrs({
       "class": "context",
-      "transform": `translate(${state.margin.left},${margin2.top})`
+      "transform": `translate(${state.margin.left},${state.height - state.margin.top - state.margin.bottom})`
     });
 
 d3.csv("./data.csv", type, function(error, data) {
@@ -90,7 +93,7 @@ d3.csv("./data.csv", type, function(error, data) {
       .datum(data)
       .attrs({
         "class": "area",
-        "d": area
+        "d": areaFn
       });
 
   focus.append("g")
@@ -108,7 +111,7 @@ d3.csv("./data.csv", type, function(error, data) {
       .datum(data)
       .attrs({
         "class": "area",
-        "d": area2
+        "d": area2Fn
     });
 
   context.append("g")
@@ -123,7 +126,7 @@ d3.csv("./data.csv", type, function(error, data) {
       .call(brush)
       .call(brush.move, x.range());
 
-  svg.append("rect")
+  svgObj.append("rect")
       .attrs({
         "class": "zoom",
         "width": width,
@@ -137,9 +140,9 @@ function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
   var s = d3.event.selection || x2.range();
   x.domain(s.map(x2.invert, x2));
-  focus.select(".area").attr("d", area);
+  focus.select(".area").attr("d", areaFn);
   focus.select(".axis--x").call(xAxis);
-  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+  svgObj.select(".zoom").call(zoom.transform, d3.zoomIdentity
       .scale(width / (s[1] - s[0]))
       .translate(-s[0], 0));
 }
@@ -148,7 +151,7 @@ function zoomed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
   var t = d3.event.transform;
   x.domain(t.rescaleX(x2).domain());
-  focus.select(".area").attr("d", area);
+  focus.select(".area").attr("d", areaFn);
   focus.select(".axis--x").call(xAxis);
   context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
 }
