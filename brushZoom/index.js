@@ -3,15 +3,14 @@ const state = {
 	yLabel : 'Population',
 	xValue : d => d.date,
 	yValue : d => d.close,
-	margin : { 
+	height: 500,
+  width: 960,
+  margin : { 
 		left: 100, 
 		right: 25,
-		top: 25,
-		bottom: 25
-	},
-  height: 500,
-  width: 960
-
+		top: 35,
+		bottom: 35
+	}
 }
 
 var svg = d3.select("#chartDiv")
@@ -24,22 +23,21 @@ var svg = d3.select("#chartDiv")
     margin = {bottom: 110},
     margin2 = {top: 430},
     width = state.width - state.margin.left - state.margin.right,
-    height = state.height - state.margin.top - margin.bottom,
-    height2 = state.height - margin2.top - state.margin.bottom;
+    height = state.height * .7;
 
 var parseDate = d3.timeParse("%b %Y");
 
 var x = d3.scaleTime().range([0, width]),
     x2 = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]),
-    y2 = d3.scaleLinear().range([height2, 0]);
+    y2 = d3.scaleLinear().range([state.margin.top, 0]);
 
 var xAxis = d3.axisBottom(x),
     xAxis2 = d3.axisBottom(x2),
     yAxis = d3.axisLeft(y);
 
 var brush = d3.brushX()
-    .extent([[0, 0], [width, height2]])
+    .extent([[0, 0], [width, state.margin.top]])
     .on("brush end", brushed);
 
 var zoom = d3.zoom()
@@ -57,7 +55,7 @@ var area = d3.area()
 var area2 = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return x2(d.date); })
-    .y0(height2)
+    .y0(state.margin.top)
     .y1(function(d) { return y2(d.price); });
 
 svg.append("defs").append("clipPath")
@@ -116,7 +114,7 @@ d3.csv("./data.csv", type, function(error, data) {
   context.append("g")
       .attrs({
         "class": "axis axis--x",
-        "transform": `translate(0,${height2})`
+        "transform": `translate(0,${state.margin.top})`
       })
       .call(xAxis2);
 
