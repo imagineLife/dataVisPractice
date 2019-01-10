@@ -12,104 +12,76 @@ const state = {
 
 }
 
-//Select/Create div, svg, g
-const chartDiv = document.getElementById('chartDiv');     
-const svgObj = d3.select(chartDiv).append("svg").attrs({
-  'border': '2px solid green',
-  'class': 'area'
-});
-const gObj = svgObj.append('g').attr('class','gWrapper');
-
-// Extract the DIV width and height that was computed by CSS.
-let parentDivWidth = chartDiv.clientWidth;
-let parentDivHeight = chartDiv.clientHeight;
-
-//get css-computed dimensions
-const divWidthLessMargins =parentDivWidth - state.margin.left - state.margin.right;
-const divHeightLessMargins = parentDivHeight - state.margin.top - state.margin.bottom;
-
-//set svg height & width from div computed dimensions
-//NOTE: can be the divLessMargins, for 'padding' effect
-svgObj.attrs({
-  "width" : parentDivWidth,
-  "height" : parentDivHeight
-});
-
-//translate the gWrapper
-gObj.attr('transform', `translate(${state.margin.left},${state.margin.top})`);
-
-
-var margin2 = {top: divHeightLessMargins * .85, right: 20, bottom: 30, left: 40},
-    height = +svgObj.attr("height") - state.margin.top - divHeightLessMargins * .75,
-    height2 = +svgObj.attr("height") - margin2.top - margin2.bottom;
+var svg = d3.select("#chartDiv").append('svg').attr('width',960).attr('height', 500).attr('class','svgObj'),
+    margin = {top: 20, right: 20, bottom: 110, left: 40},
+    margin2 = {top: 430, right: 20, bottom: 30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
 var parseDate = d3.timeParse("%b %Y");
 
-var xScale = d3.scaleTime().range([state.margin.left, divWidthLessMargins]),
-    xScale2 = d3.scaleTime().range([state.margin.left, divWidthLessMargins]),
-    yScale = d3.scaleLinear().range([height, state.margin.top]),
-    yScale2 = d3.scaleLinear().range([height2, state.margin.top]);
+var x = d3.scaleTime().range([0, width]),
+    x2 = d3.scaleTime().range([0, width]),
+    y = d3.scaleLinear().range([height, 0]),
+    y2 = d3.scaleLinear().range([height2, 0]);
 
-var xAxis = d3.axisBottom(xScale),
-    xAxis2 = d3.axisBottom(xScale2),
-    yAxis = d3.axisLeft(yScale);
+var xAxis = d3.axisBottom(x),
+    xAxis2 = d3.axisBottom(x2),
+    yAxis = d3.axisLeft(y);
 
 var brush = d3.brushX()
-    .extent([[0, 0], [divWidthLessMargins, height2]])
+    .extent([[0, 0], [width, height2]])
     .on("brush end", brushed);
 
 var zoom = d3.zoom()
     .scaleExtent([1, Infinity])
-    .translateExtent([[0, 0], [divWidthLessMargins, height]])
-    .extent([[0, 0], [divWidthLessMargins, height]])
+    .translateExtent([[0, 0], [width, height]])
+    .extent([[0, 0], [width, height]])
     .on("zoom", zoomed);
 
 var area = d3.area()
     .curve(d3.curveMonotoneX)
-    .x(function(d) { return xScale(d.date); })
+    .x(function(d) { return x(d.date); })
     .y0(height)
-    .y1(function(d) { return yScale(d.price); });
+    .y1(function(d) { return y(d.price); });
 
 var area2 = d3.area()
     .curve(d3.curveMonotoneX)
-    .x(function(d) { return xScale2(d.date); })
+    .x(function(d) { return x2(d.date); })
     .y0(height2)
-    .y1(function(d) { return yScale2(d.price); });
+    .y1(function(d) { return y2(d.price); });
 
-svgObj.append("defs").append("clipPath")
+svg.append("defs").append("clipPath")
     .attr("id", "clip")
   .append("rect")
-    .attr("width", divWidthLessMargins)
+    .attr("width", width)
     .attr("height", height);
 
-var focus = svgObj.append("g")
+var focus = svg.append("g")
     .attr("class", "focus")
-    .attr("transform", "translate(" + state.margin.left + "," + state.margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var context = svgObj.append("g")
+var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
 
-  xScale.domain(d3.extent(data, d => d.date));
-  yScale.domain([0, d3.max(data, d => d.price)]);
-  xScale2.domain(xScale.domain());
-  yScale2.domain(yScale.domain());
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.price; })]);
+  x2.domain(x.domain());
+  y2.domain(y.domain());
 
   focus.append("path")
       .datum(data)
-      .attrs({
-        "class": "area",
-        "d": area
-      });
+      .attr("class", "area")
+      .attr("d", area);
 
   focus.append("g")
-      .attrs({
-        "class": "axis axis--x",
-        "transform": `translate(0,${height})`
-      })
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
 
   focus.append("g")
@@ -118,51 +90,45 @@ d3.csv("./data.csv", type, function(error, data) {
 
   context.append("path")
       .datum(data)
-      .attrs({
-        "class": "area",
-        "d": area2
-      });
+      .attr("class", "area")
+      .attr("d", area2);
 
   context.append("g")
-      .attrs({
-        "class": "axis axis--x",
-        "transform": `translate(0,${height2})`
-      })
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis2);
 
   context.append("g")
       .attr("class", "brush")
       .call(brush)
-      .call(brush.move, xScale.range());
+      .call(brush.move, x.range());
 
-  svgObj.append("rect")
-      .attrs({
-        "class": "zoom",
-        "width": divWidthLessMargins,
-        "height": height,
-        "transform": `translate(${state.margin.left},${state.margin.top})`
-      })
+  svg.append("rect")
+      .attr("class", "zoom")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .call(zoom);
 });
 
 function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-  var s = d3.event.selection || xScale2.range();
-  xScale.domain(s.map(xScale2.invert, xScale2));
+  var s = d3.event.selection || x2.range();
+  x.domain(s.map(x2.invert, x2));
   focus.select(".area").attr("d", area);
   focus.select(".axis--x").call(xAxis);
-  svgObj.select(".zoom").call(zoom.transform, d3.zoomIdentity
-      .scale(divWidthLessMargins / (s[1] - s[0]))
+  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+      .scale(width / (s[1] - s[0]))
       .translate(-s[0], 0));
 }
 
 function zoomed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
   var t = d3.event.transform;
-  xScale.domain(t.rescaleX(xScale2).domain());
+  x.domain(t.rescaleX(x2).domain());
   focus.select(".area").attr("d", area);
   focus.select(".axis--x").call(xAxis);
-  context.select(".brush").call(brush.move, xScale.range().map(t.invertX, t));
+  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
 }
 
 function type(d) {
