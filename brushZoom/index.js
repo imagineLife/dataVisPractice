@@ -4,20 +4,26 @@ const state = {
 	xValue : d => d.date,
 	yValue : d => d.close,
 	margin : { 
-		left: 30, 
-		right: 50,
-		top: 50,
-		bottom: 120
+		left: 100, 
+		right: 25,
+		top: 25,
+		bottom: 25
 	}
 
 }
 
-var svg = d3.select("#chartDiv").append('svg').attr('width',960).attr('height', 500).attr('class','svgObj'),
-    margin = {top: 20, right: 20, bottom: 110, left: 40},
-    margin2 = {top: 430, right: 20, bottom: 30, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+var svg = d3.select("#chartDiv")
+      .append('svg')
+      .attrs({
+        'width': 960,
+        'height': 500,
+        'class':'svgObj'
+      }),
+    margin = {bottom: 110},
+    margin2 = {top: 430, right: 20, bottom: 30},
+    width = +svg.attr("width") - state.margin.left - state.margin.right,
+    height = +svg.attr("height") - state.margin.top - margin.bottom,
+    height2 = +svg.attr("height") - margin2.top - state.margin.bottom;
 
 var parseDate = d3.timeParse("%b %Y");
 
@@ -55,16 +61,22 @@ var area2 = d3.area()
 svg.append("defs").append("clipPath")
     .attr("id", "clip")
   .append("rect")
-    .attr("width", width)
-    .attr("height", height);
+    .attrs({
+      "width": width,
+      "height": height
+  });
 
 var focus = svg.append("g")
-    .attr("class", "focus")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attrs({
+      "class": "focus",
+      "transform": `translate(${state.margin.left},${state.margin.top})`
+    });
 
 var context = svg.append("g")
-    .attr("class", "context")
-    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+    .attrs({
+      "class": "context",
+      "transform": `translate(${state.margin.left},${margin2.top})`
+    });
 
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
@@ -76,12 +88,16 @@ d3.csv("./data.csv", type, function(error, data) {
 
   focus.append("path")
       .datum(data)
-      .attr("class", "area")
-      .attr("d", area);
+      .attrs({
+        "class": "area",
+        "d": area
+      });
 
   focus.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
+      .attrs({
+        "class": "axis axis--x",
+        "transform": `translate(0,${height})`
+      })
       .call(xAxis);
 
   focus.append("g")
@@ -90,12 +106,16 @@ d3.csv("./data.csv", type, function(error, data) {
 
   context.append("path")
       .datum(data)
-      .attr("class", "area")
-      .attr("d", area2);
+      .attrs({
+        "class": "area",
+        "d": area2
+    });
 
   context.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height2 + ")")
+      .attrs({
+        "class": "axis axis--x",
+        "transform": `translate(0,${height2})`
+      })
       .call(xAxis2);
 
   context.append("g")
@@ -104,10 +124,12 @@ d3.csv("./data.csv", type, function(error, data) {
       .call(brush.move, x.range());
 
   svg.append("rect")
-      .attr("class", "zoom")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attrs({
+        "class": "zoom",
+        "width": width,
+        "height": height,
+        "transform": `translate(${state.margin.left},${state.margin.top})`
+      })
       .call(zoom);
 });
 
