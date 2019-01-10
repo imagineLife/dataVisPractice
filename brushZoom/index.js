@@ -3,8 +3,6 @@ const state = {
 	yLabel : 'Population',
 	xValue : d => d.date,
 	yValue : d => d.close,
-	height: 500,
-  width: 960,
   margin : { 
 		left: 75, 
 		right: 25,
@@ -26,7 +24,7 @@ var svgObj = d3.select(chartDiv)
         'class':'svgObj'
       }),
     width = parentDivWidth - state.margin.left - state.margin.right,
-    height = state.height * .7;
+    height = parentDivHeight * .75;
 
 var parseDate = d3.timeParse("%b %Y");
 
@@ -78,7 +76,7 @@ var focus = svgObj.append("g")
 var context = svgObj.append("g")
     .attrs({
       "class": "context",
-      "transform": `translate(${state.margin.left},${state.height - state.margin.top - state.margin.bottom})`
+      "transform": `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`
     });
 
 d3.csv("./data.csv", type, function(error, data) {
