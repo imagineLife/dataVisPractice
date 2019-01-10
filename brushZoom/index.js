@@ -8,22 +8,24 @@ const state = {
 		right: 25,
 		top: 25,
 		bottom: 25
-	}
+	},
+  height: 500,
+  width: 960
 
 }
 
 var svg = d3.select("#chartDiv")
       .append('svg')
       .attrs({
-        'width': 960,
-        'height': 500,
+        'width': state.width,
+        'height': state.height,
         'class':'svgObj'
       }),
     margin = {bottom: 110},
-    margin2 = {top: 430, right: 20, bottom: 30},
-    width = +svg.attr("width") - state.margin.left - state.margin.right,
-    height = +svg.attr("height") - state.margin.top - margin.bottom,
-    height2 = +svg.attr("height") - margin2.top - state.margin.bottom;
+    margin2 = {top: 430},
+    width = state.width - state.margin.left - state.margin.right,
+    height = state.height - state.margin.top - margin.bottom,
+    height2 = state.height - margin2.top - state.margin.bottom;
 
 var parseDate = d3.timeParse("%b %Y");
 
