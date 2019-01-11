@@ -11,29 +11,42 @@ const state = {
 	}
 }
 
+let xAxisG = null,
+    yAxisG = null,
+    xAxisG2 = null;
+
 let chartDiv = document.getElementById('chartDiv');
 // Extract the DIV width and height that was computed by CSS.
 let parentDivWidth = chartDiv.clientWidth;
 let parentDivHeight = chartDiv.clientHeight;
+let percent = (parentDivHeight > 510) ? .75 : .65;
+let widthLessMargins = parentDivWidth - state.margin.left - state.margin.right;
+let heightLessMargins = parentDivHeight * percent;
 
+function makeArea(xScaleFn, y0val, yScaleFn){
+  return d3.area()
+  .curve(d3.curveMonotoneX)
+  .x(d => xScaleFn(d.date))
+  .y0(y0val)
+  .y1(d => yScaleFn(d.price));
+}
+  
 var svgObj = d3.select(chartDiv)
-      .append('svg')
-      .attrs({
-        'width': parentDivWidth,
-        'height': parentDivHeight,
-        'class':'svgObj'
-      }),
-    widthLessMargins = parentDivWidth - state.margin.left - state.margin.right,
-    heightLessMargins = parentDivHeight * .75;
+  .append('svg')
+  .attrs({
+    'width': parentDivWidth,
+    'height': parentDivHeight,
+    'class':'svgObj'
+  });
 
 var parseDate = d3.timeParse("%b %Y");
 
-var x = d3.scaleTime().range([0, widthLessMargins]),
+var xScale = d3.scaleTime().range([0, widthLessMargins]),
     x2 = d3.scaleTime().range([0, widthLessMargins]),
     y = d3.scaleLinear().range([heightLessMargins, 0]),
     y2 = d3.scaleLinear().range([state.margin.top, 0]);
 
-var xAxis = d3.axisBottom(x),
+var xAxis = d3.axisBottom(xScale),
     xAxis2 = d3.axisBottom(x2),
     yAxis = d3.axisLeft(y);
 
@@ -47,17 +60,8 @@ var zoom = d3.zoom()
     .extent([[0, 0], [widthLessMargins, heightLessMargins]])
     .on("zoom", zoomed);
 
-var areaFn = d3.area()
-    .curve(d3.curveMonotoneX)
-    .x(function(d) { return x(d.date); })
-    .y0(heightLessMargins)
-    .y1(function(d) { return y(d.price); });
-
-var area2Fn = d3.area()
-    .curve(d3.curveMonotoneX)
-    .x(function(d) { return x2(d.date); })
-    .y0(state.margin.top)
-    .y1(function(d) { return y2(d.price); });
+var areaFn = makeArea(xScale, heightLessMargins, y)
+var area2Fn = makeArea(x2, state.margin.top, y2)
 
 svgObj.append("defs").append("clipPath")
     .attr("id", "clip")
@@ -82,9 +86,9 @@ var context = svgObj.append("g")
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
+  xScale.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.max(data, function(d) { return d.price; })]);
-  x2.domain(x.domain());
+  x2.domain(xScale.domain());
   y2.domain(y.domain());
 
   focus.append("path")
@@ -94,7 +98,7 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": areaFn
       });
 
-  focus.append("g")
+  xAxisG = focus.append("g")
       .attrs({
         "class": "axis axis--x",
         "transform": `translate(0,${heightLessMargins})`
@@ -112,7 +116,7 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": area2Fn
     });
 
-  context.append("g")
+  xAxisG2 = context.append("g")
       .attrs({
         "class": "axis axis--x",
         "transform": `translate(0,${state.margin.top})`
@@ -122,7 +126,7 @@ d3.csv("./data.csv", type, function(error, data) {
   context.append("g")
       .attr("class", "brush")
       .call(brush)
-      .call(brush.move, x.range());
+      .call(brush.move, xScale.range());
 
   svgObj.append("rect")
       .attrs({
@@ -137,7 +141,7 @@ d3.csv("./data.csv", type, function(error, data) {
 function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
   var s = d3.event.selection || x2.range();
-  x.domain(s.map(x2.invert, x2));
+  xScale.domain(s.map(x2.invert, x2));
   focus.select(".area").attr("d", areaFn);
   focus.select(".axis--x").call(xAxis);
   svgObj.select(".zoom").call(zoom.transform, d3.zoomIdentity
@@ -148,7 +152,7 @@ function brushed() {
 function zoomed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
   var t = d3.event.transform;
-  x.domain(t.rescaleX(x2).domain());
+  xScale.domain(t.rescaleX(x2).domain());
   focus.select(".area").attr("d", areaFn);
   focus.select(".axis--x").call(xAxis);
   context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
@@ -161,34 +165,34 @@ function type(d) {
 }
 
 //2. Resize fn
-   // let resize = () => {
+   let resize = () => {
        
    //     // Extract the width and height that was computed by CSS.
-   //     let resizedFnWidth = chartDiv.clientWidth;
-   //     let resizedFnHeight = chartDiv.clientHeight;
+       let resizedFnWidth = chartDiv.clientWidth;
+       let resizedFnHeight = chartDiv.clientHeight;
 
    //     //set svg dimension based on resizing attrs
-   //     svgObj.attrs({
-   //         "width" : resizedFnWidth,
-   //         "height" : resizedFnHeight
-   //     });
+       svgObj.attrs({
+           "width" : resizedFnWidth,
+           "height" : resizedFnHeight
+       });
 
    //     //calc resized dimensions less margins
-   //     let resizedWidthLessMargins = resizedFnWidth - vars.margin.left - vars.margin.right;
-   //     let resizedHeightLessMargins = resizedFnHeight - vars.margin.top - vars.margin.bottom;
+       let resizedWidthLessMargins = resizedFnWidth - state.margin.left - state.margin.right;
+       let resizedHeightLessMargins = resizedFnHeight - state.margin.top - state.margin.bottom;
 
    //     //update scale ranges
-   //     xScale.range([0, resizedWidthLessMargins]);
-   //     yScale.range([resizedHeightLessMargins, vars.margin.top]);
+          x.range([0, resizedWidthLessMargins]);
+          y.range([resizedHeightLessMargins, state.margin.top]);
        
    //     //Update the X-AXIS
-   //     xAxisG
-   //         .attrs({
-   //             'transform': `translate(0, ${resizedHeightLessMargins})`,
-   //             'x' : divWidthLessMargins / 2,
-   //             'y' : resizedHeightLessMargins * .1,
-   //         })
-   //         .call(xAxis);
+       xAxisG
+         .attrs({
+             'transform': `translate(0, ${resizedHeightLessMargins})`,
+             // 'x' : resizedWidthLessMargins / 2,
+             // 'y' : resizedHeightLessMargins * .1,
+         })
+         .call(xAxis);
 
    //     //Update the X-AXIS LABEL
    //     xAxisLabel
@@ -226,7 +230,7 @@ function type(d) {
 	  //  //update Area
 	  //  areaPath.attr("d", areaObj(parsedData))
 
-   // }       
+   }       
 
 //Add Resise listener & fn call
-   // window.addEventListener("resize", resize);
+   window.addEventListener("resize", resize);
