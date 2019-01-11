@@ -41,16 +41,16 @@ var svgObj = d3.select(chartDiv)
 
 var parseDate = d3.timeParse("%b %Y");
 
-var xScale = d3.scaleTime().range([0, widthLessMargins]),
-    xScale2 = d3.scaleTime().range([0, widthLessMargins]),
+var bigAreaXScale = d3.scaleTime().range([0, widthLessMargins]),
+    brushXScale = d3.scaleTime().range([0, widthLessMargins]),
     y = d3.scaleLinear().range([heightLessMargins, 0]),
     y2 = d3.scaleLinear().range([state.margin.top, 0]);
 
-var xAxis = d3.axisBottom(xScale),
-    xAxis2 = d3.axisBottom(xScale2),
+var xAxisObj = d3.axisBottom(bigAreaXScale).ticks(6),
+    xAxisObj2 = d3.axisBottom(brushXScale),
     yAxis = d3.axisLeft(y);
 
-var brush = d3.brushX()
+var brushFn = d3.brushX()
     .extent([[0, 0], [widthLessMargins, state.margin.top]])
     .on("brush end", brushed);
 
@@ -60,8 +60,8 @@ var zoomFn = d3.zoom()
     .extent([[0, 0], [widthLessMargins, heightLessMargins]])
     .on("zoom", zoomedFn);
 
-var areaFn = makeArea(xScale, heightLessMargins, y)
-var area2Fn = makeArea(xScale2, state.margin.top, y2)
+var areaFn = makeArea(bigAreaXScale, heightLessMargins, y)
+var area2Fn = makeArea(brushXScale, state.margin.top, y2)
 
 svgObj.append("defs").append("clipPath")
   .attr("id", "clip")
@@ -77,7 +77,7 @@ var focusAreaG = svgObj.append("g")
       "transform": `translate(${state.margin.left},${state.margin.top})`
     });
 
-var context = svgObj.append("g")
+var brushGWrapper = svgObj.append("g")
     .attrs({
       "class": "context",
       "transform": `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`
@@ -86,9 +86,9 @@ var context = svgObj.append("g")
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
 
-  xScale.domain(d3.extent(data, d => d.date));
+  bigAreaXScale.domain(d3.extent(data, d => d.date));
   y.domain([0, d3.max(data, d => d.price)]);
-  xScale2.domain(xScale.domain());
+  brushXScale.domain(bigAreaXScale.domain());
   y2.domain(y.domain());
 
   focusAreaG.append("path")
@@ -98,35 +98,35 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": areaFn
       });
 
-  xAxisG = focusAreaG.append("g")
+  focusXaxisG = focusAreaG.append("g")
       .attrs({
         "class": "axis axis--x",
         "transform": `translate(0,${heightLessMargins})`
       })
-      .call(xAxis);
+      .call(xAxisObj);
 
   focusAreaG.append("g")
       .attr("class", "axis axis--y")
       .call(yAxis);
 
-  context.append("path")
+  brushGWrapper.append("path")
       .datum(data)
       .attrs({
         "class": "areaPath",
         "d": area2Fn
     });
 
-  xAxisG2 = context.append("g")
+  xAxisG2 = brushGWrapper.append("g")
       .attrs({
         "class": "axis axis--x",
         "transform": `translate(0,${state.margin.top})`
       })
-      .call(xAxis2);
+      .call(xAxisObj2);
 
-  context.append("g")
+  brushGWrapper.append("g")
       .attr("class", "brush")
-      .call(brush)
-      .call(brush.move, xScale.range());
+      .call(brushFn)
+      .call(brushFn.move, bigAreaXScale.range());
 
   svgObj.append("rect")
       .attrs({
@@ -143,19 +143,19 @@ function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return;
 
   //get [min,max] of domain of selected brushed area
-  const brushMinAndMax = d3.event.selection || xScale2.range();
+  const brushMinAndMax = d3.event.selection || brushXScale.range();
 
   const brushDifference = brushMinAndMax[1] - brushMinAndMax[0];
   
   //convert brushMinMax vals  xScaled vals
-  const xScaleMinMax = brushMinAndMax.map(xScale2.invert, xScale2)
+  const xScaleMinMax = brushMinAndMax.map(brushXScale.invert, brushXScale)
   
   //update xScale of large area
-  xScale.domain(xScaleMinMax);
+  bigAreaXScale.domain(xScaleMinMax);
 
   //reset the big area path & axis
   focusAreaG.select(".areaPath").attr("d", areaFn);
-  focusAreaG.select(".axis--x").call(xAxis);
+  focusAreaG.select(".axis--x").call(xAxisObj);
 
   svgObj.select(".zoom").call(zoomFn.transform, 
     d3.zoomIdentity.scale(widthLessMargins / brushDifference)
@@ -165,10 +165,10 @@ function brushed() {
 function zoomedFn() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
   var t = d3.event.transform;
-  xScale.domain(t.rescaleX(xScale2).domain());
+  bigAreaXScale.domain(t.rescaleX(brushXScale).domain());
   focusAreaG.select(".areaPath").attr("d", areaFn);
-  focusAreaG.select(".axis--x").call(xAxis);
-  context.select(".brush").call(brush.move, xScale.range().map(t.invertX, t));
+  focusAreaG.select(".axis--x").call(xAxisObj);
+  brushGWrapper.select(".brush").call(brushFn.move, bigAreaXScale.range().map(t.invertX, t));
 }
 
 function type(d) {
@@ -199,13 +199,13 @@ function type(d) {
           y.range([resizedHeightLessMargins, state.margin.top]);
        
        //Update the X-AXIS
-       xAxisG
+       focusXaxisG
          .attrs({
              'transform': `translate(0, ${resizedHeightLessMargins})`,
              // 'x' : resizedWidthLessMargins / 2,
              // 'y' : resizedHeightLessMargins * .1,
          })
-         .call(xAxis);
+         .call(xAxisObj);
 
    //     //Update the X-AXIS LABEL
    //     xAxisLabel
