@@ -34,6 +34,16 @@ function setFocusDisplay(setting, coinName, arr){
     return thisFocus.style("display", setting)
 }
 
+// Fix for y-axis format values
+const formatSi = d3.format(".2s");
+const formatDollar = d3.format("$,");
+
+let yAxisObj = d3.axisLeft()
+let xAxisObj = d3.axisBottom().ticks(4);
+let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
+const t = function() { return d3.transition().duration(450); }
+const bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
 LineChart = function(_parentElement){
     this.parentElement = _parentElement;
 
@@ -76,9 +86,6 @@ LineChart.prototype.initVis = function(){
     vis.x = d3.scaleTime().range([0, vis.width]);
     vis.y = d3.scaleLinear().range([vis.height, 0]);
 
-    vis.yAxisCall = d3.axisLeft()
-    vis.xAxisCall = d3.axisBottom()
-        .ticks(4);
     vis.xAxis = vis.g.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + vis.height +")");
@@ -113,8 +120,7 @@ LineChart.prototype.updateVis = function(){
     vis.y.domain([d3.min(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) / 1.005, 
         d3.max(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) * 1.005]);
 
-    // Fix for y-axis format values
-    var formatSi = d3.format(".2s");
+
     function formatAbbreviation(x) {
       var s = formatSi(x);
       switch (s[s.length - 1]) {
@@ -125,10 +131,10 @@ LineChart.prototype.updateVis = function(){
     }
 
     // Update axes
-    vis.xAxisCall.scale(vis.x);
-    vis.xAxis.transition(vis.t()).call(vis.xAxisCall);
-    vis.yAxisCall.scale(vis.y);
-    vis.yAxis.transition(vis.t()).call(vis.yAxisCall.tickFormat(formatAbbreviation));
+    xAxisObj.scale(vis.x);
+    vis.xAxis.transition(vis.t()).call(xAxisObj);
+    yAxisObj.scale(vis.y);
+    vis.yAxis.transition(vis.t()).call(yAxisObj.tickFormat(formatAbbreviation));
 
     // Discard old tooltip elements
     d3.select(".focus").remove();
@@ -171,7 +177,7 @@ LineChart.prototype.updateVis = function(){
             d1 = vis.dataFiltered[i],
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
         focus.attr("transform", "translate(" + vis.x(d.date) + "," + vis.y(d[vis.yVariable]) + ")");
-        focus.select("text").text(function() { return d3.format("$,")(d[vis.yVariable].toFixed(2)); });
+        focus.select("text").text(function() { return formatDollar(d[vis.yVariable].toFixed(2)); });
         focus.select(".x-hover-line").attr("y2", vis.height - vis.y(d[vis.yVariable]));
         focus.select(".y-hover-line").attr("x2", -vis.x(d.date));
     }
