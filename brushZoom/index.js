@@ -31,6 +31,14 @@ function makeArea(xScaleFn, y0val, yScaleFn){
   .y1(d => yScaleFn(d.price));
 }
 
+function appendG(parent, className, trans){
+  return parent.append("g")
+    .attrs({
+      "class": className,
+      "transform": trans
+    });
+}
+
 var svgObj = d3.select(chartDiv)
   .append('svg')
   .attrs({
@@ -71,17 +79,9 @@ svgObj.append("defs").append("clipPath")
     "height": heightLessMargins
   });
 
-var focusAreaG = svgObj.append("g")
-    .attrs({
-      "class": "focusedAreaG",
-      "transform": `translate(${state.margin.left},${state.margin.top})`
-    });
+var focusAreaG = appendG(svgObj, "focusAreaG", `translate(${state.margin.left},${state.margin.top})`)
 
-var brushGWrapper = svgObj.append("g")
-    .attrs({
-      "class": "context",
-      "transform": `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`
-    });
+var brushGWrapper = appendG(svgObj, "context", `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`)
 
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
@@ -98,12 +98,7 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": areaFn
       });
 
-  focusXaxisG = focusAreaG.append("g")
-      .attrs({
-        "class": "axis axis--x",
-        "transform": `translate(0,${heightLessMargins})`
-      })
-      .call(xAxisObj);
+  focusXaxisG = appendG(focusAreaG, "axis axis--x", `translate(0,${heightLessMargins})`).call(xAxisObj);
 
   focusAreaG.append("g")
       .attr("class", "axis axis--y")
