@@ -53,17 +53,16 @@ LineChart = function(_parentElement){
 LineChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.margin = { left:80, right:100, top:50, bottom:100 };
-    vis.height = 550 - vis.margin.top - vis.margin.bottom;
-    vis.width = 800 - vis.margin.left - vis.margin.right;
+    vis.height = 550 - margin.top - margin.bottom;
+    vis.width = 800 - margin.left - margin.right;
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+        .attr("width", vis.width + margin.left + margin.right)
+        .attr("height", vis.height + margin.top + margin.bottom);
     vis.g = vis.svg.append("g")
-        .attr("transform", "translate(" + vis.margin.left + 
-            ", " + vis.margin.top + ")");
+        .attr("transform", "translate(" + margin.left + 
+            ", " + margin.top + ")");
 
     vis.t = function() { return d3.transition().duration(1000); }
 
@@ -162,7 +161,7 @@ LineChart.prototype.updateVis = function(){
         .attr("dy", ".31em");
 
     vis.svg.append("rect")
-        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr("class", "overlay")
         .attr("width", vis.width)
         .attr("height", vis.height)
