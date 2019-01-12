@@ -43,6 +43,10 @@ let xAxisObj = d3.axisBottom().ticks(4);
 let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
 const t = function() { return d3.transition().duration(450); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
+const lineHeight = 250,
+    lineWidth = 300,
+    heightLM = lineHeight - margin.top - margin.bottom,
+    widthLM = lineWidth - margin.left - margin.right;
 
 LineChart = function(_parentElement){
     this.parentElement = _parentElement;
@@ -53,14 +57,11 @@ LineChart = function(_parentElement){
 LineChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.height = 550 - margin.top - margin.bottom;
-    vis.width = 800 - margin.left - margin.right;
-
-    vis.svg = d3.select(vis.parentElement)
+    svgObj = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + margin.left + margin.right)
-        .attr("height", vis.height + margin.top + margin.bottom);
-    vis.g = vis.svg.append("g")
+        .attr("width", lineWidth + margin.left + margin.right)
+        .attr("height", lineHeight + margin.top + margin.bottom);
+    vis.g = svgObj.append("g")
         .attr("transform", "translate(" + margin.left + 
             ", " + margin.top + ")");
 
@@ -82,12 +83,12 @@ LineChart.prototype.initVis = function(){
         .attr("text-anchor", "middle")
         .text("Price (USD)")
 
-    vis.x = d3.scaleTime().range([0, vis.width]);
-    vis.y = d3.scaleLinear().range([vis.height, 0]);
+    vis.x = d3.scaleTime().range([0, lineWidth]);
+    vis.y = d3.scaleLinear().range([lineHeight, 0]);
 
     vis.xAxis = vis.g.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + vis.height +")");
+        .attr("transform", "translate(0," + lineHeight +")");
     vis.yAxis = vis.g.append("g")
         .attr("class", "y axis");
 
@@ -146,12 +147,12 @@ LineChart.prototype.updateVis = function(){
     focus.append("line")
         .attr("class", "x-hover-line hover-line")
         .attr("y1", 0)
-        .attr("y2", vis.height);
+        .attr("y2", lineHeight);
 
     focus.append("line")
         .attr("class", "y-hover-line hover-line")
         .attr("x1", 0)
-        .attr("x2", vis.width);
+        .attr("x2", lineWidth);
 
     focus.append("circle")
         .attr("r", 5);
@@ -160,11 +161,11 @@ LineChart.prototype.updateVis = function(){
         .attr("x", 15)
         .attr("dy", ".31em");
 
-    vis.svg.append("rect")
+    svgObj.append("rect")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr("class", "overlay")
-        .attr("width", vis.width)
-        .attr("height", vis.height)
+        .attr("width", lineWidth)
+        .attr("height", lineHeight)
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
         .on("mousemove", mousemove);
@@ -177,7 +178,7 @@ LineChart.prototype.updateVis = function(){
             d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
         focus.attr("transform", "translate(" + vis.x(d.date) + "," + vis.y(d[vis.yVariable]) + ")");
         focus.select("text").text(function() { return formatDollar(d[vis.yVariable].toFixed(2)); });
-        focus.select(".x-hover-line").attr("y2", vis.height - vis.y(d[vis.yVariable]));
+        focus.select(".x-hover-line").attr("y2", lineHeight - vis.y(d[vis.yVariable]));
         focus.select(".y-hover-line").attr("x2", -vis.x(d.date));
     }
 
