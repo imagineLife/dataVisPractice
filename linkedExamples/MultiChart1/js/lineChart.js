@@ -54,7 +54,7 @@ LineChart = function(_parentElement){
     this.initVis();
 };
 
-LineChart.prototype.initVis = function(){
+LineChart.prototype.initVis = function(parent){
     var vis = this;
 
     svgObj = d3.select(vis.parentElement)
@@ -99,13 +99,7 @@ LineChart.prototype.initVis = function(){
     vis.yAxis = vis.g.append("g")
         .attr("class", "y axis");
 
-    vis.wrangleData();
-};
-
-
-LineChart.prototype.wrangleData = function(){
-    var vis = this;
-
+    
     vis.coin = $("#coin-select").val()
     vis.yVariable = $("#var-select").val()
 
@@ -116,7 +110,9 @@ LineChart.prototype.wrangleData = function(){
     })
 
     vis.updateVis();
+
 };
+
 
 
 LineChart.prototype.updateVis = function(){
