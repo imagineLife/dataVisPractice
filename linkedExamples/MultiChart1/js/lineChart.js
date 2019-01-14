@@ -59,11 +59,12 @@ LineChart.prototype.initVis = function(){
 
     svgObj = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", lineWidth + margin.left + margin.right)
-        .attr("height", lineHeight + margin.top + margin.bottom);
+        .attrs({
+            "width": lineWidth + margin.left + margin.right,
+            "height": lineHeight + margin.top + margin.bottom
+        });
     vis.g = svgObj.append("g")
-        .attr("transform", "translate(" + margin.left + 
-            ", " + margin.top + ")");
+        .attr("transform", `translate(${margin.left},${margin.top`)`);
 
     vis.t = function() { return d3.transition().duration(1000); }
 
