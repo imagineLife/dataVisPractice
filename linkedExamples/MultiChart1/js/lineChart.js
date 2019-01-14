@@ -64,32 +64,38 @@ LineChart.prototype.initVis = function(){
             "height": lineHeight + margin.top + margin.bottom
         });
     vis.g = svgObj.append("g")
-        .attr("transform", `translate(${margin.left},${margin.top`)`);
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
     vis.t = function() { return d3.transition().duration(1000); }
 
     vis.bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
     vis.linePath = vis.g.append("path")
-        .attr("class", "line")
-        .attr("fill", "none")
-        .attr("stroke-width", "3px");
+        .attrs({
+            "class": "line",
+            "fill": "none",
+            "stroke-width": "3px"
+        })
 
     vis.yLabel = vis.g.append("text")
-        .attr("class", "y axisLabel")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -60)
-        .attr("x", -170)
-        .attr("font-size", "20px")
-        .attr("text-anchor", "middle")
+        .attrs({
+            "class": "y axisLabel",
+            "transform": "rotate(-90)",
+            "y": -60,
+            "x": -170,
+            "font-size": "20px",
+            "text-anchor": "middle"
+        })
         .text("Price (USD)")
 
     vis.x = d3.scaleTime().range([0, lineWidth]);
     vis.y = d3.scaleLinear().range([lineHeight, 0]);
 
     vis.xAxis = vis.g.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + lineHeight +")");
+        .attrs({
+            "class": "x axis",
+            "transform": `translate(0,${lineHeight})`
+        });
     vis.yAxis = vis.g.append("g")
         .attr("class", "y axis");
 
@@ -146,14 +152,18 @@ LineChart.prototype.updateVis = function(){
         .style("display", "none");
 
     focus.append("line")
-        .attr("class", "x-hover-line hover-line")
-        .attr("y1", 0)
-        .attr("y2", lineHeight);
+        .attrs({
+            "class": "x-hover-line hover-line",
+            "y1": 0,
+            "y2": lineHeight
+        });
 
     focus.append("line")
-        .attr("class", "y-hover-line hover-line")
-        .attr("x1", 0)
-        .attr("x2", lineWidth);
+        .attr({
+            "class": "y-hover-line hover-line",
+            "x1": 0,
+            "x2": lineWidth
+        });
 
     focus.append("circle")
         .attr("r", 5);
@@ -163,10 +173,12 @@ LineChart.prototype.updateVis = function(){
         .attr("dy", ".31em");
 
     svgObj.append("rect")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("class", "overlay")
-        .attr("width", lineWidth)
-        .attr("height", lineHeight)
+        .attrs({
+            "transform": `translate(${margin.left},${margin.top})`,
+            "class": "overlay",
+            "width": lineWidth,
+            "height": lineHeight
+        })
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
         .on("mousemove", mousemove);
