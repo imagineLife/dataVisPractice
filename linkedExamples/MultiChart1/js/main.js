@@ -42,11 +42,13 @@ let state = {
         ripple: d3.scaleTime(),
     },
     sliderVals: null,
-    bitData: null, 
-    ethData: null, 
-    bitCashData: null, 
-    liteData: null, 
-    ripData: null,
+    coinData: {
+        bitcoin: null, 
+        bitcoin_cash: null, 
+        ethereum: null,
+        litecoin: null, 
+        ripple: null,
+    },
     margin:{
         pie:{ t:40, r:0, b:0, l:0 }
     }
@@ -88,35 +90,26 @@ function arcClicked(arc){
     $("#coin-select").val(state.activeCoin);
     
 
-    donutChart1.updateDonut("donut-area1", "24h_vol");
-    donutChart2.updateDonut("donut-area2", "market_cap");
+    // donutChart1.updateDonut("donut-area1", "24h_vol");
+    // donutChart2.updateDonut("donut-area2", "market_cap");
     lineChart.wrangleData();
 }
 
 d3.json("data/data.json").then(function(data){
-    // Prepare and clean data
-    for (var coin in data) {
-        if (!data.hasOwnProperty(coin)) {
-            continue;
-        }
-        state.filteredData[coin] = data[coin].filter(function(d){
-            return !(d["price_usd"] == null)
-        })
-        state.filteredData[coin].forEach(function(d){
-            d["price_usd"] = +d["price_usd"];
-            d["24h_vol"] = +d["24h_vol"];
-            d["market_cap"] = +d["market_cap"];
-            d["date"] = parseTime(d["date"])
-        });
-        donutData.push({
-            "coin": coin,
-            "data": state.filteredData[coin].slice(-1)[0]
-        })
-    }
+    
+    state.filteredData = prepData(data)
 
-    lineChart = new LineChart("#line-area");
+    //get & set stateful active coin name
+    state.activeCoin = (state.activeCoin == null) ? $("#coin-select").val() : state.activeCoin;
+    let curSelectedCoinData = state.filteredData[state.activeCoin]
 
-    donutChart1 = new DonutChart("#donut-area1", "24h_vol");
-    donutChart2 = new DonutChart("#donut-area2", "market_cap");
+    //get & set stateful active yVariable
+    state.yVariable = (state.yVariable == null) ? $("#measurement-select").val() : state.yVariable;    
+    
+    // lineChart = new LineChart("#line-area");
+    state.lineChart = initLine("#line-area", curSelectedCoinData);
+
+    // donutChart1 = new DonutChart("#donut-area1", "24h_vol");
+    // donutChart2 = new DonutChart("#donut-area2", "market_cap");
 
 })
