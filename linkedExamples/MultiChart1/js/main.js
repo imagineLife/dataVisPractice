@@ -110,9 +110,9 @@ function arcClicked(arc){
     $("#coin-select").val(state.activeCoin);
     
 
-    // donutChart1.updateDonut("donut-area1", "24h_vol");
+    donutChart1.updateVis("donut-area1", "24h_vol");
     // donutChart2.updateDonut("donut-area2", "market_cap");
-    lineChart.wrangleData();
+    updateLine(state.filteredData[arc.data.coin], $("#date-slider").slider("values"))
 }
 
 d3.json("data/data.json").then(function(data){
