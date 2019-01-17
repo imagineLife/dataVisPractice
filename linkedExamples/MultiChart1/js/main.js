@@ -82,8 +82,11 @@ var formatTime = d3.timeFormat("%d/%m/%Y");
 var color = d3.scaleOrdinal(d3.schemeDark2);
 
 // Event listeners
-$("#coin-select").on("change", function() { 
-    coinChanged();
+$("#coin-select").on("change", function(e) { 
+    state.activeCoin = ($(this).children("option:selected").val())
+    donutChart1.updateVis("donut-area1", "24h_vol");
+    updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
+    
 })
 $("#var-select").on("change", function() { lineChart.wrangleData() })
 
