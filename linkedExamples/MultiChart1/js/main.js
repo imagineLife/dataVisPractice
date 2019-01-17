@@ -79,7 +79,7 @@ var filteredData = {};
 var donutData = [];
 var parseTime = d3.timeParse("%d/%m/%Y");
 var formatTime = d3.timeFormat("%d/%m/%Y");
-var color = d3.scaleOrdinal(d3.schemeDark2);
+var colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
 // Event listeners
 $("#coin-select").on("change", function(e) { 
@@ -88,7 +88,11 @@ $("#coin-select").on("change", function(e) {
     updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
     
 })
-$("#var-select").on("change", function() { lineChart.wrangleData() })
+$("#measurement-select").on("change", function() { 
+    state.yVariable = ($(this).children("option:selected").val());
+    // donutChart1.updateVis("donut-area1", "24h_vol");
+    updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
+})
 
 // Add jQuery UI slider
 $("#date-slider").slider({
