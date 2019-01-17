@@ -40,7 +40,7 @@ const formatDollar = d3.format("$,");
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
-const t = function() { return d3.transition().duration(450); }
+const t = function() { return d3.transition().duration(300); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
 // Filter data based on selections
@@ -79,8 +79,8 @@ const initLine = function(parent, coinData){
 const updateLine = function(coinData, sliderTimeVals){
     let coinName = state.activeCoin;
     console.log('updating Line');
-    console.log('state.yVariable')
-    console.log(state.yVariable)
+    // console.log('state.yVariable')
+    // console.log(state.yVariable)
     
 
     state.xScales[coinName].range([0, widthLM]);
@@ -106,7 +106,7 @@ const updateLine = function(coinData, sliderTimeVals){
     state.xScales[coinName].domain(d3.extent(sliderFilteredData, d => d.date));
     state.yScales[coinName].domain([d3.min(sliderFilteredData, d => d[state.yVariable]) / 1.005, 
         d3.max(sliderFilteredData, d => d[state.yVariable]) * 1.005]);
-
+    
     // Update axes
     let thisXAxisG = d3.select(`.xAxisG`),
         thisYAxisG = d3.select(`.yAxisG`);
@@ -127,7 +127,8 @@ const updateLine = function(coinData, sliderTimeVals){
     });
 
     linePath = thisGObj.append("path")
-        .attr("class", `line ${coinName} line${coinName} chartLine`);
+        .attr("class", `line ${coinName} line${coinName} chartLine`)
+        .attr('stroke', colorScale(coinName));
 
     linePath.transition(t())
         .attr("d", line(sliderFilteredData));
@@ -180,8 +181,6 @@ const updateLine = function(coinData, sliderTimeVals){
         .on("mousemove", mousemove);
 
     function mousemove() {
-            console.log('mousemoving!')
-            
         
         let thisFocus = d3.select(`.focus`)
         
