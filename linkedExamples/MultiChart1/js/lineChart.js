@@ -40,7 +40,7 @@ const formatDollar = d3.format("$,");
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
-const t = function() { return d3.transition().duration(450); }
+const t = function() { return d3.transition().duration(350); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
 // Filter data based on selections
@@ -76,10 +76,10 @@ const initLine = function(parent, coinData){
     xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${coinName}xAxisG x axis`);
     yAxisG = appendAndTransG(thisGObj, null, `${coinName}yAxisG y axis`);
         
-    updateVis(coinData);
+    updateLine(coinData, state.sliderVals);
 };
 
-const updateVis = function(coinData, sliderTimeVals){
+const updateLine = function(coinData, sliderTimeVals){
     let coinName = state.activeCoin;
 
     /*
