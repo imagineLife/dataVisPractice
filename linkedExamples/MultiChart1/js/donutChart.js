@@ -31,18 +31,15 @@ DonutChart.prototype.initVis = function(){
             ", " + (vis.margin.top + (vis.height / 2)) + ")");
 
     vis.g.append("text")
-        .attr("y", -vis.height/2)
-        .attr("x", -vis.width/2)
-        .attr("font-size", "15px")
-        .attr("text-anchor", "start")
+        .attrs({
+            "y": -vis.height/2,
+            "x": -vis.width/2,
+            "font-size": "15px",
+            "text-anchor": "start",
+            "transform": `translate(45,0)`
+        })
         .text(vis.variable == "market_cap" ? 
             "Market Capitalization" : "24 Hour Trading Volume");
-
-    vis.wrangleData();
-}
-
-DonutChart.prototype.wrangleData = function(){
-    var vis = this;
 
     state.activeCoin = state.activeCoin
     
