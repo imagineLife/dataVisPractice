@@ -26,11 +26,11 @@ function filterCoinStats(data, timeVals){
 function setFocusDisplay(setting, coinName, arr){
     
     //dim all other lines
-    d3.selectAll('.chartLine').transition(t()).style('stroke', `rgba(128,128,128,${arr[0]})`);
-    d3.select(`.line${coinName}`).transition(t()).style('stroke', `rgba(128,128,128,${arr[1]})`);
+    // d3.selectAll('.chartLine').transition(t());
+    // d3.select(`.line`).transition(t()));
 
-    let thisFocus = d3.select(`.focus${coinName}`)
-    return thisFocus.style("display", setting)
+    let thisFocus = d3.select(`.focus`)
+    return thisFocus.style("display", setting);
 }
 
 // Fix for y-axis format values
@@ -40,7 +40,7 @@ const formatDollar = d3.format("$,");
 let yAxisObj = d3.axisLeft()
 let xAxisObj = d3.axisBottom().ticks(4);
 let xAxisG, yAxisG, gObj, svgObj, linePath, focus, margin = { left:50, right:20, top:50, bottom:20 };
-const t = function() { return d3.transition().duration(350); }
+const t = function() { return d3.transition().duration(450); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
 // Filter data based on selections
@@ -70,16 +70,18 @@ const initLine = function(parent, coinData){
     //     })
     //     .text(Object.keys(coinData))
 
-    xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${coinName}xAxisG x axis`);
-    yAxisG = appendAndTransG(thisGObj, null, `${coinName}yAxisG y axis`);
+    xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `xAxisG x axis`);
+    yAxisG = appendAndTransG(thisGObj, null, `yAxisG y axis`);
         
     updateLine(coinData, state.sliderVals);
 };
 
 const updateLine = function(coinData, sliderTimeVals){
     let coinName = state.activeCoin;
-    console.log('coinName')
-    console.log(coinName)
+    console.log('updating Line');
+    console.log('state.yVariable')
+    console.log(state.yVariable)
+    
 
     state.xScales[coinName].range([0, widthLM]);
     state.yScales[coinName].range([heightLM, 0]);
@@ -106,8 +108,8 @@ const updateLine = function(coinData, sliderTimeVals){
         d3.max(sliderFilteredData, d => d[state.yVariable]) * 1.005]);
 
     // Update axes
-    let thisXAxisG = d3.select(`.${coinName}xAxisG`),
-        thisYAxisG = d3.select(`.${coinName}yAxisG`);
+    let thisXAxisG = d3.select(`.xAxisG`),
+        thisYAxisG = d3.select(`.yAxisG`);
     xAxisObj.scale(state.xScales[coinName]);
     yAxisObj.scale(state.yScales[coinName]);
     thisXAxisG.transition(t()).call(xAxisObj);
@@ -166,7 +168,7 @@ const updateLine = function(coinData, sliderTimeVals){
         build & config the hidden rect for hover interaction
     */
 
-    d3.select(`.${coinName}SvgWrapper`).append("rect")
+    d3.select(`.svgWrapper`).append("rect")
         .attrs({
             "transform": `translate(${margin.left},${margin.top})`,
             "class": `overlay`,
@@ -178,6 +180,9 @@ const updateLine = function(coinData, sliderTimeVals){
         .on("mousemove", mousemove);
 
     function mousemove() {
+            console.log('mousemoving!')
+            
+        
         let thisFocus = d3.select(`.focus`)
         
         var x0 = state.xScales[coinName].invert(d3.mouse(this)[0]),
