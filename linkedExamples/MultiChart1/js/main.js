@@ -8,12 +8,28 @@ function prepData(data){
             return !(d["price_usd"] == null)
         })
         obj[coin].forEach(function(d){
+
             d["price_usd"] = +d["price_usd"];
             d["24h_vol"] = +d["24h_vol"];
             d["market_cap"] = +d["market_cap"];
             d["date"] = state.parseTime(d["date"])
+            d["coin"] = coin;
         });
     }
+
+    let coins = Object.keys(data)
+    
+    coins.forEach(c => {
+        
+        let thisObj = {
+            "coin" : c,
+            "data": data[c].slice(-1)[0]
+        }
+        
+        state.donutData.push(thisObj)
+
+    })
+
     return obj;
 }
 
@@ -24,6 +40,7 @@ let state = {
         pie:{},
         line:{}
     },
+    donutData: [],
     parseTime: d3.timeParse("%d/%m/%Y"),
     formatTime: d3.timeFormat("%d/%m/%Y"),
     yVariable: null,
@@ -78,9 +95,12 @@ $("#date-slider").slider({
     step: 86400000, // One day
     values: [parseTime("12/5/2013").getTime(), parseTime("31/10/2017").getTime()],
     slide: function(event, ui){
+        //set state slider vals
+        // state.sliderVals = $("#date-slider").slider("values");
+
         $("#dateLabel1").text(formatTime(new Date(ui.values[0])));
         $("#dateLabel2").text(formatTime(new Date(ui.values[1])));
-        lineChart.wrangleData();
+        updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
     }
 });
 
@@ -98,7 +118,7 @@ function arcClicked(arc){
 d3.json("data/data.json").then(function(data){
     
     state.filteredData = prepData(data)
-
+    
     //get & set stateful active coin name
     state.activeCoin = (state.activeCoin == null) ? $("#coin-select").val() : state.activeCoin;
     let curSelectedCoinData = state.filteredData[state.activeCoin]
@@ -108,8 +128,9 @@ d3.json("data/data.json").then(function(data){
     
     // lineChart = new LineChart("#line-area");
     state.lineChart = initLine("#line-area", curSelectedCoinData);
+    // state.donutChart1 = initDonut("#donut-area1", curSelectedCoinData);
 
-    // donutChart1 = new DonutChart("#donut-area1", "24h_vol");
+    donutChart1 = new DonutChart("#donut-area1", "24h_vol");
     // donutChart2 = new DonutChart("#donut-area2", "market_cap");
 
 })
