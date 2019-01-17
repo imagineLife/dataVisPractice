@@ -1,69 +1,75 @@
-const DonutChart = function(_parentElement, _variable){
-    this.initVis(_parentElement, _variable);
+DonutChart = function(_parentElement, _variable){
+    this.parentElement = _parentElement;
+    this.variable = _variable;
+
+    this.initVis();
 };
 
-const coinKey = d => d.data.coin;
-
-const pieFn = d3.pie()
-    .padAngle(0.03)
-    .sort(null);
-
-DonutChart.prototype.initVis = function(_parentElement,_variable){
-    
+DonutChart.prototype.initVis = function(){
     var vis = this;
 
-    const width = 250 - state.margin.pie.l - state.margin.pie.r;
-    const height = 250 - state.margin.pie.t - state.margin.pie.b;
-    const pieRadius = Math.min(width, height) / 2;
+    vis.margin = { left:0, right:0, top:40, bottom:0 };
+    vis.width = 250 - vis.margin.left - vis.margin.right;
+    vis.height = 250 - vis.margin.top - vis.margin.bottom;
+    vis.radius = Math.min(vis.width, vis.height) / 2;
+    
+    vis.pie = d3.pie()
+        .padAngle(0.03)
+        .value(function(d) { return d.data[vis.variable]; })
+        .sort(null);
 
     vis.arc = d3.arc()
-        .innerRadius(pieRadius - 80)
-        .outerRadius(pieRadius - 30);
+        .innerRadius(vis.radius - 60)
+        .outerRadius(vis.radius - 30);
 
-    const svgObj = d3.select(_parentElement)
+    vis.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attrs({
-            "width": width + state.margin.pie.l + state.margin.pie.r,
-            "height": height + state.margin.pie.t + state.margin.pie.b,
-            'class': `${_variable}SVGWrapper`
-        });
-
-    vis.g = svgObj.append("g")
-        .attr("transform", `translate(${(state.margin.pie.l + (width / 2))},${(state.margin.pie.t + (height / 2))})`);
+        .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+    vis.g = vis.svg.append("g")
+        .attr("transform", "translate(" + (vis.margin.left + (vis.width / 2)) + 
+            ", " + (vis.margin.top + (vis.height / 2)) + ")");
 
     vis.g.append("text")
-        .attrs({
-            "y": -height/2,
-            "x": -width/2,
-            "font-size": "15px",
-            "text-anchor": "start"
-        })
-        .text(_variable == "market_cap" ? 
+        .attr("y", -vis.height/2)
+        .attr("x", -vis.width/2)
+        .attr("font-size", "15px")
+        .attr("text-anchor", "start")
+        .text(vis.variable == "market_cap" ? 
             "Market Capitalization" : "24 Hour Trading Volume");
 
-    vis.updateDonut(_parentElement, _variable);
+    vis.wrangleData();
 }
 
-DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
+DonutChart.prototype.wrangleData = function(){
+    var vis = this;
+
+    state.activeCoin = state.activeCoin
+    
+    vis.updateVis();
+}
+
+DonutChart.prototype.updateVis = function(){
     var vis = this;
     
-    if(state.activeCoin == null){
-        state.activeCoin = $("#coin-select").val();
-    }
+    vis.path = vis.g.selectAll("path");
 
-    let thisSVG = d3.select(parent);
-    let thisG = thisSVG.select('g')
-
-
-    const piePaths = vis.g.selectAll("path");
-
-    let pieData = pieFn.value(d => d.data[pieVarTxt])(donutData);
-
+    vis.data0 = vis.path.data();
+    vis.data1 = vis.pie(state.donutData);
+    
     // JOIN elements with new data.
-    piePathsDataJoin = piePaths.data(pieData, coinKey);
+    vis.path = vis.path.data(vis.data1, key);
+
+    // EXIT old elements from the screen.
+    vis.path.exit()
+        .datum(function(d, i) { return findNeighborArc(i, vis.data1, vis.data0, key) || d; })
+        .transition()
+        .duration(750)
+        .attrTween("d", arcTween)
+        .remove();
     
     // UPDATE elements still on the screen.
-    piePathsDataJoin.transition()
+    vis.path.transition()
         .duration(750)
         .attrTween("d", arcTween)
         .attr("fill-opacity", function(d) {
@@ -71,8 +77,9 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
         })
 
     // ENTER new elements in the array.
-    piePathsDataJoin.enter()
+    vis.path.enter()
         .append("path")
+        .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
         .attr("fill", function(d) {  return color(d.data.coin) })
         .attr("fill-opacity", function(d) {
             return (d.data.coin == state.activeCoin) ? 1 : 0.3;
@@ -81,6 +88,37 @@ DonutChart.prototype.updateDonut = function(parent, pieVarTxt){
         .transition()
         .duration(750)
             .attrTween("d", arcTween);
+
+    function key(d){ return d.data.coin }
+
+    function findNeighborArc(i, data0, data1, key) {
+        var d;
+        return (d = findPreceding(i, vis.data0, vis.data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
+            : (d = findFollowing(i, vis.data0, vis.data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
+            : null;
+    }
+
+    // Find the element in data0 that joins the highest preceding element in data1.
+    function findPreceding(i, data0, data1, key) {
+        var m = vis.data0.length;
+        while (--i >= 0) {
+            var k = key(vis.data1[i]);
+            for (var j = 0; j < m; ++j) {
+                if (key(vis.data0[j]) === k) return vis.data0[j];
+            }
+        }
+    }
+
+    // Find the element in data0 that joins the lowest following element in data1.
+    function findFollowing(i, data0, data1, key) {
+        var n = vis.data1.length, m = vis.data0.length;
+        while (++i < n) {
+            var k = key(vis.data1[i]);
+            for (var j = 0; j < m; ++j) {
+                if (key(vis.data0[j]) === k) return vis.data0[j];
+            }
+        }
+    }
 
     function arcTween(d) {
         var i = d3.interpolate(this._current, d);
