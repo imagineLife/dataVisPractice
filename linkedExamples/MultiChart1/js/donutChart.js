@@ -81,9 +81,7 @@ DonutChart.prototype.updateVis = function(){
         .append("path")
         .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
         .attr("fill", function(d) {  return color(d.data.coin) })
-        .attr("fill-opacity", function(d) {
-            return (d.data.coin == state.activeCoin) ? 1 : 0.3;
-        })
+        .attr("fill-opacity", d =>  (d.data.coin == state.activeCoin) ? 1 : 0.3 )
         .on("click", arcClicked)
         .transition()
         .duration(750)
