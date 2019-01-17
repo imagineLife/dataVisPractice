@@ -60,7 +60,7 @@ const initLine = function(parent, coinData){
             'class': `${coinName}SvgWrapper svgWrapper`
         });
 
-    thisGObj = appendAndTransG(svgObj, `translate(${margin.left},${margin.top})`, `${coinName}GWrapper`);
+    thisGObj = appendAndTransG(svgObj, `translate(${margin.left},${margin.top})`, `gWrapper`);
 
     // thisGObj.append("text")
     //     .attrs({
@@ -70,9 +70,6 @@ const initLine = function(parent, coinData){
     //     })
     //     .text(Object.keys(coinData))
 
-    state.xScales[coinName].range([0, widthLM]);
-    state.yScales[coinName].range([heightLM, 0]);
-
     xAxisG = appendAndTransG(thisGObj, `translate(0,${heightLM})`, `${coinName}xAxisG x axis`);
     yAxisG = appendAndTransG(thisGObj, null, `${coinName}yAxisG y axis`);
         
@@ -81,7 +78,12 @@ const initLine = function(parent, coinData){
 
 const updateLine = function(coinData, sliderTimeVals){
     let coinName = state.activeCoin;
+    console.log('coinName')
+    console.log(coinName)
 
+    state.xScales[coinName].range([0, widthLM]);
+    state.yScales[coinName].range([heightLM, 0]);
+    
     /*
         set chart params if not already selected
     */
@@ -112,10 +114,10 @@ const updateLine = function(coinData, sliderTimeVals){
     thisYAxisG.transition(t()).call(yAxisObj.tickFormat(formatAbbreviation));
     
     //remove previous path, focuses, & overlays
-    let thisGObj = d3.select(`g.${coinName}GWrapper`)
+    let thisGObj = d3.select(`.gWrapper`)
     thisGObj.selectAll(`path`).remove()
-    thisGObj.selectAll(`.focus${coinName}`).remove()
-    d3.select(`.${coinName}ovly`).remove();
+    thisGObj.selectAll(`.focus`).remove()
+    d3.select(`.overlay`).remove();
 
     const line = d3.line()
         .x(function(d) { return state.xScales[coinName](d.date); })
@@ -135,7 +137,7 @@ const updateLine = function(coinData, sliderTimeVals){
         hover circle
         hover text
     */
-    focus = appendAndTransG(thisGObj, null, `focus${coinName}`).style("display", "none");
+    focus = appendAndTransG(thisGObj, null, `focus`).style("display", "none");
 
     focus.append("line")
         .attrs({
@@ -167,7 +169,7 @@ const updateLine = function(coinData, sliderTimeVals){
     d3.select(`.${coinName}SvgWrapper`).append("rect")
         .attrs({
             "transform": `translate(${margin.left},${margin.top})`,
-            "class": `${coinName}ovly overlay`,
+            "class": `overlay`,
             "width": widthLM,
             "height": heightLM
         })
@@ -176,7 +178,7 @@ const updateLine = function(coinData, sliderTimeVals){
         .on("mousemove", mousemove);
 
     function mousemove() {
-        let thisFocus = d3.select(`.focus${coinName}`)
+        let thisFocus = d3.select(`.focus`)
         
         var x0 = state.xScales[coinName].invert(d3.mouse(this)[0]),
             i = bisectDate(sliderFilteredData, x0, 1),
