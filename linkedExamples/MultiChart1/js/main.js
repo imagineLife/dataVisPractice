@@ -84,13 +84,13 @@ var colorScale = d3.scaleOrdinal(d3.schemeDark2);
 // Event listeners
 $("#coin-select").on("change", function(e) { 
     state.activeCoin = ($(this).children("option:selected").val())
-    donutChart1.updateVis("donut-area1", "24h_vol");
+    updateDonut("donut-area1", "24h_vol");
     updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
     
 })
 $("#measurement-select").on("change", function() { 
     state.yVariable = ($(this).children("option:selected").val());
-    // donutChart1.updateVis("donut-area1", "24h_vol");
+    updateDonut("donut-area1", state.yVariable);
     updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
 })
 
@@ -117,7 +117,7 @@ function arcClicked(arc){
     $("#coin-select").val(state.activeCoin);
     
 
-    donutChart1.updateVis("donut-area1", "24h_vol");
+    updateDonut("donut-area1", state.yVariable);
     // donutChart2.updateDonut("donut-area2", "market_cap");
     updateLine(state.filteredData[arc.data.coin], $("#date-slider").slider("values"))
 }
@@ -137,7 +137,7 @@ d3.json("data/data.json").then(function(data){
     state.lineChart = initLine("#line-area", curSelectedCoinData);
     // state.donutChart1 = initDonut("#donut-area1", curSelectedCoinData);
 
-    donutChart1 = new DonutChart("#donut-area1", "24h_vol");
-    // donutChart2 = new DonutChart("#donut-area2", "market_cap");
+    donutChart1 = initDonut("#donut-area1", "24h_vol");
+    // donutChart2 = initDonut("#donut-area2", "market_cap");
 
 })
