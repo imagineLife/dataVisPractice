@@ -1,72 +1,64 @@
-DonutChart = function(_parentElement, _variable){
-    this.parentElement = _parentElement;
-    this.variable = _variable;
+let donutVars = {
+    w: 250,
+    h: 250,
+    margin : { left:0, right:0, top:40, bottom:0 }
+}
 
-    this.initVis();
-};
+let wLm = donutVars.w - donutVars.margin.left - donutVars.margin.right;
+let hLm = donutVars.h - donutVars.margin.top - donutVars.margin.bottom;
+let donutRadius = Math.min(wLm, hLm) / 2;
 
-DonutChart.prototype.initVis = function(){
-    var vis = this;
+const arcFn = d3.arc()
+    .innerRadius(donutRadius - 60)
+    .outerRadius(donutRadius - 30);
 
-    vis.margin = { left:0, right:0, top:40, bottom:0 };
-    vis.width = 250 - vis.margin.left - vis.margin.right;
-    vis.height = 250 - vis.margin.top - vis.margin.bottom;
-    vis.radius = Math.min(vis.width, vis.height) / 2;
-    
-    vis.pie = d3.pie()
-        .padAngle(0.03)
-        .value(function(d) { return d.data[vis.variable]; })
-        .sort(null);
+const pieFn = d3.pie()
+    .padAngle(0.03)
+    .sort(null);
 
-    vis.arc = d3.arc()
-        .innerRadius(vis.radius - 60)
-        .outerRadius(vis.radius - 30);
+let donutSvg, donutG, donutPath,
 
-    vis.svg = d3.select(vis.parentElement)
+initDonut = function(parent, sliceVar){
+
+
+    donutSvg = d3.select(parent)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
-    vis.g = vis.svg.append("g")
-        .attr("transform", "translate(" + (vis.margin.left + (vis.width / 2)) + 
-            ", " + (vis.margin.top + (vis.height / 2)) + ")");
+        .attr("width", wLm + donutVars.margin.left + donutVars.margin.right)
+        .attr("height", hLm + donutVars.margin.top + donutVars.margin.bottom);
+    donutG = donutSvg.append("g")
+        .attr("transform", "translate(" + (donutVars.margin.left + (wLm / 2)) + 
+            ", " + (donutVars.margin.top + (hLm / 2)) + ")");
 
-    vis.g.append("text")
+    donutG.append("text")
         .attrs({
-            "y": -vis.height/2,
-            "x": -vis.width/2,
+            "y": -hLm/2,
+            "x": -wLm/2,
             "font-size": "15px",
             "text-anchor": "start",
             "transform": `translate(45,0)`
         })
-        .text(vis.variable == "market_cap" ? 
+        .text(sliceVar == "market_cap" ? 
             "Market Capitalization" : "24 Hour Trading Volume");
 
     state.activeCoin = state.activeCoin
     
-    vis.updateVis();
+    updateDonut(parent, sliceVar);
 }
 
-DonutChart.prototype.updateVis = function(){
-    var vis = this;
-    
-    vis.path = vis.g.selectAll("path");
+updateDonut = function(parent, sliceVar){
 
-    vis.data0 = vis.path.data();
-    vis.data1 = vis.pie(state.donutData);
+    pieFn.value(function(d) { return d.data[sliceVar]; });
+    
+    donutPath = donutG.selectAll("path");
+
+    let data0 = donutPath.data();
+    let data1 = pieFn(state.donutData);
     
     // JOIN elements with new data.
-    vis.path = vis.path.data(vis.data1, key);
-
-    // EXIT old elements from the screen.
-    vis.path.exit()
-        .datum(function(d, i) { return findNeighborArc(i, vis.data1, vis.data0, key) || d; })
-        .transition()
-        .duration(750)
-        .attrTween("d", arcTween)
-        .remove();
+    donutPath = donutPath.data(data1, key);
     
     // UPDATE elements still on the screen.
-    vis.path.transition()
+    donutPath.transition()
         .duration(750)
         .attrTween("d", arcTween)
         .attr("fill-opacity", function(d) {
@@ -74,9 +66,9 @@ DonutChart.prototype.updateVis = function(){
         })
 
     // ENTER new elements in the array.
-    vis.path.enter()
+    donutPath.enter()
         .append("path")
-        .each(function(d, i) { this._current = findNeighborArc(i, vis.data0, vis.data1, key) || d; }) 
+        .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; }) 
         .attr("fill", function(d) {  return colorScale(d.data.coin) })
         .attr("fill-opacity", d =>  (d.data.coin == state.activeCoin) ? 1 : 0.3 )
         .on("click", arcClicked)
@@ -88,29 +80,29 @@ DonutChart.prototype.updateVis = function(){
 
     function findNeighborArc(i, data0, data1, key) {
         var d;
-        return (d = findPreceding(i, vis.data0, vis.data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
-            : (d = findFollowing(i, vis.data0, vis.data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
+        return (d = findPreceding(i, data0, data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
+            : (d = findFollowing(i, data0, data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
             : null;
     }
 
     // Find the element in data0 that joins the highest preceding element in data1.
     function findPreceding(i, data0, data1, key) {
-        var m = vis.data0.length;
+        var m = data0.length;
         while (--i >= 0) {
-            var k = key(vis.data1[i]);
+            var k = key(data1[i]);
             for (var j = 0; j < m; ++j) {
-                if (key(vis.data0[j]) === k) return vis.data0[j];
+                if (key(data0[j]) === k) return data0[j];
             }
         }
     }
 
     // Find the element in data0 that joins the lowest following element in data1.
     function findFollowing(i, data0, data1, key) {
-        var n = vis.data1.length, m = vis.data0.length;
+        var n = data1.length, m = data0.length;
         while (++i < n) {
-            var k = key(vis.data1[i]);
+            var k = key(data1[i]);
             for (var j = 0; j < m; ++j) {
-                if (key(vis.data0[j]) === k) return vis.data0[j];
+                if (key(data0[j]) === k) return data0[j];
             }
         }
     }
@@ -118,7 +110,7 @@ DonutChart.prototype.updateVis = function(){
     function arcTween(d) {
         var i = d3.interpolate(this._current, d);
         this._current = i(1)
-        return function(t) { return vis.arc(i(t)); };
+        return function(t) { return arcFn(i(t)); };
     }
 
 }
