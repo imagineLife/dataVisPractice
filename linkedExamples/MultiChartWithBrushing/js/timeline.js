@@ -3,15 +3,15 @@ function initTimeline(parentDiv){
 	let hLM = state.timeline.h - state.timeline.margin.t - state.timeline.margin.b;
 
 	//set timelineSVG vals
-	state.timeline.svg = d3.select(parentDiv).append('svg').attrs({
+	state.timeline.svgObj = d3.select(parentDiv).append('svg').attrs({
 		'height': state.timeline.h,
 		'width': state.timeline.w,
-		'class': 'timelineSVG'
+		// 'class': 'timelineSVG'
 	})
 
 	//set timeline G vals
-	state.timeline.gObj = state.timeline.svg.append('g')
-		.attr('class', 'timelineG')
+	state.timeline.gObj = state.timeline.svgObj.append('g')
+		// .attr('class', 'timelineG')
 
 	//set timeline scales
 	state.timeline.xScale.range([0, state.timeline.w])
@@ -20,7 +20,7 @@ function initTimeline(parentDiv){
 	//build axis elements
 	state.xAxisG = state.timeline.gObj.append('g')
 		.attrs({
-			'class' : 'timelineXAxisG',
+			// 'class' : 'timelineXAxisG',
 			'transform' : `translate(0, ${state.timeline.h})`
 		})
 
@@ -28,7 +28,7 @@ function initTimeline(parentDiv){
 		.append('path')
 		.attrs({
 			'fill': '#ccc',
-			'class': 'timelinePath'
+			// 'class': 'timelinePath'
 		})
 
 	updateTimeLine(state.filteredData[state.activeCoin], state.yVariable);
@@ -38,20 +38,49 @@ function initTimeline(parentDiv){
 function updateTimeLine(selectedCoinData, yVar){
 
 	//update timeline scales
-	state.timeline.xScale.domain(d3.extent(selectedCoinData, d => d.date))
-	state.timeline.yScale.domain([0, d3.max(selectedCoinData, d => d[yVar])])
+	state.timeline.xScale.domain(d3.extent(selectedCoinData, function(d){ return d.date; }))
+	state.timeline.yScale.domain([0, d3.max(selectedCoinData, function(d){ return d[yVar] } )])
 
 	//connect xScale & xAxisObj
 	state.timeline.xAxisObj.scale(state.timeline.xScale)
 	state.xAxisG.transition(t()).call(state.timeline.xAxisObj)
 
+	//build areaFn
 	let areaFn = d3.area()
-		.x(d => state.timeline.xScale(d.date))
+		.x(function(d){ return state.timeline.xScale(d.date)})
 		.y0(state.timeline.h)
-		.y1(d => state.timeline.yScale(d[yVar]))
-
+		.y1(function(d){ return state.timeline.yScale(d[yVar])})
+					
+	//build brush area path
 	state.timeline.areaPath
 		.data([selectedCoinData])
 		.attr('d', areaFn)
 
+	//update stated brushFn
+	let brushFn = d3.brushX()
+		.handleSize(10)
+		.extent([ [0,0], [state.timeline.w, state.timeline.h] ])
+		.on('brush', brushedFn)
+
+	//append BrushObj to
+	state.timeline.brushGWindow = state.timeline.gObj.append('g')
+		// .attr('class', 'brushGWindow')
+		.call(brushFn)
+
+
 }
+
+
+function brushedFn() {
+    var selectedPixels = d3.event.selection || timeline.x.range();
+    var newValues = selectedPixels.map(state.timeline.xScale.invert)
+    
+    // $("#date-slider")
+    //     .slider('values', 0, newValues[0])
+    //     .slider('values', 1, newValues[1]);
+    // $("#dateLabel1").text(formatTime(newValues[0]));
+    // $("#dateLabel2").text(formatTime(newValues[1]));
+    // lineChart.wrangleData();
+}
+
+
