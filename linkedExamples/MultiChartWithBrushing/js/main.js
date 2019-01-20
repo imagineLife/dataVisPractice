@@ -133,11 +133,9 @@ d3.json("data/data.json").then(function(data){
     //get & set stateful active yVariable
     state.yVariable = (state.yVariable == null) ? $("#measurement-select").val() : state.yVariable;    
     
-    // lineChart = new LineChart("#line-area");
+    //initialize charts
     state.lineChart = initLine("#line-area", curSelectedCoinData);
-    // state.donutChart1 = initDonut("#donut-area1", curSelectedCoinData);
-
-    donutChart1 = initDonut("#donut-area1", "24h_vol");
-    // donutChart2 = initDonut("#donut-area2", "market_cap");
+    initDonut("#donut-area1", "24h_vol");
+    initTimeline('#timeline-area')
 
 })
