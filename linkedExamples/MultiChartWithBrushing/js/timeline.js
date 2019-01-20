@@ -24,16 +24,34 @@ function initTimeline(parentDiv){
 			'transform' : `translate(0, ${state.timeline.h})`
 		})
 
-	state.arePath = state.timeline.gObj
+	state.timeline.areaPath = state.timeline.gObj
 		.append('path')
 		.attrs({
 			'fill': '#ccc',
 			'class': 'timelinePath'
 		})
 
-	updateTimeLine();
+	updateTimeLine(state.filteredData[state.activeCoin], state.yVariable);
+	//updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
 }
 
-function updateTimeLine(){
+function updateTimeLine(selectedCoinData, yVar){
+
+	//update timeline scales
+	state.timeline.xScale.domain(d3.extent(selectedCoinData, d => d.date))
+	state.timeline.yScale.domain([0, d3.max(selectedCoinData, d => d[yVar])])
+
+	//connect xScale & xAxisObj
+	state.timeline.xAxisObj.scale(state.timeline.xScale)
+	state.xAxisG.transition(t()).call(state.timeline.xAxisObj)
+
+	let areaFn = d3.area()
+		.x(d => state.timeline.xScale(d.date))
+		.y0(state.timeline.h)
+		.y1(d => state.timeline.yScale(d[yVar]))
+
+	state.timeline.areaPath
+		.data([selectedCoinData])
+		.attr('d', areaFn)
 
 }
