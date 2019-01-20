@@ -40,7 +40,7 @@ const t = function() { return d3.transition().duration(300); }
 const bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
 // Filter data based on selections
-const height = 550, 
+const height = 450, 
       width = 800, 
       heightLM = height - margin.top - margin.bottom,
       widthLM = width - margin.left - margin.right;
