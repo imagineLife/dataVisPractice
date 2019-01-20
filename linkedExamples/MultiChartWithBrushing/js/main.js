@@ -68,6 +68,23 @@ let state = {
     },
     margin:{
         pie:{ t:40, r:0, b:0, l:0 }
+    },
+    timeline : {
+        h: 130,
+        w: 800,
+        margin: {
+            t: 0,
+            r: 100,
+            b: 30,
+            l: 80
+        },
+        svgObj: null,
+        gObj: null,
+        xScale : d3.scaleTime(),
+        yScale : d3.scaleLinear(),
+        xAxisObj: d3.axisBottom().ticks(4),
+        xAxisG : null,
+        areaPath : null,
     }
 }
 
