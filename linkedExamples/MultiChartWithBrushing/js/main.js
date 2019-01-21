@@ -85,6 +85,8 @@ let state = {
         xAxisObj: d3.axisBottom().ticks(4),
         xAxisG : null,
         areaPath : null,
+        brushGWindow: null,
+        brushFn: null
     }
 }
 
@@ -122,9 +124,13 @@ $("#date-slider").slider({
         //set state slider vals
         // state.sliderVals = $("#date-slider").slider("values");
 
+        dates = ui.values.map(function(val) { return new Date(val); })
+        xVals = dates.map(function(date) { return state.timeline.xScale(date); })
+
         $("#dateLabel1").text(formatTime(new Date(ui.values[0])));
         $("#dateLabel2").text(formatTime(new Date(ui.values[1])));
         updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
+        state.timeline.brushGWindow.call(brushFn.move, xVals)
     }
 });
 
