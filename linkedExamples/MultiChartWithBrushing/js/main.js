@@ -105,7 +105,7 @@ $("#coin-select").on("change", function(e) {
     state.activeCoin = ($(this).children("option:selected").val())
     updateDonut("donut-area1", "24h_vol");
     updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
-    
+    updateTimeLine(state.filteredData[state.activeCoin], state.yVariable)
 })
 $("#measurement-select").on("change", function() { 
     state.yVariable = ($(this).children("option:selected").val());
