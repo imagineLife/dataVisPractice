@@ -75,12 +75,15 @@ function brushedFn() {
     var selectedPixels = d3.event.selection || timeline.x.range();
     var newValues = selectedPixels.map(state.timeline.xScale.invert)
     
-    // $("#date-slider")
-    //     .slider('values', 0, newValues[0])
-    //     .slider('values', 1, newValues[1]);
-    // $("#dateLabel1").text(formatTime(newValues[0]));
-    // $("#dateLabel2").text(formatTime(newValues[1]));
-    // lineChart.wrangleData();
+
+    $("#date-slider")
+        .slider('values', 0, newValues[0])
+        .slider('values', 1, newValues[1]);
+
+    $("#dateLabel1").text(formatTime(newValues[0]));
+    $("#dateLabel2").text(formatTime(newValues[1]));
+
+    updateLine(state.filteredData[state.activeCoin], newValues)
 }
 
 
