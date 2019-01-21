@@ -111,6 +111,7 @@ $("#measurement-select").on("change", function() {
     state.yVariable = ($(this).children("option:selected").val());
     updateDonut("donut-area1", state.yVariable);
     updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
+    updateTimeLine(state.filteredData[state.activeCoin], state.yVariable)
 })
 
 // Add jQuery UI slider
