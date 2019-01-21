@@ -1,3 +1,9 @@
+//update stated brushFn
+let brushFn = d3.brushX()
+	.handleSize(10)
+	.extent([ [0,0], [state.timeline.w, state.timeline.h] ])
+	.on('brush', brushedFn)
+
 function initTimeline(parentDiv){
 	let wLM = state.timeline.w - state.timeline.margin.r - state.timeline.margin.l;
 	let hLM = state.timeline.h - state.timeline.margin.t - state.timeline.margin.b;
@@ -32,7 +38,6 @@ function initTimeline(parentDiv){
 		})
 
 	updateTimeLine(state.filteredData[state.activeCoin], state.yVariable);
-	//updateLine(state.filteredData[state.activeCoin], $("#date-slider").slider("values"))
 }
 
 function updateTimeLine(selectedCoinData, yVar){
@@ -55,12 +60,6 @@ function updateTimeLine(selectedCoinData, yVar){
 	state.timeline.areaPath
 		.data([selectedCoinData])
 		.attr('d', areaFn)
-
-	//update stated brushFn
-	let brushFn = d3.brushX()
-		.handleSize(10)
-		.extent([ [0,0], [state.timeline.w, state.timeline.h] ])
-		.on('brush', brushedFn)
 
 	//append BrushObj to
 	state.timeline.brushGWindow = state.timeline.gObj.append('g')
