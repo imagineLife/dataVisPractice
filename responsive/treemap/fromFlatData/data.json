@@ -1,0 +1,52 @@
+[
+  {
+    "name": "cars",
+    "parent": null,
+    "size": ""
+  },
+  {
+    "name": "owned",
+    "parent": "cars",
+    "size": ""
+  },
+  {
+    "name": "traded",
+    "parent": "cars",
+    "size": ""
+  },
+  {
+    "name": "learned",
+    "parent": "cars",
+    "size": ""
+  },
+  {
+    "name": "pilot",
+    "parent": "owned",
+    "size": 40
+  },
+  {
+    "name": "325ci",
+    "parent": "owned",
+    "size": 40
+  },
+  {
+    "name": "accord",
+    "parent": "owned",
+    "size": 20
+  },
+  {
+    "name": "chevette",
+    "parent": "traded",
+    "size": 10
+  },
+  {
+    "name": "odyssey",
+    "parent": "learned",
+    "size": 20
+  },
+  {
+    "name": "maxima",
+    "parent": "learned",
+    "size": 10
+  }
+]
