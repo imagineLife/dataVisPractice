@@ -57,9 +57,9 @@
 
   //2. decalre margin, width, height
   var margin = {
-      top: 30,
+      top: 60,
       right: 0,
-      bottom: 30,
+      bottom: 60,
       left: 0
     };
 
@@ -72,7 +72,7 @@
   const heightLessMargins = resizedHeight - margin.top - margin.bottom;
 
   //1. re-parse data
-  //  will result in a single array of objects
+  //  will result in a single obj with keys objects
   var dataToUse = rawData.reduce(function(acc, cur) {
     for (var key in cur) {
         acc[0][key] = cur[key];
@@ -80,8 +80,11 @@
       return acc
     }, [{}] )[0];
 
-  let numberOfKeysInData = Object.keys(dataToUse).length;
-  // console.log('numberOfKeysInData ->',numberOfKeysInData);
+console.log('dataToUse')
+console.log(dataToUse)
+
+  // let numberOfKeysInData = Object.keys(dataToUse).length;
+  // // console.log('numberOfKeysInData ->',numberOfKeysInData);
 
 
 //4. get keys array from data using d3 magic
@@ -96,7 +99,7 @@
 
 
 //6. calculate total height of bar
-  BarTotalVal = d3.max(stack([dataToUse]), function(layer) {
+  BarTotalVal = d3.max(stack([dataToUse]), layer => {
     return d3.max(layer, function(d) {
   //    console.log('layer--->', layer)
       var x = d[0],
@@ -105,11 +108,14 @@
     });
   });
 
+console.log('BarTotalVal')
+console.log(BarTotalVal)
+
 //7.build x & y scales
   // copied xScale, as I want to flip the bar 90 degrees
   let yScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
-    .range([0, resizedHeight]);
+    .range([0, heightLessMargins]);
 
   var xScale = d3.scaleLinear()
     .domain([0, BarTotalVal])
@@ -132,7 +138,8 @@
     
     //build gObject
     gObj
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr('class','gWrapper');
 
   //build individualBars
   var individualBar = gObj.selectAll(".individualBar")
@@ -173,10 +180,9 @@
   rect.append("rect")
     .attrs({
       "x" : resizedWidth / 2 - ((resizedWidth * .35) / 2),
-      "y" : (d) => {
-        return yScale( d[0] ) },
-      "height": d => heightLessMargins - yScale( d[1] - yScale( d[0]) ) ,
-      "width" : resizedWidth * .35,
+      "y" : (d) => yScale( d[0] ),
+      "height": d => ( yScale(d[1]) - yScale(d[0]) ),
+      "width" : resizedWidth * .25,
       'class': 'myRectClass'
     });
 
@@ -204,8 +210,8 @@
     d3.selectAll('.myRectClass').attrs({
       'x' : resizedWidthLessMargins / 2 - ((resizedWidthLessMargins * .35) / 2),
       'y' : d => yScale( d[0] ),
-      'height': d => resizedHeightLessMargins - yScale( d[1] - yScale( d[0]) ),
-      'width' : resizedWidthLessMargins * .35
+      'height': d => ( yScale(d[1]) - yScale(d[0]) ),
+      'width' : resizedWidthLessMargins * .25
     });
 
   }
