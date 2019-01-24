@@ -142,23 +142,24 @@ console.log(BarTotalVal)
     .attr('class','gWrapper');
 
   //build individualBars
-  var individualBar = gObj.selectAll(".individualBar")
+  var individualBar = gObj.selectAll(".individualBarG")
     .data(d3StackedData)
     .enter().append("g")
-    .attr("class", "individualBar")
-    .style("fill", function(d, i) {
-      return colorScale(i);
-    })
-    .on("mousemove", function(d){
-    tooltipDiv
-      .style("left", d3.event.pageX - 75 + "px")
-      .style("top", d3.event.pageY - 120 + "px")
-      .style("display", "inline-block")
-      .html(`${d.key}: ${d[0][1] - d[0][0]}`);
-    })
-    .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
+      .attr("class", "individualBarG")
+      .style("fill", function(d, i) {
+        return colorScale(i);
+      })
+      .on("mousemove", function(d){
+      tooltipDiv
+        .style("left", d3.event.pageX - 75 + "px")
+        .style("top", d3.event.pageY - 120 + "px")
+        .style("display", "inline-block")
+        .html(`${d.key}: ${d[0][1] - d[0][0]}`);
+      })
+      .on("mouseout", function(d){ tooltipDiv.style("display", "none");});
 
   //build rect obj
+  let rectX = resizedWidth / 2 - ((resizedWidth * .35) / 2);
   var rect = individualBar.selectAll("rect")
     .data(function(d,i) {
       
@@ -175,16 +176,27 @@ console.log(BarTotalVal)
 
       return d;
     })
-    .enter();
+    .enter()
+      .append("rect")
+      .attrs({
+        "x" : rectX,
+        "y" : (d) => yScale( d[0] ),
+        "height": d => ( yScale(d[1]) - yScale(d[0]) ),
+        "width" : resizedWidth * .25,
+        'class': 'myRectClass'
+      });
 
-  rect.append("rect")
+  let barLabel = individualBar.selectAll('text')
+    .data(d => d)
+    .enter()
+    .append('text')
     .attrs({
-      "x" : resizedWidth / 2 - ((resizedWidth * .35) / 2),
-      "y" : (d) => yScale( d[0] ),
-      "height": d => ( yScale(d[1]) - yScale(d[0]) ),
-      "width" : resizedWidth * .25,
-      'class': 'myRectClass'
-    });
+      'class': 'barLabel',
+      'transform': d => `translate( ${ rectX + (rectX * .35) }, ${yScale(d[0]) + 20} )`,
+      'fill' : 'white',
+      // 'font-weight': 'normal'
+    })
+    .text(d => (d[1] - d[0]))
 
   //Build Tooltip
   let tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
