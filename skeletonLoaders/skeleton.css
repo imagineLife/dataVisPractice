@@ -144,13 +144,10 @@
   to {
     background-position: 
       350% 0, 
-      var(--title-position), 
       var(--hz-line-3-position), 
       var(--hz-line-4-position),
       var(--hz-line-5-position),
       var(--hz-line-6-position),
-      var(--circle-position), 
-      var(--footer-position), 
 /*       var(--footer-position-disabled),        */
       0 0;
   }
@@ -286,33 +283,25 @@ New 'Card'
     rgba(211, 211, 211, 0) 0,
     rgba(211, 211, 211, .8) 50%, 
     rgba(211, 211, 211, 0) 100%), 
-    var(--title-skeleton-disabled), 
     var(--hz-line-skeleton-my),
     var(--hz-line-skeleton-my),
     var(--hz-line-skeleton-my),
     var(--hz-line-skeleton-my),
-    var(--circle-skeleton-disabled),
-    var(--footer-skeleton-disabled), 
     var(--card-skeleton);
   background-size: 
     var(--blur-size), 
-    var(--title-width) var(--title-height), 
     var(--hz-line-3-width) var(--hz-line-height-my), 
     var(--hz-line-4-width) var(--hz-line-height-my), 
     var(--hz-line-5-width) var(--hz-line-height-my), 
     var(--hz-line-6-width) var(--hz-line-height-my), 
-    var(--circle-size) var(--circle-size),
     100%, 
     100% 100%;
   background-position: 
     -150% 0, 
-    var(--title-position), 
     var(--hz-line-3-position), 
     var(--hz-line-4-position), 
     var(--hz-line-5-position),
     var(--hz-line-6-position),
-    var(--circle-position), 
-    var(--footer-position), 
     0 0;
   background-repeat: no-repeat;
   animation: loading-horizontal-bar 1.5s infinite;
