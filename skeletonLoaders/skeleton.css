@@ -22,9 +22,9 @@
   /* Disabled prop, make one for each, note the 0s   */
   --circle-skeleton-disabled: radial-gradient(circle 0 at center, white 0%, transparent 0);
 
-  --circle-2-size: 64px;
-  --circle-2-position: var(--card-padding) var(--card-padding);
-  --circle-2-skeleton: radial-gradient(circle 32px at center, white 89%, transparent 0);
+  --circle-2-size: 84px;
+  --circle-2-position: 45% 20%;
+  --circle-2-skeleton: radial-gradient(circle 80px at center, white 30%, transparent 0);
   
   
   /*  thick hz hz bar  */
@@ -89,7 +89,7 @@
  * Card Skeleton for Loading
  */
 .skelly, .vertical-bar {
-  width: 25%;
+  width: 24%;
   height: var(--card-height);
   display: inline-block;
 }
@@ -147,14 +147,9 @@
   to {
     background-position: 
       350% 0, 
-      var(--title-position), 
-      var(--hz-line-1-position), 
-      var(--hz-line-2-position), 
-      var(--circle-position), 
-      var(--footer-position), 
+      var(--circle-2-position), 
       0 0;
 /*       var(--footer-position-disabled),        */
-      0 0;
   }
 }
 
@@ -313,27 +308,15 @@ New 'Card'
       rgba(211, 211, 211, 0) 0, 
       rgba(211, 211, 211, .8) 50%, 
       rgba(211, 211, 211, 0) 100%),
-      var(--title-skeleton-disabled), 
-      var(--hz-line-skeleton-disabled), 
-      var(--hz-line-skeleton-disabled), 
-      var(--circle-skeleton), 
-      var(--footer-skeleton-disabled), 
+      var(--circle-2-skeleton), 
       var(--card-skeleton);
   background-size: 
      var(--blur-size), 
-     var(--title-width) var(--title-height), 
-     var(--hz-line-1-width) var(--hz-line-height), 
-     var(--hz-line-2-width) var(--hz-line-height), 
-     var(--circle-size) var(--circle-size), 
-     100% var(--footer-height), 
+     var(--circle-2-size) var(--circle-2-size), 
      100% 100%;
   background-position: 
      -150% 0, 
-     var(--title-position), 
-     var(--hz-line-1-position), 
-     var(--hz-line-2-position), 
-     var(--circle-position),
-     var(--footer-position), 
+     var(--circle-2-position), 
      0 0;
   background-repeat: no-repeat;
   animation: loading-circle-skelly 1.5s infinite;
