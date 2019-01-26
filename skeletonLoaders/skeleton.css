@@ -2,19 +2,29 @@
  * Variables
   - setting @ root allows access throughout
  */
+
+ 
+
+ /* look up calc*/
+
+
 :root {
   --card-padding: 24px;
   --card-height: 340px;
   --card-skeleton: linear-gradient(lightgrey var(--card-height), transparent 0);
   
   /* 
-    circle
+    circles
   */
   --circle-size: 32px;
   --circle-position: var(--card-padding) var(--card-padding);
   --circle-skeleton: radial-gradient(circle 16px at center, white 89%, transparent 0);
   /* Disabled prop, make one for each, note the 0s   */
   --circle-skeleton-disabled: radial-gradient(circle 0 at center, white 0%, transparent 0);
+
+  --circle-2-size: 64px;
+  --circle-2-position: var(--card-padding) var(--card-padding);
+  --circle-2-skeleton: radial-gradient(circle 32px at center, white 89%, transparent 0);
   
   
   /*  thick hz hz bar  */
@@ -29,7 +39,6 @@
   --vertical-line-height: 100%;
   --vertical-line-width: 15%;   /*horizontal width of vertical bar */
   --vertical-line-1-position: var(--card-padding) 10px;   /* like transform: translate (x , y)*/
-  /* look up calc*/
   --vertical-line-2-position: calc(var(--card-padding) + calc(1.5 * 15%)) 85px; /* like transf: transl (x , y)*/
   --vertical-line-3-position: calc(var(--card-padding) + calc(3 * 15%)) 185px;
   --vertical-line-4-position: calc(var(--card-padding) + calc(4.5 * 15%)) 285px;
@@ -46,10 +55,14 @@
   --blur-size: var(--blur-width) calc(var(--card-height) - var(--footer-height));
   
   
+  /*
+    Horizontal bars
+  */
   --hz-line-height: 16px;
   --hz-line-height-my: 30px;
 
   --hz-line-skeleton: linear-gradient(white var(--hz-line-height), transparent 0);
+  --hz-line-skeleton-disabled: linear-gradient(white 0, transparent 0);
   --hz-line-skeleton-my: linear-gradient(white var(--hz-line-height-my), transparent 0);
   
   --hz-line-1-width: 45%;
@@ -125,6 +138,21 @@
       var(--hz-line-6-position),
       var(--circle-position), 
       var(--footer-position), 
+/*       var(--footer-position-disabled),        */
+      0 0;
+  }
+}
+
+@keyframes loading-circle-skelly {
+  to {
+    background-position: 
+      350% 0, 
+      var(--title-position), 
+      var(--hz-line-1-position), 
+      var(--hz-line-2-position), 
+      var(--circle-position), 
+      var(--footer-position), 
+      0 0;
 /*       var(--footer-position-disabled),        */
       0 0;
   }
@@ -272,3 +300,45 @@ New 'Card'
   background-repeat: no-repeat;
   animation: loading-horizontal-bar 1.5s infinite;
 }
+
+.circles-skelly:empty::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  box-shadow: 0 10px 45px rgba(0, 0, 0, .1);
+  background-image: 
+    linear-gradient(90deg, 
+      rgba(211, 211, 211, 0) 0, 
+      rgba(211, 211, 211, .8) 50%, 
+      rgba(211, 211, 211, 0) 100%),
+      var(--title-skeleton-disabled), 
+      var(--hz-line-skeleton-disabled), 
+      var(--hz-line-skeleton-disabled), 
+      var(--circle-skeleton), 
+      var(--footer-skeleton-disabled), 
+      var(--card-skeleton);
+  background-size: 
+     var(--blur-size), 
+     var(--title-width) var(--title-height), 
+     var(--hz-line-1-width) var(--hz-line-height), 
+     var(--hz-line-2-width) var(--hz-line-height), 
+     var(--circle-size) var(--circle-size), 
+     100% var(--footer-height), 
+     100% 100%;
+  background-position: 
+     -150% 0, 
+     var(--title-position), 
+     var(--hz-line-1-position), 
+     var(--hz-line-2-position), 
+     var(--circle-position),
+     var(--footer-position), 
+     0 0;
+  background-repeat: no-repeat;
+  animation: loading-circle-skelly 1.5s infinite;
+}
+
+
+
+
