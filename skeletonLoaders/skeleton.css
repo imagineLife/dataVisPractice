@@ -47,19 +47,28 @@
   
   
   --hz-line-height: 16px;
+  --hz-line-height-my: 30px;
+
   --hz-line-skeleton: linear-gradient(white var(--hz-line-height), transparent 0);
+  --hz-line-skeleton-my: linear-gradient(white var(--hz-line-height-my), transparent 0);
   
   --hz-line-1-width: 45%;
   --hz-line-1-position: var(--card-padding) 242px;
   
-  --hz-line-2-width: 50%;
+  --hz-line-2-width: 65%;
   --hz-line-2-position: var(--card-padding) 265px;
 
-  --hz-line-3-width: 50%;
-  --hz-line-3-position: var(--card-padding) 285px;
+  --hz-line-3-width: 65%;
+  --hz-line-3-position: calc(var(--card-padding)) calc(var(--hz-line-height) * 2);
 
-  --hz-line-3-width: 50%;
-  --hz-line-3-position: var(--card-padding) 305px;
+  --hz-line-4-width: 85%;
+  --hz-line-4-position: calc(var(--card-padding)) calc(var(--hz-line-height-my) * 3);
+
+  --hz-line-5-width: 35%;
+  --hz-line-5-position: calc(var(--card-padding)) calc(var(--hz-line-height-my) * 5);
+
+  --hz-line-6-width: 70%;
+  --hz-line-6-position: calc(var(--card-padding)) calc(var(--hz-line-height-my) * 7);
 }
 
 
@@ -67,7 +76,7 @@
  * Card Skeleton for Loading
  */
 .skelly, .vertical-bar {
-  width: 280px;
+  width: 25%;
   height: var(--card-height);
   display: inline-block;
 }
@@ -110,7 +119,10 @@
     background-position: 
       350% 0, 
       var(--title-position), 
-      var(--hz-line-1-position), 
+      var(--hz-line-3-position), 
+      var(--hz-line-4-position),
+      var(--hz-line-5-position),
+      var(--hz-line-6-position),
       var(--circle-position), 
       var(--footer-position), 
 /*       var(--footer-position-disabled),        */
@@ -230,21 +242,30 @@ New 'Card'
     rgba(211, 211, 211, .8) 50%, 
     rgba(211, 211, 211, 0) 100%), 
     var(--title-skeleton-disabled), 
-    var(--hz-line-skeleton), 
+    var(--hz-line-skeleton-my),
+    var(--hz-line-skeleton-my),
+    var(--hz-line-skeleton-my),
+    var(--hz-line-skeleton-my),
     var(--circle-skeleton-disabled),
     var(--footer-skeleton-disabled), 
     var(--card-skeleton);
   background-size: 
     var(--blur-size), 
     var(--title-width) var(--title-height), 
-    var(--hz-line-1-width) var(--hz-line-height), 
+    var(--hz-line-3-width) var(--hz-line-height-my), 
+    var(--hz-line-4-width) var(--hz-line-height-my), 
+    var(--hz-line-5-width) var(--hz-line-height-my), 
+    var(--hz-line-6-width) var(--hz-line-height-my), 
     var(--circle-size) var(--circle-size),
     100%, 
     100% 100%;
   background-position: 
     -150% 0, 
     var(--title-position), 
-    var(--hz-line-1-position), 
+    var(--hz-line-3-position), 
+    var(--hz-line-4-position), 
+    var(--hz-line-5-position),
+    var(--hz-line-6-position),
     var(--circle-position), 
     var(--footer-position), 
     0 0;
