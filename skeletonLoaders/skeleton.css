@@ -25,6 +25,14 @@
   --circle-2-size: 84px;
   --circle-2-position: 45% 20%;
   --circle-2-skeleton: radial-gradient(circle 80px at center, white 30%, transparent 0);
+
+  --circle-3-size: 44px;
+  --circle-3-position: 15% 50%;
+  --circle-3-skeleton: radial-gradient(circle 40px at center, white 30%, transparent 0);
+
+  --circle-4-size: 144px;
+  --circle-4-position: 85% 65%;
+  --circle-4-skeleton: radial-gradient(circle 140px at center, white 30%, transparent 0);
   
   
   /*  thick hz hz bar  */
@@ -147,7 +155,9 @@
   to {
     background-position: 
       350% 0, 
-      var(--circle-2-position), 
+      var(--circle-2-position),
+      var(--circle-3-position), 
+      var(--circle-4-position), 
       0 0;
 /*       var(--footer-position-disabled),        */
   }
@@ -309,14 +319,20 @@ New 'Card'
       rgba(211, 211, 211, .8) 50%, 
       rgba(211, 211, 211, 0) 100%),
       var(--circle-2-skeleton), 
+      var(--circle-3-skeleton),
+      var(--circle-4-skeleton), 
       var(--card-skeleton);
   background-size: 
      var(--blur-size), 
      var(--circle-2-size) var(--circle-2-size), 
+     var(--circle-3-size) var(--circle-3-size),
+     var(--circle-4-size) var(--circle-4-size), 
      100% 100%;
   background-position: 
      -150% 0, 
      var(--circle-2-position), 
+     var(--circle-3-position), 
+     var(--circle-4-position), 
      0 0;
   background-repeat: no-repeat;
   animation: loading-circle-skelly 1.5s infinite;
