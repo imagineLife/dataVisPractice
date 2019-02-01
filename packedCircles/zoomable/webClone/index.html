@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Example</title>
+    <script src="../../../d3.v4.min.js"></script>
+    <script src="../../../d3-selection-multi.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./my.css"></style>
+  </head>
+  <style>
+    .node {
+      cursor: pointer;
+    }
+
+    .node:hover {
+      stroke: #000;
+      stroke-width: 1.5px;
+    }
+
+    .node--leaf {
+      fill: white;
+    }
+
+    .label {
+      font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-anchor: middle;
+      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+    }
+
+    .label,
+    .node--root,
+    .node--leaf {
+      pointer-events: none;
+    } 
+  </style>
+  <body>
+    <div id='chartDiv'>
+      <svg height="720" width="720"></svg>
+    </div>
+    
+    <script src='./index.js'/>
+
+  </body>
+</html>

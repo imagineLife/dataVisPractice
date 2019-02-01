@@ -1,0 +1,57 @@
+[
+  {
+    "name": "TOPICS",
+    "value": null,
+    "parent": null
+  },
+  {
+    "name": "Topic A",
+    "value": null,
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub A1",
+    "value": 4,
+    "parent": "Topic A"
+  },
+  {
+    "name": "Sub A2",
+    "value": 5,
+    "parent": "Topic A"
+  },
+  {
+    "name": "Topic B",
+    "value": null,
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub B1",
+    "value": 6,
+    "parent": "Topic B"
+  },
+  {
+    "name": "Sub B2",
+    "value": 3,
+    "parent": "Topic B"
+  },
+  {
+    "name": "Sub B3",
+    "value": 2,
+    "parent": "Topic B"
+  },
+  {
+    "name": "Topic C",
+    "value": null,
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub C1",
+    "value": 8,
+    "parent": "Topic C"
+  },
+  {
+    "name": "Sub C2",
+    "value": 1,
+    "parent": "Topic C"
+  }
+]

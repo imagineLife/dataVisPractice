@@ -1,0 +1,188 @@
+{
+  "name": "variants",
+  "children": [
+    {
+      "name": "grandParent",
+      "children": [
+        {
+          "name": "parent",
+          "children": [
+            {
+              "name": "",
+              "children": [
+                {
+                  "name": "child1",
+                  "size": 2
+                },
+                {
+                  "name": "child2",
+                  "size": 1
+                },
+                {
+                  "name": "child3",
+                  "size": 24
+                },
+                {
+                  "name": "child4",
+                  "size": 4
+                },
+                {
+                  "name": "child5",
+                  "size": 1
+                },
+                {
+                  "name": "child6",
+                  "size": 1
+                },
+                {
+                  "name": "child7",
+                  "size": 2
+                },
+                {
+                  "name": "child8",
+                  "size": 2
+                },
+                {
+                  "name": "child9",
+                  "size": 6
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "grandparent2",
+      "children": [
+        {
+          "name": "parent",
+          "children": [
+            {
+              "name": "childA",
+              "size": 30
+            },
+            {
+              "name": "childB",
+              "size": 9
+            },
+            {
+              "name": "childC",
+              "size": 6
+            },
+            {
+              "name": "childD",
+              "size": 6
+            },
+            {
+              "name": "childE",
+              "size": 7
+            },
+            {
+              "name": "childF",
+              "size": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "17",
+      "children": [
+        {
+          "name": "p13.1",
+          "children": [
+            {
+              "name": "SCO1",
+              "children": [
+                {
+                  "name": "aaaacxi7gjwlyascvqjaabaacu",
+                  "size": 25
+                },
+                {
+                  "name": "aaaacxi7gjwlyascvqjaabaace",
+                  "size": 39
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "19",
+      "children": [
+        {
+          "name": "q13.2",
+          "children": [
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaadm",
+              "size": 1
+            },
+            {
+              "name": "undefined",
+              "size": 5
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaadi",
+              "size": 3
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaade",
+              "size": 6
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaac4",
+              "size": 6
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaada",
+              "size": 4
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaadu",
+              "size": 2
+            },
+            {
+              "name": "aaaacxi7gjuvmascvqjaabaadq",
+              "size": 1
+            }
+          ]
+        },
+        {
+          "name": "aaaacxi7gkb32ascvqjaabaagi",
+          "size": 9
+        }
+      ]
+    },
+    {
+      "name": "22",
+      "children": [
+        {
+          "name": "undefined",
+          "size": 32
+        },
+        {
+          "name": "aaaacxi7gka5qascvqjaabaaai",
+          "size": 35
+        },
+        {
+          "name": "aaaacxi7gka5oascvqjaabaacq",
+          "size": 7
+        },
+        {
+          "name": "aaaacxi7gka5qascvqjaabaaay",
+          "size": 21
+        },
+        {
+          "name": "aaaacxi7gj4eqascvqjaabaab4",
+          "size": 115
+        },
+        {
+          "name": "aaaacxi7gka5oascvqjaabaacm",
+          "size": 5
+        }
+      ]
+    }
+  ]
+}
