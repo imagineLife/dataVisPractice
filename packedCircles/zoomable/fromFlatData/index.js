@@ -60,8 +60,11 @@ function buildChart(data){
     .sum(d => d.value)
     .sort((a,b) => a.value - b.value);
 
-    console.log('stratRootData')
-    console.log(stratRootData)
+//make a ROOT?!
+    var root = d3.hierarchy(stratRootData)  // <-- 1
+    .sum(function (d) { return d.value});  // <-- 2
+    console.log('root')
+    console.log(root)
     
 
   root = d3.hierarchy(root)
