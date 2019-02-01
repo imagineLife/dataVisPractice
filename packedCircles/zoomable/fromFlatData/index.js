@@ -11,7 +11,7 @@ var color = d3.scaleLinear()
 
 var packFn = d3.pack()
     .size([diameter - margin, diameter - margin])
-    .padding(2);
+    .padding(3);
 
 let allNodes, circles;
 
@@ -63,8 +63,11 @@ function buildChart(data){
 //make a ROOT?!
     var root = d3.hierarchy(stratRootData)  // <-- 1
     .sum(function (d) { return d.value});  // <-- 2
-    console.log('root')
-    console.log(root)
+    
+
+    let packedData = packFn(root)
+    console.log('packedData')
+    console.log(packedData)
     
 
   root = d3.hierarchy(root)
