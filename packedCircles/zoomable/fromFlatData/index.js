@@ -16,12 +16,6 @@ var packFn = d3.pack()
 let allNodes, circles;
 
 const zoomFn = d => {
-  // console.log('d')
-  // console.log(d)
-  // console.log('view')
-  // console.log(view)
-  
-  
   var focus = d;
 
   var transition = d3.transition()
@@ -39,8 +33,8 @@ const zoomFn = d => {
 }
 
 function zoomTo(v) {
-  console.log('zoomTo v')
-  console.log(v)
+  // console.log('zoomTo v')
+  // console.log(v)
   
   var k = diameter / v[2]; view = v;
   allNodes.attr("transform", (d) => `translate(${ (d.x - v[0]) * k }, ${ (d.y - v[1]) * k })`);
@@ -66,13 +60,13 @@ function buildChart(data){
     
 
     let packedData = packFn(root)
-    console.log('packedData')
-    console.log(packedData)
+    // console.log('packedData')
+    // console.log(packedData)
     
 
-  root = d3.hierarchy(root)
-      .sum(function(d) { return d.size; })
-      .sort(function(a, b) { return b.value - a.value; });
+  // root = d3.hierarchy(root)
+  //     .sum(function(d) { return d.size; })
+  //     .sort(function(a, b) { return b.value - a.value; });
 
   var focus = root,
       childNodes = packFn(root).descendants(), 
