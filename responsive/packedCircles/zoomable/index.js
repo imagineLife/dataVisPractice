@@ -1,8 +1,29 @@
-var svg = d3.select("svg"),
-    margin = 20,
-    diameter = +svg.attr("width"),
-    gObj = svg.append("g")
-      .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+function getDimsFromParent(p){
+  
+  // Extract the width and height that was computed by CSS.
+  let resizedWidth = p.clientWidth;
+  let resizedHeight = p.clientHeight;
+  const widthLessMargins = resizedWidth - margin.left - margin.right;
+  const heightLessMargins = resizedHeight - margin.top - margin.bottom;
+  return {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins}
+}
+
+var svgObj = d3.select("#chartDiv").append('svg');
+
+const margin = { left: 10, right: 10, top: 10, bottom: 10 };
+
+let {resizedWidth, resizedHeight, widthLessMargins, heightLessMargins} = getDimsFromParent(chartDiv);
+
+svgObj.attrs({
+  'height': heightLessMargins,
+  'width': widthLessMargins,
+  'transform': `translate(${margin.left},${margin.top})`
+})
+
+diameter = (resizedWidth < resizedHeight) ? resizedWidth * .93 : resizedHeight * .93,
+gObj = svgObj.append("g")
+  .attr('class', 'gWrapper')
+  .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 var color = d3.scaleLinear()
     .domain([-1, 5])
@@ -10,7 +31,7 @@ var color = d3.scaleLinear()
     .interpolate(d3.interpolateHcl);
 
 var packFn = d3.pack()
-    .size([diameter - margin, diameter - margin])
+    .size([diameter - margin.left, diameter - margin.left])
     .padding(3);
 
 let allNodes, circles;
@@ -21,7 +42,7 @@ const zoomFn = d => {
   var transition = d3.transition()
       .duration(550)
       .tween("zoom", ()  => {
-        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin.left]);
         return t => zoomTo(i(t));
       });
 
@@ -41,7 +62,7 @@ const zoomFn = d => {
 function zoomTo(v) {
   var k = diameter / v[2]; view = v;
   allNodes.attr("transform", (d) => `translate(${ (d.x - v[0]) * k }, ${ (d.y - v[1]) * k })`);
-  circles.attr("r", function(d) { return d.r * k; });
+  circles.attr("r", d => d.r * k);
 }
 
 
@@ -94,10 +115,10 @@ function buildChart(data){
 
   allNodes = gObj.selectAll("circle,text");
   
-  svg.style("background", color(-1))
+  svgObj.style("background", color(-1))
   .on("click", () => zoomFn(rootNode));
 
-  zoomTo([rootNode.x, rootNode.y, rootNode.r * 2 + margin]);
+  zoomTo([rootNode.x, rootNode.y, rootNode.r * 2 + margin.left]);
 }
 
 
