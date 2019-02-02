@@ -22,20 +22,23 @@ const zoomFn = d => {
       .duration(550)
       .tween("zoom", ()  => {
         var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
-        return function(t) { zoomTo(i(t)); };
+        return t => zoomTo(i(t));
       });
 
   transition.selectAll("text")
-    .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-      .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
-      .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-      .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+    .filter(function(d) { 
+      return d.parent === focus || this.style.display === "inline"; 
+    })
+    .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+    .on("start", function(d) { 
+      if (d.parent === focus) this.style.display = "inline"; 
+    })
+    .on("end", function(d) { 
+      if (d.parent !== focus) this.style.display = "none"; 
+    });
 }
 
 function zoomTo(v) {
-  // console.log('zoomTo v')
-  // console.log(v)
-  
   var k = diameter / v[2]; view = v;
   allNodes.attr("transform", (d) => `translate(${ (d.x - v[0]) * k }, ${ (d.y - v[1]) * k })`);
   circles.attr("r", function(d) { return d.r * k; });
@@ -71,7 +74,7 @@ function buildChart(data){
 
   circles = gObj.selectAll("circle")
     .data(packedChildren)
-    .enter().append("circle")
+    .enter().append("g").attr('class', 'circleG').append("circle")
       .attr("class", d => d.parent ? d.children ? "node" : "node node--leaf" : "node node--root")
       .style("fill", d => d.children ? color(d.depth) : null)
       .on("click", d => { 
