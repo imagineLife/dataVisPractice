@@ -44,36 +44,34 @@ function zoomTo(v) {
 
 let globalData = null;
 
-function buildChart(data){
-
-   //stratify data
+function prepData(srcData){
+   //  //stratify data
   var stratRootData = d3.stratify()
     .id(d => d.name)
     .parentId(d => d.parent)
-    (data)
+    (srcData)
     .sum(d => d.value)
     .sort((a,b) => a.value - b.value);
 
-//make a ROOT?!
-    var root = d3.hierarchy(stratRootData)  // <-- 1
-    .sum(function (d) { return d.value});  // <-- 2
-    
+  //make a ROOT?!
+  var root = d3.hierarchy(stratRootData)  // <-- 1
+  .sum(function (d) { return d.value});  // <-- 2
+  
 
-    let packedData = packFn(root)
-    // console.log('packedData')
-    // console.log(packedData)
-    
+  let packedData = packFn(root)
+  let packedChildren = packedData.descendants();
+  return{ root, packedData, packedChildren }
+}
 
-  // root = d3.hierarchy(root)
-  //     .sum(function(d) { return d.size; })
-  //     .sort(function(a, b) { return b.value - a.value; });
+function buildChart(data){
+
+  let { root, packedData, packedChildren } = prepData(data);
 
   var focus = root,
-      childNodes = packFn(root).descendants(), 
       view;
 
   circles = gObj.selectAll("circle")
-    .data(childNodes)
+    .data(packedChildren)
     .enter().append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
       .style("fill", function(d) { return d.children ? color(d.depth) : null; })
@@ -85,7 +83,7 @@ function buildChart(data){
       });
 
   var text = gObj.selectAll("text")
-    .data(childNodes)
+    .data(packedChildren)
     .enter().append("text")
       .attr("class", "label")
       .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
