@@ -72,9 +72,9 @@ function buildChart(data){
   circles = gObj.selectAll("circle")
     .data(packedChildren)
     .enter().append("circle")
-      .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
-      .style("fill", function(d) { return d.children ? color(d.depth) : null; })
-      .on("click", function(d) { 
+      .attr("class", d => d.parent ? d.children ? "node" : "node node--leaf" : "node node--root")
+      .style("fill", d => d.children ? color(d.depth) : null)
+      .on("click", d => { 
         if (focus !== d) {
           zoomFn(d);
           d3.event.stopPropagation();
@@ -84,10 +84,10 @@ function buildChart(data){
   var text = gObj.selectAll("text")
     .data(packedChildren)
     .enter().append("text")
-      .attr("class", "label")
-      .style("fill-opacity", function(d) { return d.parent === rootNode ? 1 : 0; })
-      .style("display", function(d) { return d.parent === rootNode ? "inline" : "none"; })
-      .text(function(d) { return d.data.name; });
+      .attr("class", d => d.parent ? d.children ? "nodeLabel" : "node-leafLabel" : "node-rootLabel")
+      .style("fill-opacity", d => d.parent === rootNode ? 1 : 0)
+      .style("display", d => d.parent === rootNode ? "inline" : "none")
+      .text(d => d.data.id);
 
   allNodes = gObj.selectAll("circle,text");
   
