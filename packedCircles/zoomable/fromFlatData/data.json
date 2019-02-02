@@ -53,5 +53,20 @@
     "name": "Sub C2",
     "value": 1,
     "parent": "Topic C"
+  },
+  {
+    "name": "SubC1-1",
+    "value": 1,
+    "parent": "Sub C1"
+  },
+  {
+    "name": "SubC1-2",
+    "value": 1.5,
+    "parent": "Sub C1"
+  },
+  {
+    "name": "SubC1-3",
+    "value": ".5",
+    "parent": "Sub C1"
   }
 ]
