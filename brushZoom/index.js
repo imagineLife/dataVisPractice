@@ -81,7 +81,7 @@ svgObj.append("defs").append("clipPath")
 
 var focusAreaG = appendG(svgObj, "focusAreaG", `translate(${state.margin.left},${state.margin.top})`)
 
-var brushGWrapper = appendG(svgObj, "context", `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`)
+var brushGWrapper = appendG(svgObj, "brushGWrapper", `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`)
 
 d3.csv("./data.csv", type, function(error, data) {
   if (error) throw error;
@@ -198,13 +198,16 @@ function type(d) {
          // })
          // .call(xAxisObj);
 
-         //Update the X-AXIS
+
+       brushGWrapper.attr('transform', `translate(${state.margin.left},${resizedFnHeight - state.margin.top - state.margin.bottom})`)
+       
+       //Update the X-AXIS
        xAxisG2
-         // .attrs({
-             // 'transform': `translate(0, ${state.margin.top})`,
-             // 'x' : divWidthLessMargins / 2,
-             // 'y' : resizedHeightLessMargins * .1,
-         // })
+         .attrs({
+             'transform': `translate(0, ${state.margin.top})`,
+             'x' : resizedWidthLessMargins / 2,
+             'y' : resizedHeightLessMargins * .1,
+         })
          .call(xAxisObj2);
 
    //     //Update the X-AXIS LABEL
