@@ -111,11 +111,7 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": area2Fn
     });
 
-  xAxisG2 = brushGWrapper.append("g")
-      .attrs({
-        "class": "axis axis--x",
-        "transform": `translate(0,${state.margin.top})`
-      })
+  xAxisG2 = appendG(brushGWrapper, "axis axis--x", `translate(0,${state.margin.top})`)
       .call(xAxisObj2);
 
   brushGWrapper.append("g")
@@ -190,17 +186,26 @@ function type(d) {
        let resizedHeightLessMargins = resizedFnHeight - state.margin.top - state.margin.bottom;
 
        //update scale ranges
-          x.range([0, resizedWidthLessMargins]);
-          y.range([resizedHeightLessMargins, state.margin.top]);
+       brushXScale.range([0, resizedWidthLessMargins]);
+       // y.range([resizedHeightLessMargins, state.margin.top]);
        
        //Update the X-AXIS
-       focusXaxisG
-         .attrs({
-             'transform': `translate(0, ${resizedHeightLessMargins})`,
+       // focusXaxisG
+       //   .attrs({
+       //       'transform': `translate(0, ${resizedHeightLessMargins})`,
              // 'x' : resizedWidthLessMargins / 2,
              // 'y' : resizedHeightLessMargins * .1,
-         })
-         .call(xAxisObj);
+         // })
+         // .call(xAxisObj);
+
+         //Update the X-AXIS
+       xAxisG2
+         // .attrs({
+             // 'transform': `translate(0, ${state.margin.top})`,
+             // 'x' : divWidthLessMargins / 2,
+             // 'y' : resizedHeightLessMargins * .1,
+         // })
+         .call(xAxisObj2);
 
    //     //Update the X-AXIS LABEL
    //     xAxisLabel
