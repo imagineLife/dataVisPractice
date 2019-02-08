@@ -121,15 +121,15 @@ StackedAreaChart.prototype.addLegend = function(colorScale){
         {label: "Midwest", color: colorScale("midwest")}
     ]
 
-    var legendCol = areaLegend.selectAll(".legendCol")
+    var legendGWrapper = areaLegend.selectAll(".legendGWrapper")
         .data(legendArray)
         .enter().append("g")
             .attrs({
-                "class": "legendCol",
+                "class": "legendGWrapper",
                 "transform": (d, i) => `translate(${(i * 150)},${(0)})`
             });
         
-    legendCol.append("rect")
+    legendGWrapper.append("rect")
         .attrs({
             "class": "legendRect",
             "width": 10,
@@ -138,7 +138,7 @@ StackedAreaChart.prototype.addLegend = function(colorScale){
             "fill-opacity": 0.5
         });
 
-    legendCol.append("text")
+    legendGWrapper.append("text")
         .attrs({
             "class": "legendText",
             "x": 20,
