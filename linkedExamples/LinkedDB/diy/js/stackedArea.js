@@ -45,11 +45,11 @@ StackedAreaChart.prototype.initVis = function(){
 
     vis.addLegend();
 
-    vis.wrangleData();
+    vis.updateVis();
+
 };
 
-
-StackedAreaChart.prototype.wrangleData = function(){
+StackedAreaChart.prototype.updateVis = function(){
     var vis = this;
 
     vis.variable = $("#var-select").val()
@@ -71,13 +71,6 @@ StackedAreaChart.prototype.wrangleData = function(){
                 "west": 0
             })
         })
-
-    vis.updateVis();
-};
-
-
-StackedAreaChart.prototype.updateVis = function(){
-    var vis = this;
 
     vis.maxDateVal = d3.max(vis.dataFiltered, function(d){
         var vals = d3.keys(d).map(function(key){ return key !== 'date' ? d[key] : 0 });
