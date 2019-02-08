@@ -5,28 +5,28 @@ StackedAreaChart = function(_parentElement){
     vis.areaState = {
         margin : { left:80, right:100, top:50, bottom:40 },
      }
-    vis.height = 370 - vis.areaState.margin.top - vis.areaState.margin.bottom;
-    vis.width = 800 - vis.areaState.margin.left - vis.areaState.margin.right;
+    let hLM = 370 - vis.areaState.margin.top - vis.areaState.margin.bottom;
+    let wLM = 800 - vis.areaState.margin.left - vis.areaState.margin.right;
 
-    vis.svg = d3.select(vis.parentElement)
+    let svgObj = d3.select(vis.parentElement)
         .append("svg")
         .attrs({
-            "width": vis.width + vis.areaState.margin.left + vis.areaState.margin.right,
-            "height": vis.height + vis.areaState.margin.top + vis.areaState.margin.bottom
+            "width": wLM + vis.areaState.margin.left + vis.areaState.margin.right,
+            "height": hLM + vis.areaState.margin.top + vis.areaState.margin.bottom
         });
-    vis.g = vis.svg.append("g")
+    state.stackedAreaG = svgObj.append("g")
         .attr("transform", `translate(${vis.areaState.margin.left},${vis.areaState.margin.top})`);
 
     vis.t = () => { return d3.transition().duration(1000); }
 
-    vis.x = d3.scaleTime().range([0, vis.width]);
-    vis.y = d3.scaleLinear().range([vis.height, 0]);
+    vis.x = d3.scaleTime().range([0, wLM]);
+    vis.y = d3.scaleLinear().range([hLM, 0]);
 
     vis.yAxisCall = d3.axisLeft()
     vis.xAxisCall = d3.axisBottom()
         .ticks(4);
-    vis.xAxis = appendToParent(vis.g, 'x axis', `translate(0,${vis.height})`);
-    vis.yAxis = appendToParent(vis.g, 'y axis', null);
+    vis.xAxis = appendToParent(state.stackedAreaG, 'x axis', `translate(0,${hLM})`);
+    vis.yAxis = appendToParent(state.stackedAreaG, 'y axis', null);
 
     vis.stack = d3.stack()
         .keys(["west", "south", "northeast", "midwest"]);
@@ -36,19 +36,19 @@ StackedAreaChart = function(_parentElement){
         .y0(d => vis.y(d[0]))
         .y1(d => vis.y(d[1]));
 
-    vis.addLegend(state.colorScale);
+    vis.addLegend(state.colorScale, state.stackedAreaG);
 
-    vis.updateVis(state.dropdownVal, state.colorScale);
+    vis.updateVis(state.dropdownVal, state.colorScale, state.stackedAreaG);
 };
 
-StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale){
+StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     var vis = this;
 
-    vis.dayNest = d3.nest()
+    nestFn = d3.nest()
         .key(d => formatTime(d.date))
-        .entries(calls)
+        .entries(filteredCalls)
 
-    vis.dataFiltered = vis.dayNest
+    vis.dataFiltered = nestFn
         .map(day => {
             return day.values.reduce((accumulator, current) => {
                 accumulator.date = day.key
@@ -77,7 +77,7 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale){
     vis.yAxisCall.scale(vis.y);
     vis.yAxis.transition(vis.t()).call(vis.yAxisCall);
 
-    vis.teams = vis.g.selectAll(".team")
+    vis.teams = state.stackedAreaG.selectAll(".team")
         .data(vis.stack(vis.dataFiltered));
     
     // Update the path for each team
@@ -96,10 +96,10 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale){
 };
 
 
-StackedAreaChart.prototype.addLegend = function(colorScale){
+StackedAreaChart.prototype.addLegend = function(colorScale, gObj){
     var vis = this;
 
-    var areaLegend = appendToParent(vis.g, 'areaLegend', `translate(${50},${-25})`)
+    var areaLegend = appendToParent(state.stackedAreaG, 'areaLegend', `translate(${50},${-25})`)
 
     var legendArray = [
         {label: "Northeast", color: colorScale("northeast")},
