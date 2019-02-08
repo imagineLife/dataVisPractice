@@ -23,8 +23,6 @@ StackedAreaChart.prototype.initVis = function(){
 
     vis.t = () => { return d3.transition().duration(1000); }
 
-    vis.color = d3.scaleOrdinal(d3.schemePastel1);
-
     vis.x = d3.scaleTime().range([0, vis.width]);
     vis.y = d3.scaleLinear().range([vis.height, 0]);
 
@@ -47,17 +45,13 @@ StackedAreaChart.prototype.initVis = function(){
         .y0(d => vis.y(d[0]))
         .y1(d => vis.y(d[1]));
 
-    vis.addLegend();
+    vis.addLegend(state.colorScale);
 
-    vis.updateVis(state.dropdownVal);
+    vis.updateVis(state.dropdownVal, state.colorScale);
 };
 
-StackedAreaChart.prototype.updateVis = function(dropdownVal){
+StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale){
     var vis = this;
-
-    console.log('dropdownVal')
-    console.log(dropdownVal)
-    
 
     vis.dayNest = d3.nest()
         .key(d => formatTime(d.date))
@@ -106,25 +100,28 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal){
                 "class": "area",
                 "d": vis.area
             })
-            .style("fill", d => vis.color(d.key))
+            .style("fill", d => colorScale(d.key))
             .style("fill-opacity", 0.5)
 };
 
 
-StackedAreaChart.prototype.addLegend = function(){
+StackedAreaChart.prototype.addLegend = function(colorScale){
     var vis = this;
 
-    var legend = vis.g.append("g")
-        .attr("transform", `translate(${50},${-25})`);
+    var areaLegend = vis.g.append("g")
+        .attrs({
+            "transform": `translate(${50},${-25})`,
+            'class': 'areaLegend'
+        });
 
     var legendArray = [
-        {label: "Northeast", color: vis.color("northeast")},
-        {label: "West", color: vis.color("west")},
-        {label: "South", color: vis.color("south")},
-        {label: "Midwest", color: vis.color("midwest")}
+        {label: "Northeast", color: colorScale("northeast")},
+        {label: "West", color: colorScale("west")},
+        {label: "South", color: colorScale("south")},
+        {label: "Midwest", color: colorScale("midwest")}
     ]
 
-    var legendCol = legend.selectAll(".legendCol")
+    var legendCol = areaLegend.selectAll(".legendCol")
         .data(legendArray)
         .enter().append("g")
             .attrs({
