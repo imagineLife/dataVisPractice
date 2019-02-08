@@ -13,13 +13,13 @@ d3.json("data/data.json").then(function(data){
 
     allCalls = data;
 
-    calls = data;
+    selectedCalls = data;
 
     nestedCalls = d3.nest()
         .key(function(d){
             return d.category;
         })
-        .entries(calls)
+        .entries(selectedCalls)
 
     donut = new DonutChart("#company-size")
 
@@ -45,13 +45,13 @@ function brushed() {
 }
 
 function changeDates(values) {
-    calls = allCalls.filter(function(d){
+    selectedCalls = allCalls.filter(function(d){
         return ((d.date > values[0]) && (d.date < values[1]))
     })
     
     nestedCalls = d3.nest()
         .key(d => d.category)
-        .entries(calls)
+        .entries(selectedCalls)
 
     $("#dateLabel1").text(formatTime(values[0]))
     $("#dateLabel2").text(formatTime(values[1]))

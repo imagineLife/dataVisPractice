@@ -55,8 +55,8 @@ StackedAreaChart.prototype.updateVis = function(){
     vis.variable = $("#var-select").val()
 
     vis.dayNest = d3.nest()
-        .key(function(d){ return formatTime(d.date); })
-        .entries(calls)
+        .key(d => formatTime(d.date))
+        .entries(selectedCalls)
 
     vis.dataFiltered = vis.dayNest
         .map(function(day){
