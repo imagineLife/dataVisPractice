@@ -1,11 +1,7 @@
 StackedAreaChart = function(_parentElement){
+    var vis = this;
     this.parentElement = _parentElement;
 
-    this.initVis();
-};
-
-StackedAreaChart.prototype.initVis = function(){
-    var vis = this;
     vis.areaState = {
         margin : { left:80, right:100, top:50, bottom:40 },
      }
@@ -29,13 +25,8 @@ StackedAreaChart.prototype.initVis = function(){
     vis.yAxisCall = d3.axisLeft()
     vis.xAxisCall = d3.axisBottom()
         .ticks(4);
-    vis.xAxis = vis.g.append("g")
-        .attrs({
-            "class": "x axis",
-            "transform": `translate(0,${vis.height})`
-        });
-    vis.yAxis = vis.g.append("g")
-        .attr("class", "y axis");
+    vis.xAxis = appendToParent(vis.g, 'x axis', `translate(0,${vis.height})`);
+    vis.yAxis = appendToParent(vis.g, 'y axis', null);
 
     vis.stack = d3.stack()
         .keys(["west", "south", "northeast", "midwest"]);
@@ -108,11 +99,7 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale){
 StackedAreaChart.prototype.addLegend = function(colorScale){
     var vis = this;
 
-    var areaLegend = vis.g.append("g")
-        .attrs({
-            "transform": `translate(${50},${-25})`,
-            'class': 'areaLegend'
-        });
+    var areaLegend = appendToParent(vis.g, 'areaLegend', `translate(${50},${-25})`)
 
     var legendArray = [
         {label: "Northeast", color: colorScale("northeast")},
@@ -129,7 +116,7 @@ StackedAreaChart.prototype.addLegend = function(colorScale){
                 "transform": (d, i) => `translate(${(i * 150)},${(0)})`
             });
         
-    legendGWrapper.append("rect")
+    let legendRects = legendGWrapper.append("rect")
         .attrs({
             "class": "legendRect",
             "width": 10,
@@ -138,12 +125,12 @@ StackedAreaChart.prototype.addLegend = function(colorScale){
             "fill-opacity": 0.5
         });
 
-    legendGWrapper.append("text")
+    let legendTexts = legendGWrapper.append("text")
         .attrs({
             "class": "legendText",
             "x": 20,
             "y": 10,
             "text-anchor": "start"
         })
-        .text(d => { return d.label; }); 
+        .text(d => d.label); 
 }
