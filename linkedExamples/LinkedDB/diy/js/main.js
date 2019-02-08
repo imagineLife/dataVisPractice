@@ -1,6 +1,10 @@
 var parseTime = d3.timeParse("%d/%m/%Y");
 var formatTime = d3.timeFormat("%d/%m/%Y");
 
+let state = {
+    dropdownVal : 'call_revenue'
+}
+
 d3.json("data/data.json").then(function(data){    
     
     data.map(function(d){
@@ -31,8 +35,11 @@ d3.json("data/data.json").then(function(data){
 
     timeline = new Timeline("#timeline")
 
-    $("#var-select").on("change", function(){
-        stackedArea.updateVis();
+    $("#var-select").on("change", function(e){
+        
+        state.dropdownVal = ($(this).children("option:selected").val());
+        
+        stackedArea.updateVis(state.dropdownVal);
     })
 })
 
@@ -60,5 +67,5 @@ function changeDates(values) {
     revenueBar.wrangleData();
     unitBar.wrangleData();
     durationBar.wrangleData();
-    stackedArea.updateVis();
+    stackedArea.updateVis(state.dropdownVal);
 }

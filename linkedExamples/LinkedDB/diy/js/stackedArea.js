@@ -49,13 +49,15 @@ StackedAreaChart.prototype.initVis = function(){
 
     vis.addLegend();
 
-    vis.updateVis();
+    vis.updateVis(state.dropdownVal);
 };
 
-StackedAreaChart.prototype.updateVis = function(){
+StackedAreaChart.prototype.updateVis = function(dropdownVal){
     var vis = this;
 
-    vis.variable = $("#var-select").val()
+    console.log('dropdownVal')
+    console.log(dropdownVal)
+    
 
     vis.dayNest = d3.nest()
         .key(d => formatTime(d.date))
@@ -65,7 +67,7 @@ StackedAreaChart.prototype.updateVis = function(){
         .map(day => {
             return day.values.reduce((accumulator, current) => {
                 accumulator.date = day.key
-                accumulator[current.team] = accumulator[current.team] + current[vis.variable]
+                accumulator[current.team] = accumulator[current.team] + current[dropdownVal]
                 return accumulator;
             }, {
                 "northeast": 0,
