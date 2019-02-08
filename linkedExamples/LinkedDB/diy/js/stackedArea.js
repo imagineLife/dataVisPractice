@@ -6,18 +6,20 @@ StackedAreaChart = function(_parentElement){
 
 StackedAreaChart.prototype.initVis = function(){
     var vis = this;
-
-    vis.margin = { left:80, right:100, top:50, bottom:40 };
-    vis.height = 370 - vis.margin.top - vis.margin.bottom;
-    vis.width = 800 - vis.margin.left - vis.margin.right;
+    vis.areaState = {
+        margin : { left:80, right:100, top:50, bottom:40 },
+     }
+    vis.height = 370 - vis.areaState.margin.top - vis.areaState.margin.bottom;
+    vis.width = 800 - vis.areaState.margin.left - vis.areaState.margin.right;
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+        .attrs({
+            "width": vis.width + vis.areaState.margin.left + vis.areaState.margin.right,
+            "height": vis.height + vis.areaState.margin.top + vis.areaState.margin.bottom
+        });
     vis.g = vis.svg.append("g")
-        .attr("transform", "translate(" + vis.margin.left + 
-            ", " + vis.margin.top + ")");
+        .attr("transform", `translate(${vis.areaState.margin.left},${vis.areaState.margin.top})`);
 
     vis.t = () => { return d3.transition().duration(1000); }
 
@@ -30,8 +32,10 @@ StackedAreaChart.prototype.initVis = function(){
     vis.xAxisCall = d3.axisBottom()
         .ticks(4);
     vis.xAxis = vis.g.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + vis.height +")");
+        .attrs({
+            "class": "x axis",
+            "transform": `translate(0,${vis.height})`
+        });
     vis.yAxis = vis.g.append("g")
         .attr("class", "y axis");
 
@@ -39,9 +43,9 @@ StackedAreaChart.prototype.initVis = function(){
         .keys(["west", "south", "northeast", "midwest"]);
 
     vis.area = d3.area()
-        .x(function(d) { return vis.x(parseTime(d.data.date)); })
-        .y0(function(d) { return vis.y(d[0]); })
-        .y1(function(d) { return vis.y(d[1]); });
+        .x(d => vis.x(parseTime(d.data.date)))
+        .y0(d => vis.y(d[0]))
+        .y1(d => vis.y(d[1]));
 
     vis.addLegend();
 
@@ -54,12 +58,12 @@ StackedAreaChart.prototype.updateVis = function(){
     vis.variable = $("#var-select").val()
 
     vis.dayNest = d3.nest()
-        .key(function(d){ return formatTime(d.date); })
+        .key(d => formatTime(d.date))
         .entries(calls)
 
     vis.dataFiltered = vis.dayNest
-        .map(function(day){
-            return day.values.reduce(function(accumulator, current){
+        .map(day => {
+            return day.values.reduce((accumulator, current) => {
                 accumulator.date = day.key
                 accumulator[current.team] = accumulator[current.team] + current[vis.variable]
                 return accumulator;
@@ -71,8 +75,8 @@ StackedAreaChart.prototype.updateVis = function(){
             })
         })
 
-    vis.maxDateVal = d3.max(vis.dataFiltered, function(d){
-        var vals = d3.keys(d).map(function(key){ return key !== 'date' ? d[key] : 0 });
+    vis.maxDateVal = d3.max(vis.dataFiltered, d => {
+        var vals = d3.keys(d).map(key => key !== 'date' ? d[key] : 0 );
         return d3.sum(vals);
     });
 
@@ -94,13 +98,13 @@ StackedAreaChart.prototype.updateVis = function(){
         .attr("d", vis.area)
 
     vis.teams.enter().append("g")
-        .attr("class", function(d){ return "team " + d.key })
+        .attr("class", d => `team ${d.key}`)
         .append("path")
-            .attr("class", "area")
-            .attr("d", vis.area)
-            .style("fill", function(d){
-                return vis.color(d.key)
+            .attrs({
+                "class": "area",
+                "d": vis.area
             })
+            .style("fill", d => vis.color(d.key))
             .style("fill-opacity", 0.5)
 };
 
@@ -109,8 +113,7 @@ StackedAreaChart.prototype.addLegend = function(){
     var vis = this;
 
     var legend = vis.g.append("g")
-        .attr("transform", "translate(" + (50) + 
-                    ", " + (-25) + ")");
+        .attr("transform", `translate(${50},${-25})`);
 
     var legendArray = [
         {label: "Northeast", color: vis.color("northeast")},
@@ -122,22 +125,26 @@ StackedAreaChart.prototype.addLegend = function(){
     var legendCol = legend.selectAll(".legendCol")
         .data(legendArray)
         .enter().append("g")
-            .attr("class", "legendCol")
-            .attr("transform", (d, i) => {
-                return "translate(" + (i * 150) + ", " + (0) + ")"
+            .attrs({
+                "class": "legendCol",
+                "transform": (d, i) => `translate(${(i * 150)},${(0)})`
             });
         
     legendCol.append("rect")
-        .attr("class", "legendRect")
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", d => { return d.color; })
-        .attr("fill-opacity", 0.5);
+        .attrs({
+            "class": "legendRect",
+            "width": 10,
+            "height": 10,
+            "fill": d => d.color,
+            "fill-opacity": 0.5
+        });
 
     legendCol.append("text")
-        .attr("class", "legendText")
-        .attr("x", 20)
-        .attr("y", 10)
-        .attr("text-anchor", "start")
+        .attrs({
+            "class": "legendText",
+            "x": 20,
+            "y": 10,
+            "text-anchor": "start"
+        })
         .text(d => { return d.label; }); 
 }
