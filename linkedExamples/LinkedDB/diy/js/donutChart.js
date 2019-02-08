@@ -51,7 +51,7 @@ DonutChart.prototype.wrangleData = function(){
         .key(function(d){
             return d.company_size
         })
-        .entries(selectedCalls)
+        .entries(calls)
 
     vis.dataFiltered = sizeNest.map(function(size){
         return {

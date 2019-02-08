@@ -21,7 +21,7 @@ BarChart.prototype.initVis = function(){
         .attr("transform", "translate(" + vis.margin.left + 
             ", " + vis.margin.top + ")");
 
-    vis.t = () => d3.transition().duration(500);
+    vis.t = () => { return d3.transition().duration(1000); }
 
     vis.linePath = vis.g.append("path")
         .attr("class", "line")
@@ -62,11 +62,11 @@ BarChart.prototype.initVis = function(){
         .attr("text-anchor", "start")
         .text(vis.title)
 
-    vis.updateVis();
+    vis.wrangleData();
 };
 
 
-BarChart.prototype.updateVis = function(){
+BarChart.prototype.wrangleData = function(){
     var vis = this;
 
     vis.dataFiltered = nestedCalls.map(function(category){
@@ -77,6 +77,13 @@ BarChart.prototype.updateVis = function(){
             }, 0) / category.values.length)
         }
     })
+
+    vis.updateVis();
+};
+
+
+BarChart.prototype.updateVis = function(){
+    var vis = this;
 
     // Update scales
     vis.y.domain([0, d3.max(vis.dataFiltered, (d) => { return +d.size; })]);

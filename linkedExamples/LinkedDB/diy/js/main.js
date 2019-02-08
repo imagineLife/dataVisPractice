@@ -13,13 +13,13 @@ d3.json("data/data.json").then(function(data){
 
     allCalls = data;
 
-    selectedCalls = data;
+    calls = data;
 
     nestedCalls = d3.nest()
         .key(function(d){
             return d.category;
         })
-        .entries(selectedCalls)
+        .entries(calls)
 
     donut = new DonutChart("#company-size")
 
@@ -32,7 +32,7 @@ d3.json("data/data.json").then(function(data){
     timeline = new Timeline("#timeline")
 
     $("#var-select").on("change", function(){
-        stackedArea.initVis();
+        stackedArea.wrangleData();
     })
 })
 
@@ -45,20 +45,20 @@ function brushed() {
 }
 
 function changeDates(values) {
-    selectedCalls = allCalls.filter(function(d){
+    calls = allCalls.filter(function(d){
         return ((d.date > values[0]) && (d.date < values[1]))
     })
     
     nestedCalls = d3.nest()
         .key(d => d.category)
-        .entries(selectedCalls)
+        .entries(calls)
 
     $("#dateLabel1").text(formatTime(values[0]))
     $("#dateLabel2").text(formatTime(values[1]))
 
     donut.wrangleData();
-    revenueBar.updateVis();
-    unitBar.updateVis();
-    durationBar.updateVis();
-    stackedArea.initVis();
+    revenueBar.wrangleData();
+    unitBar.wrangleData();
+    durationBar.wrangleData();
+    stackedArea.wrangleData();
 }

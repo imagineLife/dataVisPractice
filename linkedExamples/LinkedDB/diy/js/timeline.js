@@ -57,7 +57,7 @@ Timeline.prototype.wrangleData = function(){
 
     vis.dayNest = d3.nest()
         .key(function(d){ return formatTime(d.date); })
-        .entries(selectedCalls)
+        .entries(calls)
 
     vis.dataFiltered = vis.dayNest
         .map(function(day){
