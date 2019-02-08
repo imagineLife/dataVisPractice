@@ -32,7 +32,7 @@ d3.json("data/data.json").then(function(data){
     timeline = new Timeline("#timeline")
 
     $("#var-select").on("change", function(){
-        stackedArea.wrangleData();
+        stackedArea.updateVis();
     })
 })
 
@@ -60,5 +60,5 @@ function changeDates(values) {
     revenueBar.wrangleData();
     unitBar.wrangleData();
     durationBar.wrangleData();
-    stackedArea.wrangleData();
+    stackedArea.updateVis();
 }
