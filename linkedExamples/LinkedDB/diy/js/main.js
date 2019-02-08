@@ -3,7 +3,9 @@ var formatTime = d3.timeFormat("%d/%m/%Y");
 
 let state = {
     dropdownVal : 'call_revenue',
-    colorScale: d3.scaleOrdinal(d3.schemePastel1)
+    colorScale: d3.scaleOrdinal(d3.schemePastel1),
+    dataCalls : null,
+    stackedAreaG: null
 }
 
 d3.json("data/data.json").then(function(data){    
@@ -16,15 +18,15 @@ d3.json("data/data.json").then(function(data){
         return d
     })
 
-    allCalls = data;
+    dataCalls = data;
 
-    calls = data;
+    filteredCalls = data;
 
     nestedCalls = d3.nest()
         .key(function(d){
             return d.category;
         })
-        .entries(calls)
+        .entries(filteredCalls)
 
     donut = new DonutChart("#company-size")
 
@@ -53,13 +55,13 @@ function brushed() {
 }
 
 function changeDates(values) {
-    calls = allCalls.filter(function(d){
+    filteredCalls = dataCalls.filter(function(d){
         return ((d.date > values[0]) && (d.date < values[1]))
     })
     
     nestedCalls = d3.nest()
         .key(d => d.category)
-        .entries(calls)
+        .entries(filteredCalls)
 
     $("#dateLabel1").text(formatTime(values[0]))
     $("#dateLabel2").text(formatTime(values[1]))
