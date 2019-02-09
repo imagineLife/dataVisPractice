@@ -68,15 +68,15 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yAxisObj.scale(state.saObj.yScale);
     state.saObj.yAxisElm.transition(state.t()).call(state.saObj.yAxisObj);
 
-    vis.teams = state.saObj.g.selectAll(".team")
+    vis.stackG = state.saObj.g.selectAll(".stackG")
         .data(vis.stack(vis.dataFiltered));
     
-    // Update the path for each team
-    vis.teams.select(".area")
+    // Update the path for each stackG
+    vis.stackG.select(".area")
         .attr("d", vis.area)
 
-    vis.teams.enter().append("g")
-        .attr("class", d => `team ${d.key}`)
+    vis.stackG.enter().append("g")
+        .attr("class", d => `stackG ${d.key}`)
         .append("path")
             .attrs({
                 "class": "area",
