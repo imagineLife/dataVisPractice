@@ -19,11 +19,6 @@ StackedAreaChart = function(parent){
     state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
     state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
 
-    vis.area = d3.area()
-        .x(d => state.saObj.xScale(parseTime(d.data.date)))
-        .y0(d => state.saObj.yScale(d[0]))
-        .y1(d => state.saObj.yScale(d[1]));
-
     vis.addLegend(state.colorScale, state.saObj.g);
 
     vis.updateVis(state.dropdownVal, state.colorScale, state.saObj.g);
@@ -65,19 +60,19 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yAxisObj.scale(state.saObj.yScale);
     state.saObj.yAxisElm.transition(state.t()).call(state.saObj.yAxisObj);
 
-    vis.stackG = state.saObj.g.selectAll(".stackG")
-        .data(state.saObj.stackFn(vis.dataFiltered));
+    let stackedData = state.saObj.stackFn(vis.dataFiltered)
+    vis.stackG = state.saObj.g.selectAll(".stackG").data(stackedData);
     
     // Update the path for each stackG
     vis.stackG.select(".area")
-        .attr("d", vis.area)
+        .attr("d", state.saObj.areaFn)
 
     vis.stackG.enter().append("g")
         .attr("class", d => `stackG ${d.key}`)
         .append("path")
             .attrs({
                 "class": "area",
-                "d": vis.area
+                "d": state.saObj.areaFn
             })
             .style("fill", d => colorScale(d.key))
             .style("fill-opacity", 0.5)
