@@ -15,13 +15,13 @@ StackedAreaChart = function(parent){
     state.saObj.xScale.range([0, wLM]);
     state.saObj.yScale.range([hLM, 0]);
 
-    state.saObj.g = appendToParent(state.saObj.svg, 'stackedAreaGWrapper', `translate(${state.saObj.margins.left},${state.saObj.margins.top})`);        
-    state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
-    state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
+    state.saObj.g = lib.appendToParent(state.saObj.svg, 'stackedAreaGWrapper', `translate(${state.saObj.margins.left},${state.saObj.margins.top})`);        
+    state.saObj.xAxisElm = lib.appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
+    state.saObj.yAxisElm = lib.appendToParent(state.saObj.g, 'y axis', null);
 
-    const legendArr = makeLegendArr(state.colorScale, ["northeast", "west", "south", "midwest"])
+    const legendArr = lib.makeLegendArr(state.colorScale, ["northeast", "west", "south", "midwest"])
     
-    addLegend(state.colorScale, state.saObj.g, 'stackedArea', legendArr);
+    lib.addLegendToParent(state.colorScale, state.saObj.g, 'stackedArea', legendArr);
 
     vis.updateVis(state.dropdownVal, state.colorScale, state.saObj.g);
 };
@@ -29,11 +29,11 @@ StackedAreaChart = function(parent){
 StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     var vis = this;
 
-    nestFn = d3.nest()
+    nestedByDate = d3.nest()
         .key(d => formatTime(d.date))
         .entries(filteredCalls)
-
-    vis.dataFiltered = nestFn.map(day => {
+    
+    let groupedByDateThenRegionTotal = nestedByDate.map(day => {
         return day.values.reduce((accumulator, current) => {
             accumulator.date = day.key
             accumulator[current.team] = accumulator[current.team] + current[dropdownVal]
@@ -46,14 +46,15 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
         })
     })
 
-    vis.maxDateVal = d3.max(vis.dataFiltered, d => {
-        var vals = d3.keys(d).map(key => key !== 'date' ? d[key] : 0 );
-        return d3.sum(vals);
+    let maxYVal = d3.max(groupedByDateThenRegionTotal, d => {
+        var justVals = d3.keys(d).map(key => key !== 'date' ? d[key] : 0 );
+        return d3.sum(justVals);
     });
+    
 
     // Update scales
-    state.saObj.xScale.domain(d3.extent(vis.dataFiltered, (d) => {  return parseTime(d.date); }));
-    state.saObj.yScale.domain([0, vis.maxDateVal]);
+    state.saObj.xScale.domain(d3.extent(groupedByDateThenRegionTotal, (d) => {  return parseTime(d.date); }));
+    state.saObj.yScale.domain([0, maxYVal]);
 
     // Update axes
     state.saObj.xAxisObj.scale(state.saObj.xScale);
@@ -61,14 +62,14 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yAxisObj.scale(state.saObj.yScale);
     state.saObj.yAxisElm.transition(state.t()).call(state.saObj.yAxisObj);
 
-    let stackedData = state.saObj.stackFn(vis.dataFiltered)
-    vis.stackG = state.saObj.g.selectAll(".stackG").data(stackedData);
+    let stackedData = state.saObj.stackFn(groupedByDateThenRegionTotal)
+    let stackG = state.saObj.g.selectAll(".stackG").data(stackedData);
     
     // Update the path for each stackG
-    vis.stackG.select(".area")
+    stackG.select(".area")
         .attr("d", state.saObj.areaFn)
 
-    vis.stackG.enter().append("g")
+    stackG.enter().append("g")
         .attr("class", d => `stackG ${d.key}`)
         .append("path")
             .attrs({
@@ -78,41 +79,3 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
             .style("fill", d => colorScale(d.key))
             .style("fill-opacity", 0.5)
 };
-
-const makeLegendArr = (colorScale, strArray) => {
-    return strArray.map(str => {
-        let capdWord = str.charAt(0).toUpperCase() + str.slice(1)
-        return {label: capdWord, color: colorScale(str)}
-    })
-}
-
-const addLegend = (colorScale, legendParentG, customClassName, legendArr) => {
-
-    var areaLegend = appendToParent(legendParentG, customClassName, `translate(${50},${-25})`)
-
-    var legendGWrapper = areaLegend.selectAll(".customClassName")
-        .data(legendArr)
-        .enter().append("g")
-            .attrs({
-                "class": "legendGWrapper",
-                "transform": (d, i) => `translate(${(i * 150)},${(0)})`
-            });
-        
-    let legendRects = legendGWrapper.append("rect")
-        .attrs({
-            "class": "legendRect",
-            "width": 10,
-            "height": 10,
-            "fill": d => d.color,
-            "fill-opacity": 0.5
-        });
-
-    let legendTexts = legendGWrapper.append("text")
-        .attrs({
-            "class": "legendText",
-            "x": 20,
-            "y": 10,
-            "text-anchor": "start"
-        })
-        .text(d => d.label); 
-}
