@@ -5,7 +5,14 @@ let state = {
     dropdownVal : 'call_revenue',
     colorScale: d3.scaleOrdinal(d3.schemePastel1),
     dataCalls : null,
-    stackedAreaG: null
+    stackedArea:{
+        g: null,
+        svg: null,
+        xScale: d3.scaleTime(),
+        yScale: d3.scaleLinear(),
+        margins: { left:80, right:100, top:50, bottom:40 }
+    },
+    t: () => d3.transition().duration(1000),
 }
 
 d3.json("data/data.json").then(function(data){    
