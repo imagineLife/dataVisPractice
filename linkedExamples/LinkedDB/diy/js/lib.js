@@ -1,5 +1,7 @@
 let lib = {};
 
+//appends a "g" element to a parent element
+//parent MUST be in a D3 selection
 lib.appendToParent = (parent, cl, trans) => {
 	return parent.append("g")
         .attrs({
@@ -7,7 +9,9 @@ lib.appendToParent = (parent, cl, trans) => {
             "transform": trans
         });
 }
-	
+
+//makes array of objects
+//consumable for legend creation
 lib.makeLegendArr = (colorScale, strArray) => {
     return strArray.map(str => {
         let capdWord = str.charAt(0).toUpperCase() + str.slice(1)
@@ -15,6 +19,8 @@ lib.makeLegendArr = (colorScale, strArray) => {
     })
 }
 
+//appends a legend to the parent element
+//parent MUST be in D3 selecttion
 lib.addLegendToParent = (colorScale, legendParentG, customClassName, legendArr) => {
 
     var areaLegend = lib.appendToParent(legendParentG, customClassName, `translate(${50},${-25})`)
