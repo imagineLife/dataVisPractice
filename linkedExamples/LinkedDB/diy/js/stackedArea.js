@@ -19,9 +19,6 @@ StackedAreaChart = function(parent){
     state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
     state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
 
-    vis.stack = d3.stack()
-        .keys(["west", "south", "northeast", "midwest"]);
-
     vis.area = d3.area()
         .x(d => state.saObj.xScale(parseTime(d.data.date)))
         .y0(d => state.saObj.yScale(d[0]))
@@ -69,7 +66,7 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yAxisElm.transition(state.t()).call(state.saObj.yAxisObj);
 
     vis.stackG = state.saObj.g.selectAll(".stackG")
-        .data(vis.stack(vis.dataFiltered));
+        .data(state.saObj.stackFn(vis.dataFiltered));
     
     // Update the path for each stackG
     vis.stackG.select(".area")
