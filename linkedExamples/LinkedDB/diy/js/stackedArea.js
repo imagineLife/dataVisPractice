@@ -19,7 +19,9 @@ StackedAreaChart = function(parent){
     state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
     state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
 
-    addLegend(state.colorScale, state.saObj.g);
+    const legendArr = makeLegendArr(state.colorScale, ["northeast", "west", "south", "midwest"])
+    
+    addLegend(state.colorScale, state.saObj.g, 'stackedArea', legendArr);
 
     vis.updateVis(state.dropdownVal, state.colorScale, state.saObj.g);
 };
@@ -31,19 +33,18 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
         .key(d => formatTime(d.date))
         .entries(filteredCalls)
 
-    vis.dataFiltered = nestFn
-        .map(day => {
-            return day.values.reduce((accumulator, current) => {
-                accumulator.date = day.key
-                accumulator[current.team] = accumulator[current.team] + current[dropdownVal]
-                return accumulator;
-            }, {
-                "northeast": 0,
-                "midwest": 0,
-                "south": 0,
-                "west": 0
-            })
+    vis.dataFiltered = nestFn.map(day => {
+        return day.values.reduce((accumulator, current) => {
+            accumulator.date = day.key
+            accumulator[current.team] = accumulator[current.team] + current[dropdownVal]
+            return accumulator;
+        }, {
+            "northeast": 0,
+            "midwest": 0,
+            "south": 0,
+            "west": 0
         })
+    })
 
     vis.maxDateVal = d3.max(vis.dataFiltered, d => {
         var vals = d3.keys(d).map(key => key !== 'date' ? d[key] : 0 );
@@ -78,20 +79,19 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
             .style("fill-opacity", 0.5)
 };
 
+const makeLegendArr = (colorScale, strArray) => {
+    return strArray.map(str => {
+        let capdWord = str.charAt(0).toUpperCase() + str.slice(1)
+        return {label: capdWord, color: colorScale(str)}
+    })
+}
 
-const addLegend = (colorScale, legendParentG) => {
+const addLegend = (colorScale, legendParentG, customClassName, legendArr) => {
 
-    var areaLegend = appendToParent(legendParentG, 'areaLegend', `translate(${50},${-25})`)
+    var areaLegend = appendToParent(legendParentG, customClassName, `translate(${50},${-25})`)
 
-    var legendArray = [
-        {label: "Northeast", color: colorScale("northeast")},
-        {label: "West", color: colorScale("west")},
-        {label: "South", color: colorScale("south")},
-        {label: "Midwest", color: colorScale("midwest")}
-    ]
-
-    var legendGWrapper = areaLegend.selectAll(".legendGWrapper")
-        .data(legendArray)
+    var legendGWrapper = areaLegend.selectAll(".customClassName")
+        .data(legendArr)
         .enter().append("g")
             .attrs({
                 "class": "legendGWrapper",
