@@ -1,6 +1,5 @@
-StackedAreaChart = function(_parentElement){
+StackedAreaChart = function(parent){
     var vis = this;
-    this.parentElement = _parentElement;
 
     vis.areaState = {
         margin : { left:80, right:100, top:50, bottom:40 },
@@ -8,8 +7,8 @@ StackedAreaChart = function(_parentElement){
     let hLM = state.saObj.h - vis.areaState.margin.top - vis.areaState.margin.bottom;
     let wLM = state.saObj.w - vis.areaState.margin.left - vis.areaState.margin.right;
 
-    let passedParent = d3.select(vis.parentElement)
-    state.saObj.svg = d3.select(vis.parentElement)
+    let passedParent = d3.select(parent)
+    state.saObj.svg = d3.select(parent)
         .append("svg")
         .attrs({
             "width": wLM + vis.areaState.margin.left + vis.areaState.margin.right,
