@@ -22,12 +22,11 @@ StackedAreaChart = function(parent){
     const legendArr = lib.makeLegendArr(state.colorScale, ["northeast", "west", "south", "midwest"])
     
     lib.addLegendToParent(state.colorScale, state.saObj.g, 'stackedArea', legendArr);
-
-    vis.updateVis(state.dropdownVal, state.colorScale, state.saObj.g);
+    
+    updateStackedArea(state.dropdownVal, state.colorScale, state.saObj.g);
 };
 
-StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
-    var vis = this;
+const updateStackedArea = (dropdownVal, colorScale, gObj) => {
 
     nestedByDate = d3.nest()
         .key(d => formatTime(d.date))
