@@ -5,19 +5,24 @@ let state = {
     dropdownVal : 'call_revenue',
     colorScale: d3.scaleOrdinal(d3.schemePastel1),
     dataCalls : null,
-    stackedArea:{
+    stackedArea: null,
+    saObj:{
         g: null,
         svg: null,
         xScale: d3.scaleTime(),
         yScale: d3.scaleLinear(),
-        margins: { left:80, right:100, top:50, bottom:40 }
+        margins: { left:80, right:100, top:50, bottom:40 },
+        h: 370,
+        w: 800
     },
+    nestedCalls : null,
+    dataCalls: null,
     t: () => d3.transition().duration(1000),
 }
 
-d3.json("data/data.json").then(function(data){    
-    
-    data.map(function(d){
+const prepData = data => {
+
+    data.map(d => {
         d.call_revenue = +d.call_revenue
         d.units_sold = +d.units_sold
         d.call_duration = +d.call_duration
@@ -25,15 +30,23 @@ d3.json("data/data.json").then(function(data){
         return d
     })
 
-    dataCalls = data;
+    let dataCalls = data;
 
     filteredCalls = data;
 
-    nestedCalls = d3.nest()
-        .key(function(d){
-            return d.category;
-        })
+    let nestedCalls = d3.nest()
+        .key(d => d.category)
         .entries(filteredCalls)
+
+    return { dataCalls, filteredCalls, nestedCalls }
+}
+
+d3.json("data/data.json").then(data => {    
+    
+    let { dataCalls, nestedCalls } = prepData(data)
+
+    state.nestedCalls = nestedCalls; 
+    state.dataCalls = dataCalls;
 
     donut = new DonutChart("#company-size")
 
@@ -41,7 +54,7 @@ d3.json("data/data.json").then(function(data){
     durationBar = new BarChart("#call-duration", "call_duration", "Average call duration (seconds)")
     unitBar = new BarChart("#units-sold", "units_sold", "Units sold per call")
 
-    stackedArea = new StackedAreaChart("#stacked-area")
+    state.stackedArea = new StackedAreaChart("#stacked-area")
 
     timeline = new Timeline("#timeline")
 
@@ -49,7 +62,7 @@ d3.json("data/data.json").then(function(data){
         
         state.dropdownVal = ($(this).children("option:selected").val());
         
-        stackedArea.updateVis(state.dropdownVal, state.colorScale);
+        state.stackedArea.updateVis(state.dropdownVal, state.colorScale);
     })
 })
 
@@ -62,11 +75,9 @@ function brushed() {
 }
 
 function changeDates(values) {
-    filteredCalls = dataCalls.filter(function(d){
-        return ((d.date > values[0]) && (d.date < values[1]))
-    })
+    filteredCalls = state.dataCalls.filter(d => ( (d.date > values[0]) && (d.date < values[1]) ))
     
-    nestedCalls = d3.nest()
+    state.nestedCalls = d3.nest()
         .key(d => d.category)
         .entries(filteredCalls)
 
@@ -77,5 +88,5 @@ function changeDates(values) {
     revenueBar.wrangleData();
     unitBar.wrangleData();
     durationBar.wrangleData();
-    stackedArea.updateVis(state.dropdownVal, state.colorScale);
+    state.stackedArea.updateVis(state.dropdownVal, state.colorScale);
 }
