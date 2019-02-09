@@ -1,28 +1,25 @@
 StackedAreaChart = function(parent){
     var vis = this;
 
-    vis.areaState = {
-        margin : { left:80, right:100, top:50, bottom:40 },
-     }
-    let hLM = state.saObj.h - vis.areaState.margin.top - vis.areaState.margin.bottom;
-    let wLM = state.saObj.w - vis.areaState.margin.left - vis.areaState.margin.right;
+    let hLM = state.saObj.h - state.saObj.margins.top - state.saObj.margins.bottom;
+    let wLM = state.saObj.w - state.saObj.margins.left - state.saObj.margins.right;
 
     let passedParent = d3.select(parent)
     state.saObj.svg = d3.select(parent)
         .append("svg")
         .attrs({
-            "width": wLM + vis.areaState.margin.left + vis.areaState.margin.right,
-            "height": hLM + vis.areaState.margin.top + vis.areaState.margin.bottom
+            "width": wLM + state.saObj.margins.left + state.saObj.margins.right,
+            "height": hLM + state.saObj.margins.top + state.saObj.margins.bottom
         });
 
     state.saObj.xScale.range([0, wLM]);
     state.saObj.yScale.range([hLM, 0]);
 
-    vis.yAxisCall = d3.axisLeft()
-    vis.xAxisCall = d3.axisBottom()
+    vis.yAxisObj = d3.axisLeft()
+    vis.xAxisObj = d3.axisBottom()
         .ticks(4);
 
-    state.saObj.g = appendToParent(state.saObj.svg, 'stackedAreaGWrapper', `translate(${vis.areaState.margin.left},${vis.areaState.margin.top})`);        
+    state.saObj.g = appendToParent(state.saObj.svg, 'stackedAreaGWrapper', `translate(${state.saObj.margins.left},${state.saObj.margins.top})`);        
     vis.xAxis = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
     vis.yAxis = appendToParent(state.saObj.g, 'y axis', null);
 
@@ -70,10 +67,10 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yScale.domain([0, vis.maxDateVal]);
 
     // Update axes
-    vis.xAxisCall.scale(state.saObj.xScale);
-    vis.xAxis.transition(state.t()).call(vis.xAxisCall);
-    vis.yAxisCall.scale(state.saObj.yScale);
-    vis.yAxis.transition(state.t()).call(vis.yAxisCall);
+    vis.xAxisObj.scale(state.saObj.xScale);
+    vis.xAxis.transition(state.t()).call(vis.xAxisObj);
+    vis.yAxisObj.scale(state.saObj.yScale);
+    vis.yAxis.transition(state.t()).call(vis.yAxisObj);
 
     vis.teams = state.saObj.g.selectAll(".team")
         .data(vis.stack(vis.dataFiltered));
