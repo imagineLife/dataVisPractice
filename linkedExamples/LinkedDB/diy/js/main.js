@@ -13,7 +13,16 @@ let state = {
         yScale: d3.scaleLinear(),
         margins: { left:80, right:100, top:50, bottom:40 },
         h: 370,
-        w: 800
+        w: 800,
+        yAxisObj: d3.axisLeft(),
+        xAxisObj: d3.axisBottom().ticks(4),
+        xAxisElm: null,
+        yAxisElm: null,
+        stackFn : d3.stack().keys(["west", "south", "northeast", "midwest"]),
+        areaFn: d3.area()
+            .x(d => state.saObj.xScale(parseTime(d.data.date)))
+            .y0(d => state.saObj.yScale(d[0]))
+            .y1(d => state.saObj.yScale(d[1]))
     },
     nestedCalls : null,
     dataCalls: null,
