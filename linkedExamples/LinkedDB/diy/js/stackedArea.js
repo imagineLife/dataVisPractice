@@ -15,13 +15,9 @@ StackedAreaChart = function(parent){
     state.saObj.xScale.range([0, wLM]);
     state.saObj.yScale.range([hLM, 0]);
 
-    vis.yAxisObj = d3.axisLeft()
-    vis.xAxisObj = d3.axisBottom()
-        .ticks(4);
-
     state.saObj.g = appendToParent(state.saObj.svg, 'stackedAreaGWrapper', `translate(${state.saObj.margins.left},${state.saObj.margins.top})`);        
-    vis.xAxis = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
-    vis.yAxis = appendToParent(state.saObj.g, 'y axis', null);
+    state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
+    state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
 
     vis.stack = d3.stack()
         .keys(["west", "south", "northeast", "midwest"]);
@@ -67,10 +63,10 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
     state.saObj.yScale.domain([0, vis.maxDateVal]);
 
     // Update axes
-    vis.xAxisObj.scale(state.saObj.xScale);
-    vis.xAxis.transition(state.t()).call(vis.xAxisObj);
-    vis.yAxisObj.scale(state.saObj.yScale);
-    vis.yAxis.transition(state.t()).call(vis.yAxisObj);
+    state.saObj.xAxisObj.scale(state.saObj.xScale);
+    state.saObj.xAxisElm.transition(state.t()).call(state.saObj.xAxisObj);
+    state.saObj.yAxisObj.scale(state.saObj.yScale);
+    state.saObj.yAxisElm.transition(state.t()).call(state.saObj.yAxisObj);
 
     vis.teams = state.saObj.g.selectAll(".team")
         .data(vis.stack(vis.dataFiltered));
