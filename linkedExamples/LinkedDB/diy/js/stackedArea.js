@@ -19,7 +19,7 @@ StackedAreaChart = function(parent){
     state.saObj.xAxisElm = appendToParent(state.saObj.g, 'x axis', `translate(0,${hLM})`);
     state.saObj.yAxisElm = appendToParent(state.saObj.g, 'y axis', null);
 
-    vis.addLegend(state.colorScale, state.saObj.g);
+    addLegend(state.colorScale, state.saObj.g);
 
     vis.updateVis(state.dropdownVal, state.colorScale, state.saObj.g);
 };
@@ -79,10 +79,9 @@ StackedAreaChart.prototype.updateVis = function(dropdownVal, colorScale, gObj){
 };
 
 
-StackedAreaChart.prototype.addLegend = function(colorScale, gObj){
-    var vis = this;
+const addLegend = (colorScale, legendParentG) => {
 
-    var areaLegend = appendToParent(state.saObj.g, 'areaLegend', `translate(${50},${-25})`)
+    var areaLegend = appendToParent(legendParentG, 'areaLegend', `translate(${50},${-25})`)
 
     var legendArray = [
         {label: "Northeast", color: colorScale("northeast")},
