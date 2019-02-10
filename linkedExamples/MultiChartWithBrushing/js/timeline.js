@@ -37,6 +37,11 @@ function initTimeline(parentDiv){
 			// 'class': 'timelinePath'
 		})
 
+			//append BrushObj to
+	state.timeline.brushGWindow = state.timeline.gObj.append('g')
+		.attr('class', 'brushGWindow')
+		.call(brushFn)
+
 	updateTimeLine(state.filteredData[state.activeCoin], state.yVariable);
 }
 
@@ -60,12 +65,6 @@ function updateTimeLine(selectedCoinData, yVar){
 	state.timeline.areaPath
 		.data([selectedCoinData])
 		.attr('d', areaFn)
-
-	//append BrushObj to
-	state.timeline.brushGWindow = state.timeline.gObj.append('g')
-		// .attr('class', 'brushGWindow')
-		.call(brushFn)
-
 
 }
 
