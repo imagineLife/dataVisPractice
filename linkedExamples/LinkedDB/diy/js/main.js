@@ -71,7 +71,7 @@ d3.json("data/data.json").then(data => {
         
         state.dropdownVal = ($(this).children("option:selected").val());
         
-        state.stackedArea.updateVis(state.dropdownVal, state.colorScale);
+        updateStackedArea(state.dropdownVal, state.colorScale);
     })
 })
 
@@ -97,5 +97,5 @@ function changeDates(values) {
     revenueBar.wrangleData();
     unitBar.wrangleData();
     durationBar.wrangleData();
-    state.stackedArea.updateVis(state.dropdownVal, state.colorScale);
+    updateStackedArea(state.dropdownVal, state.colorScale);
 }
