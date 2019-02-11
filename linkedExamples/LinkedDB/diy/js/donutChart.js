@@ -41,10 +41,10 @@ DonutChart.prototype.initVis = function(){
     vis.color = d3.scaleOrdinal(d3.schemeAccent);
 
     vis.addLegend();
-    vis.wrangleData();
+    vis.updateVis();
 }
 
-DonutChart.prototype.wrangleData = function(){
+DonutChart.prototype.updateVis = function(){
     var vis = this;
 
     sizeNest = d3.nest()
@@ -59,13 +59,7 @@ DonutChart.prototype.wrangleData = function(){
             count: size.values.length
         }
     })
-
-    vis.updateVis();
-}
-
-DonutChart.prototype.updateVis = function(){
-    var vis = this;
-
+    
     vis.path = vis.g.selectAll("path")
         .data(vis.pie(vis.dataFiltered));
 
