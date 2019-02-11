@@ -93,7 +93,7 @@ function changeDates(values) {
     $("#dateLabel1").text(formatTime(values[0]))
     $("#dateLabel2").text(formatTime(values[1]))
 
-    donut.wrangleData();
+    donut.updateVis();
     revenueBar.wrangleData();
     unitBar.wrangleData();
     durationBar.wrangleData();
