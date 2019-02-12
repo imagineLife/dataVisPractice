@@ -1,17 +1,15 @@
 Timeline = function(_parentElement){
-    this.parentElement = _parentElement;
-
-    this.initVis();
+    this.initTimeline(_parentElement);
 };
 
-Timeline.prototype.initVis = function(){
+Timeline.prototype.initTimeline = function(parent){
     var vis = this;
 
     vis.margin = {top: 0, right: 100, bottom: 20, left: 80};
     vis.width = 800 - vis.margin.left - vis.margin.right;
     vis.height = 100 - vis.margin.top - vis.margin.bottom;
 
-    vis.svg = d3.select(vis.parentElement).append("svg")
+    vis.svg = d3.select(parent).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
 
@@ -57,7 +55,7 @@ Timeline.prototype.wrangleData = function(){
 
     vis.dayNest = d3.nest()
         .key(function(d){ return formatTime(d.date); })
-        .entries(filteredCalls)
+        .entries(state.srcData)
 
     vis.dataFiltered = vis.dayNest
         .map(function(day){
