@@ -29,9 +29,11 @@ let state = {
     t: () => d3.transition().duration(1000),
 }
 
-const prepData = data => {
+const prepData = srcData => {
 
-    data.map(d => {
+    state.srcData = srcData;
+
+    srcData.map(d => {
         d.call_revenue = +d.call_revenue
         d.units_sold = +d.units_sold
         d.call_duration = +d.call_duration
@@ -39,23 +41,21 @@ const prepData = data => {
         return d
     })
 
-    let dataCalls = data;
-
-    filteredCalls = data;
-
+    state.filteredCalls = srcData;
+    
     let nestedCalls = d3.nest()
         .key(d => d.category)
-        .entries(filteredCalls)
+        .entries(srcData)
 
-    return { dataCalls, filteredCalls, nestedCalls }
+    return { nestedCalls }
 }
 
 d3.json("data/data.json").then(data => {    
     
-    let { dataCalls, nestedCalls } = prepData(data)
+    let { nestedCalls } = prepData(data)
 
     state.nestedCalls = nestedCalls; 
-    state.dataCalls = dataCalls;
+    state.dataCalls = data;
 
     donut = new DonutChart("#company-size")
 
@@ -80,15 +80,16 @@ d3.json("data/data.json").then(data => {
 function brushed() {
     var selection = d3.event.selection || timeline.x.range();
     var newValues = selection.map(timeline.x.invert)
+    
     changeDates(newValues)
 }
 
 function changeDates(values) {
-    filteredCalls = state.dataCalls.filter(d => ( (d.date > values[0]) && (d.date < values[1]) ))
+    state.filteredCalls = state.dataCalls.filter(d => ( (d.date > values[0]) && (d.date < values[1]) ))
     
     state.nestedCalls = d3.nest()
         .key(d => d.category)
-        .entries(filteredCalls)
+        .entries(state.filteredCalls)
 
     $("#dateLabel1").text(formatTime(values[0]))
     $("#dateLabel2").text(formatTime(values[1]))
