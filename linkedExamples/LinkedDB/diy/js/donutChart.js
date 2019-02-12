@@ -51,7 +51,7 @@ DonutChart.prototype.updateVis = function(){
         .key(function(d){
             return d.company_size
         })
-        .entries(filteredCalls)
+        .entries(state.filteredCalls)
 
     vis.dataFiltered = sizeNest.map(function(size){
         return {
@@ -59,7 +59,7 @@ DonutChart.prototype.updateVis = function(){
             count: size.values.length
         }
     })
-    
+
     vis.path = vis.g.selectAll("path")
         .data(vis.pie(vis.dataFiltered));
 
