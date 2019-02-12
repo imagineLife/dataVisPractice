@@ -26,11 +26,11 @@ StackedAreaChart = function(parent){
     updateStackedArea(state.dropdownVal, state.colorScale, state.saObj.g);
 };
 
-const updateStackedArea = (dropdownVal, colorScale, gObj) => {
+const updateStackedArea = (dropdownVal, colorScale) => {
 
     nestedByDate = d3.nest()
         .key(d => formatTime(d.date))
-        .entries(filteredCalls)
+        .entries(state.filteredCalls)
     
     let groupedByDateThenRegionTotal = nestedByDate.map(day => {
         return day.values.reduce((accumulator, current) => {
