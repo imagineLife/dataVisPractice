@@ -24,6 +24,9 @@ let state = {
             .y0(d => state.saObj.yScale(d[0]))
             .y1(d => state.saObj.yScale(d[1]))
     },
+    tlObj: {
+        m: { top: 0, right: 100, bottom: 20, left: 80 }
+    },
     nestedCalls : null,
     dataCalls: null,
     t: () => d3.transition().duration(1000),
