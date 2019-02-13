@@ -51,3 +51,9 @@ lib.addLegendToParent = (colorScale, legendParentG, customClassName, legendArr) 
         })
         .text(d => d.label); 
 }
+
+lib.getLessMargins = (w, h, m) => {    
+    let wLM = (w - m.left - m.right);
+    let hLM = (h - m.top - m.bottom);
+    return {wLM, hLM}
+}

@@ -65,14 +65,14 @@ const updateStackedArea = (dropdownVal, colorScale) => {
     let stackG = state.saObj.g.selectAll(".stackG").data(stackedData);
     
     // Update the path for each stackG
-    stackG.select(".area")
+    stackG.select(".singleAreaStack")
         .attr("d", state.saObj.areaFn)
 
     stackG.enter().append("g")
         .attr("class", d => `stackG ${d.key}`)
         .append("path")
             .attrs({
-                "class": "area",
+                "class": "singleAreaStack",
                 "d": state.saObj.areaFn
             })
             .style("fill", d => colorScale(d.key))

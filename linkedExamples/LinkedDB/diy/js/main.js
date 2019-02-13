@@ -73,8 +73,12 @@ d3.json("data/data.json").then(data => {
     $("#var-select").on("change", function(e){
         
         state.dropdownVal = ($(this).children("option:selected").val());
+        console.log('state.dropdownVal')
+        console.log(state.dropdownVal)
         
         updateStackedArea(state.dropdownVal, state.colorScale);
+        timeline.updateVis();
+
     })
 })
 
