@@ -35,7 +35,14 @@ let state = {
         svg: null,
         g: null,
         w: 350,
-        h: 130
+        h: 130,
+        xScale: d3.scaleBand(),
+        yScale: d3.scaleLinear(),
+        colorScale: d3.scaleOrdinal(d3.schemeBlues[5]),
+        yAxisObj: d3.axisLeft().ticks(4),
+        xAxisObj : d3.axisBottom().tickFormat((d) => capitalizeFirstLetter(d)),
+        xAxisElm: null,
+        yAxisElm: null
     },
     nestedCalls : null,
     dataCalls: null,
@@ -112,8 +119,8 @@ function changeDates(values) {
     $("#dateLabel2").text(formatTime(values[1]))
 
     donut.updateVis();
-    revenueBar.updateVis();
-    unitBar.updateVis();
-    durationBar.updateVis();
+    revenueBar.updateBar();
+    unitBar.updateBar();
+    durationBar.updateBar();
     updateStackedArea(state.dropdownVal, state.colorScale);
 }
