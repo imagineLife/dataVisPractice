@@ -62,11 +62,11 @@ BarChart.prototype.initVis = function(){
         .attr("text-anchor", "start")
         .text(vis.title)
 
-    vis.wrangleData();
+    vis.updateVis();
 };
 
 
-BarChart.prototype.wrangleData = function(){
+BarChart.prototype.updateVis = function(){
     var vis = this;
 
     vis.dataFiltered = state.nestedCalls.map(function(category){
@@ -77,13 +77,6 @@ BarChart.prototype.wrangleData = function(){
             }, 0) / category.values.length)
         }
     })
-
-    vis.updateVis();
-};
-
-
-BarChart.prototype.updateVis = function(){
-    var vis = this;
 
     // Update scales
     vis.y.domain([0, d3.max(vis.dataFiltered, (d) => { return +d.size; })]);
