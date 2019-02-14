@@ -25,7 +25,13 @@ let state = {
             .y1(d => state.saObj.yScale(d[1]))
     },
     tlObj: {
-        m: { top: 0, right: 100, bottom: 20, left: 80 }
+        m: { top: 0, right: 100, bottom: 20, left: 80 },
+        svgObj: null,
+        xScale: d3.scaleTime(),
+        yScale: d3.scaleLinear()
+    },
+    barObj: {
+        m: { left:60, right:50, top:30, bottom:30 }
     },
     nestedCalls : null,
     dataCalls: null,
@@ -102,8 +108,8 @@ function changeDates(values) {
     $("#dateLabel2").text(formatTime(values[1]))
 
     donut.updateVis();
-    revenueBar.wrangleData();
-    unitBar.wrangleData();
-    durationBar.wrangleData();
+    revenueBar.updateVis();
+    unitBar.updateVis();
+    durationBar.updateVis();
     updateStackedArea(state.dropdownVal, state.colorScale);
 }
