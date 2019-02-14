@@ -9,20 +9,22 @@ BarChart = function(_parentElement, _variable, _title){
 BarChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.height = 130 - state.barObj.m.top - state.barObj.m.bottom;
-    vis.width = 350 - state.barObj.m.left - state.barObj.m.right;
-
-    vis.svg = d3.select(vis.parentElement)
+    let hLM = state.barObj.h - state.barObj.m.top - state.barObj.m.bottom;
+    let wLM = state.barObj.w - state.barObj.m.left - state.barObj.m.right;
+    console.log('hLM')
+    console.log(hLM)
+    
+    state.barObj.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + state.barObj.m.left + state.barObj.m.right)
-        .attr("height", vis.height + state.barObj.m.top + state.barObj.m.bottom);
-    vis.g = vis.svg.append("g")
+        .attr("width", state.barObj.w)
+        .attr("height", state.barObj.h);
+    state.barObj.g = state.barObj.svg.append("g")
         .attr("transform", "translate(" + state.barObj.m.left + 
             ", " + state.barObj.m.top + ")");
 
     vis.t = () => { return d3.transition().duration(1000); }
 
-    vis.linePath = vis.g.append("path")
+    vis.linePath = state.barObj.g.append("path")
         .attr("class", "line")
         .attr("fill", "none")
         .attr("stroke-width", "3px");
@@ -31,10 +33,10 @@ BarChart.prototype.initVis = function(){
 
     vis.x = d3.scaleBand()
         .domain(["electronics", "furniture", "appliances", "materials"])
-        .range([0, vis.width])
+        .range([0, wLM])
         .padding(0.5);
 
-    vis.y = d3.scaleLinear().range([vis.height, 0]);
+    vis.y = d3.scaleLinear().range([hLM, 0]);
 
 
     function capitalizeFirstLetter(string) {
@@ -47,13 +49,13 @@ BarChart.prototype.initVis = function(){
         .tickFormat(function(d) {
             return "" + capitalizeFirstLetter(d);
         });
-    vis.xAxis = vis.g.append("g")
+    vis.xAxis = state.barObj.g.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + vis.height +")");
-    vis.yAxis = vis.g.append("g")
+        .attr("transform", "translate(0," + hLM +")");
+    vis.yAxis = state.barObj.g.append("g")
         .attr("class", "y axis");
 
-    vis.g.append("text")
+    state.barObj.g.append("text")
         .attr("class", "title")
         .attr("y", -15)
         .attr("x", -50)
@@ -68,6 +70,8 @@ BarChart.prototype.initVis = function(){
 BarChart.prototype.updateVis = function(){
     var vis = this;
 
+    let hLM = state.barObj.h - state.barObj.m.top - state.barObj.m.bottom
+    
     vis.dataFiltered = state.nestedCalls.map(function(category){
         return {
             category: category.key,
@@ -87,7 +91,7 @@ BarChart.prototype.updateVis = function(){
     vis.yAxis.transition(vis.t()).call(vis.yAxisCall);
 
     // JOIN new data with old elements.
-    vis.rects = vis.g.selectAll("rect").data(vis.dataFiltered, function(d){
+    vis.rects = state.barObj.g.selectAll("rect").data(vis.dataFiltered, function(d){
         return d.category;
     });
 
@@ -96,7 +100,7 @@ BarChart.prototype.updateVis = function(){
         .attr("class", "exit")
         .transition(vis.t())
         .attr("height", 0)
-        .attr("y", vis.height)
+        .attr("y", hLM)
         .style("fill-opacity", "0.1")
         .remove();
 
@@ -104,7 +108,7 @@ BarChart.prototype.updateVis = function(){
     vis.rects.attr("class", "update")
         .transition(vis.t())
             .attr("y", function(d){ return vis.y(d.size); })
-            .attr("height", function(d){ return (vis.height - vis.y(d.size)); })
+            .attr("height", function(d){ return (hLM - vis.y(d.size)); })
             .attr("x", function(d){ return vis.x(d.category) })
             .attr("width", vis.x.bandwidth)
 
@@ -113,7 +117,7 @@ BarChart.prototype.updateVis = function(){
         .append("rect")
         .attr("class", "enter")
         .attr("y", function(d){ return vis.y(d.size); })
-        .attr("height", function(d){ return (vis.height - vis.y(d.size)); })
+        .attr("height", function(d){ return (hLM - vis.y(d.size)); })
         .attr("x", function(d){ return vis.x(d.category) })
         .attr("width", vis.x.bandwidth)
         .attr("fill", "grey")

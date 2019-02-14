@@ -31,7 +31,11 @@ let state = {
         yScale: d3.scaleLinear()
     },
     barObj: {
-        m: { left:60, right:50, top:30, bottom:30 }
+        m: { left:60, right:50, top:30, bottom:30 },
+        svg: null,
+        g: null,
+        w: 350,
+        h: 130
     },
     nestedCalls : null,
     dataCalls: null,
