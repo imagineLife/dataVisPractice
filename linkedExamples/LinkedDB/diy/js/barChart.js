@@ -9,17 +9,16 @@ BarChart = function(_parentElement, _variable, _title){
 BarChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.margin = { left:60, right:50, top:30, bottom:30 };
-    vis.height = 130 - vis.margin.top - vis.margin.bottom;
-    vis.width = 350 - vis.margin.left - vis.margin.right;
+    vis.height = 130 - state.barObj.m.top - state.barObj.m.bottom;
+    vis.width = 350 - state.barObj.m.left - state.barObj.m.right;
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+        .attr("width", vis.width + state.barObj.m.left + state.barObj.m.right)
+        .attr("height", vis.height + state.barObj.m.top + state.barObj.m.bottom);
     vis.g = vis.svg.append("g")
-        .attr("transform", "translate(" + vis.margin.left + 
-            ", " + vis.margin.top + ")");
+        .attr("transform", "translate(" + state.barObj.m.left + 
+            ", " + state.barObj.m.top + ")");
 
     vis.t = () => { return d3.transition().duration(1000); }
 
