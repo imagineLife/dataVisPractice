@@ -42,11 +42,12 @@ let state = {
         yAxisObj: d3.axisLeft().ticks(4),
         xAxisObj : d3.axisBottom().tickFormat((d) => capitalizeFirstLetter(d)),
         xAxisElm: null,
-        yAxisElm: null
+        yAxisElm: null,
+        rects: null
     },
     nestedCalls : null,
     dataCalls: null,
-    t: () => d3.transition().duration(1000),
+    t: () => d3.transition().duration(600),
 }
 
 const prepData = srcData => {
@@ -79,9 +80,9 @@ d3.json("data/data.json").then(data => {
 
     donut = new DonutChart("#company-size")
 
-    revenueBar = new BarChart("#revenue", "call_revenue", "Average call revenue (USD)")
-    durationBar = new BarChart("#call-duration", "call_duration", "Average call duration (seconds)")
-    unitBar = new BarChart("#units-sold", "units_sold", "Units sold per call")
+    initBar("revenue", "call_revenue", "Average call revenue (USD)")
+    initBar("call-duration", "call_duration", "Average call duration (seconds)")
+    initBar("units-sold", "units_sold", "Units sold per call")
 
     state.stackedArea = new StackedAreaChart("#stacked-area")
 
@@ -103,7 +104,7 @@ d3.json("data/data.json").then(data => {
 
 function brushed() {
     var selection = d3.event.selection || timeline.x.range();
-    var newValues = selection.map(timeline.x.invert)
+    var newValues = selection.map(state.tlObj.xScale.invert)
     
     changeDates(newValues)
 }
@@ -119,8 +120,8 @@ function changeDates(values) {
     $("#dateLabel2").text(formatTime(values[1]))
 
     donut.updateVis();
-    revenueBar.updateBar();
-    unitBar.updateBar();
-    durationBar.updateBar();
+    updateBar("revenue", "call_revenue")
+    updateBar("call-duration", "call_duration")
+    updateBar("units-sold", "units_sold")
     updateStackedArea(state.dropdownVal, state.colorScale);
 }

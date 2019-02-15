@@ -7,22 +7,24 @@ Timeline.prototype.initTimeline = function(parent){
 
     let {wLM, hLM} = lib.getLessMargins(state.saObj.w, 100, state.tlObj.m);
 
-    vis.svg = d3.select(parent).append("svg")
+    state.tlObj.svgObj = d3.select(parent).append("svg")
         .attr("width", wLM + state.tlObj.m.left + state.tlObj.m.right)
         .attr("height", hLM + state.tlObj.m.top + state.tlObj.m.bottom)
 
-    vis.t = () => { return d3.transition().duration(1000); }
-
-    vis.x = d3.scaleTime()
+    state.tlObj.xScale = d3.scaleTime()
         .range([0, wLM]);
 
-    vis.y = d3.scaleLinear()
+    state.tlObj.yScale = d3.scaleLinear()
         .range([hLM, 0]);
 
     vis.xAxisCall = d3.axisBottom()
         .ticks(4);
 
-    vis.g = lib.appendToParent(vis.svg, null, `translate(${state.tlObj.m.left},${state.tlObj.m.top})`);
+    vis.g = lib.appendToParent(state.tlObj.svgObj, null, `translate(${state.tlObj.m.left},${state.tlObj.m.top})`);
+    
+    vis.areaPath = vis.g.append("path")
+        .attr("fill", "#ccc");
+
     vis.xAxis = lib.appendToParent(vis.g, 'x axis', `translate(0,${hLM})`);
 
     // Initialize brush component
@@ -45,7 +47,7 @@ Timeline.prototype.updateVis = function(srcData){
 
     let dayNest = d3.nest()
         .key(function(d){ return formatTime(d.date); })
-        .entries(state.filteredCalls)
+        .entries(state.srcData)
     
     srcData = (srcData) ? srcData : dayNest
         .map(function(day){
@@ -60,25 +62,23 @@ Timeline.prototype.updateVis = function(srcData){
 
     let {wLM, hLM} = lib.getLessMargins(state.saObj.w, 100, state.tlObj.m);
 
-    vis.x.domain(d3.extent(srcData, (d) => { return parseTime(d.date); }));
-    vis.y.domain([0, d3.max(srcData, (d) => d.sum) ])
+    state.tlObj.xScale.domain(d3.extent(srcData, (d) => { return parseTime(d.date); }));
+    state.tlObj.yScale.domain([0, d3.max(srcData, (d) => d.sum) ])
 
-    vis.xAxisCall.scale(vis.x)
+    vis.xAxisCall.scale(state.tlObj.xScale)
 
-    vis.xAxis.transition(vis.t()).call(vis.xAxisCall)
+    vis.xAxis.transition(state.t()).call(vis.xAxisCall)
 
     vis.area0 = d3.area()
-        .x((d) => { return vis.x(parseTime(d.date)); })
+        .x((d) => { return state.tlObj.xScale(parseTime(d.date)); })
         .y0(hLM)
         .y1(hLM);
 
     vis.area = d3.area()
-        .x((d) => { return vis.x(parseTime(d.date)); })
+        .x((d) => { return state.tlObj.xScale(parseTime(d.date)); })
         .y0(hLM)
-        .y1((d) => { return vis.y(d.sum); })
+        .y1((d) => { return state.tlObj.yScale(d.sum); })
 
-    vis.areaPath = vis.g.append("path")
-        .data([srcData])
-        .attr("fill", "#ccc")
+    vis.areaPath.data([srcData])
         .attr("d", vis.area);
 }
