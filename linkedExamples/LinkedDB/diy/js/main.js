@@ -7,8 +7,6 @@ let state = {
     dataCalls : null,
     stackedArea: null,
     saObj:{
-        g: null,
-        svg: null,
         xScale: d3.scaleTime(),
         yScale: d3.scaleLinear(),
         margins: { left:80, right:100, top:50, bottom:40 },
@@ -16,8 +14,6 @@ let state = {
         w: 800,
         yAxisObj: d3.axisLeft(),
         xAxisObj: d3.axisBottom().ticks(4),
-        xAxisElm: null,
-        yAxisElm: null,
         stackFn : d3.stack().keys(["west", "south", "northeast", "midwest"]),
         areaFn: d3.area()
             .x(d => state.saObj.xScale(parseTime(d.data.date)))
@@ -26,14 +22,11 @@ let state = {
     },
     tlObj: {
         m: { top: 0, right: 100, bottom: 20, left: 80 },
-        svgObj: null,
         xScale: d3.scaleTime(),
-        yScale: d3.scaleLinear()
+        yScale: d3.scaleLinear(),
     },
     barObj: {
         m: { left:60, right:50, top:30, bottom:30 },
-        svg: null,
-        g: null,
         w: 350,
         h: 130,
         xScale: d3.scaleBand(),
@@ -41,9 +34,6 @@ let state = {
         colorScale: d3.scaleOrdinal(d3.schemeBlues[5]),
         yAxisObj: d3.axisLeft().ticks(4),
         xAxisObj : d3.axisBottom().tickFormat((d) => capitalizeFirstLetter(d)),
-        xAxisElm: null,
-        yAxisElm: null,
-        rects: null
     },
     nestedCalls : null,
     dataCalls: null,
