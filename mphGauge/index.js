@@ -61,7 +61,7 @@ let Gauge = function(configuration) {
   }
   configure(configuration);
 
-  let foreground, arc, svg, current;
+  let coloredArc, arc, svg, current;
   let cur_color;
   let new_color, hold;
 
@@ -89,32 +89,37 @@ let Gauge = function(configuration) {
 
 
     // Append background arc to svg
-    var background = svg.append("path")
+    var grayBG = svg.append("path")
       .datum({
         endAngle: deg2rad(90)
       })
-      .attr("class", "gaugeBackground")
-      .attr("d", arcFn)
+      .attrs({
+        "class": "gaugeBackground",
+        "d": arcFn
+      })
 
     // Append foreground arc to svg
-    foreground = svg.append("path")
+    coloredArc = svg.append("path")
       .datum({
         endAngle: deg2rad(-90)
       })
-      //.style("fill", cur_color)
       .attr("d", arcFn);
 
     // Display Max value
     var max = svg.append("text")
-      .attr("transform", "translate(" + (iR + ((oR - iR) / 2)) + ",15)") // Set between inner and outer Radius
-      .attr("text-anchor", "middle")
+      .attrs({
+        "transform": `translate(${(iR + ((oR - iR) / 2))},15)`, // Set between inner and outer Radius
+        "text-anchor": "middle"
+      })
       .style("font-family", config.labelFont)
       .text(config.labelFormat(config.maxValue))
 
     // Display Min value
     var min = svg.append("text")
-      .attr("transform", "translate(" + -(iR + ((oR - iR) / 2)) + ",15)") // Set between inner and outer Radius
-      .attr("text-anchor", "middle")
+      .attrs({
+        "transform": `translate(${ -(iR + ((oR - iR) / 2))},15)`, // Set between inner and outer Radius
+        "text-anchor": "middle"
+       })
       .style("font-size", config.labelFontSize)
       .style("font-family", config.labelFont)
       .text(config.minValue)
@@ -142,7 +147,7 @@ let Gauge = function(configuration) {
       // .text(config.labelFormat(value))
 
     // Arc Transition
-    foreground.transition()
+    coloredArc.transition()
       .duration(config.transitionMs)
       .styleTween("fill", function() {
         return d3.interpolate(new_color, cur_color);
