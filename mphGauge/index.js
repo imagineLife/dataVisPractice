@@ -80,7 +80,7 @@ let Gauge = function(configuration) {
   }
   configure(configuration);
 
-  let coloredArc, arc, svg, current;
+  let coloredArc, arc, svg, bigValueLabel;
   let cur_color;
   let new_color, hold;
 
@@ -91,7 +91,7 @@ let Gauge = function(configuration) {
     return deg * Math.PI / 180
   }
 
-  function render() {
+  function render(arcLength) {
     
     // Arc Defaults
     arcFn = d3.svg.arc()
@@ -110,7 +110,7 @@ let Gauge = function(configuration) {
     var grayBG = makeGaugePath(svg,{ endAngle: deg2rad(90)}, "gaugeBackground", arcFn); 
 
     // Append foreground arc to svg
-    var coloredArc = makeGaugePath(svg,{ endAngle: deg2rad(-90)}, "gaugeForegroung", arcFn); 
+    coloredArc = makeGaugePath(svg,{ endAngle: deg2rad(-90)}, "gaugeForegroung", arcFn); 
 
 
     // Display Max value
@@ -118,12 +118,36 @@ let Gauge = function(configuration) {
     var min = makeArcLabel(svg, `translate(${ -(iR + ((oR - iR) / 2))},15)`, config.labelFont, config.minValue)
 
     // Display Current value  
-    current = svg.append("text")
-      .attr("transform", "translate(0," + -(-config.currentLabelInset + iR / 4) + ")") // Push up from center 1/4 of innerRadius
-      .attr("text-anchor", "middle")
+    bigValueLabel = svg.append("text")
+      .attrs({
+        "transform": `translate(0,${ -(-config.currentLabelInset + iR / 4)})`, // Push up from center 1/4 of innerRadius
+        "text-anchor": "middle"
+      })
       .style("font-size", config.currentLabelFontSize)
       .style("font-family", config.labelFont)
-      .text(config.labelFormat(current))
+      .text(bigValueLabel)
+
+    new_color = config.arcColorFn(arcLength)
+    console.log(new_color)
+
+    var numPi = deg2rad(Math.floor(arcLength * 180 / config.maxValue - 90));
+
+    // Display Current value
+    bigValueLabel.transition()
+      .text(arcLength)
+
+    // Arc Transition
+    coloredArc.transition()
+      .duration(config.transitionMs)
+      .styleTween("fill", function() {
+        return d3.interpolate(new_color, cur_color);
+      })
+      .call(arcTween, numPi);
+
+    // Set colors for next transition
+    hold = cur_color;
+    cur_color = new_color;
+    new_color = hold;
   }
 
 
@@ -135,9 +159,8 @@ let Gauge = function(configuration) {
     var numPi = deg2rad(Math.floor(value * 180 / config.maxValue - 90));
 
     // Display Current value
-    current.transition()
+    bigValueLabel.transition()
       .text(value)
-      // .text(config.labelFormat(value))
 
     // Arc Transition
     coloredArc.transition()
@@ -164,14 +187,17 @@ let Gauge = function(configuration) {
     });
   }
 
-  render();
+  render(75000);
   myObj.update = update;
   myObj.configuration = config;
   return myObj;
 }
 
 let g = new Gauge({
-  size: 300
+  size: 300,
+  arcLength: 75000
 });
-console.log(g)
-g.update(70000);
+
+setTimeout(() => {
+    g.update(25000);
+}, 2000)
