@@ -1,3 +1,22 @@
+function makeArcLabel(parent,trans,ff,txt){
+    return parent.append("text")
+      .attrs({
+        "transform": trans, // Set between inner and outer Radius
+        "text-anchor": "middle"
+      })
+      .style("font-family", ff)
+      .text(txt)
+}
+
+function makeGaugePath(parent,datum, className, dVal){
+    return parent.append("path")
+      .datum(datum)
+      .attrs({
+        "class": className,
+        "d": dVal
+      })
+}
+
 let Gauge = function(configuration) {
   let myObj = {}
 
@@ -87,42 +106,16 @@ let Gauge = function(configuration) {
       .append("g")
       .attr("transform", "translate(" + config.size / 2 + "," + config.size / 2 + ")")
 
-
     // Append background arc to svg
-    var grayBG = svg.append("path")
-      .datum({
-        endAngle: deg2rad(90)
-      })
-      .attrs({
-        "class": "gaugeBackground",
-        "d": arcFn
-      })
+    var grayBG = makeGaugePath(svg,{ endAngle: deg2rad(90)}, "gaugeBackground", arcFn); 
 
     // Append foreground arc to svg
-    coloredArc = svg.append("path")
-      .datum({
-        endAngle: deg2rad(-90)
-      })
-      .attr("d", arcFn);
+    var coloredArc = makeGaugePath(svg,{ endAngle: deg2rad(-90)}, "gaugeForegroung", arcFn); 
+
 
     // Display Max value
-    var max = svg.append("text")
-      .attrs({
-        "transform": `translate(${(iR + ((oR - iR) / 2))},15)`, // Set between inner and outer Radius
-        "text-anchor": "middle"
-      })
-      .style("font-family", config.labelFont)
-      .text(config.labelFormat(config.maxValue))
-
-    // Display Min value
-    var min = svg.append("text")
-      .attrs({
-        "transform": `translate(${ -(iR + ((oR - iR) / 2))},15)`, // Set between inner and outer Radius
-        "text-anchor": "middle"
-       })
-      .style("font-size", config.labelFontSize)
-      .style("font-family", config.labelFont)
-      .text(config.minValue)
+    var max = makeArcLabel(svg, `translate(${(iR + ((oR - iR) / 2))},15)`, config.labelFont, config.labelFormat(config.maxValue));
+    var min = makeArcLabel(svg, `translate(${ -(iR + ((oR - iR) / 2))},15)`, config.labelFont, config.minValue)
 
     // Display Current value  
     current = svg.append("text")
