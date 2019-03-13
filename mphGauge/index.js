@@ -49,29 +49,22 @@ let Gauge = function(configuration) {
     },
 
     arcColorFn:(value) => {
-        let result = (function(val) {
-            console.log('val')
-            console.log(val)
-            
-            switch(val){
-                case (val >= 0 && val <= 24999):
-                    return 'green';
-                    break;
-                case (val = 25000 || val <= 49999):
-                    return 'yellow';
-                    break;
-                case (val >= 50000 && val <= 74999):
-                    return 'orange';
-                    break;
-                default:
-                    return 'red';
-                    break;
-            }
-        })(value)
-        console.log('result')
-        console.log(result)
+        console.log('value')
+        console.log(value)
         
-        return result
+        if(value <= 24999){
+          return 'green';
+        }
+        if(value >= 25000 && value <= 49999){
+          return 'yellow';
+        }
+        if(value >= 50000 && value <= 74999){
+          return 'orange';
+        }
+          
+        if(value >= 75000){
+          return 'red'
+        }
     }
   }
 
@@ -195,9 +188,8 @@ let Gauge = function(configuration) {
     });
   }
 
-  render(75000);
+  render(21034);
   myObj.update = update;
-  myObj.configuration = cfg;
   return myObj;
 }
 
@@ -209,3 +201,7 @@ let g = new Gauge({
 setTimeout(() => {
     g.update(25000);
 }, 2000)
+
+setTimeout(() => {
+    g.update(56789);
+}, 3000)
