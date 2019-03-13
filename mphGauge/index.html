@@ -11,12 +11,27 @@
 	<!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
 	<!-- <link rel="stylesheet" type="text/css" href="../dark.css"> -->
 	<style>
+
+	*{
+		margin: 0;
+		padding: 0;
+	}
 	.gaugeBackground {
 	  fill: #ddd;
+	}
+
+	#chartDiv{
+	    position: absolute;
+	    left: 0px;
+	    right: 0px;
+	    top: 0px;
+	    bottom: 0px;
 	}
 	</style>
 </head>
 <body>
+	<div id="chartDiv"></div>
 </body>
+<script src="../lib.js"></script>
 <script src="index.js"></script>
 </html>
