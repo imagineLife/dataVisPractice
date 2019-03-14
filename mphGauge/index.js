@@ -18,6 +18,10 @@ function resize(){
   
   let thisSVG = d3.select('.svgWrapper')
   let gObj = d3.select('.gWrapper')
+  let bgPath = d3.select('.gaugeBackground')
+  let coloredPath = d3.select('.gaugeForegroung')
+  let minLabel = d3.select('.minLabel')
+  let maxLabel = d3.select('.maxLabel')
   // set svg dimension based on resizing attrs
   thisSVG.attrs({
     "width" : resizedFnWidth,
@@ -28,19 +32,20 @@ function resize(){
   let {oR, iR} = makeRadii(resizedFnWidth, resizedFnHeight, .45)
 
   arcFn.outerRadius(oR).innerRadius(iR);
-
   gObj.attr('transform', `translate(${resizedFnWidth / 2},${oR + 20})`);
-  
-  // pieG.selectAll('path')
-  //   .attr('d', arcFn)
+  bgPath.attr('d', arcFn)
+  coloredPath.attr('d', arcFn)
+  minLabel.attr('transform', `translate(${-(iR + ((oR - iR) / 2))},15)`)
+  maxLabel.attr('transform', `translate(${(iR + ((oR - iR) / 2))},15)`)
 
 } 
 
-function makeArcLabel(parent,trans,ff,txt){
+function makeArcLabel(parent,trans,ff,txt, className){
     return parent.append("text")
       .attrs({
         "transform": trans, // Set between inner and outer Radius
-        "text-anchor": "middle"
+        "text-anchor": "middle",
+        'class': className
       })
       .style("font-family", ff)
       .text(txt)
@@ -147,8 +152,8 @@ let Gauge = function(configuration) {
 
 
     // Display Max value
-    var max = makeArcLabel(gObj, `translate(${(iR + ((oR - iR) / 2))},15)`, cfg.bigLabel.font, cfg.labelFormat(cfg.maxValue));
-    var min = makeArcLabel(gObj, `translate(${ -(iR + ((oR - iR) / 2))},15)`, cfg.bigLabel.font, cfg.minValue)
+    var max = makeArcLabel(gObj, `translate(${(iR + ((oR - iR) / 2))},15)`, cfg.bigLabel.font, cfg.labelFormat(cfg.maxValue), 'maxLabel');
+    var min = makeArcLabel(gObj, `translate(${ -(iR + ((oR - iR) / 2))},15)`, cfg.bigLabel.font, cfg.minValue, 'minLabel')
 
     // Display Current value  
     bigValueLabel = gObj.append("text")
