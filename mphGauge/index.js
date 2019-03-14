@@ -1,3 +1,38 @@
+//2. Build fn
+function resize(){
+
+  // Extract the width and height that was computed by CSS.
+  let resizedFnWidth = chartDiv.clientWidth;
+  let resizedFnHeight = chartDiv.clientHeight;
+
+  console.log('resizedFnWidth')
+  console.log(resizedFnWidth)
+  
+  let thisSVG = d3.select('.svgWrapper')
+  // set svg dimension based on resizing attrs
+  thisSVG.attrs({
+    "width" : resizedFnWidth,
+    "height" : resizedFnHeight,
+    "border": '1px soli green'
+  });
+
+  // //calc resized dimensions less margins
+  let resizedWidthLessMargins = resizedFnWidth - m.left - m.right;
+  let resizedHeightLessMargins = resizedFnHeight - m.top - m.bottom;
+
+  // colorLegendG
+  //   .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);  
+
+  // arcFunc.outerRadius( (resizedWidthLessMargins/2) * .7 );
+
+  // pieG
+  //   .attr('transform', `translate(${resizedWidthLessMargins/2}, ${resizedHeightLessMargins/2 })`);
+  
+  // pieG.selectAll('path')
+  //   .attr('d', arcFunc)
+
+} 
+
 function makeArcLabel(parent,trans,ff,txt){
     return parent.append("text")
       .attrs({
@@ -22,7 +57,7 @@ function makeNumPi(val1,val2,fn){
 }
 
 let m = {top:10, right:10, bottom: 10, left:10};
-
+let svgObj, grayBG, coloredArc;
 let Gauge = function(configuration) {
   let myObj = {}
 
@@ -49,9 +84,6 @@ let Gauge = function(configuration) {
     },
 
     arcColorFn:(value) => {
-        console.log('value')
-        console.log(value)
-        
         if(value <= 24999){
           return 'green';
         }
@@ -82,6 +114,7 @@ let Gauge = function(configuration) {
   function render(arcLength) {
 
     let {chartDiv, svgObj, gObj} = lib.makeD3ObjsFromParentID('chartDiv');
+    svgObj = svgObj;
 
     let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, m)
     
@@ -106,7 +139,7 @@ let Gauge = function(configuration) {
       gObj.attr("transform", `translate(${parentDivWidth / 2},${oR + 20})`)
 
     // Append background arc to svg
-    var grayBG = makeGaugePath(gObj,{ endAngle: deg2rad(90)}, "gaugeBackground", arcFn); 
+    grayBG = makeGaugePath(gObj,{ endAngle: deg2rad(90)}, "gaugeBackground", arcFn); 
 
     // Append foreground arc to svg
     coloredArc = makeGaugePath(gObj,{ endAngle: deg2rad(-90)}, "gaugeForegroung", arcFn); 
@@ -204,4 +237,7 @@ setTimeout(() => {
 
 setTimeout(() => {
     g.update(56789);
-}, 3000)
+}, 3000)    
+
+//1. Add Resise listener & fn call
+d3.select(window).on('resize',resize);
