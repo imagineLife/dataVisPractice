@@ -1,4 +1,12 @@
-//2. Build fn
+//make radii from div w && h
+function makeRadii(w,h,percent){
+  const smallerWorH = Math.min(w, h)
+  const oR = smallerWorH * percent;
+  const iR = oR * percent;
+  return {oR, iR}
+}
+
+//resize
 function resize(){
 
   // Extract the width and height that was computed by CSS.
@@ -9,6 +17,7 @@ function resize(){
   console.log(resizedFnWidth)
   
   let thisSVG = d3.select('.svgWrapper')
+  let gObj = d3.select('.gWrapper')
   // set svg dimension based on resizing attrs
   thisSVG.attrs({
     "width" : resizedFnWidth,
@@ -16,20 +25,14 @@ function resize(){
     "border": '1px soli green'
   });
 
-  // //calc resized dimensions less margins
-  let resizedWidthLessMargins = resizedFnWidth - m.left - m.right;
-  let resizedHeightLessMargins = resizedFnHeight - m.top - m.bottom;
+  let {oR, iR} = makeRadii(resizedFnWidth, resizedFnHeight, .45)
 
-  // colorLegendG
-  //   .attr('transform', `translate(${resizedWidthLessMargins + 60}, 150)`);  
+  arcFn.outerRadius(oR).innerRadius(iR);
 
-  // arcFunc.outerRadius( (resizedWidthLessMargins/2) * .7 );
-
-  // pieG
-  //   .attr('transform', `translate(${resizedWidthLessMargins/2}, ${resizedHeightLessMargins/2 })`);
+  gObj.attr('transform', `translate(${resizedFnWidth / 2},${oR + 20})`);
   
   // pieG.selectAll('path')
-  //   .attr('d', arcFunc)
+  //   .attr('d', arcFn)
 
 } 
 
@@ -57,7 +60,7 @@ function makeNumPi(val1,val2,fn){
 }
 
 let m = {top:10, right:10, bottom: 10, left:10};
-let svgObj, grayBG, coloredArc;
+let svgObj, grayBG, coloredArc, arcFn;
 let Gauge = function(configuration) {
   let myObj = {}
 
@@ -118,10 +121,8 @@ let Gauge = function(configuration) {
 
     let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, m)
     
-    let smallerWorH = Math.min(parentDivWidth, parentDivHeight)
-    
-    const oR = smallerWorH * .45;
-    const iR = oR * .45;
+    let {oR, iR} = makeRadii(parentDivWidth, parentDivHeight, .45)
+
     const gaugeWidth = oR - iR;
 
     // Arc Defaults
