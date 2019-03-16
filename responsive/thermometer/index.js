@@ -18,14 +18,19 @@ const appendRect = (parent,attrsObj) => {
     .style("fill", "#FFFFFF")
 }
 
-var width = 80,
-    height = 180,
-    maxTemp = 20.2,
+let margins = {top: 15, right: 15, bottom: 15, left: 15}
+
+let width = document.getElementById('thermo').clientWidth
+let height = document.getElementById('thermo').clientHeight
+let wLM = width - margins.right - margins.left
+let hLM = height - margins.top - margins.bottom
+
+var maxTemp = 20.2,
     minTemp = 15.4,
     currentTemp = 19.2;
 
-var bottomY = height - 5,
-    topY = 5,
+var bottomY = hLM,
+    topY = margins.top,
     bulbRadius = 20,
     tubeWidth = 21.5,
     tubeBorderWidth = 1,
@@ -37,14 +42,13 @@ var bulb_cy = bottomY - bulbRadius,
     bulb_cx = width/2,
     top_cy = topY + tubeWidth/2;
 
+let chartDiv = d3.select('#thermo')
 
-var svg = d3.select("#thermo")
-  .append("svg")
+var svg = chartDiv.append("svg")
   .attrs({
-    "width": width,
-    "height": height
+    "width": wLM,
+    "height": hLM
   });
-
 
 var defs = svg.append("defs");
 
@@ -113,7 +117,7 @@ let tubeFillColorAttrs = {
   "width": tubeWidth - tubeBorderWidth
 }
 // Rect element for tube fill colour
-let tubeFillColor = appendRect(svg, tubeFillColorAttrs)
+let tubeFillColored = appendRect(svg, tubeFillColorAttrs)
   .style("stroke", "none");
 
 
