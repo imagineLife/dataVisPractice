@@ -80,11 +80,11 @@ let tubeRectAttrs = {
   "x": centerW - tubeWidth/2,
   "y": top_cy,
   "height": bulb_cy - top_cy,
-  "width": tubeWidth
+  "width": tubeWidth,
+  'class': 'tubeRect'
 }
 // Rect element for tube
 let tubeRect = appendRect(svg, tubeRectAttrs)
-  
   .style("stroke", tubeBorderColor)
   .style("stroke-width", tubeBorderWidth + "px");
 
@@ -252,6 +252,7 @@ let resize = () => {
    mainThermoBulb.attr('cx', centerW)
    mainFillBulb.attr('cx', centerW)
    tubeFillColored.attr('x', centerW - (tubeWidth - tubeBorderWidth)/2)
+   tubeRect.attr('x',centerW - tubeWidth/2)
    redRect.attr("x", centerW - (tubeWidth - 10)/2,)
 }       
 
