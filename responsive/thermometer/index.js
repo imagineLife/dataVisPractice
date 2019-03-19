@@ -236,7 +236,6 @@ let resize = () => {
    
    let thermo = document.getElementById('thermo')
   let w = thermo.clientWidth
-  centerW = w /2;
   let h = thermo.clientHeight
    //set svg dimension based on resizing attrs
    svg.attrs({
@@ -247,8 +246,14 @@ let resize = () => {
    svgAxis.attr('transform', `translate(${(w/2 - tubeWidth/2)},0)`)
 
 
+    centerW = w /2;
    //move bulb
    mainThermoBulb.attr('cx', centerW)
+   mainFillBulb.attr('cx', centerW)
+   // console.log('tubeFillColored')
+   // console.log(tubeFillColored)
+   
+   tubeFillColored.attr('x', centerW - (tubeWidth - tubeBorderWidth)/2,)
 }       
 
 //Add Resise listener & fn call
