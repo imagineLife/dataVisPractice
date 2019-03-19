@@ -39,7 +39,6 @@ var bottomY = hLM,
     tubeBorderColor = "#999999";
 
 var bulb_cy = bottomY - bulbRadius,
-    bulb_cx = width/2,
     top_cy = topY + tubeWidth/2
     centerW = width/2;
 
@@ -98,7 +97,7 @@ let whiteFillAttrs = {
 
 let redBulbAttrs = {
   "r": bulbRadius,
-  "cx": bulb_cx,
+  "cx": centerW,
   "cy": bulb_cy
 }
 
@@ -192,7 +191,7 @@ let redRect = appendRect(svg, redMurcRectAttrs)
 
 let mainBulbFillAttrs = {
   "r": bulbRadius - 6,
-  "cx": bulb_cx,
+  "cx": centerW,
   "cy": bulb_cy
 }
 
@@ -237,6 +236,7 @@ let resize = () => {
    
    let thermo = document.getElementById('thermo')
   let w = thermo.clientWidth
+  centerW = w /2;
   let h = thermo.clientHeight
    //set svg dimension based on resizing attrs
    svg.attrs({
@@ -246,6 +246,9 @@ let resize = () => {
 
    svgAxis.attr('transform', `translate(${(w/2 - tubeWidth/2)},0)`)
 
+
+   //move bulb
+   mainThermoBulb.attr('cx', centerW)
 }       
 
 //Add Resise listener & fn call
