@@ -157,7 +157,8 @@ var yScale = d3.scaleLinear()
       "x1": centerW - tubeWidth/2,
       "x2": centerW + tubeWidth/2 + 22,
       "y1": yScale(t),
-      "y2": yScale(t)
+      "y2": yScale(t),
+      'class': 'anonoLine'
     })
     .style("stroke", tubeBorderColor)
     .style("stroke-width", "1px")
@@ -250,10 +251,8 @@ let resize = () => {
    //move bulb
    mainThermoBulb.attr('cx', centerW)
    mainFillBulb.attr('cx', centerW)
-   // console.log('tubeFillColored')
-   // console.log(tubeFillColored)
-   
-   tubeFillColored.attr('x', centerW - (tubeWidth - tubeBorderWidth)/2,)
+   tubeFillColored.attr('x', centerW - (tubeWidth - tubeBorderWidth)/2)
+   redRect.attr("x", centerW - (tubeWidth - 10)/2,)
 }       
 
 //Add Resise listener & fn call
