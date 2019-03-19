@@ -40,11 +40,12 @@ var bottomY = hLM,
 
 var bulb_cy = bottomY - bulbRadius,
     bulb_cx = width/2,
-    top_cy = topY + tubeWidth/2;
+    top_cy = topY + tubeWidth/2
+    centerW = width/2;
 
 let chartDiv = d3.select('#thermo')
 
-var svg = chartDiv.append("svg")
+let svg = chartDiv.append("svg")
   .attrs({
     "width": wLM,
     "height": hLM
@@ -68,7 +69,7 @@ let bulbGradStopTwo = appendStop(bulbGradient, "90%", mercuryColor)
 
 let whiteTubeTopAttrs = {
   "r": tubeWidth/2,
-  "cx": width/2,
+  "cx": centerW,
   "cy": top_cy
 }
 // Circle element for rounded tube top
@@ -77,7 +78,7 @@ let roundedTubeTop = appendCircle(svg, whiteTubeTopAttrs, "#FFFFFF",tubeBorderCo
 
 
 let tubeRectAttrs = {
-  "x": width/2 - tubeWidth/2,
+  "x": centerW - tubeWidth/2,
   "y": top_cy,
   "height": bulb_cy - top_cy,
   "width": tubeWidth
@@ -91,7 +92,7 @@ let tubeRect = appendRect(svg, tubeRectAttrs)
 
 let whiteFillAttrs = {
   "r": tubeWidth/2 - tubeBorderWidth/2,
-  "cx": width/2,
+  "cx": centerW,
   "cy": top_cy
 }
 
@@ -111,7 +112,7 @@ let mainThermoBulb = appendCircle(svg, redBulbAttrs, "#FFFFFF", tubeBorderColor)
   .style("stroke-width", tubeBorderWidth + "px");
 
 let tubeFillColorAttrs = {
-  "x": width/2 - (tubeWidth - tubeBorderWidth)/2,
+  "x": centerW - (tubeWidth - tubeBorderWidth)/2,
   "y": top_cy,
   "height": bulb_cy - top_cy,
   "width": tubeWidth - tubeBorderWidth
@@ -154,8 +155,8 @@ var yScale = d3.scaleLinear()
   svg.append("line")
     .attrs({
       "id": label + "Line",
-      "x1": width/2 - tubeWidth/2,
-      "x2": width/2 + tubeWidth/2 + 22,
+      "x1": centerW - tubeWidth/2,
+      "x2": centerW + tubeWidth/2 + 22,
       "y1": yScale(t),
       "y2": yScale(t)
     })
@@ -165,7 +166,7 @@ var yScale = d3.scaleLinear()
 
   svg.append("text")
     .attrs({
-      "x": width/2 + tubeWidth/2 + 2,
+      "x": centerW + tubeWidth/2 + 2,
       "y": yScale(t) + textOffset,
       "dy": isMax ? null : "0.75em"
     })
@@ -180,7 +181,7 @@ var tubeFill_bottom = bulb_cy,
     tubeFill_top = yScale(currentTemp);
 
 let redMurcRectAttrs = {
-  "x": width/2 - (tubeWidth - 10)/2,
+  "x": centerW - (tubeWidth - 10)/2,
   "y": tubeFill_top,
   "width": tubeWidth - 10,
   "height": tubeFill_bottom - tubeFill_top
@@ -212,7 +213,7 @@ var axis = d3.axisLeft()
 // Add the axis to the image
 var svgAxis = svg.append("g")
   .attr("id", "tempScale")
-  .attr("transform", "translate(" + (width/2 - tubeWidth/2) + ",0)")
+  .attr("transform", "translate(" + (centerW - tubeWidth/2) + ",0)")
   .call(axis);
 
 // Format text labels
@@ -234,13 +235,16 @@ svgAxis.selectAll(".tick line")
 //2. Build fn
 let resize = () => {
    
-   let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
-
+   let thermo = document.getElementById('thermo')
+  let w = thermo.clientWidth
+  let h = thermo.clientHeight
    //set svg dimension based on resizing attrs
-   svgObj.attrs({
-       "width" : parentDivWidth,
-       "height" : parentDivHeight
+   svg.attrs({
+       "width" : w,
+       "height" : h,
    });
+
+   svgAxis.attr('transform', `translate(${(w/2 - tubeWidth/2)},0)`)
 
 }       
 
