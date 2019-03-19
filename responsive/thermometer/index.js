@@ -138,7 +138,7 @@ if (domain[1] - maxTemp < 0.66 * step)
 
 
 // D3 scale object
-var scale = d3.scaleLinear()
+var yScale = d3.scaleLinear()
   .range([bulb_cy - bulbRadius/2 - 8.5, top_cy])
   .domain(domain);
 
@@ -156,8 +156,8 @@ var scale = d3.scaleLinear()
       "id": label + "Line",
       "x1": width/2 - tubeWidth/2,
       "x2": width/2 + tubeWidth/2 + 22,
-      "y1": scale(t),
-      "y2": scale(t)
+      "y1": yScale(t),
+      "y2": yScale(t)
     })
     .style("stroke", tubeBorderColor)
     .style("stroke-width", "1px")
@@ -166,7 +166,7 @@ var scale = d3.scaleLinear()
   svg.append("text")
     .attrs({
       "x": width/2 + tubeWidth/2 + 2,
-      "y": scale(t) + textOffset,
+      "y": yScale(t) + textOffset,
       "dy": isMax ? null : "0.75em"
     })
     .text(label)
@@ -177,7 +177,7 @@ var scale = d3.scaleLinear()
 
 
 var tubeFill_bottom = bulb_cy,
-    tubeFill_top = scale(currentTemp);
+    tubeFill_top = yScale(currentTemp);
 
 let redMurcRectAttrs = {
   "x": width/2 - (tubeWidth - 10)/2,
@@ -206,7 +206,7 @@ var tickValues = d3.range((domain[1] - domain[0])/step + 1).map(function(v) { re
 
 // D3 axis object for the temperature scale
 var axis = d3.axisLeft()
-  .scale(scale)
+  .scale(yScale)
   .tickValues(tickValues)
 
 // Add the axis to the image
@@ -231,4 +231,18 @@ svgAxis.selectAll(".tick line")
   .style("shape-rendering", "crispEdges")
   .style("stroke-width", "1px");
 
+//2. Build fn
+let resize = () => {
+   
+   let { parentDivWidth, parentDivHeight, divWidthLessMargins, divHeightLessMargins } = lib.getDimsFromParent(chartDiv, margin);
 
+   //set svg dimension based on resizing attrs
+   svgObj.attrs({
+       "width" : parentDivWidth,
+       "height" : parentDivHeight
+   });
+
+}       
+
+//Add Resise listener & fn call
+window.addEventListener("resize", resize);
