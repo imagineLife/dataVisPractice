@@ -139,42 +139,42 @@ if (domain[1] - maxTemp < 0.66 * step)
 
 // D3 scale object
 var yScale = d3.scaleLinear()
-  .range([bulb_cy - bulbRadius/2 - 8.5, top_cy])
-  .domain(domain);
+  .domain(domain)
+  .range([bulb_cy - bulbRadius/2 - 8.5, top_cy]);
 
 
 // Max and min temperature lines
-[minTemp, maxTemp].forEach(function(t) {
+// [minTemp, maxTemp].forEach(function(t, ind) {
 
-  var isMax = (t == maxTemp),
-      label = (isMax ? "max" : "min"),
-      textCol = (isMax ? "rgb(230, 0, 0)" : "rgb(0, 0, 230)"),
-      textOffset = (isMax ? -4 : 4);
+//   var isMax = (t == maxTemp),
+//       label = (isMax ? "max" : "min"),
+//       textCol = (isMax ? "rgb(230, 0, 0)" : "rgb(0, 0, 230)"),
+//       textOffset = (isMax ? -4 : 4);
 
-  svg.append("line")
-    .attrs({
-      "id": label + "Line",
-      "x1": centerW - tubeWidth/2,
-      "x2": centerW + tubeWidth/2 + 22,
-      "y1": yScale(t),
-      "y2": yScale(t),
-      'class': 'anonoLine'
-    })
-    .style("stroke", tubeBorderColor)
-    .style("stroke-width", "1px")
-    .style("shape-rendering", "crispEdges");
+//   svg.append("line")
+//     .attrs({
+//       "id": label + "Line",
+//       "x1": centerW - tubeWidth/2,
+//       "x2": centerW + tubeWidth/2 + 22,
+//       "y1": yScale(t),
+//       "y2": yScale(t),
+//       'class': `line${ind}`
+//     })
+//     .style("stroke", tubeBorderColor)
+//     .style("stroke-width", "1px")
+//     .style("shape-rendering", "crispEdges");
 
-  svg.append("text")
-    .attrs({
-      "x": centerW + tubeWidth/2 + 2,
-      "y": yScale(t) + textOffset,
-      "dy": isMax ? null : "0.75em"
-    })
-    .text(label)
-    .style("fill", textCol)
-    .style("font-size", "11px")
+//   svg.append("text")
+//     .attrs({
+//       "x": centerW + tubeWidth/2 + 2,
+//       "y": yScale(t) + textOffset,
+//       "dy": isMax ? null : "0.75em"
+//     })
+//     .text(label)
+//     .style("fill", textCol)
+//     .style("font-size", "11px")
 
-});
+// });
 
 
 var tubeFill_bottom = bulb_cy,
@@ -253,7 +253,9 @@ let resize = () => {
    mainFillBulb.attr('cx', centerW)
    tubeFillColored.attr('x', centerW - (tubeWidth - tubeBorderWidth)/2)
    tubeRect.attr('x',centerW - tubeWidth/2)
-   redRect.attr("x", centerW - (tubeWidth - 10)/2,)
+   redRect.attr("x", centerW - (tubeWidth - 10)/2)
+   roundedTubeTop.attr('cx', centerW).attr('cy', top_cy)
+   // d3.select(`.line1`).attrs()
 }       
 
 //Add Resise listener & fn call
