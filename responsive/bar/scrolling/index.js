@@ -95,7 +95,21 @@ d3.json("npm.json", function(data){
     yScale = makeLinearScale( dataLimits.maxY*1.1, dataLimits.minY-(dataLimits.minY*0.1), 0,+gWrapper.attr("height"))
 
     var d3Zoom = d3.zoom()
+
+    // https://github.com/d3/d3-zoom#zoom_scaleExtent
+    /*
+      Array of 2 vals:
+      [ max zoom-out (1 == 100% of xScale range), 
+      max zoom-in (here, 10x scale) ]
+        */
       .scaleExtent([1,10])
+
+    // https://github.com/d3/d3-zoom#zoom_translateExtent
+    /*
+      Array of 2 arrays, restricting the panning && zooming
+      [topLeft [x,y]]
+      [bottomRight [[x,y]]]
+    */
       .translateExtent([[0,0],[960,500]])
       .on("zoom",zoomed);
   
