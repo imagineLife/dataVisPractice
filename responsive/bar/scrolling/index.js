@@ -90,17 +90,20 @@ d3.json("npm.json", function(data){
 
     var clipObj = makeClipPath(gWrapper, "clipObj", gWrapperWidth, gWrapperHeight, 'clipClass');
 
-    xScale = makeLinearScale(0, 12, 0,+gWrapper.attr("width"));
+    xScale = makeLinearScale(0, 160, 0,+gWrapper.attr("width"));
 
     yScale = makeLinearScale( dataLimits.maxY*1.1, dataLimits.minY-(dataLimits.minY*0.1), 0,+gWrapper.attr("height"))
 
-    var d3Zoom = d3.zoom().on("zoom",zoomed);
+    var d3Zoom = d3.zoom()
+      .scaleExtent([1,10])
+      .translateExtent([[0,0],[960,500]])
+      .on("zoom",zoomed);
   
     d3xAxis = d3.axisBottom(xScale).ticks(8);
 
     d3yAxis = d3.axisLeft(yScale);
 
-    let gXObj = makeAxisGWrapper(gWrapper, `translate(0, ${gWrapper.attr('height')})`, 'axis axis--x', d3xAxis);
+    gXObj = makeAxisGWrapper(gWrapper, `translate(0, ${gWrapper.attr('height')})`, 'axis axis--x', d3xAxis);
 
     let gXgYObjObj = makeAxisGWrapper(gWrapper, `translate(0, 0)`, 'axis axis--y', d3yAxis);
     
