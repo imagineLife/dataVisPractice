@@ -1,0 +1,574 @@
+[
+  {
+    "measureNumber": 0,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 1,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 2,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 3,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 4,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 5,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 6,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 7,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 8,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 9,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 10,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 11,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 13,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 14,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 15,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 16,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 17,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 18,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 19,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 21,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 22,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 23,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 24,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 25,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 26,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 27,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 28,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 30,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 31,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 32,
+    "howMany": 10
+  },
+  {
+    "measureNumber": 33,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 34,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 35,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 36,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 37,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 38,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 39,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 40,
+    "howMany": 13
+  },
+  {
+    "measureNumber": 41,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 42,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 44,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 45,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 46,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 48,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 49,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 51,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 52,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 54,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 55,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 57,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 58,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 59,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 60,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 61,
+    "howMany": 10
+  },
+  {
+    "measureNumber": 62,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 63,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 64,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 65,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 66,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 67,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 68,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 70,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 71,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 72,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 73,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 75,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 76,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 77,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 78,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 79,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 80,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 81,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 82,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 83,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 84,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 85,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 86,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 87,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 88,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 89,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 90,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 91,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 92,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 93,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 94,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 95,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 96,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 97,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 98,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 99,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 100,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 101,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 102,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 103,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 105,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 106,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 107,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 109,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 110,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 111,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 112,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 113,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 114,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 115,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 116,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 117,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 118,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 119,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 121,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 122,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 123,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 124,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 125,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 126,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 127,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 128,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 129,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 130,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 132,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 133,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 134,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 135,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 136,
+    "howMany": 9
+  },
+  {
+    "measureNumber": 137,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 138,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 139,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 140,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 141,
+    "howMany": 8
+  },
+  {
+    "measureNumber": 142,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 143,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 144,
+    "howMany": 2
+  },
+  {
+    "measureNumber": 145,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 146,
+    "howMany": 5
+  },
+  {
+    "measureNumber": 147,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 148,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 149,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 150,
+    "howMany": 1
+  },
+  {
+    "measureNumber": 151,
+    "howMany": 6
+  },
+  {
+    "measureNumber": 152,
+    "howMany": 7
+  },
+  {
+    "measureNumber": 153,
+    "howMany": 4
+  },
+  {
+    "measureNumber": 154,
+    "howMany": 3
+  },
+  {
+    "measureNumber": 155,
+    "howMany": 12
+  },
+  {
+    "measureNumber": 156,
+    "howMany": 9
+  }
+]
