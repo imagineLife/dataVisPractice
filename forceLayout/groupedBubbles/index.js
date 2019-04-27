@@ -1,3 +1,5 @@
+let w=500, h=500;
+
 //enter circles
 function enterCircle(enterSelection){
 	let circleGroup = enterSelection.append('g')
@@ -16,22 +18,43 @@ function enterCircle(enterSelection){
 //fn for ticking simulation
 //updates x && y position of each circle
 function simTicked(){
-	d3.selectAll('.artistCircle').attrs({
+	let theCircles = d3.selectAll('.artistCircle')
+	
+	//update x && y of each circle
+	theCircles.attrs({
 		cx: d => d.x,
 		cy: d => d.y
 	})
 }
 
-//	D3-Force!
-let d3Sim =  d3.forceSimulation();
+/*
+		D3-Force
+	the d3Sim is collection of FORCES about
+	- WHERE the elements go
+	- HOW the elements interact
+	
+*/
+
+let d3Sim =  d3.forceSimulation()
+	//move to the right
+	.force('x', d3.forceX(w/2)
+		.strength(0.05))
+	//move down
+	.force('y', d3.forceY(h/2)
+		.strength(0.05))
+	//STOP from colliding
+	//gets the radius where they should not collide
+	.force('collide', d3.forceCollide(10))
+
+;
 
 //svg
 let svg = d3.select('#chart')
 	.append('svg')
 	.attrs({
 		class: 'svgWrapper',
-		height: 500,
-		width: 500
+		height: h,
+		width: w
 	})
 
 //g
