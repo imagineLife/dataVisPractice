@@ -1,5 +1,5 @@
 let 
-	w=500, 
+	w=750, 
 	h=500,
 	radScale = d3.scaleSqrt()
 		.range([10,90]);
@@ -67,14 +67,20 @@ function simTicked(){
 
 let d3Sim =  d3.forceSimulation()
 	//move to the right
-	.force('x', d3.forceX()
+	.force('x', d3.forceX(d => {
+		if(d.decade == 'pre'){
+			return -(w/3.5)
+		}else{
+			return (w/3.5)
+		}
+	})
 		.strength(0.05))
 	//move down
 	.force('y', d3.forceY()
 		.strength(0.05))
 	//STOP from colliding
 	//gets the radius where they should not collide
-	.force('collide', d3.forceCollide(d => radScale(d.sales) + (.1 * radScale(d.sales)) ));
+	.force('collide', d3.forceCollide(d => radScale(d.sales) + (.05 * radScale(d.sales)) ));
 
 //svg
 let svg = d3.select('#chart')
@@ -133,6 +139,30 @@ d3.json('./data.json').then(data => {
 	d3Sim.nodes(data)
 		.on('tick', simTicked)
 	
+	//merge button
+	d3.select('#merge').on('click', () => {
+		console.log('MERGING!');
+
+		//reset forceX to middle-screen
+		d3Sim.force('x', d3.forceX(0).strength(0.1))
+		.alphaTarget(0.5)
+		.restart()
+
+	})
+
+	//split button
+	d3.select('#split').on('click', () => {
+		console.log('SPLITTING!');
+		d3Sim.force('x', d3.forceX(d => {
+			if(d.decade == 'pre'){
+				return -(w/3.5)
+			}else{
+				return (w/3.5)
+			}
+		}).strength(0.1))
+		.alphaTarget(0.5)
+		.restart()
+	})
 
 }).catch(e => {
 	console.log('e')
