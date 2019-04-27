@@ -1,4 +1,8 @@
-let w=500, h=500;
+let 
+	w=500, 
+	h=500,
+	radScale = d3.scaleSqrt()
+		.range([10,90]);
 
 //enter circles
 function enterCircle(enterSelection){
@@ -8,7 +12,7 @@ function enterCircle(enterSelection){
 	let circle = circleGroup.append('circle')
 		.attrs({
 			class: 'artistCircle',
-			r: 10,
+			r: d => radScale(d.sales),
 			fill: 'steelblue',
 			cx: 100,
 			cy: 100
@@ -63,6 +67,9 @@ let gWrapper = svg.append('g')
 
 //load data
 d3.json('./data.json').then(data => {
+
+	//update radScale domain
+	radScale.domain(d3.extent(data, d => d.sales))
 
 	//make circle dataJoin
 	let circleDataJoin = gWrapper.selectAll('.artistCircle')
