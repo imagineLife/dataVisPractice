@@ -13,9 +13,32 @@ function enterCircle(enterSelection){
 		.attrs({
 			class: 'artistCircle',
 			r: d => radScale(d.sales),
-			fill: 'steelblue',
+			fill: d => `url(#${d.name.toLowerCase().replace(/ /g, "-")})`,
 			cx: 100,
 			cy: 100
+		}).on('click', d =>{
+			console.log('d')
+			console.log(d)
+			
+		})
+}
+
+function enterPattern(enterSelection){
+	enterSelection.append('pattern')
+		.attrs({
+			id: d => d.name.toLowerCase().replace(/ /g, "-"),
+			height: d => "100%",
+			width: d => "100%",
+			patternContentUnits: 'objectBoundingBox',
+			class: 'artist-pattern'
+		})
+	.append('image')
+		.attrs({
+			height: 1,
+			width: 1,
+			preserveAspectRatio: 'none',
+			"xmlns:xlink": 'http://www.w3.org/1999/xlink',
+			"xlink:href": d => d.imgSrc,
 		})
 }
 
@@ -36,21 +59,22 @@ function simTicked(){
 	the d3Sim is collection of FORCES about
 	- WHERE the elements go
 	- HOW the elements interact
+
+	NOTE: for an animated intro, set forceX && forceY to w/2 && h/2
+		AND remove translation of g Wrapper
 	
 */
 
 let d3Sim =  d3.forceSimulation()
 	//move to the right
-	.force('x', d3.forceX(w/2)
+	.force('x', d3.forceX()
 		.strength(0.05))
 	//move down
-	.force('y', d3.forceY(h/2)
+	.force('y', d3.forceY()
 		.strength(0.05))
 	//STOP from colliding
 	//gets the radius where they should not collide
-	.force('collide', d3.forceCollide(10))
-
-;
+	.force('collide', d3.forceCollide(d => radScale(d.sales) + (.1 * radScale(d.sales)) ));
 
 //svg
 let svg = d3.select('#chart')
@@ -61,9 +85,12 @@ let svg = d3.select('#chart')
 		width: w
 	})
 
+//definitions	
+let defs = svg.append('defs')
+
 //g
 let gWrapper = svg.append('g')
-	.attr('transform', `translate(0,0)`)
+	.attr('transform', `translate(${w/2},${h/2})`)
 
 //load data
 d3.json('./data.json').then(data => {
@@ -78,12 +105,16 @@ d3.json('./data.json').then(data => {
 	//join the enter method
 	circleDataJoin.join(enterCircle)
 
+	//make pattern dataJoin
+	let defsDataJoin = defs.selectAll('.artist-pattern')
+		.data(data)
+	defsDataJoin.join(enterPattern)
+
+
 	//feed the simulation the data
-	d3Sim.nodes(data)
-		.on('tick', simTicked)
 	/*
 		simulation is like a clock, TICKING
-		THIS assigns more attributes to the data objects...
+		.nodes() assigns more attributes to the data objects...
 		ie...
 		{
 			decade: "pre"
@@ -96,9 +127,11 @@ d3.json('./data.json').then(data => {
 			x: 0
 			y: 0
 		}
+
+		NOTE: this ONLY works AFTER the data-join
 	*/
-
-
+	d3Sim.nodes(data)
+		.on('tick', simTicked)
 	
 
 }).catch(e => {
