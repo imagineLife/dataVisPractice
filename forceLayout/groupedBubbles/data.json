@@ -1,0 +1,92 @@
+[
+	{
+		"id": "Steely Dan",
+		"name": "Steely Dan",
+		"sales": 40,
+		"decade": "pre"
+	},
+	{
+		"id": "Beyonce",
+		"name": "Beyonce",
+		"sales": 34,
+		"decade": "pre"
+	},
+	{
+		"id": "Madonna",
+		"name": "Madonna",
+		"sales": 300,
+		"decade": "pre"
+	},
+	{
+		"id": "Adam Levine",
+		"name": "Adam Levine",
+		"sales": 20,
+		"decade": "pre"
+	},
+	{
+		"id": "Hall And Oats",
+		"name": "Hall And Oats",
+		"sales": 125,
+		"decade": "pre"
+	},
+	{
+		"id": "Nicki Minaj",
+		"name": "Nicki Minaj",
+		"sales": 80,
+		"decade": "pre"
+	},
+	{
+		"id": "Drake",
+		"name": "Drake",
+		"sales": 10,
+		"decade": "pre"
+	},
+	{
+		"id": "Justin Bieber",
+		"name": "Justin Bieber",
+		"sales": 50,
+		"decade": "pre"
+	},
+	{
+		"id": "Kesha",
+		"name": "Kesha",
+		"sales": 60,
+		"decade": "pre"
+	},
+	{
+		"id": "The Eagles",
+		"name": "The Eagles",
+		"sales": 150,
+		"decade": "pre"
+	},
+	{
+		"id": "The Cars",
+		"name": "The Cars",
+		"sales": 23,
+		"decade": "pre"
+	},
+	{
+		"id": "Pat benetar",
+		"name": "Pat benetar",
+		"sales": 25,
+		"decade": "pre"
+	},
+	{
+		"id": "Lady Gaga",
+		"name": "Lady Gaga",
+		"sales": 27,
+		"decade": "pre"
+	},
+	{
+		"id": "Tina Turner",
+		"name": "Tina Turner",
+		"sales": 84,
+		"decade": "pre"
+	},
+	{
+		"id": "Fetty Wap",
+		"name": "Fetty Wap",
+		"sales": 8,
+		"decade": "pre"
+	}
+]

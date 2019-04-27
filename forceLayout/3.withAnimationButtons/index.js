@@ -7,7 +7,7 @@ function startAndStopAnimation(){
     d3Sim.restart()
     setTimeout(() => {
         d3Sim.stop()
-    }, 300)
+    }, 150)
 }
 
 var width = 640,
@@ -185,8 +185,9 @@ d3Sim.stop()
 // start the force layout (The tick handler will stop
 // the layout after one iteration.)
 
-d3.select('advance').on('click', () => {
+d3.select('#advance').on('click', () => {
     console.log('advance clicked!')
+    d3Sim.restart()
 });
 
 // When the user clicks on the "Play" button, we're

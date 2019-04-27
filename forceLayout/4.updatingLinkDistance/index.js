@@ -66,7 +66,7 @@ function tickFn(){
     console.log('tickFn')
 
     // In full speed, set the new positions
-    if(d3Sim.isFullSpeed){
+    if(d3Sim.fullSpeed){
         console.log('FULL SPEED!')
         
         nodes.attrs({
@@ -116,7 +116,7 @@ function tickFn(){
 //animStepInt how fast/sow the animation executes in ms
 let width = 640,
     height = 640, 
-    animStepInt = 50,
+    animStepInt = 100,
     d3Sim = null,
     nodes = null,
     links = null;

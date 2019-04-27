@@ -17,8 +17,8 @@ function drawChart(chartData){
   console.log('drawingChart!')
   console.log(chartData)
 
-  //set 
-  links = linkGWrapper
+  //build links
+  links = linkGWrapper //CAN append straight to svgObj
     .selectAll("line")
     .data(chartData.links)
     .enter().append("line")
@@ -26,7 +26,7 @@ function drawChart(chartData){
     .attr('class', 'linkLine');
   
   // Add circles for every node in the dataset
-  nodes = nodeGWrapper
+  nodes = nodeGWrapper //CAN append straight to svgObj
     .selectAll("circle")
     .data(chartData.nodes)
     .enter().append("circle")
@@ -35,11 +35,11 @@ function drawChart(chartData){
       "fill": d => colorScale(d.group),
       'class': 'circleNode'
     })
-    // .call(d3.drag()
-    //     .on("start", dragstarted)
-    //     .on("drag", dragged)
-    //     .on("end", dragended)
-    // );
+    .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+    );
   
   // Basic tooltips
   nodes.append("title")
@@ -72,10 +72,12 @@ var forceSim = d3.forceSimulation()
     .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2))
     
     //SPREAD out
-    .force("charge", d3.forceManyBody().strength(-50))
+    //STRENGTH -> farther - from 0, farther the spread
+    .force("charge", d3.forceManyBody().strength(-60))
     
     //keep them from colliding
-    .force("collide", d3.forceCollide(10).strength(0.9))
+    //forceCollide -> distance from relative nodes
+    .force("collide", d3.forceCollide(10).strength(0.3))
     
     //a link simulation
     .force("link", d3.forceLink().id(d => d.id));
@@ -92,4 +94,16 @@ function dragstarted(d) {
   if (!d3.event.active) forceSim.alphaTarget(0.7).restart();
     d.fx = d.x;
     d.fy = d.y;
+}
+
+// Fix the position of the node that we are looking at
+function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+}
+// Let the node do what it wants again once we've looked at it
+function dragended(d) {
+if (!d3.event.active) forceSim.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
 }
