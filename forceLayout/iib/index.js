@@ -1,27 +1,37 @@
 prepData('iibData.json').then(data => {
 
-	let 
-	w=1000, 
-	h=750
-
 	let d3Sim =  d3.forceSimulation()
 	//move to the right
-	.force('x', d3.forceX(0)
-		
-	// 	if(d.decade == 'pre'){
-	// 		return -(w/3.5)
-	// 	}else{
-	// 		return (w/3.5)
-	// 	}
-	// })
-		.strength(0.02))
+	.force('x', d3.forceX(d => {
+		//Individual
+		if(d["onePerson"] == true && d["IndividualInATeam"] == null){
+			return -(w/2.75)
+		//Individual of a group
+		}if(d["onePerson"] == true && d["IndividualInATeam"] == true){
+			return 0
+		//Group
+		}else{
+			return w/2.75
+		}
+	})
+	.strength(0.1))
 	//move down
-	.force('y', d3.forceY()
-		.strength(0.02))
+	.force('y', d3.forceY().strength(0.1))
 	//STOP from colliding
 	//includes the radius @ which bubbles should not collide
-	.force('collide', d3.forceCollide(d => radiusVal + (.05 * radiusVal) ));
-
+	.force('collide', d3.forceCollide(d => radiusVal + (.05 * radiusVal) ))
+	
+	/*
+		The alpha decay rate determines how quickly the current alpha
+		 interpolates towards the desired target alpha;
+		since the default target alpha is zero, by default
+		 this controls how quickly the simulation cools. 
+		Higher decay rates cause the simulation to stabilize more quickly, 
+		 but risk getting stuck in a local minimum; 
+		lower values cause the simulation to take longer to run, 
+		 but typically converge on a better layout
+	*/
+	.alphaDecay(.04);
 
 	/*
 		Prepare UI elements
@@ -29,6 +39,12 @@ prepData('iibData.json').then(data => {
 	*/
 
 	let chartDiv = d3.select("#chart");
+
+	let { width, height, widthLessMargins, heightLessMargins } = getWidthAndHeight("chart", margin)
+	
+	const w = width, h = 800;
+
+
 	let svgWrapper = appendToParent(chartDiv, 'svg', 'svgWrapper', null).attrs({
 		height: h,
 		width: w
@@ -63,28 +79,35 @@ prepData('iibData.json').then(data => {
 			y: 
 		}
 
-		NOTE: this ONLY works AFTER the data-join
+		NOTE: this ONLY works AFTER the data-join is instantiated
 	*/
 	d3Sim.nodes(data)
 		.on('tick', simTicked)
-	
-	//merge button
-	d3.select('#merge').on('click', () => {
-		console.log('MERGING!');
 
-		//reset forceX to middle-screen
-		d3Sim.force('x', d3.forceX(0).strength(0.1))
-		.alphaTarget(0.5)
+	//split-by-award-type button
+	d3.select('#award-type').on('click', () => {
+		
+		d3Sim.force('y', d3.forceY(d => splitMedalForce(d, h, buttonTexts.medal)).strength(.1))
+		.alpha(1)
+		//decay can be updated here...
+		.alphaDecay(.05)
 		.restart()
 
+		buttonTexts.medal = (d3.select("#award-type").text().includes('Split')) ? 'Merge Medal Types' : 'Split Medal Types';
+		d3.select("#award-type").text(buttonTexts.medal)
 	})
 
-	//split button
-	d3.select('#split').on('click', () => {
-		console.log('SPLITTING!');
-		d3Sim.force('x', d3.forceX(splitForce).strength(0.1))
-		.alphaTarget(0.5)
+	//split-by-award-type button
+	d3.select('#group-level').on('click', () => {
+		
+		d3Sim.force('x', d3.forceX(d => splitGroupForce(d, w, buttonTexts.group)).strength(.1))
+		.alpha(1)
+		//decay can be updated here...
+		.alphaDecay(.05)
 		.restart()
+
+		buttonTexts.group = (d3.select("#group-level").text().includes('Split')) ? `Merge Group Levels` : 'Split Group Levels';
+		d3.select("#group-level").text(buttonTexts.group)
 	})
 
 })
