@@ -1,5 +1,7 @@
 function prepData(dataFile){
-	console.log('dataFile')
-	console.log(dataFile)
-	
+	return new Promise((res, rej) => {
+		d3.json(dataFile).then(data => {
+			res(data)
+		})
+	})
 }

@@ -1,1 +1,6 @@
-prepData('iib.json')
+prepData('iibData.json').then(data => {
+
+	/*
+		Prepare UI elements
+	*/
+})

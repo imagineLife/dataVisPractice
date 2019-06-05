@@ -1,0 +1,3182 @@
+[
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Russell Goldenberg",
+		"Organization": "Pudding",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Unlikely Odds of Making it Big",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Dan Kopf",
+		"Organization": "Pudding",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Unlikely Odds of Making it Big",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Miriam Quick",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "OddityViz",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Valentina Defillipo",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "OddityViz",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Shirley Wu",
+		"Organization": "Pudding",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "An Interactive Visualization of Every Line of Hamilton",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Lars Verspohl",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Film Money",
+		"Category": "Arts, Entertainment & Pop Culture"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Density Design",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "On Their Way: the Journey of Foreign Fighters",
+		"Category": "Current Affairs & Politics"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "Periscopic",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "One Angry Bird",
+		"Category": "Current Affairs & Politics"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Guardian",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Want to Fix Gun Violence: Go Local",
+		"Category": "Current Affairs & Politics"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Denise Lu",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Electoral College Misrepresents Every State, but not by as much as you think",
+		"Category": "Current Affairs & Politics"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Thu-Huong Ha",
+		"Organization": "Quartz",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How do you draw a circle?",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Nikhil Sonnad",
+		"Organization": "Quartz",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How do you draw a circle?",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Harry Stevens",
+		"Organization": "Hindustan Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s it like to get trolled all day long?",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Piyush Aggarwal",
+		"Organization": "Hindustan Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s it like to get trolled all day long?",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Dominikus Bar",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Futures",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Daniel Goddemeyer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Futures",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Alice Thudt",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Life in Clay",
+		"Category": "People, Language & Identity"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "TASS",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "1812: When Napoleon Ventured East",
+		"Category": "Environments & Maps"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "John Nelson",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Lights on & Lights out",
+		"Category": "Environments & Maps"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Moritz Stefaner",
+		"Organization": "StudioNAND",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Peak Spotting",
+		"Category": "Environments & Maps"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Christian Laesser",
+		"Organization": "StudioNAND",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Peak Spotting",
+		"Category": "Environments & Maps"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Christian Laesser",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Travel Visa Inequality by Christian Laesser",
+		"Category": "Environments & Maps"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Neil Halloran",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Shadow Peace - The Nuclear Threat",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "Density Design",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "The Point of No Return - How the world is adapting to climate change",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Eric Roston",
+		"Organization": "Bloomberg",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How a Melting Arctic Changes Everything",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Blacki Migliozzi",
+		"Organization": "Bloomberg",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How a Melting Arctic Changes Everything",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Levi Westerveld",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Those Who Did Not Cross",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Federica Fragapane",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Stories Behind a Line",
+		"Category": "Humanitarian / Global"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Kim Albrecht",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Science Paths",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Nadieh Bremer",
+		"Organization": "Scientific American",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Are so Many Babies Born around 8:00 A.M.?",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Zan Armstrong",
+		"Organization": "Scientific American",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Are so Many Babies Born around 8:00 A.M.?",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Daniel Xiang",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Seeing Theory",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Vivek Menon",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Nutrition Label",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Paul Button",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Apollo",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Skye Gould",
+		"Organization": "Business Insider",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "This is the tangled future of tech and transportation",
+		"Category": "Science & Technology"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rhythm of Food",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Yuri Vishnevsky",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rhythm of Food",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Irene de la Torre Arenas",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Swimming World Records throughout History",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Will Su",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "NYC Foodiverse",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Russell Goldenberg",
+		"Organization": "Pudding",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What city is the microbrew capital of the US?",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": null,
+		"Organization": "Berliner Morgenpost",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Berlin Marathon 2016: how fast your city runs",
+		"Category": "Sports, Games, & Leisure"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Nadieh Bremer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Sketches in Twelve Installments",
+		"Category": "Unusual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Shirley Wu",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Sketches in Twelve Installments",
+		"Category": "Unusual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Xaquín González Veira",
+		"Organization": "Google News Lab",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How To Fix a Toilet (And Other Things We Couldnt Do Without Search)",
+		"Category": "Unusual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Ferdio",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Viz Project",
+		"Category": "Unusual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Mauro Martino",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Forma Fluens",
+		"Category": "Unusual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Density Design",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Studio of the Year"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Hanna Dyrcz",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Annual Report of the ERGO Hestia Group, Network",
+		"Category": "Community Prize"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Chloe Tseng",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Viz for Social Good",
+		"Category": "Community Prize"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Peijie Li",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Han Chinese Opera",
+		"Category": "Community Prize"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Stefania Guerra",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Surfing in Italy",
+		"Category": "Community Prize"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Michela Lazzaroni",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Surfing in Italy",
+		"Category": "Community Prize"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Nadieh Bremer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Outstanding Individual"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": "Jory Fleming",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Amy Cesal",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Nam Wook Kim",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2017,
+		"Level": "Honorable",
+		"Winner": "Giacomo Flaim",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2017,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Berliner Morgenpost",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Berlin Marathon 2016: how fast your city runs",
+		"Category": "Best Non-English Language Viz"
+	},
+	{
+		"Year": 2017,
+		"Level": "Silver",
+		"Winner": "Agnès Stienne",
+		"Organization": "VisionsCarto",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Women Farmers in the Loneliness of Onion Fields",
+		"Category": "Best Non-English Language Viz"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Zhu Tianhang",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Creation of a Thangka",
+		"Category": "Best Non-English Language Viz"
+	},
+	{
+		"Year": 2017,
+		"Level": "Bronze",
+		"Winner": "Rodrigo Menegat",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "All the government barbecues",
+		"Category": "Best Non-English Language Viz"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Randall Munroe",
+		"Organization": "XKCD",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Earth Temperature Timeline",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Project Ukko - Seasonal Wind Predictions",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Ben Casselman",
+		"Organization": "FiveThirtyEight",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Gun Deaths in America",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Matthew Conlen",
+		"Organization": "FiveThirtyEight",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Gun Deaths in America",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Reuben Fischer-Baum",
+		"Organization": "FiveThirtyEight",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Gun Deaths in America",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Herwig Scherabon",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Income Inequality in LA & Chicago",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Valerio Pellegrini & Michele Mauri",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Missing Migrants Map",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Michele Mauri",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Missing Migrants Map",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Martin Panchaud",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Swanh.net",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "PopChart Lab",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "The Chart of Cosmic Exploration",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Cuisine by Moritz Stefaner & Susanne Jaschko",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Susanne Jaschko",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Data Cuisine by Moritz Stefaner & Susanne Jaschko",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Benedikt Groß",
+		"Organization": "Moovel Lab",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Roads to Rome",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Philipp Schmitt",
+		"Organization": "Moovel Lab",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Roads to Rome",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Raphael Reimann",
+		"Organization": "Moovel Lab",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Roads to Rome",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Nicholas Felton",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "PhotoViz",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Andy Cotgreave",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Makeover Monday",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Andy Kriebel",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Makeover Monday",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Dnevnik",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Objectivno",
+		"Category": "Dataviz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Peter Aldhous",
+		"Organization": "Buzzfeed",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Spies in the Skies",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Charles Seife",
+		"Organization": "Buzzfeed",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Spies in the Skies",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Christie Aschwanden",
+		"Organization": "FiveThirtyEight",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Science Isnt Broken",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Ritchie King",
+		"Organization": "FiveThirtyEight",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Science Isnt Broken",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Hanah Anderson",
+		"Organization": "Polygraph",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Film Dialogue",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Matt Daniels",
+		"Organization": "Polygraph",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Film Dialogue",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Gabriel Dance",
+		"Organization": "The Marshall Project",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Crime in Context",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Tom Meagher",
+		"Organization": "The Marshall Project",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Crime in Context",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Bonnie Berkowitz",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Math of Mass Shootings",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Lazaro Gamio",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Math of Mass Shootings",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Denise Lu",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Math of Mass Shootings",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Kevin Uhrmacher",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Math of Mass Shootings",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Todd Lindeman",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Math of Mass Shootings",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Duncan Clark",
+		"Organization": "Kiln",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "ShipMap.org",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Robin Houston",
+		"Organization": "Kiln",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "ShipMap.org",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Lam Thuy Vo",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Whats Your Pay Gap?",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Jessica Ma",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Whats Your Pay Gap?",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Paul Overberg",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Whats Your Pay Gap?",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "Polygraph",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Evolution of Musical Taste",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Adam Pearce",
+		"Organization": "Bloomberg",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Who Marries Whom?",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Dorothy Gambrell",
+		"Organization": "Bloomberg",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Who Marries Whom?",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Kim Albrecht",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Network Behind the Cosmic Web",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Daniel Smilkov",
+		"Organization": "TensorFlow",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Neural Network Playground",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Honorable",
+		"Winner": "Shan Carter",
+		"Organization": "TensorFlow",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Neural Network Playground",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Nathan Yau",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Flowing Data",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Andy Kirk",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Visualising Data",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Infogr.am",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Visualoop",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Datawheel",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Data USA",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Deloitte",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Data USA",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Macro Connections",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Data USA",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "IBM Watson",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "News Explorer",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "YAAY",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Animated Infographic Microsite on E-commerce",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Christine Zimmermann",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Educational Pathways",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Barbara Hahn",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Educational Pathways",
+		"Category": "Commercial/biz Project"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Polygraph",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Studio of the Year"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "FiveThirtyEight",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Outstanding Team"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Bloomberg",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Outstanding Team"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Guardian",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Outstanding Team"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Quartz",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Outstanding Team"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Alberto Lucas López",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Sum of the Parts by Alberto Lucas López",
+		"Category": "Community Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Drew Skau",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "WTFViz",
+		"Category": "Community Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Hannah Chan-Hartley",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Toronto Symphony Orchestra Listening Guide",
+		"Category": "Community Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Outstanding Individual"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Nadieh Bremer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Will Stahl-Timmins",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Rising Star"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Herwig Scherabon",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Student Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Silver",
+		"Winner": "Pei Ye Le",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Garbage Sorting Recycling Figure",
+		"Category": "Student Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Janet Chan",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Printing Press & Type Foundries",
+		"Category": "Student Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Cordelia Morales Trevino",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Atlas de México",
+		"Category": "Student Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Bronze",
+		"Winner": "Gabriela Gonzalez-Rubio Gutierrez",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Atlas de México",
+		"Category": "Student Awards"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "BiG",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Terre Urbaine",
+		"Category": "Best Non-English Language"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Peter Aldhous",
+		"Organization": "Buzzfeed",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Spies in the Skies",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2016,
+		"Level": "Gold",
+		"Winner": "Charles Seife",
+		"Organization": "Buzzfeed",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Spies in the Skies",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Dov Friedman",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Vaccines and Infectious Diseases",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Tynan Debold",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Vaccines and Infectious Diseases",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Alberto Lucas Lopez",
+		"Organization": "SCMP",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "A World of Languages",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Mauro Martino",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rise of Partisanship",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Clio Andris",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rise of Partisanship",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": null,
+		"Organization": "Studio Metric",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Close The Gap",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Christian Bangel",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Paul Blickle",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Lisa Borgenheimer",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Fabian Mohr",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Julian Stahnke",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Sascha Venohr",
+		"Organization": "Zeit Online",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "German Unification",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Nathaniel Lash",
+		"Organization": "The Tampa Bay Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Pinellas County Is the Worst Place in Florida to Be Black and Go to Public School",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Martin Frobisher",
+		"Organization": "The Tampa Bay Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Pinellas County Is the Worst Place in Florida to Be Black and Go to Public School",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Alexis N Sanchez",
+		"Organization": "The Tampa Bay Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Pinellas County Is the Worst Place in Florida to Be Black and Go to Public School",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Michael LaForgia",
+		"Organization": "The Tampa Bay Times",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Why Pinellas County Is the Worst Place in Florida to Be Black and Go to Public School",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Eric Roston",
+		"Organization": "Bloomberg Business",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s Really Warming the World?",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Blacki Migliozzi",
+		"Organization": "Bloomberg Business",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s Really Warming the World?",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Anna Flagg",
+		"Organization": "Faces of Fracking",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "California’s Getting Fracked",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Sarah Craig",
+		"Organization": "Faces of Fracking",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "California’s Getting Fracked",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Antonia Bruno",
+		"Organization": "Faces of Fracking",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "California’s Getting Fracked",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Mark-Jan Bludau",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rare Earth Elements",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "John Nelson",
+		"Organization": "IDV Solutions",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "UFO Sightings",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Shelly Tan",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Valar Morghulis",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Alberto Cuadra",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Valar Morghulis",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Bonnie Berkowitz",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How Ebola Spreads",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Lazario Gamio",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How Ebola Spreads",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Jon Swaine",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Oliver Laughland",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Jamiles Lartey",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Ciara McCarthy",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Kenan Davis",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Rich Harris",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Nadja Popovich",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Kenton Powell",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Counted: People Killed by Police in the United States in 2015",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Andrew Van Dam",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Job Market Tracker",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Renee Lightner",
+		"Organization": "The Wall Street Journal",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Job Market Tracker",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Matan Stauber",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Histography",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Andy Kirk",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Visualising Data",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Nathan Yau",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Flowing Data",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Infogr.am",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Visualoop",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Manuel Lima",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Visual Complexity",
+		"Category": "Dataviz Website"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Max Gadney",
+		"Organization": "After The Flood",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "London Squared Map: Making the City Easier to Read",
+		"Category": "Internal Business Product"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Mike Gallagher",
+		"Organization": "After The Flood",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "London Squared Map: Making the City Easier to Read",
+		"Category": "Internal Business Product"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Robin Partington",
+		"Organization": "Studio Baako",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "RPP Intranet",
+		"Category": "Internal Business Product"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Monika Rasche",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "DHL GoGreen Solutions Workbook",
+		"Category": "Internal Business Product"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "CLEVER°FRANKE",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Migration in the Census and in the News",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "University of Sheffield",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Migration in the Census and in the News",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "The Migration Observatory",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Migration in the Census and in the News",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "VisualisingData",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Migration in the Census and in the News",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "The Visual Agency",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Rent, Salary, Price of Houses",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Marc Maleh",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "LA Dodgers Digital Trading Room",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Damian Boyd-Boffa",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "LA Dodgers Digital Trading Room",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Gene Perelson",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "LA Dodgers Digital Trading Room",
+		"Category": "Commercial Client Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Neil Halloran",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Fallen of WW2",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Jan Willem Tulp",
+		"Organization": "Nature",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "How Many Trees Are There in World",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Max Fisher",
+		"Organization": "Vox",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Syrian War in 5 Minutes",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Johnny Harris",
+		"Organization": "Vox",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Syrian War in 5 Minutes",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Maximilian Schich",
+		"Organization": "Nature",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Charting Culture",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Mauro Martino",
+		"Organization": "Nature",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Charting Culture",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Mike Bostock",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "D3.js",
+		"Category": "Free Dataviz Tool"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Robert Gentleman",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "R",
+		"Category": "Free Dataviz Tool"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Ross Ihaka",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "R",
+		"Category": "Free Dataviz Tool"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Tableau",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Tableau Public",
+		"Category": "Free Dataviz Tool"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": null,
+		"Organization": "Quadrigram",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Quadrigram",
+		"Category": "Free Dataviz Tool"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Accurat",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Commercial Studio"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "Domestic Data Streamers",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Commercial Studio"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Periscopic",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Commercial Studio"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": null,
+		"Organization": "CLEVER°FRANKE",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Commercial Studio"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Eleanor Lutz",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "How To Build A Human",
+		"Category": "Mini and Mobile Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Weiyi (Dawn) Cai",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s across the Ocean from You When You’re at the Beach",
+		"Category": "Mini and Mobile Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Ana Swanson",
+		"Organization": "Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "What’s across the Ocean from You When You’re at the Beach",
+		"Category": "Mini and Mobile Visualization"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Nikhil Sonnad",
+		"Organization": "Quartz",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Dude Map: How Americans Refer to Their Bros",
+		"Category": null
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Philip Bump",
+		"Organization": "The Washington Post",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Here’s How Much of Your Life the United States Has Been at War",
+		"Category": null
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Sara Piccolomini",
+		"Organization": "La Lettura",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Freedom in Countries",
+		"Category": "Student"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Berliner Morgen Post",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Best Team"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Tony Chu",
+		"Organization": "Free Congress",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Visual Intro to Machine Learning",
+		"Category": "Individual Achievement"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Giorgia Lupi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Dear Data",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Stefanie Posavec",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Dear Data",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Daniel Goddemeyer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "On Broadway",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "On Broadway",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Dominikus Baur",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "On Broadway",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Lev Manovich",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "On Broadway",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Nicholas Felton",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "2014 Annual Report",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Sisi Wei",
+		"Organization": "ProPublica",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Surgeon Scorecard",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Olga Pierce",
+		"Organization": "ProPublica",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Surgeon Scorecard",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Honorable",
+		"Winner": "Marshall Allen",
+		"Organization": "ProPublica",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Surgeon Scorecard",
+		"Category": "Data Visualization Project"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Peter Winfield",
+		"Organization": "The Economist",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The World in 2015",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "John Parker",
+		"Organization": "The Economist",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The World in 2015",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Silver",
+		"Winner": "Cameron Beccario",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Earth: a visualisation of Global Weather Conditions",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Michael Yap",
+		"Organization": "Friends",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Drones",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Zoe Mendelson",
+		"Organization": "Friends",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Drones",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Bronze",
+		"Winner": "Zack Davenport",
+		"Organization": "Friends",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Drones",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Giorgia Lupi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Dear Data",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2015,
+		"Level": "Gold",
+		"Winner": "Stefanie Posavec",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Dear Data",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Matthew Daniels",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Rappers, Sorted by Size of Vocabulary",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": "Timm Kekeritz",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Weather Radials Poster",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "The Washington Post",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "The Depth of the Problem",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Honorable",
+		"Winner": "Marco Bernardi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Analytical Tourism Map of Piedmont",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Honorable",
+		"Winner": "Federica Fragapane",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Analytical Tourism Map of Piedmont",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Honorable",
+		"Winner": "Francesco Majno",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Analytical Tourism Map of Piedmont",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "RJ Andrews",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Creative Routines",
+		"Category": "Infographics"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": "Heather Jones",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Game of Thrones Decoded",
+		"Category": "Infographics"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Jonathan Schwabish",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Graphic Continuum",
+		"Category": "Infographics"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Severino Ribecca",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Graphic Continuum",
+		"Category": "Infographics"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Ekene Ijeoma",
+		"Organization": "Hyperakt",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Refugee Project",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "Bloomberg Visual Data",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "How Americans Die",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "James Offer",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Commonwealth War Dead: First World War Visualised",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Luke Twyman",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "World Food Clock",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Chris Whong",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "NYC Taxis: A Day in the Life",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": "Maral Pourkazemi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Beyond Bytes",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Kurzgesagt",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Everything You Need to Know about Planet Earth",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2014,
+		"Level": "Honorable",
+		"Winner": "Adam Nieman",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Energy",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Selfie City",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "OECD Regional Well-Being",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Sofia Girelli",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "After Babylon",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Eleonora Grotto",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "After Babylon",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Pietro Lodi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "After Babylon",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Daniele Lupatini",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "After Babylon",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Emilio Patuzzo",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "After Babylon",
+		"Category": "Website"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Density Design",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "RAW",
+		"Category": "Tool"
+	},
+	{
+		"Year": 2014,
+		"Level": "Silver",
+		"Winner": "Brendan Dawes",
+		"Organization": "Kennedy",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": null,
+		"Category": "Tool"
+	},
+	{
+		"Year": 2014,
+		"Level": "Bronze",
+		"Winner": "Friedrich Riha",
+		"Organization": "Figure it Out",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": null,
+		"Category": "Tool"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Sam Slover",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Wrap Genius",
+		"Category": "Student"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Brendan Dawes",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Individual Achievement"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "FFunction",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Studio"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Schwandt Infographics",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Biobased Economy",
+		"Category": "Corporate"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Stephen Malinowski",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Rite of Spring",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": "Jay Bacal",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Rite of Spring",
+		"Category": "Community Vote"
+	},
+	{
+		"Year": 2014,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Density Design",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "RAW",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Uldis Leiterts, Raimonds Kaze, Alise Semjonova",
+		"Organization": "infogr.am",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Infogram",
+		"Category": "Website/Tool"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Bloomberg Visual Data",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Bloomberg Billionaires Index",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Giorgia Lupi, Simone Quadri, Gabriele Rossi, Davide Ciuffi, Federica Fragapane, Francesco Majno",
+		"Organization": "Accurat",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Nobels, No Degrees",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Derek Kim",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Global Warming",
+		"Category": "Infographics"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": null,
+		"onePerson": false,
+		"IndividualInATeam": null,
+		"Name": "The Solar System -- our home in space",
+		"Category": null
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Accurat",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": null,
+		"Category": "Studio"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Jan Arpe",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "GED VIZ: Visualizing Global Economic Relations",
+		"Category": "Website/Tool"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Stephen LaPorte",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Listen to Wikipedia",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Mahmoud Hashemi",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Listen to Wikipedia",
+		"Category": "Interactive"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Adam Frost",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The 39 stats: Charting Hitchcock Obsessions",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Zhenia Vasiliev",
+		"Organization": "The Guardian",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The 39 stats: Charting Hitchcock Obsessions",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Adam Nieman",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "New York City carbon emissions",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Chris Rabet",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "New York City carbon emissions",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Silver",
+		"Winner": "Christian Tate",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "How to win an Oscar",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": "Heather Jones",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Why Health Care is So Expensive",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Periscopic",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "U.S. Gun Deaths",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": "Moritz Stefaner",
+		"Organization": "Studio NAND",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "emoto Installation",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": "Drew Hemment",
+		"Organization": "Studio NAND",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "emoto Installation",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Dataseed",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Dataseed",
+		"Category": "Website/Tool"
+	},
+	{
+		"Year": 2013,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "Territory Studio",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "BBC Knowledge DNA Explainer",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Valerio Pellegrini",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Atlas Of Kants Legacy",
+		"Category": "Outstanding Individual"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Tim Leong",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Taxonomy of Comic Book Characters",
+		"Category": "Outstanding Individual"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Ahmad Barclay",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Politicians Salaries and Income Inequality",
+		"Category": "Community"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Joumana Al Jabri",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Politicians Salaries and Income Inequality",
+		"Category": "Community"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Naji El Mir",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Politicians Salaries and Income Inequality",
+		"Category": "Community"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Ramzi Jaber",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Politicians Salaries and Income Inequality",
+		"Category": "Community"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": "Zahraa Mortada",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Politicians Salaries and Income Inequality",
+		"Category": "Community"
+	},
+	{
+		"Year": 2013,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Bloomberg Visual Data",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Bloomberg Billionaires Index",
+		"Category": "Most Beautiful"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Trent Brooks",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "The Antimap",
+		"Category": "Website/Tool"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Stamen",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "CNN Home & Away",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Michele Mauri",
+		"Organization": "Density Design",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Cover mania",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Notabilia",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Dario Taraborelli",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Notabilia",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Giovanni Luca Ciampaglia",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Notabilia",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Peter Orntoft",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Information graphics in context",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Peter Jeffs",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "What is the true cost of war?",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Tom Stevenson",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "What is the true cost of war?",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Michell Zappa",
+		"Organization": "Envisioning Tech",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Envisioning emerging technology for 2012 and beyond",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Patrick Clair",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Stuxnet: Anatomy of a virus",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Scott Mitchell",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Stuxnet: Anatomy of a virus",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Carla Fernandez",
+		"Organization": "Arce",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "Look at the sky",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": null,
+		"Organization": "The Guardian",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "Government Spending",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Travis Kochel",
+		"Organization": "FontFont",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "FF Chartwell",
+		"Category": "Website/Tool"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Deroy Peraza",
+		"Organization": "Hyperakt",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The American Energy Spectrum",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Silver",
+		"Winner": "Eric Fensterhei",
+		"Organization": "Hyperakt",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The American Energy Spectrum",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Paulo Estriga",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Paulo Estriga CV",
+		"Category": "Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Deroy Peraza",
+		"Organization": "Hyperakt",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Evolution of the Web",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Eric Fensterhei",
+		"Organization": "Hyperakt",
+		"onePerson": true,
+		"IndividualInATeam": true,
+		"Name": "The Evolution of the Web",
+		"Category": "Interactive Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Dimitre Lima",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Lunar Calendar",
+		"Category": "Data Visualization"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": null,
+		"Organization": "The Economist",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "The Seventh Billion",
+		"Category": "Motion Infographic"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Deniz Cem Önduygu",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Metallica on Stage",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Amaç Herdağdelen",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Metallica on Stage",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2012,
+		"Level": "Bronze",
+		"Winner": "Eser Aygün",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": "Metallica on Stage",
+		"Category": "Data Journalism"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": "Moritz Stefaner",
+		"Organization": null,
+		"onePerson": true,
+		"IndividualInATeam": null,
+		"Name": null,
+		"Category": "Outstanding Individual"
+	},
+	{
+		"Year": 2012,
+		"Level": "Gold",
+		"Winner": null,
+		"Organization": "Stamen",
+		"onePerson": false,
+		"IndividualInATeam": false,
+		"Name": "CNN Home & Away",
+		"Category": "Most Beautiful"
+	}
+]
