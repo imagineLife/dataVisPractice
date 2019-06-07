@@ -22,12 +22,17 @@ let srcData = null,
 		"Groups": {}
 	};
 
-let chartDiv = d3.select("#chart");
+const chartDiv = d3.select("#chart");
 
-let { width, widthLessMargins } = getWidthAndHeight("chart", margin)
+const { width, widthLessMargins } = getWidthAndHeight("chart", margin)
 
 const w = width, h = 760;
 
+const radiusVal = 9;
+
+const colorScale = d3.scaleOrdinal()
+		.domain(['gold','silver','bronze', 'honorable mention'])
+		.range(['rgb(201,176,55)','rgb(215,215,215)','rgb(106,56,5)', 'lightblue'])
 
 function appendToParent(parent, type, className, transformation){
 	return parent.append(type)
@@ -114,9 +119,6 @@ function getWidthAndHeight(divID, margin){
 }
 
 function toggleLabels(strObj){
-	console.log('Toggling Labels');
-	console.log('strObj')
-	console.log(strObj)
 	
 	let labelWrapper = d3.select('.labelWrapperG')
 	labelWrapper.selectAll('.label').remove()
@@ -125,12 +127,29 @@ function toggleLabels(strObj){
 		build top-axis-label(s)
 	*/
 	let threeGroupsArr = ['Individuals', 'Individuals In Groups', 'Groups']
-	let groupsLabels = (whichLabels.groups == true) ? threeGroupsArr : ['All Medals'];
+	let groupLabelTextArr = (whichLabels.groups == true) ? threeGroupsArr : ['All Medals'];
 	let labelDataJoin = labelWrapper.selectAll('.label')
-		.data(groupsLabels)
+		.data(groupLabelTextArr)
+
+	let labelData = {
+		threeTopRow: [
+			{
+				text: "Individuals",
+				xPosition: w * (1/9)
+			},
+			{
+				text: "Individuals In Groups",
+				xPosition: w * .5
+			},
+			{
+				text: "Groups",
+				xPosition: w * (5.25/6)
+			},
+		]
+	}
 
 	//get x-positions of 3-group-labels
-	let threeGroupsXPositions = (groupsLabels.length > 1) ? [(w * (1/9)), (w * .5), (w * (5.25/6))] : [w/2]
+	let threeGroupsXPositions = (groupLabelTextArr.length > 1) ? [(w * (1/9)), (w * .5), (w * (5.25/6))] : [w/2]
 
 	labelDataJoin.join(e => {
 		let textLabelG = e.append('g').attrs({
@@ -140,7 +159,7 @@ function toggleLabels(strObj){
 		textLabelG.append('text')
 		.attrs({
 			x: (d,ind) => {
-				return threeGroupsXPositions[ind]
+				return labelData.threeTopRow[ind].xPosition
 			},
 			y: 25,
 			'text-anchor': 'middle',
@@ -151,26 +170,17 @@ function toggleLabels(strObj){
 		textLabelG.append('text')
 		.attrs({
 			x: (d,ind) => {
-				return threeGroupsXPositions[ind]
+				return labelData.threeTopRow[ind].xPosition
 			},
 			y: 45,
 			'text-anchor': 'middle',
 			class: 'label medalCount'
 		})
 		.text(d => {
-			console.log('d')
-			console.log(d)
 			
-			
-			let number = (d == 'All Medals') ? medalCounts["Total"] :medalCounts[d]["Gold"] + medalCounts[d]["Silver"] + medalCounts[d]["Bronze"] + medalCounts[d]["Honorable"];
+			let number = (d == 'All Medals') ? medalCounts["Total"] : medalCounts[d]["Gold"] + medalCounts[d]["Silver"] + medalCounts[d]["Bronze"] + medalCounts[d]["Honorable"];
 			
 			return number
 		})
 	})
 }
-
-const colorScale = d3.scaleOrdinal()
-		.domain(['gold','silver','bronze', 'honorable mention'])
-		.range(['rgb(201,176,55)','rgb(215,215,215)','rgb(106,56,5)', 'lightblue'])
-
-const radiusVal = 10
