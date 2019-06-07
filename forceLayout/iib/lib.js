@@ -10,6 +10,25 @@ let buttonTexts = {
 	medal: 'Split By Medal Type',
 }
 
+let whichLabels = {
+	groups: true,
+	medals: false
+}
+
+let srcData = null, 
+	medalCounts = {
+		"Individuals": {},
+		"Individuals In Groups": {},
+		"Groups": {}
+	};
+
+let chartDiv = d3.select("#chart");
+
+let { width, widthLessMargins } = getWidthAndHeight("chart", margin)
+
+const w = width, h = 760;
+
+
 function appendToParent(parent, type, className, transformation){
 	return parent.append(type)
         .attrs({
@@ -37,7 +56,6 @@ function enterCircle(enterSelection){
 //fn for ticking simulation
 //updates x && y position of each circle
 function simTicked(){
-	console.log('tick');
 	let theCircles = d3.selectAll('.medal')
 	
 	//update x && y of each circle
@@ -79,7 +97,7 @@ function splitMedalForce(d, h, btnTxt){
 		}if(d["Level"] == "Bronze"){
 			return (h * (15/100))
 		}else{
-			return (h * (40/100))
+			return (h * (35/100))
 		}
 	}
 
@@ -90,11 +108,65 @@ function splitMedalForce(d, h, btnTxt){
 
 function getWidthAndHeight(divID, margin){
 	 let thisDiv = document.getElementById(divID)
-	let height = thisDiv.clientHeight
 	let width = thisDiv.clientWidth;
 	let widthLessMargins = width - margin.left - margin.right;
-	let heightLessMargins = height - margin.top - margin.bottom;
-	return { width, height, widthLessMargins, heightLessMargins }
+	return { width, widthLessMargins }
+}
+
+function toggleLabels(strObj){
+	console.log('Toggling Labels');
+	console.log('strObj')
+	console.log(strObj)
+	
+	let labelWrapper = d3.select('.labelWrapperG')
+	labelWrapper.selectAll('.label').remove()
+	
+	/*
+		build top-axis-label(s)
+	*/
+	let threeGroupsArr = ['Individuals', 'Individuals In Groups', 'Groups']
+	let groupsLabels = (whichLabels.groups == true) ? threeGroupsArr : ['All Medals'];
+	let labelDataJoin = labelWrapper.selectAll('.label')
+		.data(groupsLabels)
+
+	//get x-positions of 3-group-labels
+	let threeGroupsXPositions = (groupsLabels.length > 1) ? [(w * (1/9)), (w * .5), (w * (5.25/6))] : [w/2]
+
+	labelDataJoin.join(e => {
+		let textLabelG = e.append('g').attrs({
+			class: 'label labelTextG'
+		})
+
+		textLabelG.append('text')
+		.attrs({
+			x: (d,ind) => {
+				return threeGroupsXPositions[ind]
+			},
+			y: 25,
+			'text-anchor': 'middle',
+			class: 'label groupType'
+		})
+		.text(d => d)
+
+		textLabelG.append('text')
+		.attrs({
+			x: (d,ind) => {
+				return threeGroupsXPositions[ind]
+			},
+			y: 45,
+			'text-anchor': 'middle',
+			class: 'label medalCount'
+		})
+		.text(d => {
+			console.log('d')
+			console.log(d)
+			
+			
+			let number = (d == 'All Medals') ? medalCounts["Total"] :medalCounts[d]["Gold"] + medalCounts[d]["Silver"] + medalCounts[d]["Bronze"] + medalCounts[d]["Honorable"];
+			
+			return number
+		})
+	})
 }
 
 const colorScale = d3.scaleOrdinal()

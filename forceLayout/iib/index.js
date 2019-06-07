@@ -1,4 +1,21 @@
 prepData('iibData.json').then(data => {
+	
+	//tally up the medal counts per group-level
+	data.forEach(medal => {
+		//individual
+		if(medal["onePerson"] == true && medal["IndividualInATeam"] == null){
+			medalCounts["Individuals"][medal["Level"]] = ++medalCounts["Individuals"][medal["Level"]] || 1
+			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+		//Individual of a group
+		}else if(medal["onePerson"] == true && medal["IndividualInATeam"] == true){
+			medalCounts["Individuals In Groups"][medal["Level"]] = ++medalCounts["Individuals In Groups"][medal["Level"]] || 1
+			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+		//group, no individual
+		}else{
+			medalCounts["Groups"][medal["Level"]] = ++medalCounts["Groups"][medal["Level"]] || 1
+			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+		}
+	})
 
 	let d3Sim =  d3.forceSimulation()
 	//move to the right
@@ -7,7 +24,7 @@ prepData('iibData.json').then(data => {
 		if(d["onePerson"] == true && d["IndividualInATeam"] == null){
 			return -(w/2.75)
 		//Individual of a group
-		}if(d["onePerson"] == true && d["IndividualInATeam"] == true){
+		}else if(d["onePerson"] == true && d["IndividualInATeam"] == true){
 			return 0
 		//Group
 		}else{
@@ -38,18 +55,12 @@ prepData('iibData.json').then(data => {
 		including definitions (defs)
 	*/
 
-	let chartDiv = d3.select("#chart");
-
-	let { width, height, widthLessMargins, heightLessMargins } = getWidthAndHeight("chart", margin)
-	
-	const w = width, h = 800;
-
-
 	let svgWrapper = appendToParent(chartDiv, 'svg', 'svgWrapper', null).attrs({
 		height: h,
 		width: w
 	})
 	let gWrapper = appendToParent(svgWrapper, 'g', 'gWrapper', `translate(${w/2},${h/2})`)
+	let labelGWrapper = svgWrapper.append('g').attr('class', 'labelWrapperG')
 	let defs = svgWrapper.append('defs')
 
 	//make circle dataJoin
@@ -59,28 +70,7 @@ prepData('iibData.json').then(data => {
 	//join the enter method
 	circleDataJoin.join(enterCircle)
 
-	//make pattern dataJoin
-	// let defsDataJoin = defs.selectAll('.artist-pattern')
-	// 	.data(data)
-	// defsDataJoin.join(enterPattern)
-
-
-	//feed the simulation the data
-	/*
-		simulation is like a clock, TICKING
-		.nodes() assigns more attributes to the data objects...
-		ie...
-		{
-			id:
-			index: 
-			vx: 
-			vy: 
-			x: 
-			y: 
-		}
-
-		NOTE: this ONLY works AFTER the data-join is instantiated
-	*/
+	//set nodes to sim
 	d3Sim.nodes(data)
 		.on('tick', simTicked)
 
@@ -89,12 +79,14 @@ prepData('iibData.json').then(data => {
 		
 		d3Sim.force('y', d3.forceY(d => splitMedalForce(d, h, buttonTexts.medal)).strength(.1))
 		.alpha(1)
-		//decay can be updated here...
 		.alphaDecay(.05)
 		.restart()
 
 		buttonTexts.medal = (d3.select("#award-type").text().includes('Split')) ? 'Merge Medal Types' : 'Split Medal Types';
 		d3.select("#award-type").text(buttonTexts.medal)
+		whichLabels.medals = (buttonTexts.medal.includes('Split')) ? false : true;
+		
+		toggleLabels(whichLabels)
 	})
 
 	//split-by-award-type button
@@ -108,6 +100,12 @@ prepData('iibData.json').then(data => {
 
 		buttonTexts.group = (d3.select("#group-level").text().includes('Split')) ? `Merge Group Levels` : 'Split Group Levels';
 		d3.select("#group-level").text(buttonTexts.group)
+
+		whichLabels.groups = (buttonTexts.group.includes('Split')) ? false : true;
+		
+		toggleLabels(whichLabels)
 	})
+
+	toggleLabels(whichLabels)
 
 })
