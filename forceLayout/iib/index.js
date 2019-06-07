@@ -2,18 +2,22 @@ prepData('iibData.json').then(data => {
 	
 	//tally up the medal counts per group-level
 	data.forEach(medal => {
+
+		medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+		medalCounts[medal.Level] = medalCounts[medal.Level] + 1 || 1
+
 		//individual
 		if(medal["onePerson"] == true && medal["IndividualInATeam"] == null){
 			medalCounts["Individuals"][medal["Level"]] = ++medalCounts["Individuals"][medal["Level"]] || 1
-			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+
 		//Individual of a group
 		}else if(medal["onePerson"] == true && medal["IndividualInATeam"] == true){
 			medalCounts["Individuals In Groups"][medal["Level"]] = ++medalCounts["Individuals In Groups"][medal["Level"]] || 1
-			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+
 		//group, no individual
 		}else{
 			medalCounts["Groups"][medal["Level"]] = ++medalCounts["Groups"][medal["Level"]] || 1
-			medalCounts["Total"] = medalCounts["Total"] + 1 || 1
+
 		}
 	})
 
