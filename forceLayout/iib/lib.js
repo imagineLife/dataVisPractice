@@ -124,12 +124,8 @@ function toggleLabels(strObj){
 	labelWrapper.selectAll('.label').remove()
 	
 	/*
-		build top-axis-label(s)
+		build label Groups
 	*/
-	let threeGroupsArr = ['Individuals', 'Individuals In Groups', 'Groups']
-	let groupLabelTextArr = (whichLabels.groups == true) ? threeGroupsArr : ['All Medals'];
-	let labelDataJoin = labelWrapper.selectAll('.label')
-		.data(groupLabelTextArr)
 
 	let labelData = {
 		threeTopRow: [
@@ -145,11 +141,19 @@ function toggleLabels(strObj){
 				text: "Groups",
 				xPosition: w * (5.25/6)
 			},
+		],
+		singleTopRow: [
+			{
+				text: "All Medals",
+				xPosition: w * .5
+			}
 		]
 	}
 
-	//get x-positions of 3-group-labels
-	let threeGroupsXPositions = (groupLabelTextArr.length > 1) ? [(w * (1/9)), (w * .5), (w * (5.25/6))] : [w/2]
+	let groupLabelTextArr = (whichLabels.groups == true) ? labelData.threeTopRow : labelData.singleTopRow;
+
+	let labelDataJoin = labelWrapper.selectAll('.label')
+		.data(groupLabelTextArr)
 
 	labelDataJoin.join(e => {
 		let textLabelG = e.append('g').attrs({
@@ -158,29 +162,24 @@ function toggleLabels(strObj){
 
 		textLabelG.append('text')
 		.attrs({
-			x: (d,ind) => {
-				return labelData.threeTopRow[ind].xPosition
+			x: (d,ind) => {				
+				return d.xPosition
 			},
 			y: 25,
 			'text-anchor': 'middle',
 			class: 'label groupType'
 		})
-		.text(d => d)
+		.text(d => d.text)
 
 		textLabelG.append('text')
 		.attrs({
 			x: (d,ind) => {
-				return labelData.threeTopRow[ind].xPosition
+				return d.xPosition
 			},
 			y: 45,
 			'text-anchor': 'middle',
 			class: 'label medalCount'
 		})
-		.text(d => {
-			
-			let number = (d == 'All Medals') ? medalCounts["Total"] : medalCounts[d]["Gold"] + medalCounts[d]["Silver"] + medalCounts[d]["Bronze"] + medalCounts[d]["Honorable"];
-			
-			return number
-		})
+		.text(d => (d.text == 'All Medals') ? medalCounts.Total : medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"])
 	})
 }
