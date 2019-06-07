@@ -13,22 +13,79 @@ let buttonTexts = {
 let whichLabels = {
 	groups: true,
 	medals: false
-}
+},
+srcData = null;
 
-let srcData = null, 
-	medalCounts = {
-		"Individuals": {},
-		"Individuals In Groups": {},
-		"Groups": {}
-	};
 
 const chartDiv = d3.select("#chart");
 
 const { width, widthLessMargins } = getWidthAndHeight("chart", margin)
 
-const w = width, h = 760;
+const w = width, h = 690;
 
-const radiusVal = 9;
+const radiusVal = 8;
+
+	medalCounts = {
+		"Individuals": {},
+		"Individuals In Groups": {},
+		"Groups": {}
+	},
+	labelData = {
+		threeTop: [
+			{
+				text: "Individuals",
+				xPosition: w * (1/9),
+				textY : 25,
+				valY : 45
+			},
+			{
+				text: "Individuals In Groups",
+				xPosition: w * .5,
+				textY : 25,
+				valY : 45
+			},
+			{
+				text: "Groups",
+				xPosition: w * (5.25/6),
+				textY : 25,
+				valY : 45
+			},
+		],
+		singleTop: [
+			{
+				text: "All Medals",
+				xPosition: w * .5,
+				textY : 25,
+				valY : 45
+			}
+		],
+		fourVertical: [
+			{
+				text: "Gold Medalists",
+				xPosition: w * (6.5/9),
+				textY : h * .15,
+				valY : h * .15 + 20
+			},
+			{
+				text: "Silver Medalists",
+				xPosition: w * (6.5/9),
+				textY : h * .4,
+				valY :  h * .4 + 20
+			},
+			{
+				text: "Bronze Medalists",
+				xPosition: w * (6.5/9),
+				textY : h * .63,
+				valY : h * .63 + 20
+			},
+			{
+				text: "Honorable Mention",
+				xPosition: w * (6.5/9),
+				textY : h * .82,
+				valY : h * .82 + 20
+			},
+		],
+	};
 
 const colorScale = d3.scaleOrdinal()
 		.domain(['gold','silver','bronze', 'honorable mention'])
@@ -119,6 +176,9 @@ function getWidthAndHeight(divID, margin){
 }
 
 function toggleLabels(strObj){
+	console.log('toggleLabels')
+	console.log(strObj)
+	
 	
 	let labelWrapper = d3.select('.labelWrapperG')
 	labelWrapper.selectAll('.label').remove()
@@ -127,30 +187,12 @@ function toggleLabels(strObj){
 		build label Groups
 	*/
 
-	let labelData = {
-		threeTopRow: [
-			{
-				text: "Individuals",
-				xPosition: w * (1/9)
-			},
-			{
-				text: "Individuals In Groups",
-				xPosition: w * .5
-			},
-			{
-				text: "Groups",
-				xPosition: w * (5.25/6)
-			},
-		],
-		singleTopRow: [
-			{
-				text: "All Medals",
-				xPosition: w * .5
-			}
-		]
-	}
-
-	let groupLabelTextArr = (whichLabels.groups == true) ? labelData.threeTopRow : labelData.singleTopRow;
+	let groupLabelTextArr = (whichLabels.groups == true && whichLabels.medals == false) ? labelData.threeTop : 
+	
+		//single merged blob
+		(whichLabels.groups == false && whichLabels.medals == false) ? labelData.singleTop : 
+		//4 vertical blobs
+		(whichLabels.groups == false && whichLabels.medals == true) ? labelData.fourVertical : null;
 
 	let labelDataJoin = labelWrapper.selectAll('.label')
 		.data(groupLabelTextArr)
@@ -165,7 +207,7 @@ function toggleLabels(strObj){
 			x: (d,ind) => {				
 				return d.xPosition
 			},
-			y: 25,
+			y: d => d.textY,
 			'text-anchor': 'middle',
 			class: 'label groupType'
 		})
@@ -176,10 +218,29 @@ function toggleLabels(strObj){
 			x: (d,ind) => {
 				return d.xPosition
 			},
-			y: 45,
+			y: d => d.valY,
 			'text-anchor': 'middle',
 			class: 'label medalCount'
 		})
-		.text(d => (d.text == 'All Medals') ? medalCounts.Total : medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"])
+		.text(d => {
+			console.log('d')
+			console.log(d)
+			console.log('whichLabels')
+			console.log(whichLabels)
+			
+			let medalType = d.text.split(' ')[0]
+			console.log('medalType')
+			console.log(medalType)
+			
+			//Centered blob
+			return (d.text == 'All Medals') ? medalCounts.Total : 
+
+			//3 hz blobs
+			(whichLabels.groups == true && whichLabels.medals == false) ? medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"]
+			
+			//four vertical blobs
+			: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
+			: null;
+		})
 	})
 }
