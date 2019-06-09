@@ -1,7 +1,29 @@
 * {
 	font-family: sans-serif;
+	box-sizing: border-box;
 }
 
 .label{
 	text-anchor: right;
+}
+
+button{
+	width: 150px;
+	height: 25px;
+	border: 1px solid steelblue;
+	background-color: rgba(245,245,245);
+	cursor: pointer;
+}
+
+button:focus{
+	outline: none;
+}
+
+button:hover{
+	background-color: rgba(225,225,225);
+	border-color: darkblue;
+}
+
+.legendWrapper{
+	stroke: 1px solid steelblue; 
 }
