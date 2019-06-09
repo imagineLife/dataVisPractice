@@ -63,9 +63,10 @@ prepData('iibData.json').then(data => {
 		width: w
 	})
 
+	let legendYTrans = (w > 375) ?  h - 125 : h - 75;
 	let gWrapper = appendToParent(svgWrapper, 'g', 'gWrapper', `translate(${w/2},${h/2})`)
 	let labelGWrapper = svgWrapper.append('g').attr('class', 'labelWrapperG')
-	let legendWrapper = appendToParent(svgWrapper, 'g', 'legendWrapper', `translate(${w * .4},${h - 50})`)
+	let legendWrapper = appendToParent(svgWrapper, 'g', 'legendWrapper', `translate(20,${legendYTrans})`)
 
 	//prepare legend
 	let legendDataJoin = legendWrapper.selectAll('.legendElementGWrapper')
@@ -89,7 +90,7 @@ prepData('iibData.json').then(data => {
 		
 		d3Sim.force('y', d3.forceY(d => splitMedalForce(d, h, buttonTexts.medal)).strength(.1))
 		.alpha(1)
-		.alphaDecay(.05)
+		.alphaDecay(.04)
 		.restart()
 
 		buttonTexts.medal = (d3.select("#award-type").text().includes('Split')) ? 'Merge Medal Types' : 'Split Medal Types';
@@ -105,7 +106,7 @@ prepData('iibData.json').then(data => {
 		d3Sim.force('x', d3.forceX(d => splitGroupForce(d, w, buttonTexts.group)).strength(.1))
 		.alpha(1)
 		//decay can be updated here...
-		.alphaDecay(.05)
+		.alphaDecay(.04)
 		.restart()
 
 		buttonTexts.group = (d3.select("#group-level").text().includes('Split')) ? `Merge Group Levels` : 'Split Group Levels';
