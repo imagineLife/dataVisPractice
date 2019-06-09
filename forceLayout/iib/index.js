@@ -56,17 +56,23 @@ prepData('iibData.json').then(data => {
 
 	/*
 		Prepare UI elements
-		including definitions (defs)
 	*/
 
 	let svgWrapper = appendToParent(chartDiv, 'svg', 'svgWrapper', null).attrs({
 		height: h,
 		width: w
 	})
+
 	let gWrapper = appendToParent(svgWrapper, 'g', 'gWrapper', `translate(${w/2},${h/2})`)
 	let labelGWrapper = svgWrapper.append('g').attr('class', 'labelWrapperG')
-	let defs = svgWrapper.append('defs')
+	let legendWrapper = appendToParent(svgWrapper, 'g', 'legendWrapper', `translate(${w * .4},${h - 50})`)
 
+	//prepare legend
+	let legendDataJoin = legendWrapper.selectAll('.legendElementGWrapper')
+		.data(['gold','silver','bronze', 'honorable mention'])
+
+	legendDataJoin.join(enterLegend)
+	
 	//make circle dataJoin
 	let circleDataJoin = gWrapper.selectAll('.artistCircle')
 		.data(data)

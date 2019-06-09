@@ -21,7 +21,9 @@ const chartDiv = d3.select("#chart");
 
 const { width, widthLessMargins } = getWidthAndHeight("chart", margin)
 
-const w = width, h = 690;
+const w = width; 
+let h = (w < 350) ? 460 : 
+		(w > 351 && w < 375) ? 640 : 690;
 
 let positions = {
 	center : w * .5,
@@ -29,7 +31,8 @@ let positions = {
 	rightThird: w * (2/3)
 }
 
-const radiusVal = 8;
+let radiusVal = (w < 700) ? 4 : 
+		(w > 701 && w < 1050) ? 7 : 8;
 
 	medalCounts = {
 		"Individuals": {},
@@ -191,17 +194,49 @@ function appendToParent(parent, type, className, transformation){
         });
 }
 
+function circleObjFn(rVal, cScale, d, legendTF){
+	return {
+		class: 'medal',
+		r: rVal,
+		fill: d => {
+			if(legendTF == true){
+				return cScale(d)
+			}else{
+				return cScale(d["Level"])	
+			}
+			
+		},
+	}
+}
+
+//enter legend
+function enterLegend(e){
+	let legendItem = e.append('g')
+		.attr('class', 'legendItem')
+
+	let itemXSpacing = (i, rVal) => i * (rVal * 10);
+
+	let circle = legendItem.append('circle')
+		.attrs((d) => circleObjFn(radiusVal, colorScale, d, true))
+		.attr('transform', (d, ind) => {
+			return `translate(${itemXSpacing(ind, radiusVal)}, 0)`
+		})
+
+	let text = legendItem.append('text').attrs({
+		transform: (d, ind) => `translate(${itemXSpacing(ind, radiusVal)}, ${radiusVal * 3})`,
+		'text-achor': 'middle'
+	}).text(d => d)
+
+
+}
+
 //enter circles
 function enterCircle(enterSelection){
 	let circleGroup = enterSelection.append('g')
 		.attr('class', 'circleGroup')
 
 	let circle = circleGroup.append('circle')
-		.attrs({
-			class: 'medal',
-			r: radiusVal,
-			fill: d => colorScale(d["Level"]),
-		}).on('click', d =>{
+		.attrs((d) => circleObjFn(radiusVal, colorScale, d)).on('click', d =>{
 			console.log('d')
 			console.log(d)
 		})
@@ -350,9 +385,7 @@ function toggleLabels(strObj){
 		topRowLabels.join(e => {
 			e.append('text')
 			.attrs({
-				x: (d,ind) => {				
-					return d.xPosition
-				},
+				x: (d,ind) => d.xPosition,
 				y: d => d.textY,
 				'text-anchor': 'middle',
 				class: 'label groupType topRow'
