@@ -23,6 +23,12 @@ const { width, widthLessMargins } = getWidthAndHeight("chart", margin)
 
 const w = width, h = 690;
 
+let positions = {
+	center : w * .5,
+	leftThird: w * (1/3),
+	rightThird: w * (2/3)
+}
+
 const radiusVal = 8;
 
 	medalCounts = {
@@ -40,7 +46,7 @@ const radiusVal = 8;
 			},
 			{
 				text: "Individuals In Groups",
-				xPosition: w * .5,
+				xPosition: positions.center,
 				textY : 25,
 				valY : 45
 			},
@@ -54,7 +60,7 @@ const radiusVal = 8;
 		singleTop: [
 			{
 				text: "All Medals",
-				xPosition: w * .5,
+				xPosition: positions.center,
 				textY : 25,
 				valY : 45
 			}
@@ -85,6 +91,92 @@ const radiusVal = 8;
 				valY : h * .82 + 20
 			},
 		],
+		fullScreen: [
+			{
+				text: "Gold",
+				group: "Individuals",
+				xPosition: w * (2.25/9),
+				textY : h * .15,
+				valY : h * .15 + 20
+			},
+			{
+				text: "Silver",
+				group: "Individuals",
+				xPosition: w * (2.25/9),
+				textY : h * .4,
+				valY :  h * .4 + 20
+			},
+			{
+				text: "Bronze",
+				group: "Individuals",
+				xPosition: w * (2.25/9),
+				textY : h * .63,
+				valY : h * .63 + 20
+			},
+			{
+				text: "Honorable",
+				group: "Individuals",
+				xPosition: w * (2.25/9),
+				textY : h * .82,
+				valY : h * .82 + 20
+			},
+			{
+				text: "Gold",
+				group: "Individuals In Groups",
+				xPosition: w * (5.25/9),
+				textY : h * .15,
+				valY : h * .15 + 20
+			},
+			{
+				text: "Silver",
+				group: "Individuals In Groups",
+				xPosition: w * (5.25/9),
+				textY : h * .4,
+				valY :  h * .4 + 20
+			},
+			{
+				text: "Bronze",
+				group: "Individuals In Groups",
+				xPosition: w * (5.25/9),
+				textY : h * .63,
+				valY : h * .63 + 20
+			},
+			{
+				text: "Honorable",
+				group: "Individuals In Groups",
+				xPosition: w * (5.25/9),
+				textY : h * .82,
+				valY : h * .82 + 20
+			},
+			{
+				text: "Gold",
+				group: "Groups",
+				xPosition: w * (8.25/9),
+				textY : h * .15,
+				valY : h * .15 + 20
+			},
+			{
+				text: "Silver",
+				group: "Groups",
+				xPosition: w * (8.25/9),
+				textY : h * .4,
+				valY :  h * .4 + 20
+			},
+			{
+				text: "Bronze",
+				group: "Groups",
+				xPosition: w * (8.25/9),
+				textY : h * .63,
+				valY : h * .63 + 20
+			},
+			{
+				text: "Honorable",
+				group: "Groups",
+				xPosition: w * (8.25/9),
+				textY : h * .82,
+				valY : h * .82 + 20
+			},
+		]
 	};
 
 const colorScale = d3.scaleOrdinal()
@@ -132,13 +224,13 @@ function splitGroupForce(d, w, btnTxt){
 	if(btnTxt.includes('Split')){
 		//Individual
 		if(d["onePerson"] == true && d["IndividualInATeam"] == null){
-			return -(w * (1/3))
+			return -(positions.leftThird)
 		//Individual of a group
 		}if(d["onePerson"] == true && d["Organization"] !== null){
 			return 0
 		//Group
 		}else{
-			return (w * (1/3))
+			return (positions.leftThird)
 		}
 	}else{
 		return 0
@@ -176,9 +268,6 @@ function getWidthAndHeight(divID, margin){
 }
 
 function toggleLabels(strObj){
-	console.log('toggleLabels')
-	console.log(strObj)
-	
 	
 	let labelWrapper = d3.select('.labelWrapperG')
 	labelWrapper.selectAll('.label').remove()
@@ -187,60 +276,121 @@ function toggleLabels(strObj){
 		build label Groups
 	*/
 
-	let groupLabelTextArr = (whichLabels.groups == true && whichLabels.medals == false) ? labelData.threeTop : 
+	if(!(whichLabels.groups == true && whichLabels.medals == true)){
+		let groupLabelTextArr = (whichLabels.groups == true && whichLabels.medals == false) ? labelData.threeTop : 
 	
 		//single merged blob
 		(whichLabels.groups == false && whichLabels.medals == false) ? labelData.singleTop : 
 		//4 vertical blobs
-		(whichLabels.groups == false && whichLabels.medals == true) ? labelData.fourVertical : null;
+		(whichLabels.groups == false && whichLabels.medals == true) ? labelData.fourVertical : 
+		//all blobls
+		(whichLabels.groups == true && whichLabels.medals == true) ? labelData.fullScreen : null;
 
-	let labelDataJoin = labelWrapper.selectAll('.label')
-		.data(groupLabelTextArr)
+		let labelDataJoin = labelWrapper.selectAll('.label')
+			.data(groupLabelTextArr)
 
-	labelDataJoin.join(e => {
-		let textLabelG = e.append('g').attrs({
-			class: 'label labelTextG'
-		})
+		labelDataJoin.join(e => {
 
-		textLabelG.append('text')
-		.attrs({
-			x: (d,ind) => {				
-				return d.xPosition
-			},
-			y: d => d.textY,
-			'text-anchor': 'middle',
-			class: 'label groupType'
-		})
-		.text(d => d.text)
-
-		textLabelG.append('text')
-		.attrs({
-			x: (d,ind) => {
-				return d.xPosition
-			},
-			y: d => d.valY,
-			'text-anchor': 'middle',
-			class: 'label medalCount'
-		})
-		.text(d => {
-			console.log('d')
-			console.log(d)
-			console.log('whichLabels')
-			console.log(whichLabels)
+			/*
+				when NOT all-12-blobs
+					show Text && Counts @ each label
+				when all-12-blobs
+					show Text @ top && labels next to each blob
+				
+			*/
 			
-			let medalType = d.text.split(' ')[0]
-			console.log('medalType')
-			console.log(medalType)
-			
-			//Centered blob
-			return (d.text == 'All Medals') ? medalCounts.Total : 
+			//Quality Label
+			e.append('text')
+			.attrs({
+				x: (d,ind) => {				
+					return d.xPosition
+				},
+				y: d => d.textY,
+				'text-anchor': 'middle',
+				class: 'label groupType'
+			})
+			.text(d => d.text)
 
-			//3 hz blobs
-			(whichLabels.groups == true && whichLabels.medals == false) ? medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"]
-			
-			//four vertical blobs
-			: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
-			: null;
+			//quantity label
+			e.append('text')
+			.attrs({
+				x: (d,ind) => {
+					return d.xPosition
+				},
+				y: d => d.valY,
+				'text-anchor': 'middle',
+				class: 'label medalCount'
+			})
+			.text(d => {
+				
+				let medalType = d.text.split(' ')[0]
+				
+				//Centered blob
+				return (d.text == 'All Medals') ? medalCounts.Total : 
+
+				//3 hz blobs
+				(whichLabels.groups == true && whichLabels.medals == false) ? medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"]
+				
+				//four vertical blobs
+				: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
+
+				//all blobls
+				: (whichLabels.groups == true && whichLabels.medals == true) ? medalCounts[d.group][d.text]
+				: null;
+			})
 		})
-	})
+	}
+
+	if((whichLabels.groups == true && whichLabels.medals == true)){
+		
+		//top row labels
+		let topRowLabels = labelWrapper.selectAll('.topRow')
+			.data(labelData.threeTop)
+
+		topRowLabels.join(e => {
+			e.append('text')
+			.attrs({
+				x: (d,ind) => {				
+					return d.xPosition
+				},
+				y: d => d.textY,
+				'text-anchor': 'middle',
+				class: 'label groupType topRow'
+			})
+			.text(d => d.text)
+		})
+
+		//bubble labels
+		let bubbleLabels = labelWrapper.selectAll('.bubbleLabels')
+			.data(labelData.fullScreen)
+
+		bubbleLabels.join(e => {
+			e.append('text')
+			.attrs({
+				x: (d,ind) => {
+					return d.xPosition
+				},
+				y: d => d.valY,
+				'text-anchor': 'middle',
+				class: 'label medalCount'
+			})
+			.text(d => {
+				
+				let medalType = d.text.split(' ')[0]
+				
+				//Centered blob
+				return (d.text == 'All Medals') ? medalCounts.Total : 
+
+				//3 hz blobs
+				(whichLabels.groups == true && whichLabels.medals == false) ? medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"]
+				
+				//four vertical blobs
+				: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
+
+				//all blobls
+				: (whichLabels.groups == true && whichLabels.medals == true) ? medalCounts[d.group][d.text]
+				: null;
+			})
+		})
+	}
 }
