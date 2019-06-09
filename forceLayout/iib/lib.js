@@ -21,14 +21,15 @@ const chartDiv = d3.select("#chart");
 
 const { width, widthLessMargins } = getWidthAndHeight("chart", margin)
 
-const w = width; 
+const w = width - 20; 
 let h = (w < 350) ? 460 : 
-		(w > 351 && w < 375) ? 640 : 690;
+		(w > 351 && w <= 375) ? 600 : 690;
 
 let positions = {
 	center : w * .5,
 	leftThird: w * (1/3),
-	rightThird: w * (2/3)
+	rightThird: w * (2/3),
+	topQuarterText: h * .15
 }
 
 let radiusVal = (w < 700) ? 4 : 
@@ -72,8 +73,8 @@ let radiusVal = (w < 700) ? 4 :
 			{
 				text: "Gold Medalists",
 				xPosition: w * (6.5/9),
-				textY : h * .15,
-				valY : h * .15 + 20
+				textY : positions.topQuarterText,
+				valY : positions.topQuarterText + 20
 			},
 			{
 				text: "Silver Medalists",
@@ -99,8 +100,8 @@ let radiusVal = (w < 700) ? 4 :
 				text: "Gold",
 				group: "Individuals",
 				xPosition: w * (2.25/9),
-				textY : h * .15,
-				valY : h * .15 + 20
+				textY : positions.topQuarterText,
+				valY : positions.topQuarterText + 20
 			},
 			{
 				text: "Silver",
@@ -127,8 +128,8 @@ let radiusVal = (w < 700) ? 4 :
 				text: "Gold",
 				group: "Individuals In Groups",
 				xPosition: w * (5.25/9),
-				textY : h * .15,
-				valY : h * .15 + 20
+				textY : positions.topQuarterText,
+				valY : positions.topQuarterText + 20
 			},
 			{
 				text: "Silver",
@@ -155,8 +156,8 @@ let radiusVal = (w < 700) ? 4 :
 				text: "Gold",
 				group: "Groups",
 				xPosition: w * (8.25/9),
-				textY : h * .15,
-				valY : h * .15 + 20
+				textY : positions.topQuarterText,
+				valY : positions.topQuarterText + 20
 			},
 			{
 				text: "Silver",
@@ -209,23 +210,23 @@ function circleObjFn(rVal, cScale, d, legendTF){
 	}
 }
 
+let itemYSpacing = (i, rVal) => i * (rVal * 4);
+
 //enter legend
 function enterLegend(e){
 	let legendItem = e.append('g')
 		.attr('class', 'legendItem')
 
-	let itemXSpacing = (i, rVal) => i * (rVal * 10);
-
 	let circle = legendItem.append('circle')
-		.attrs((d) => circleObjFn(radiusVal, colorScale, d, true))
+		.attrs((d) => circleObjFn(radiusVal - 2, colorScale, d, true))
 		.attr('transform', (d, ind) => {
-			return `translate(${itemXSpacing(ind, radiusVal)}, 0)`
+			return `translate(0, ${(itemYSpacing(ind, radiusVal))})`
 		})
 
 	let text = legendItem.append('text').attrs({
-		transform: (d, ind) => `translate(${itemXSpacing(ind, radiusVal)}, ${radiusVal * 3})`,
+		transform: (d, ind) => `translate(8, ${itemYSpacing(ind, radiusVal) + (radiusVal / 2)})`,
 		'text-achor': 'middle'
-	}).text(d => d)
+	}).text(d => `${d}`)
 
 
 }
@@ -368,9 +369,6 @@ function toggleLabels(strObj){
 				
 				//four vertical blobs
 				: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
-
-				//all blobls
-				: (whichLabels.groups == true && whichLabels.medals == true) ? medalCounts[d.group][d.text]
 				: null;
 			})
 		})
@@ -407,23 +405,7 @@ function toggleLabels(strObj){
 				'text-anchor': 'middle',
 				class: 'label medalCount'
 			})
-			.text(d => {
-				
-				let medalType = d.text.split(' ')[0]
-				
-				//Centered blob
-				return (d.text == 'All Medals') ? medalCounts.Total : 
-
-				//3 hz blobs
-				(whichLabels.groups == true && whichLabels.medals == false) ? medalCounts[d.text]["Gold"] + medalCounts[d.text]["Silver"] + medalCounts[d.text]["Bronze"] + medalCounts[d.text]["Honorable"]
-				
-				//four vertical blobs
-				: (whichLabels.groups == false && whichLabels.medals == true) ? medalCounts[medalType]
-
-				//all blobls
-				: (whichLabels.groups == true && whichLabels.medals == true) ? medalCounts[d.group][d.text]
-				: null;
-			})
+			.text(d => medalCounts[d.group][d.text])
 		})
 	}
 }
