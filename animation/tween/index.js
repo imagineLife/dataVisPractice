@@ -17,12 +17,11 @@ let rect = svg.append('rect').attrs({
 })
 
 btn.on('click', () => {
-	let newCurColor = curColor === 'steelblue' ? 'yellow' : 'steelblue';
-	curColor = newCurColor;
+	curColor = curColor === 'steelblue' ? 'yellow' : 'steelblue';
 	console.log('clicked!');
 	return d3.selectAll(".this-rect")
 	.transition()
     .duration(transDur)
     .ease(d3.easeLinear)
-    .style("fill", newCurColor);
+    .style("fill", curColor);
 })
