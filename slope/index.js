@@ -5,6 +5,16 @@ const state = {
 	yScale: null
 };
 
+
+function makeText(itm, txt, cl, xVal, yVal, ta){
+		itm.append('text')
+		.text(txt)
+		.attr('class', cl)
+		.attr('x', xVal)
+		.attr('y', yVal)
+		.attr('text-anchor', ta);
+}
+
 function enterFn(e){
 
 	const { margin, width, height } = state;
@@ -19,7 +29,8 @@ function enterFn(e){
 		.attr('y1', height - margin.bottom)
 		.attr('y2', height - margin.bottom * 0.7)
 		.attr('stroke', 'grey')
-		.attr('stroke-width', '2px');
+		.attr('stroke-dasharray', d =>  (d['delta'] === 'neutral') ? '2 5' : null)
+		.attr('stroke-width', d =>  (d['delta'] === 'neutral') ? '1px' : '2px');
 
 	e.append("line")
 		.attr('x1', chartWidth + margin.right * 0.75)
@@ -37,19 +48,8 @@ function enterFn(e){
 		.attr('stroke', 'grey')
 		.attr('stroke-width', '2px');
 
-	e.append('text')
-		.text('2016')
-		.attr('class', 'neutral')
-		.attr('x', margin.left)
-		.attr('y', height - margin.bottom * 0.05)
-		.attr('text-anchor', 'start');
-
-	e.append('text')
-		.text('2017')
-		.attr('class', 'neutral')
-		.attr('x', chartWidth + margin.right * 0.75)
-		.attr('y', height - margin.bottom * 0.05)
-		.attr('text-anchor', 'end');
+	makeText(e, '2016', 'neutral', margin.left, height - margin.bottom * 0.05, 'start')
+	makeText(e, '2017', 'neutral', chartWidth + margin.right * 0.75, height - margin.bottom * 0.05, 'end')
 
 	e.append('text')
 		.text(d => d['Comments'])
@@ -74,7 +74,9 @@ function enterFn(e){
 		})
 		.attr('y2', function(d) { 
 			return margin.top + chartHeight - state.yScale(d.After);
-		});
+		})
+		.attr('stroke-dasharray', d =>  (d['delta'] === 'neutral') ? '2 20' : null)
+		.attr('stroke-width', d =>  (d['delta'] === 'neutral') ? '1px' : '2px');
 	
 	// Create slopegraph left circles
 	e.append('circle')
@@ -157,8 +159,6 @@ function wrap(text, width) {
 
 	const { margin } = state
 	var chartWidth = width - margin.left - margin.right;
-	console.log('tspan chartWidth')
-	console.log(chartWidth)
 	
 	  text.each(function() {
 	    var text = d3.select(this),
@@ -194,7 +194,9 @@ function wrap(text, width) {
 	}
 
 function prepData(srcData){
-		// assign a DELTA key to each element
+	
+	// assign a DELTA key to each element
+	//used for class-assignment
 	for (var i = 0; i < srcData.length; i++) {
 	    
 	    change = srcData[i]['After'] - srcData[i]['Before'];
@@ -208,35 +210,8 @@ function prepData(srcData){
 	    }
 	}
 
-	for (var i = 1; i < (srcData.length - 1); i++) {
-		if ((srcData[i]['BeforeY']-srcData[i+1]['BeforeY']) < 15) {
-			if ((srcData[i-1]['BeforeY']-srcData[i]['BeforeY']) < 15) {
-				srcData[i+1]['BeforeY'] = srcData[i+1]['BeforeY'] - 10;
-			} else {
-				srcData[i]['BeforeY'] = srcData[i]['BeforeY'] + 10;
-			}
-		}
-	}
-
 	srcData.sort(function(a, b) {
 		return b.After-a.After;
-	})
-
-	for (var i = 1; i < (srcData.length - 1); i++) {
-
-		if ((srcData[i]['AfterY']-srcData[i+1]['AfterY']) < 15) {
-			if ((srcData[i-1]['AfterY']-srcData[i]['AfterY']) < 15) {
-				srcData[i+1]['AfterY'] = srcData[i+1]['AfterY'] - 10;
-			} else {
-				srcData[i]['AfterY'] = srcData[i]['AfterY'] + 10;
-			}
-		} else if ((srcData[i-1]['AfterY']-srcData[i]['AfterY']) < 15) {
-			srcData[i]['AfterY'] = srcData[i]['AfterY'] - 10;
-		} 
-	}
-
-	srcData.sort(function(a, b) {
-		return b.Before-a.Before;
 	})
 
 
