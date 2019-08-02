@@ -1,3 +1,5 @@
+var magicNumber = 2 * Math.PI; // http://tauday.com/tau-manifesto
+
 var width = 960,
     height = 700,
     radius = (Math.min(width, height) / 2) - 10;
@@ -5,7 +7,7 @@ var width = 960,
 var formatNumber = d3.format(",d");
 
 var xScale = d3.scaleLinear()
-    .range([0, 2 * Math.PI]);
+    .range([0, magicNumber]);
 
 var yScale = d3.scaleSqrt()
     .range([0, radius]);
@@ -14,36 +16,24 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var partition = d3.partition();
 
+const maxYo = d => Math.max(0, yScale(d.y0))
+const maxYOne = d => Math.max(0, yScale(d.y1))
+
 var arc = d3.arc()
-    .startAngle(d => Math.max(0, Math.min(2 * Math.PI, xScale(d.x0))))
-    .endAngle(d => Math.max(0, Math.min(2 * Math.PI, xScale(d.x1))))
-    .innerRadius(d => Math.max(0, yScale(d.y0)))
-    .outerRadius(d => Math.max(0, yScale(d.y1)));
+    .startAngle(d => Math.max(0, Math.min(magicNumber, xScale(d.x0))))
+    .endAngle(d => Math.max(0, Math.min(magicNumber, xScale(d.x1))))
+    .innerRadius(maxYo)
+    .outerRadius(maxYOne);
 
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
-  .append("g")
+var gWrapper = svg.append("g")
     .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
-d3.json("https://gist.githubusercontent.com/mbostock/4348373/raw/85f18ac90409caa5529b32156aa6e71cf985263f/flare.json", function(error, root) {
-  if (error) throw error;
-  
-  root = d3.hierarchy(root);
-  root.sum(d => d.size);
-  svg.selectAll("path")
-      .data(partition(root).descendants())
-    .enter().append("path")
-      .attr("d", arc)
-      .style("fill", d => color((d.children ? d : d.parent).data.name))
-      .on("click", click)
-    .append("title")
-      .text(d => d.data.name + "\n" + formatNumber(d.value));
-});
-
 function click(d) {
-  svg.transition()
+  gWrapper.transition()
       .duration(750)
       .tween("scale", function() {
         var xd = d3.interpolate(xScale.domain(), [d.x0, d.x1]),
@@ -55,7 +45,31 @@ function click(d) {
         };
       })
     .selectAll("path")
-      .attrTween("d", function(d) { return function() { return arc(d); }; });
+      .attrTween("d", d => function() { return arc(d); });
 }
+
+function enterFn(e){
+  e.append("path")
+      .attr("d", arc)
+      .style("fill", d => color((d.children ? d : d.parent).data.name))
+      .on("click", click)
+    .append("title")
+      .text(d => d.data.name + "\n" + formatNumber(d.value));
+}
+
+function drawChart(srData){
+  
+
+  let hierarchedData = d3.hierarchy(srData).sum(d => d.size);
+  let childrenElements = partition(hierarchedData).descendants()
+  
+  let dataJoin = gWrapper.selectAll("path").data(childrenElements)
+  
+  dataJoin.join(enterFn)
+}
+
+d3.json("https://gist.githubusercontent.com/mbostock/4348373/raw/85f18ac90409caa5529b32156aa6e71cf985263f/flare.json").then(function(res){
+  drawChart(res)
+});
 
 // d3.select(self.frameElement).style("height", height + "px");
