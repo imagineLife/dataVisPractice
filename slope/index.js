@@ -51,11 +51,8 @@ function enterFn(e){
 		.attr('y', height - margin.bottom * 0.05)
 		.attr('text-anchor', 'end');
 
-	e.selectAll('text-comments')
-		.append('text')
-		.text(function(d) {
-			return d.Comments;
-		})
+	e.append('text')
+		.text(d => d['Comments'])
 		.attr('class', 'neutral')
 		.attr('text-anchor', 'start')
 		.attr('x', chartWidth + margin.right)
@@ -92,14 +89,12 @@ function enterFn(e){
 
 	// Create slopegraph right circles
 	e.append('circle')
-		.attr('class', function(d) {
-			return d.delta;
-		})
-		.attr('cx',chartWidth + margin.right * 0.75)
-		.attr('cy', function(d) { 
-			return margin.top + chartHeight - state.yScale(d.After);
-		})
-		.attr('r', 6);
+		.attrs({
+			'class': d => d.delta,
+			'cx': chartWidth + margin.right * 0.75,
+			'cy': d => margin.top + chartHeight - state.yScale(d.After),
+			'r': 6
+		});
 
 		// Create slopegraph labels
 		e.append('text')
@@ -159,6 +154,12 @@ function buildChart(srcData, opts){
 }
 
 function wrap(text, width) {
+
+	const { margin } = state
+	var chartWidth = width - margin.left - margin.right;
+	console.log('tspan chartWidth')
+	console.log(chartWidth)
+	
 	  text.each(function() {
 	    var text = d3.select(this),
 	        words = text.text().split(/\s+/).reverse(),
@@ -168,7 +169,12 @@ function wrap(text, width) {
 	        lineHeight = 1.1, // ems
 	        y = text.attr("y"),
 	        dy = parseFloat(text.attr("dy")),
-	        tspan = text.text(null).append("tspan").attr("x", chartWidth + margin.left).attr("y", y).attr("dy", dy + "em");
+	        tspan = text
+	        	.text(null)
+	        	.append("tspan")
+	        	.attr("x", state.width - state.margin.right)
+	        	.attr("y", y)
+	        	.attr("dy", dy + "em");
 	    while (word = words.pop()) {
 	      line.push(word);
 	      tspan.text(line.join(" "));
@@ -176,7 +182,12 @@ function wrap(text, width) {
 	        line.pop();
 	        tspan.text(line.join(" "));
 	        line = [word];
-	        tspan = text.append("tspan").attr("x", chartWidth + margin.left).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+	        tspan = text
+	        	.append("tspan")
+	        	.attr("x", state.width - state.margin.right)
+	        	.attr("y", y)
+	        	.attr("dy", ++lineNumber * lineHeight + dy + "em")
+	        	.text(word);
 	      }
 	    }
 	  });
