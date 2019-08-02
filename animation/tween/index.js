@@ -41,6 +41,22 @@ var foreground = g.append("path")
 d3.interval(function() {
   foreground.transition()
       .duration(750)
+
+        /* 
+          The function passed to attrTween is invoked 
+          - for each selected element 
+          - when the transition starts, 
+            - for each element returns the interpolator to use
+            over the course of transition 
+
+          This function is thus responsible for
+          determining 
+          - the starting angle of the transition (which is pulled from the
+          element’s bound datum
+            - d.endAngle 
+          - the ending angle (the 'newAngle' argument to the enclosing function)
+            - Math.random() * magicNumber
+        */
       .attrTween("d", arcTween(Math.random() * magicNumber));
 }, 2000);
 
@@ -48,12 +64,6 @@ d3.interval(function() {
 // arcs from their current angle to the specified new angle.
 function arcTween(newAngle) {
 
-  // The function passed to attrTween is invoked for each selected element when
-  // the transition starts, and for each element returns the interpolator to use
-  // over the course of transition. This function is thus responsible for
-  // determining the starting angle of the transition (which is pulled from the
-  // element’s bound datum, d.endAngle), and the ending angle (simply the
-  // newAngle argument to the enclosing function).
   return function(d) {
 
     // To interpolate between the two angles, we use the default d3.interpolate.
