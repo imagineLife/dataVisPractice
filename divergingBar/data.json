@@ -1,0 +1,247 @@
+[
+  {
+    "rank": 1,
+    "country": "Luxembourg",
+    "annual_growth": 2.05
+  },
+  {
+    "rank": 2,
+    "country": "Cyprus",
+    "annual_growth": 1.38
+  },
+  {
+    "rank": 3,
+    "country": "Ireland",
+    "annual_growth": 1.2
+  },
+  {
+    "rank": 4,
+    "country": "Iceland",
+    "annual_growth": 1.17
+  },
+  {
+    "rank": 5,
+    "country": "Kazakhstan",
+    "annual_growth": 1.09
+  },
+  {
+    "rank": 6,
+    "country": "Norway",
+    "annual_growth": 1.07
+  },
+  {
+    "rank": 7,
+    "country": "Azerbaijan",
+    "annual_growth": 0.92
+  },
+  {
+    "rank": 8,
+    "country": "Turkey",
+    "annual_growth": 0.9
+  },
+  {
+    "rank": 9,
+    "country": "Spain",
+    "annual_growth": 0.84
+  },
+  {
+    "rank": 10,
+    "country": "Liechtenstein",
+    "annual_growth": 0.82
+  },
+  {
+    "rank": 11,
+    "country": "Sweden",
+    "annual_growth": 0.81
+  },
+  {
+    "rank": 12,
+    "country": "Belgium",
+    "annual_growth": 0.73
+  },
+  {
+    "rank": 13,
+    "country": "Switzerland",
+    "annual_growth": 0.7
+  },
+  {
+    "rank": 14,
+    "country": "United Kingdom",
+    "annual_growth": 0.53
+  },
+  {
+    "rank": 15,
+    "country": "Austria",
+    "annual_growth": 0.51
+  },
+  {
+    "rank": 16,
+    "country": "France",
+    "annual_growth": 0.41
+  },
+  {
+    "rank": 17,
+    "country": "Netherlands",
+    "annual_growth": 0.4
+  },
+  {
+    "rank": 18,
+    "country": "Finland",
+    "annual_growth": 0.38
+  },
+  {
+    "rank": 19,
+    "country": "Albania",
+    "annual_growth": 0.31
+  },
+  {
+    "rank": 20,
+    "country": "Malta",
+    "annual_growth": 0.29
+  },
+  {
+    "rank": "-",
+    "country": "European Union",
+    "annual_growth": 0.25
+  },
+  {
+    "rank": 21,
+    "country": "Italy",
+    "annual_growth": 0.23
+  },
+  {
+    "rank": 22,
+    "country": "Denmark",
+    "annual_growth": 0.22
+  },
+  {
+    "rank": 23,
+    "country": "Macedonia",
+    "annual_growth": 0.18
+  },
+  {
+    "rank": 23,
+    "country": "Monaco",
+    "annual_growth": 0.18
+  },
+  {
+    "rank": 25,
+    "country": "Czech Republic",
+    "annual_growth": 0.14
+  },
+  {
+    "rank": 26,
+    "country": "Andorra",
+    "annual_growth": 0.07
+  },
+  {
+    "rank": 26,
+    "country": "Portugal",
+    "annual_growth": 0.07
+  },
+  {
+    "rank": 28,
+    "country": "Slovakia",
+    "annual_growth": 0.01
+  },
+  {
+    "rank": 29,
+    "country": "Greece",
+    "annual_growth": -0.03
+  },
+  {
+    "rank": 30,
+    "country": "Georgia",
+    "annual_growth": -0.05
+  },
+  {
+    "rank": 31,
+    "country": "Russia",
+    "annual_growth": -0.06
+  },
+  {
+    "rank": 32,
+    "country": "Poland",
+    "annual_growth": -0.11
+  },
+  {
+    "rank": 33,
+    "country": "Bosnia and Herzegovina",
+    "annual_growth": -0.14
+  },
+  {
+    "rank": 34,
+    "country": "Germany",
+    "annual_growth": -0.16
+  },
+  {
+    "rank": 35,
+    "country": "Armenia",
+    "annual_growth": -0.18
+  },
+  {
+    "rank": 36,
+    "country": "Belarus",
+    "annual_growth": -0.21
+  },
+  {
+    "rank": 37,
+    "country": "Hungary",
+    "annual_growth": -0.24
+  },
+  {
+    "rank": 38,
+    "country": "Slovenia",
+    "annual_growth": -0.29
+  },
+  {
+    "rank": 39,
+    "country": "Romania",
+    "annual_growth": -0.32
+  },
+  {
+    "rank": 40,
+    "country": "Montenegro",
+    "annual_growth": -0.35
+  },
+  {
+    "rank": 41,
+    "country": "Ukraine",
+    "annual_growth": -0.39
+  },
+  {
+    "rank": 42,
+    "country": "Serbia",
+    "annual_growth": -0.46
+  },
+  {
+    "rank": 43,
+    "country": "Croatia",
+    "annual_growth": -0.5
+  },
+  {
+    "rank": 44,
+    "country": "Estonia",
+    "annual_growth": -0.54
+  },
+  {
+    "rank": 45,
+    "country": "Bulgaria",
+    "annual_growth": -0.6
+  },
+  {
+    "rank": 46,
+    "country": "Moldova",
+    "annual_growth": -1.04
+  },
+  {
+    "rank": 47,
+    "country": "Lithuania",
+    "annual_growth": -1.06
+  },
+  {
+    "rank": 48,
+    "country": "Latvia",
+    "annual_growth": -1.07
+  }
+]
