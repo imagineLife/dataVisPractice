@@ -4,6 +4,18 @@ function parse(d) {
   return d;
 }
 
+function enterFn(e){
+  e.append("rect")
+    .attrs({
+      "class": "annual-growth",
+      "x": d => xScale(Math.min(0, d.annual_growth)),
+      "y": scaledCountry,
+      "height": yScale.bandwidth(),
+      "width": d => Math.abs(xScale(d.annual_growth) - xScale(0))
+    })
+    .style("fill", coloredGrowth);
+}
+
 //helpers
 const country = d => d.country
 const anGrowth = d => d.annual_growth
@@ -34,9 +46,10 @@ const svg = d3.select("#chartDiv").append("svg")
   });
 
 const gWrapper = svg.append("g")
-  .attr("transform", `translate(${state.margin.left},${state.margin.top})`);
+  .attr("transform", `translate(${state.margin.left},${state.margin.top})`)
+  .attr('class', 'gWrapper');
 
-const legend = svg.append("g")
+const legend = gWrapper.append("g")
   .attr("class", "legend");
 
 // Scales
@@ -76,34 +89,26 @@ d3.json("./data.json").then(data => {
   colorScale.domain([-max, max]);
   
   //build axes
-  const yAxis = svg.append("g")
+  const yAxis = gWrapper.append("g")
   	.attr("class", "y-axis")
   	.attr("transform", "translate(" + xScale(0) + ",0)")
   	.append("line")
       .attr("y1", 0)
       .attr("y2", hLM);
   
-  const xAxis = svg.append("g")
+  const xAxis = gWrapper.append("g")
   	.attr("class", "x-axis")
   	.attr("transform", "translate(0," + (hLM + state.xAxisMargin) + ")")
   	.call(xScaleObj)
   
-  const bars = svg.append("g")
-  	.attr("class", "bars")
+  // const gWrapper = svg.append("g")
+  // 	.attr("class", "gWrapper")
   
-  let dataJoin = bars.selectAll("rect")
-  	.data(data)
-  .enter().append("rect")
-  	.attrs({
-      "class": "annual-growth",
-  	  "x": d => xScale(Math.min(0, d.annual_growth)),
-  	  "y": scaledCountry,
-  	  "height": yScale.bandwidth(),
-  	  "width": d => Math.abs(xScale(d.annual_growth) - xScale(0))
-    })
-  	.style("fill", coloredGrowth);
+  let dataJoin = gWrapper.selectAll("rect")
+  	.data(data);
+  dataJoin.join(enterFn)
   
-  const labels = svg.append("g")
+  const labels = gWrapper.append("g")
   	.attr("class", "labels");
   
   labels.selectAll("text")
