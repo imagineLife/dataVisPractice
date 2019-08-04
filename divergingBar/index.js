@@ -5,6 +5,8 @@ function parse(d) {
 }
 
 function enterFn(e){
+  
+  //rects
   e.append("rect")
     .attrs({
       "class": "annual-growth",
@@ -15,8 +17,10 @@ function enterFn(e){
     })
     .style("fill", coloredGrowth);
 
-  let labelG = e.append("g")
-    .attr("class", "labels")
+
+  //labels
+  e.append("g")
+    .attr("class", "labelGWrapper")
     .append("text")
     .attrs({
       "class": "bar-label",
