@@ -1,4 +1,4 @@
-var state = {
+const state = {
   labelMargin: 5,
   xAxisMargin: 10,
   legendRightMargin: 0,
@@ -17,12 +17,12 @@ const svg = d3.select("#chartDiv").append("svg")
 const gWrapper = svg.append("g")
       .attr("transform", `translate(${state.margin.left},${state.margin.top})`);
 
-var xScale = d3.scaleLinear()
+const xScale = d3.scaleLinear()
 	.range([0, width]);
 
-var colour = d3.scaleSequential(d3.interpolatePRGn);
+const colour = d3.scaleSequential(d3.interpolatePRGn);
 
-var yScale = d3.scaleBand()
+const yScale = d3.scaleBand()
 	.range([height, 0])
 	.padding(0.1);
 
@@ -32,7 +32,7 @@ function parse(d) {
   return d;
 }
 
-var legend = svg.append("g")
+const legend = svg.append("g")
 	.attr("class", "legend");
 
 legend.append("text")
@@ -52,22 +52,22 @@ d3.json("./data.json").then(data => {
   yScale.domain(data.map(function(d) { return d.country; }));
   xScale.domain(d3.extent(data, function(d) { return d.annual_growth; }));
   
-  var max = d3.max(data, function(d) { return d.annual_growth; });
+  const max = d3.max(data, function(d) { return d.annual_growth; });
   colour.domain([-max, max]);
   
-  var yAxis = svg.append("g")
+  const yAxis = svg.append("g")
   	.attr("class", "y-axis")
   	.attr("transform", "translate(" + xScale(0) + ",0)")
   	.append("line")
       .attr("y1", 0)
       .attr("y2", height);
   
-  var xAxis = svg.append("g")
+  const xAxis = svg.append("g")
   	.attr("class", "x-axis")
   	.attr("transform", "translate(0," + (height + state.xAxisMargin) + ")")
   	.call(d3.axisBottom(xScale))
   
-  var bars = svg.append("g")
+  const bars = svg.append("g")
   	.attr("class", "bars")
   
   bars.selectAll("rect")
@@ -86,7 +86,7 @@ d3.json("./data.json").then(data => {
     	return colour(d.annual_growth)
   	});
   
-  var labels = svg.append("g")
+  const labels = svg.append("g")
   	.attr("class", "labels");
   
   labels.selectAll("text")
