@@ -24,6 +24,9 @@ const width = 960,
 const wLM = width - state.margin.left - state.margin.right,
       hLM = height - state.margin.top - state.margin.bottom;
 
+/*
+  Element Creation
+*/
 const svg = d3.select("#chartDiv").append("svg")
   .attrs({
     "width": width,
@@ -33,37 +36,46 @@ const svg = d3.select("#chartDiv").append("svg")
 const gWrapper = svg.append("g")
   .attr("transform", `translate(${state.margin.left},${state.margin.top})`);
 
-const xScale = d3.scaleLinear().range([0, wLM]);
+const legend = svg.append("g")
+  .attr("class", "legend");
 
+// Scales
+const xScale = d3.scaleLinear().range([0, wLM]);
+const xScaleObj = d3.axisBottom(xScale)
 const colorScale = d3.scaleSequential(d3.interpolatePRGn);
 
 const yScale = d3.scaleBand()
 	.range([hLM, 0])
 	.padding(0.1);
 
-const legend = svg.append("g")
-	.attr("class", "legend");
 
+//set legend texts
 legend.append("text")
 	.attr("x", wLM - state.legendRightMargin)
+  .attr("y", state.margin.top)
 	.attr("text-anchor", "end")
-	.text("European Countries by");
+	.text("European Countries");
 
 legend.append("text")
   .attr("x", wLM - state.legendRightMargin)
-	.attr("y", 20)
+	.attr("y", state.margin.top + 20)
 	.attr("text-anchor", "end")
 	.style("opacity", 0.5)
-	.text("2016 Population Growth Rate (%)");
+	.text("by 2016 Population Growth Rate (%)");
 
+
+//loadData
 d3.json("./data.json").then(data => {
   
+  //get annual-growth max
+  const max = d3.max(data, anGrowth);
+
+  //set scale domains from data
   yScale.domain(data.map(country));
   xScale.domain(d3.extent(data, anGrowth));
-  
-  const max = d3.max(data, anGrowth);
   colorScale.domain([-max, max]);
   
+  //build axes
   const yAxis = svg.append("g")
   	.attr("class", "y-axis")
   	.attr("transform", "translate(" + xScale(0) + ",0)")
@@ -74,12 +86,12 @@ d3.json("./data.json").then(data => {
   const xAxis = svg.append("g")
   	.attr("class", "x-axis")
   	.attr("transform", "translate(0," + (hLM + state.xAxisMargin) + ")")
-  	.call(d3.axisBottom(xScale))
+  	.call(xScaleObj)
   
   const bars = svg.append("g")
   	.attr("class", "bars")
   
-  bars.selectAll("rect")
+  let dataJoin = bars.selectAll("rect")
   	.data(data)
   .enter().append("rect")
   	.attrs({
