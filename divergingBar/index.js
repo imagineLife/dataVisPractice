@@ -14,6 +14,24 @@ function enterFn(e){
       "width": d => Math.abs(xScale(d.annual_growth) - xScale(0))
     })
     .style("fill", coloredGrowth);
+
+  let labelG = e.append("g")
+    .attr("class", "labels")
+    .append("text")
+    .attrs({
+      "class": "bar-label",
+      "x": xScale(0),
+      "y": scaledCountry,
+      "dx": d => d.annual_growth < 0 ? state.labelMargin : -state.labelMargin,
+      "dy": yScale.bandwidth(),
+      "text-anchor": d => d.annual_growth < 0 ? "start" : "end"
+    })
+    .text(country)
+    .style("fill", function(d) {
+       if (d.country == "European Union") {
+         return "blue";
+       }
+    });
 }
 
 //helpers
@@ -101,32 +119,8 @@ d3.json("./data.json").then(data => {
   	.attr("transform", "translate(0," + (hLM + state.xAxisMargin) + ")")
   	.call(xScaleObj)
   
-  // const gWrapper = svg.append("g")
-  // 	.attr("class", "gWrapper")
-  
   let dataJoin = gWrapper.selectAll("rect")
   	.data(data);
   dataJoin.join(enterFn)
-  
-  const labels = gWrapper.append("g")
-  	.attr("class", "labels");
-  
-  labels.selectAll("text")
-  	.data(data)
-  .enter().append("text")
-  	.attrs({
-      "class": "bar-label",
-  	  "x": xScale(0),
-  	  "y": scaledCountry,
-  	  "dx": d => d.annual_growth < 0 ? state.labelMargin : -state.labelMargin,
-  	  "dy": yScale.bandwidth(),
-  	  "text-anchor": d => d.annual_growth < 0 ? "start" : "end"
-  	})
-  	.text(country)
-  	.style("fill", function(d) {
-    	 if (d.country == "European Union") {
-         return "blue";
-       }
-  	});
   	
 });
