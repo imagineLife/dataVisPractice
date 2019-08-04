@@ -1,0 +1,64 @@
+[
+  {
+    "name": "TOPICS",
+    "parent": null
+  },
+  {
+    "name": "Topic A",
+    "size": null,
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub A1", 
+    "size": 15,
+    "parent": "Topic A"
+  },
+  {
+    "name": "Sub A2", 
+    "size": 14,
+    "parent": "Topic A"
+  }, 
+  {
+    "name": "Sub A3", 
+    "size": 13,
+    "parent": "Topic A"
+  },
+  {
+    "name": "Sub A4", 
+    "size": 11,
+    "parent": "Topic A"
+  },
+  {
+    "name": "Topic B",
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub B1", 
+    "size": 8,
+    "parent": "Topic B"
+  }, 
+  {
+    "name": "Sub B2", 
+    "size": 7,
+    "parent": "Topic B"
+  }, 
+  {
+    "name": "Sub B3", 
+    "size": 6,
+    "parent": "Topic B"
+  },
+  {
+    "name": "Topic C",
+    "parent": "TOPICS"
+  },
+  {
+    "name": "Sub C1", 
+    "size": 2,
+    "parent": "Topic C"
+  }, 
+  {
+    "name": "Sub C2", 
+    "size": 9,
+    "parent": "Topic C"
+  }
+]

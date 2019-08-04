@@ -39,27 +39,14 @@ var arcFn = d3.arc()
   .innerRadius(d => d.y0)
   .outerRadius(d => d.y1);
 
-var rootedData = null, sliceGs = null;
+var rootedData = null, sliceEnterData = null;
 
 function makeRoot(data){
-
+  
   // Find data root
   var root = d3.hierarchy(data)
-      .sum(d => {
-        console.log('d')
-        console.log(d)
-        
-        return +d.size
-      })
-
-      /*
-       sorts each node in comparison
-        to its siblings using the requested comparison.
-         In our case, we're comparing the "value" attribute
-          that we just created for each partition in .sum()
-       */
-      .sort((a,b) => b.value - a.value);
-
+      .sum(d => +d.data.size || 0)
+  
   // Size arcs
   return pt(root);
 }
@@ -120,29 +107,27 @@ function arcTweenText(a, i) {
 
 function toggleOrder() {
 
-    // Determine how to size the slices.
-    if (this.value === "size") {  // <-- 2
-      console.log('rootedData')
-      console.log(rootedData)
-      rootedData.sum(d => d.size);  // <-- 3
-    } else {  // <-- 2
-      console.log('rootedData.count()')
-      console.log(rootedData.count())
-      
-      rootedData.count();  // <-- 4
+    // Determine how to size the slices
+    if (this.value === "size") {
+      rootedData.sum(d => d.data.size);
     }
-    rootedData.sort((a, b) => b[this.value] - b[this.value]);  // <-- 5
+    
+    if (this.value === "count"){
+      rootedData.count();
+    }
+    
+    rootedData.sort(function(a, b) { return b[this.value] - b[this.value]; });
 
-    pt(rootedData);  // <-- 6
+    pt(rootedData);
 
-    sliceGs.selectAll("path")
+    sliceEnterData.selectAll("path")
       .transition()
       .duration(1350)
       .ease(d3.easeElastic)
       //attrTween docs
     //https://github.com/d3/d3-transition#transition_attrTween
       .attrTween("d", arcTweenPath);
-    sliceGs.selectAll("text")
+    sliceEnterData.selectAll("text")
       .transition()
       .duration(1350)
       .ease(d3.easeElastic)
@@ -155,51 +140,49 @@ function toggleOrder() {
 
 function buildChart(data){
 
-  console.log('%c webClone', 'background-color: green; color: white;')
-  
-  console.log('data')
-  console.log(data)
-  
+    //stratify data
+    let stratData = d3.stratify()
 
+        //set the 'id' of each 'node'
+        .id(d => d.name)
+
+        //set the parentID accesor of each 'node'
+        .parentId(d => d.parent)
+        
+        //apply the data to the stratify
+        (data)
+
+        //calcs sum of 'parent' nodes
+        .sum(d => +d.size || 0)
+
+        //optionally sort the data by size here
+        .sort((a,b) => a.size - b.size);
+      
     pt.size([2 * Math.PI, radius]);
-    // console.log('buildChart data')
-    // console.log(data)
     
-    rootedData = makeRoot(data);
-    console.log('rootedData')
-    console.log(rootedData)
+    rootedData = makeRoot(stratData);
     
-
      // Add a <g> element for each node in thd data, then append <path> elements and draw lines based on the arc
     // variable calculations. Last, color the lines and the slices.
     let sliceDataJoin = gObj.selectAll('g')
       .data(rootedData.descendants());
     
-    sliceGs = sliceDataJoin.enter()
+    sliceEnterData = sliceDataJoin.enter()
       .append('g')
       .attr("class", "sliceGWrapper")
     
-    let singlePath = sliceGs.append('path')
+    let singlePath = sliceEnterData.append('path')
       .attrs({
         "display": d => d.depth ? null : "none",
         "d": arcFn,
         'class':'singlePath'
       })
       .style('stroke', '#fff')
-      .style("fill", function (d) { return colorScale((d.children ? d : d.parent).data.name); });
-
-    // Populate the <text> elements with our data-driven titles.
-    gObj.selectAll(".sliceGWrapper")
-      .append("text")
-      .attrs({
-        "transform": transformText,
-      // .attr("dx", "-10") // radius margin OPTIONAL?!
-        "dy": ".5em", // rotation align
-        'text-ancor': 'middle',
-        'class': 'sliceText'
-      })
-      .text(d => d.parent ? d.data.name : "");
-
+      .style("fill", function (d) { 
+        let dOrParent = d.children ? d : d.parent;
+        
+        return colorScale((d.children ? d : d.parent).data.id); 
+      });
 
     d3.selectAll(".sizeSelect").on("click", toggleOrder);
 }

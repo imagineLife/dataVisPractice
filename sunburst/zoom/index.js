@@ -12,7 +12,7 @@ var xScale = d3.scaleLinear()
 var yScale = d3.scaleSqrt()
     .range([0, radius]);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
+var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
 var partition = d3.partition();
 
@@ -29,29 +29,42 @@ var arc = d3.arc()
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
+
 var gWrapper = svg.append("g")
     .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
 function click(d) {
   gWrapper.transition()
       .duration(750)
-      .tween("scale", function() {
+
+      //https://github.com/d3/d3-transition#transition_tween
+      /*
+        TWEEN
+        2 args
+        1 - unique identifie?!
+        2- a fn that returns a fn
+      */
+      .tween("random-name", function() {
         var xd = d3.interpolate(xScale.domain(), [d.x0, d.x1]),
             yd = d3.interpolate(yScale.domain(), [d.y0, 1]),
             yr = d3.interpolate(yScale.range(), [d.y0 ? 20 : 0, radius]);
+            
         return function(t) { 
           xScale.domain(xd(t)); 
           yScale.domain(yd(t)).range(yr(t)); 
         };
       })
     .selectAll("path")
-      .attrTween("d", d => function() { return arc(d); });
+      .attrTween("d", d => function() { 
+        let thisVal = arc(d)
+        return thisVal 
+      });
 }
 
 function enterFn(e){
   e.append("path")
       .attr("d", arc)
-      .style("fill", d => color((d.children ? d : d.parent).data.name))
+      .style("fill", d => colorScale((d.children ? d : d.parent).data.name))
       .on("click", click)
     .append("title")
       .text(d => d.data.name + "\n" + formatNumber(d.value));
@@ -71,5 +84,3 @@ function drawChart(srData){
 d3.json("https://gist.githubusercontent.com/mbostock/4348373/raw/85f18ac90409caa5529b32156aa6e71cf985263f/flare.json").then(function(res){
   drawChart(res)
 });
-
-// d3.select(self.frameElement).style("height", height + "px");
