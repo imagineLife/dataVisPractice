@@ -4,10 +4,13 @@ function parse(d) {
   return d;
 }
 
+//helpers
 const country = d => d.country
 const anGrowth = d => d.annual_growth
 const scaledCountry = d => yScale(d.country)
+const coloredGrowth = d => colorScale(d.annual_growth);
 
+//state data
 const state = {
   labelMargin: 5,
   xAxisMargin: 10,
@@ -15,36 +18,39 @@ const state = {
   margin: {top: 40, right: 50, bottom: 60, left: 50}
 }
 
-let width = 960 - state.margin.left - state.margin.right,
-    height = 500 - state.margin.top - state.margin.bottom;
+//dimensions
+const width = 960,
+    height = 500;
+const wLM = width - state.margin.left - state.margin.right,
+      hLM = height - state.margin.top - state.margin.bottom;
 
 const svg = d3.select("#chartDiv").append("svg")
   .attrs({
-    "width": width + state.margin.left + state.margin.right,
-    "height": height + state.margin.top + state.margin.bottom
+    "width": width,
+    "height": height
   });
 
 const gWrapper = svg.append("g")
   .attr("transform", `translate(${state.margin.left},${state.margin.top})`);
 
-const xScale = d3.scaleLinear().range([0, width]);
+const xScale = d3.scaleLinear().range([0, wLM]);
 
 const colorScale = d3.scaleSequential(d3.interpolatePRGn);
 
 const yScale = d3.scaleBand()
-	.range([height, 0])
+	.range([hLM, 0])
 	.padding(0.1);
 
 const legend = svg.append("g")
 	.attr("class", "legend");
 
 legend.append("text")
-	.attr("x", width - state.legendRightMargin)
+	.attr("x", wLM - state.legendRightMargin)
 	.attr("text-anchor", "end")
 	.text("European Countries by");
 
 legend.append("text")
-  .attr("x", width - state.legendRightMargin)
+  .attr("x", wLM - state.legendRightMargin)
 	.attr("y", 20)
 	.attr("text-anchor", "end")
 	.style("opacity", 0.5)
@@ -55,7 +61,7 @@ d3.json("./data.json").then(data => {
   yScale.domain(data.map(country));
   xScale.domain(d3.extent(data, anGrowth));
   
-  const max = d3.max(data, d => d.annual_growth);
+  const max = d3.max(data, anGrowth);
   colorScale.domain([-max, max]);
   
   const yAxis = svg.append("g")
@@ -63,11 +69,11 @@ d3.json("./data.json").then(data => {
   	.attr("transform", "translate(" + xScale(0) + ",0)")
   	.append("line")
       .attr("y1", 0)
-      .attr("y2", height);
+      .attr("y2", hLM);
   
   const xAxis = svg.append("g")
   	.attr("class", "x-axis")
-  	.attr("transform", "translate(0," + (height + state.xAxisMargin) + ")")
+  	.attr("transform", "translate(0," + (hLM + state.xAxisMargin) + ")")
   	.call(d3.axisBottom(xScale))
   
   const bars = svg.append("g")
@@ -79,11 +85,11 @@ d3.json("./data.json").then(data => {
   	.attrs({
       "class": "annual-growth",
   	  "x": d => xScale(Math.min(0, d.annual_growth)),
-  	  "y": d => yScale(d.country),
+  	  "y": scaledCountry,
   	  "height": yScale.bandwidth(),
   	  "width": d => Math.abs(xScale(d.annual_growth) - xScale(0))
     })
-  	.style("fill", d => colorScale(d.annual_growth));
+  	.style("fill", coloredGrowth);
   
   const labels = svg.append("g")
   	.attr("class", "labels");
@@ -99,7 +105,7 @@ d3.json("./data.json").then(data => {
   	  "dy": yScale.bandwidth(),
   	  "text-anchor": d => d.annual_growth < 0 ? "start" : "end"
   	})
-  	.text(function(d) { return d.country })
+  	.text(country)
   	.style("fill", function(d) {
     	 if (d.country == "European Union") {
          return "blue";
