@@ -11,16 +11,17 @@ const state = {
 	maxData: n => Math.round(n * 1.1)
 }
 
-//dimensions-les--margins
+//dimensions, less-margins (Margin Convention)
 // https://bl.ocks.org/mbostock/3019563
 const wLM = state.w - state.m.l - state.m.r;
-const hLM = state.w - state.m.t - state.m.b;
+const hLM = state.h - state.m.t - state.m.b;
+
 
 const svg = d3.select('#chartDiv').append('svg')
 	.attrs({
 		class: 'svg-wrapper',
-		width: wLM,
-		height: hLM
+		width: state.w,
+		height: state.h
 	})
 
 const gWrapper = svg.append('g').attrs({
@@ -56,6 +57,9 @@ d3.json('./data.json').then(prepData).then(resObj => {
 	//build y-Scale
 	const yScale = d3.scaleLinear()
 		.domain([state.minData, resObj.maxData])
-		.range([hLM, 0])
+		.range([hLM, state.m.t])
 
+	const yAxisObj = d3.axisLeft(yScale)
+
+	gWrapper.call(yAxisObj)
 })
