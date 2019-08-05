@@ -8,7 +8,10 @@ const state = {
 	w: 450,
 	h: 450,
 	minData: 0,
-	maxData: n => Math.round(n * 1.1)
+	maxData: n => Math.round(n * 1.1),
+	boxCenter: 0,
+	boxW: 0,
+	yScale: null
 }
 
 //dimensions, less-margins (Margin Convention)
@@ -49,6 +52,17 @@ const prepData = (data) => {
 	return obj
 }
 
+const enterLines = enterSelection => {
+	enterSelection.append("line")
+  .attrs({
+  	"x1": state.boxCenter-state.boxW/2,
+  	"x2": state.boxCenter+state.boxW/2,
+  	"y1": d => state.yScale(d),
+  	"y2": d => state.yScale(d),
+  	"stroke": "black"
+  })
+}
+
 //load the data
 d3.json('./data.json').then(prepData).then(resObj => {
 	console.log('resObj')
@@ -56,41 +70,47 @@ d3.json('./data.json').then(prepData).then(resObj => {
 
 	const { maxData, min, max, q1, q3, median } = resObj
 	//build y-Scale
-	const yScale = d3.scaleLinear()
+	state.yScale = d3.scaleLinear()
 		.domain([state.minData, maxData])
 		.range([hLM, state.m.t])
 
 	//build yaxis obj
-	const yAxisObj = d3.axisLeft(yScale)
+	const yAxisObj = d3.axisLeft(state.yScale)
 
 	//append yAxis to gWrapper
 	gWrapper.call(yAxisObj)
 
 	//extra notes for the box?!
-	const boxCenter = 200, boxW = 100;
+	state.boxCenter = 200, state.boxW = 100;
 
 	//append central vertical box-plot line
 	gWrapper.append('line')
 		.attrs({
-			x1: boxCenter,
-			x2: boxCenter,
-			y1: yScale(min),
-			y2: yScale(max),
+			x1: state.boxCenter,
+			x2: state.boxCenter,
+			y1: state.yScale(min),
+			y2: state.yScale(max),
 			stroke: `black`
 		})
 
 	//append the box
 	gWrapper.append('rect')
 		.attrs({
-			x: boxCenter - boxW/2,
-			y: yScale(q3),
-			height: (yScale(q1) - yScale(q3)),
-			width: boxW,
+			x: state.boxCenter - state.boxW/2,
+			y: state.yScale(q3),
+			height: (state.yScale(q1) - state.yScale(q3)),
+			width: state.boxW,
 			stroke: 'black',
 			fill: `#69b3a2`
 		})
 
 	//build data arr for hz box-plot lines
 	const minMaxMed = [min, median, max]
+
+	//make data-join
+	let hzLineDataJoin = gWrapper.selectAll('.line-hz')
+	.data(minMaxMed)
+
+	hzLineDataJoin.join(enterLines)
 
 })
