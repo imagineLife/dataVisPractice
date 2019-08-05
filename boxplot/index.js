@@ -59,7 +59,23 @@ d3.json('./data.json').then(prepData).then(resObj => {
 		.domain([state.minData, resObj.maxData])
 		.range([hLM, state.m.t])
 
+	//build yaxis obj
 	const yAxisObj = d3.axisLeft(yScale)
 
+	//append yAxis to gWrapper
 	gWrapper.call(yAxisObj)
+
+	//extra notes for the box?!
+	const boxCenter = 200, boxW = 100;
+
+	//append central vertical box-plot line
+	gWrapper.append('line')
+		.attrs({
+			x1: boxCenter,
+			x2: boxCenter,
+			y1: yScale(resObj.min),
+			y2: yScale(resObj.max),
+			stroke: `black`
+		})
+
 })
