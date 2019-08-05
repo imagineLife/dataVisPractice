@@ -73,11 +73,11 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 		.domain([state.minData, maxData])
 		.range([hLM, state.m.t])
 
-	// //build yaxis obj
-	// const yAxisObj = d3.axisLeft(state.yScale)
+	//build yaxis obj
+	const yAxisObj = d3.axisLeft(state.yScale)
 
-	// //append yAxis to gWrapper
-	// gWrapper.call(yAxisObj)
+	//append yAxis to gWrapper
+	gWrapper.call(yAxisObj)
 
 	// //extra notes for the box?!
 	// state.boxCenter = 200, state.boxW = 100;
