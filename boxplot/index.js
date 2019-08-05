@@ -6,7 +6,9 @@ const state = {
 		l: 40
 	},
 	w: 450,
-	h: 450
+	h: 450,
+	minData: 0,
+	maxData: n => Math.round(n * 1.1)
 }
 
 //dimensions-les--margins
@@ -40,7 +42,8 @@ const prepData = (data) => {
 		median,
 		q3,
 		min,
-		max
+		max,
+		maxData: state.maxData(max)
 	}
 	return obj
 }
@@ -49,4 +52,10 @@ const prepData = (data) => {
 d3.json('./data.json').then(prepData).then(resObj => {
 	console.log('resObj')
 	console.log(resObj)
+
+	//build y-Scale
+	const yScale = d3.scaleLinear()
+		.domain([state.minData, resObj.maxData])
+		.range([hLM, 0])
+
 })
