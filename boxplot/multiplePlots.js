@@ -33,26 +33,22 @@ const gWrapper = svg.append('g').attrs({
 })
 
 const prepData = (data) => {
-	console.log('data')
-	console.log(data)
 	
-	// var sorted = data.sort(d3.ascending)
-	// var q1 = d3.quantile(sorted, .25)
-	// var median = d3.quantile(sorted, .5)
-	// var q3 = d3.quantile(sorted, .75)
-	// var interQuantileRange = q3 - q1
-	// var min = q1 - 1.5 * interQuantileRange
-	// var max = q1 + 1.5 * interQuantileRange
-	// let obj = {
-	// 	data: data,
-	// 	q1,
-	// 	median,
-	// 	q3,
-	// 	min,
-	// 	max,
-	// 	maxData: state.maxData(max)
-	// }
-	return data
+	var q1 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .25)
+	var median = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .5)
+	var q3 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .75)
+	var interQuantileRange = q3 - q1
+	var min = q1 - 1.5 * interQuantileRange
+	var max = q1 + 1.5 * interQuantileRange
+	let obj = {
+		q1,
+		median,
+		q3,
+		interQuantileRange,
+		min,
+		max
+	}
+	return obj
 }
 
 const enterLines = enterSelection => {
@@ -67,8 +63,11 @@ const enterLines = enterSelection => {
 }
 
 //load the data
-d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData)//.then(resObj => {
+d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
 
+	console.log('resObj')
+	console.log(resObj)
+	
 	// const { maxData, min, max, q1, q3, median } = resObj
 	// //build y-Scale
 	// state.yScale = d3.scaleLinear()
@@ -114,4 +113,4 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 
 	// hzLineDataJoin.join(enterLines)
 
-//})
+})
