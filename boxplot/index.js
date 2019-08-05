@@ -65,8 +65,6 @@ const enterLines = enterSelection => {
 
 //load the data
 d3.json('./data.json').then(prepData).then(resObj => {
-	console.log('resObj')
-	console.log(resObj)
 
 	const { maxData, min, max, q1, q3, median } = resObj
 	//build y-Scale
