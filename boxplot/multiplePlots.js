@@ -11,7 +11,8 @@ const state = {
 	maxData: n => Math.round(n * 1.1),
 	boxCenter: 0,
 	boxW: 0,
-	yScale: null
+	yScale: null,
+	xScale: null
 }
 
 //dimensions, less-margins (Margin Convention)
@@ -73,11 +74,23 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 		.domain([state.minData, maxData])
 		.range([hLM, state.m.t])
 
-	//build yaxis obj
+	//build x-scale
+	state.xScale = d3.scaleBand()
+		.domain(['setosa', 'versicolor', 'virginica'])
+		.range([0, state.w])
+
+	//build axis objs
 	const yAxisObj = d3.axisLeft(state.yScale)
+	const xAxisObj = d3.axisBottom(state.xScale)
 
 	//append yAxis to gWrapper
 	gWrapper.call(yAxisObj)
+	gWrapper.append('g')
+		.attrs({
+			class: 'x-axis-g-wrapper',
+			transform: `translate(0, ${hLM})`
+		})
+		.call(xAxisObj)
 
 	// //extra notes for the box?!
 	// state.boxCenter = 200, state.boxW = 100;
