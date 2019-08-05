@@ -54,9 +54,10 @@ d3.json('./data.json').then(prepData).then(resObj => {
 	console.log('resObj')
 	console.log(resObj)
 
+	const { maxData, min, max, q1, q3 } = resObj
 	//build y-Scale
 	const yScale = d3.scaleLinear()
-		.domain([state.minData, resObj.maxData])
+		.domain([state.minData, maxData])
 		.range([hLM, state.m.t])
 
 	//build yaxis obj
@@ -73,9 +74,20 @@ d3.json('./data.json').then(prepData).then(resObj => {
 		.attrs({
 			x1: boxCenter,
 			x2: boxCenter,
-			y1: yScale(resObj.min),
-			y2: yScale(resObj.max),
+			y1: yScale(min),
+			y2: yScale(max),
 			stroke: `black`
+		})
+
+	//append the box
+	gWrapper.append('rect')
+		.attrs({
+			x: boxCenter - boxW/2,
+			y: yScale(q3),
+			height: (yScale(q1) - yScale(q3)),
+			width: boxW,
+			stroke: 'black',
+			fill: `#69b3a2`
 		})
 
 })
