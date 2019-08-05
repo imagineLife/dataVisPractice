@@ -25,3 +25,28 @@ const gWrapper = svg.append('g').attrs({
 	class: 'g-wrapper',
 	transform: `translate(${state.m.l}, ${state.m.t})`
 })
+
+const prepData = (data) => {
+	var sorted = data.sort(d3.ascending)
+	var q1 = d3.quantile(sorted, .25)
+	var median = d3.quantile(sorted, .5)
+	var q3 = d3.quantile(sorted, .75)
+	var interQuantileRange = q3 - q1
+	var min = q1 - 1.5 * interQuantileRange
+	var max = q1 + 1.5 * interQuantileRange
+	let obj = {
+		data: data,
+		q1,
+		median,
+		q3,
+		min,
+		max
+	}
+	return obj
+}
+
+//load the data
+d3.json('./data.json').then(prepData).then(resObj => {
+	console.log('resObj')
+	console.log(resObj)
+})
