@@ -46,7 +46,8 @@ const prepData = (data) => {
 		q3,
 		interQuantileRange,
 		min,
-		max
+		max,
+		maxData: state.maxData(max)
 	}
 	return obj
 }
@@ -65,14 +66,12 @@ const enterLines = enterSelection => {
 //load the data
 d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
 
-	console.log('resObj')
-	console.log(resObj)
+	const { maxData, min, max, q1, q3, median } = resObj
 	
-	// const { maxData, min, max, q1, q3, median } = resObj
 	// //build y-Scale
-	// state.yScale = d3.scaleLinear()
-	// 	.domain([state.minData, maxData])
-	// 	.range([hLM, state.m.t])
+	state.yScale = d3.scaleLinear()
+		.domain([state.minData, maxData])
+		.range([hLM, state.m.t])
 
 	// //build yaxis obj
 	// const yAxisObj = d3.axisLeft(state.yScale)
