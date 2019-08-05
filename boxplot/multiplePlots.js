@@ -34,23 +34,41 @@ const gWrapper = svg.append('g').attrs({
 })
 
 const prepData = (data) => {
-	
-	var q1 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .25)
-	var median = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .5)
-	var q3 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .75)
-	var interQuantileRange = q3 - q1
-	var min = q1 - 1.5 * interQuantileRange
-	var max = q1 + 1.5 * interQuantileRange
-	let obj = {
-		q1,
-		median,
-		q3,
-		interQuantileRange,
-		min,
-		max,
-		maxData: state.maxData(max)
+
+	let resObj = {
+		q1: null,
+		median: null,
+		q3: null,
+		interQuantileRange: null,
+		min: null,
+		max: null,
+		maxData: null,
+		sumStats: null
 	}
-	return obj
+	
+	const sumStats = d3.nest()
+	.key(d => d["Species"])
+	.rollup(function(d){
+		var q1 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .25)
+		var median = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .5)
+		var q3 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .75)
+		var interQuantileRange = q3 - q1
+		var min = q1 - 1.5 * interQuantileRange
+		var max = q1 + 1.5 * interQuantileRange
+		
+		resObj.q1 = q1,
+		resObj.median = median,
+		resObj.q3 = q3,
+		resObj.interQuantileRange = interQuantileRange,
+		resObj.min = min,
+		resObj.max = max,
+		resObj.maxData = state.maxData(max)
+	})
+	.entries(data)
+
+	resObj.sumStats = sumStats;
+	
+	return resObj
 }
 
 const enterLines = enterSelection => {
@@ -67,6 +85,9 @@ const enterLines = enterSelection => {
 //load the data
 d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
 
+	console.log('resObj')
+	console.log(resObj)
+	
 	const { maxData, min, max, q1, q3, median } = resObj
 	
 	// //build y-Scale
