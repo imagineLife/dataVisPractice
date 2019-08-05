@@ -33,42 +33,22 @@ const gWrapper = svg.append('g').attrs({
 	transform: `translate(${state.m.l}, ${state.m.t})`
 })
 
-const prepData = (data) => {
+const prepData = (srcData) => {
 
-	let resObj = {
-		q1: null,
-		median: null,
-		q3: null,
-		interQuantileRange: null,
-		min: null,
-		max: null,
-		maxData: null,
-		sumStats: null
-	}
-	
-	const sumStats = d3.nest()
-	.key(d => d["Species"])
-	.rollup(function(d){
-		var q1 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .25)
-		var median = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .5)
-		var q3 = d3.quantile(data.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending), .75)
-		var interQuantileRange = q3 - q1
-		var min = q1 - 1.5 * interQuantileRange
-		var max = q1 + 1.5 * interQuantileRange
-		
-		resObj.q1 = q1,
-		resObj.median = median,
-		resObj.q3 = q3,
-		resObj.interQuantileRange = interQuantileRange,
-		resObj.min = min,
-		resObj.max = max,
-		resObj.maxData = state.maxData(max)
-	})
-	.entries(data)
+	const stats = d3.nest() // nest function allows to group the calculation per level of a factor
+    .key(function(d) { return d.Species;})
+    .rollup(function(d) {
+      q1 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.25)
+      median = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.5)
+      q3 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.75)
+      interQuantileRange = q3 - q1
+      min = q1 - 1.5 * interQuantileRange
+      max = q3 + 1.5 * interQuantileRange
+      return({q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max})
+    })
+    .entries(srcData)
 
-	resObj.sumStats = sumStats;
-	
-	return resObj
+    return stats
 }
 
 const enterLines = enterSelection => {
@@ -82,17 +62,27 @@ const enterLines = enterSelection => {
   })
 }
 
+const enterVLines = e => {
+	e.append('line')
+		.attrs({
+			x1: d => state.xScale(d.key) + (state.xScale.bandwidth() / 2),
+			x2: d => state.xScale(d.key) + (state.xScale.bandwidth() / 2),
+			y1: d => state.yScale(d.value.min),
+			y2: d => state.yScale(d.value.max),
+			stroke: `black`
+		})
+		.style('width', 40)
+}
+
 //load the data
 d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
 
 	console.log('resObj')
 	console.log(resObj)
 	
-	const { maxData, min, max, q1, q3, median } = resObj
-	
 	// //build y-Scale
 	state.yScale = d3.scaleLinear()
-		.domain([state.minData, maxData])
+		.domain([state.minData, 9])
 		.range([hLM, state.m.t])
 
 	//build x-scale
@@ -114,17 +104,13 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 		.call(xAxisObj)
 
 	// //extra notes for the box?!
-	// state.boxCenter = 200, state.boxW = 100;
-
+	state.boxCenter = 200, state.boxW = 100;
+	
 	// //append central vertical box-plot line
-	// gWrapper.append('line')
-	// 	.attrs({
-	// 		x1: state.boxCenter,
-	// 		x2: state.boxCenter,
-	// 		y1: state.yScale(min),
-	// 		y2: state.yScale(max),
-	// 		stroke: `black`
-	// 	})
+	let verticalLineDataJoin = gWrapper.selectAll('.vertical-lines')
+	.data(resObj)
+
+	verticalLineDataJoin.join(enterVLines);
 
 	// //append the box
 	// gWrapper.append('rect')
