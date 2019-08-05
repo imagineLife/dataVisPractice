@@ -5,7 +5,7 @@ const state = {
 		b: 30,
 		l: 40
 	},
-	w: 450,
+	w: 550,
 	h: 450,
 	minData: 0,
 	maxData: n => Math.round(n * 1.1),
@@ -51,17 +51,6 @@ const prepData = (srcData) => {
     return stats
 }
 
-const enterLines = enterSelection => {
-	enterSelection.append("line")
-  .attrs({
-  	"x1": state.boxCenter-state.boxW/2,
-  	"x2": state.boxCenter+state.boxW/2,
-  	"y1": d => state.yScale(d),
-  	"y2": d => state.yScale(d),
-  	"stroke": "black"
-  })
-}
-
 const enterData = e => {
 	e.append('line')
 		.attrs({
@@ -83,6 +72,17 @@ const enterData = e => {
 			stroke: 'black'
 		})
 		.style('fill', '#69b3a2')
+
+	//append the hz lines
+	e.append("line")
+      .attrs({
+      	"x1": d => state.xScale(d.key)-state.boxW/2 + state.xScale.bandwidth() / 2,
+      	"x2": d => state.xScale(d.key)+state.boxW/2+ state.xScale.bandwidth() / 2 ,
+      	"y1": d => state.yScale(d.value.median),
+      	"y2": d => state.yScale(d.value.median),
+      	"stroke": "black"
+      })
+      .style("width", 80)
 }
 
 //load the data
@@ -119,14 +119,5 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 	.data(resObj)
 
 	dataJoin.join(enterData);
-
-	// //build data arr for hz box-plot lines
-	// const minMaxMed = [min, median, max]
-
-	// //make data-join
-	// let hzLineDataJoin = gWrapper.selectAll('.line-hz')
-	// .data(minMaxMed)
-
-	// hzLineDataJoin.join(enterLines)
 
 })
