@@ -62,7 +62,7 @@ const enterLines = enterSelection => {
   })
 }
 
-const enterVLines = e => {
+const enterData = e => {
 	e.append('line')
 		.attrs({
 			x1: d => state.xScale(d.key) + (state.xScale.bandwidth() / 2),
@@ -72,13 +72,21 @@ const enterVLines = e => {
 			stroke: `black`
 		})
 		.style('width', 40)
+
+	// //append the boxes
+	e.append('rect')
+		.attrs({
+			x: d => (state.xScale(d.key) - (state.boxW/2)) + state.xScale.bandwidth() / 2,
+			y: d => state.yScale(d.value.q3),
+			height: d => state.yScale(d.value.q1) - state.yScale(d.value.q3),
+			width: state.boxW,
+			stroke: 'black'
+		})
+		.style('fill', '#69b3a2')
 }
 
 //load the data
 d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
-
-	console.log('resObj')
-	console.log(resObj)
 	
 	// //build y-Scale
 	state.yScale = d3.scaleLinear()
@@ -107,21 +115,10 @@ d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/ir
 	state.boxCenter = 200, state.boxW = 100;
 	
 	// //append central vertical box-plot line
-	let verticalLineDataJoin = gWrapper.selectAll('.vertical-lines')
+	let dataJoin = gWrapper.selectAll('.vertical-lines')
 	.data(resObj)
 
-	verticalLineDataJoin.join(enterVLines);
-
-	// //append the box
-	// gWrapper.append('rect')
-	// 	.attrs({
-	// 		x: state.boxCenter - state.boxW/2,
-	// 		y: state.yScale(q3),
-	// 		height: (state.yScale(q1) - state.yScale(q3)),
-	// 		width: state.boxW,
-	// 		stroke: 'black',
-	// 		fill: `#69b3a2`
-	// 	})
+	dataJoin.join(enterData);
 
 	// //build data arr for hz box-plot lines
 	// const minMaxMed = [min, median, max]
