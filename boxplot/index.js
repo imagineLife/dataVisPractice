@@ -54,7 +54,7 @@ d3.json('./data.json').then(prepData).then(resObj => {
 	console.log('resObj')
 	console.log(resObj)
 
-	const { maxData, min, max, q1, q3 } = resObj
+	const { maxData, min, max, q1, q3, median } = resObj
 	//build y-Scale
 	const yScale = d3.scaleLinear()
 		.domain([state.minData, maxData])
@@ -89,5 +89,8 @@ d3.json('./data.json').then(prepData).then(resObj => {
 			stroke: 'black',
 			fill: `#69b3a2`
 		})
+
+	//build data arr for hz box-plot lines
+	const minMaxMed = [min, median, max]
 
 })
