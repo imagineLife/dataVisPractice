@@ -20,3 +20,8 @@ const svg = d3.select('#chartDiv').append('svg')
 		width: wLM,
 		height: hLM
 	})
+
+const gWrapper = svg.append('g').attrs({
+	class: 'g-wrapper',
+	transform: `translate(${state.m.l}, ${state.m.t})`
+})
