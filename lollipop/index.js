@@ -61,16 +61,6 @@ function updateLines(upd){
 }
 
 
-const prepChartElements = (parent, srcData) => {
-  
-  // variable u: map data to existing circle
-    var dataJoin = parent.selectAll(".itemGroup")
-      .data(srcData, d => d.group)
-
-    // update lines
-    dataJoin.join(enterLines, updateLines)
-}
-
 d3.json("./data.json").then(data => {
   rootData = data
     // X axis
@@ -90,6 +80,11 @@ function update(selectedVar) {
   thisVar = selectedVar
   // Parse the Data
 
-    prepChartElements(svg, rootData)
+  // variable u: map data to existing circle
+  let dataJoin = svg.selectAll(".itemGroup")
+    .data(rootData, d => d.group)
+
+  // update lines
+  dataJoin.join(enterLines, updateLines)
 
 }
