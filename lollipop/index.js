@@ -33,15 +33,19 @@ const enterLines = (ent) => {
     .attr('class', 'itemGroup')
 
   let groupedLine = thisG.append("line")
-    .attr("class", "myLine")
-    .attr("x1", d=> x(d.group))
-    .attr("x2", d=> x(d.group))
-    .attr("y1", y(0))
-    .attr("y2", y(0))
+    .attrs({
+      "class": "myLine",
+      "x1": d=> x(d.group),
+      "x2": d=> x(d.group),
+      "y1": y(0),
+      "y2": y(0)
+    })
     .transition()
     .duration(500)
-      .attr("y2", d => y(d[thisVar]))
-      .attr("stroke", "grey")
+      .attrs({
+        "y2": d => y(d[thisVar]),
+        "stroke": "grey"
+      })
 
   thisG.append("circle")
         .attr("cx", d => x(d.group))
@@ -62,17 +66,20 @@ function updateLines(upd){
 
 
 d3.json("./data.json").then(data => {
+
   rootData = data
-    // X axis
-    x.domain(data.map(function(d) { return d.group; }))
-    xAxis.transition().duration(1000).call(d3.axisBottom(x))
 
-    // Add Y axis
-    y.domain([0, d3.max(data, function(d) { return +d[thisVar || 'var1'] }) ]);
-    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+  // X axis
+  x.domain(data.map(function(d) { return d.group; }))
+  xAxis.transition().duration(1000).call(d3.axisBottom(x))
 
-    // Initialize plot
-    update('var1')
+  // Add Y axis
+  y.domain([0, d3.max(data, function(d) { return +d[thisVar || 'var1'] }) ]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+  // Initialize plot
+  update('var1')
+
 })
 
 // A function that create / update the plot for a given variable:
