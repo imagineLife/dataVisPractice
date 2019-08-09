@@ -4,7 +4,8 @@ var margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-let thisVar = null;
+let whichDataSet = null;
+
 // append the svg object to the body of the page
 var svg = d3.select("#chartDiv")
   .append("svg")
@@ -27,29 +28,30 @@ var y = d3.scaleLinear()
 var yAxis = svg.append("g")
   .attr("class", "myYaxis")
 
+const enterLineAttrs = {
+  "class": "myLine",
+  "x1": d=> x(d.group),
+  "x2": d=> x(d.group),
+  "y1": y(0),
+  "y2": y(0)
+}
 
 const enterLines = (ent) => {
   let thisG = ent.append('g')
     .attr('class', 'itemGroup')
 
   let groupedLine = thisG.append("line")
-    .attrs({
-      "class": "myLine",
-      "x1": d=> x(d.group),
-      "x2": d=> x(d.group),
-      "y1": y(0),
-      "y2": y(0)
-    })
+    .attrs(enterLineAttrs)
     .transition()
     .duration(500)
       .attrs({
-        "y2": d => y(d[thisVar]),
+        "y2": d => y(d[whichDataSet]),
         "stroke": "grey"
       })
 
   thisG.append("circle")
         .attr("cx", d => x(d.group))
-        .attr("cy", d => y(d[thisVar]))
+        .attr("cy", d => y(d[whichDataSet]))
         .attr("r", 0)
         .transition()
         .duration(500)
@@ -59,8 +61,9 @@ const enterLines = (ent) => {
 
 
 function updateLines(upd){
-  upd.call(upd => upd.transition().duration(500)
-    .attr("y2", d => y(d[thisVar]))
+  upd.call(upd => upd.select('.myLine')
+    .transition().duration(500)
+    .attr("y2", d => y(d[whichDataSet]))
   )
 }
 
@@ -74,7 +77,7 @@ d3.json("./data.json").then(data => {
   xAxis.transition().duration(1000).call(d3.axisBottom(x))
 
   // Add Y axis
-  y.domain([0, d3.max(data, function(d) { return +d[thisVar || 'var1'] }) ]);
+  y.domain([0, d3.max(data, function(d) { return +d[whichDataSet || 'var1'] }) ]);
   yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
   // Initialize plot
@@ -84,7 +87,7 @@ d3.json("./data.json").then(data => {
 
 // A function that create / update the plot for a given variable:
 function update(selectedVar) {
-  thisVar = selectedVar
+  whichDataSet = selectedVar
   // Parse the Data
 
   // variable u: map data to existing circle
