@@ -50,13 +50,17 @@ const enterLines = (ent) => {
       })
 
   thisG.append("circle")
-        .attr("cx", d => x(d.group))
-        .attr("cy", d => y(d[whichDataSet]))
-        .attr("r", 0)
-        .transition()
-        .duration(500)
-          .attr("r", 8)
-          .attr("fill", "#69b3a2");
+    .attrs({
+      "cx": d => x(d.group),
+      "cy": d => y(d[whichDataSet]),
+      "r": 0
+    })
+    .transition()
+    .duration(500)
+    .attrs({
+      "r": 8,
+      "fill": "#69b3a2"
+    });
 }
 
 
