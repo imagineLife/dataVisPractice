@@ -53,7 +53,8 @@ const enterLines = (ent) => {
     .attrs({
       "cx": d => x(d.group),
       "cy": d => y(d[whichDataSet]),
-      "r": 0
+      "r": 0,
+      "class": "singleCircle"
     })
     .transition()
     .duration(500)
@@ -68,6 +69,11 @@ function updateLines(upd){
   upd.call(upd => upd.select('.myLine')
     .transition().duration(500)
     .attr("y2", d => y(d[whichDataSet]))
+  )
+
+  upd.call(upd => upd.select('.singleCircle')
+    .transition().duration(500)
+    .attr("cy", d => y(d[whichDataSet]))
   )
 }
 
