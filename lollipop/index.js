@@ -29,7 +29,10 @@ var yAxis = svg.append("g")
 
 
 const enterLines = (ent) => {
-  ent.append("line")
+  let thisG = ent.append('g')
+    .attr('class', 'itemGroup')
+
+  let groupedLine = thisG.append("line")
     .attr("class", "myLine")
     .attr("x1", d=> x(d.group))
     .attr("x2", d=> x(d.group))
@@ -39,6 +42,15 @@ const enterLines = (ent) => {
     .duration(500)
       .attr("y2", d => y(d[thisVar]))
       .attr("stroke", "grey")
+
+  thisG.append("circle")
+        .attr("cx", d => x(d.group))
+        .attr("cy", d => y(d[thisVar]))
+        .attr("r", 0)
+        .transition()
+        .duration(500)
+          .attr("r", 8)
+          .attr("fill", "#69b3a2");
 }
 
 
@@ -50,31 +62,13 @@ function updateLines(upd){
 
 
 const prepChartElements = (parent, srcData) => {
-
-  console.log('srcData')
-  console.log(srcData)
   
   // variable u: map data to existing circle
-    var dataJoin = parent.selectAll(".myLine")
+    var dataJoin = parent.selectAll(".itemGroup")
       .data(srcData, d => d.group)
 
     // update lines
     dataJoin.join(enterLines, updateLines)
-
-    // // variable u: map data to existing circle
-    // var circleDataJoin = parent.selectAll("circle")
-    //   .data(srcData)
-    // // update bars
-    // circleDataJoin.enter()
-    //   .append("circle")
-    //     .attr("cx", d => x(d.group))
-    //     .attr("cy", d => y(d[thisVar]))
-    //     .attr("r", 0)
-    //   .merge(circleDataJoin)
-    //     .transition()
-    //     .duration(500)
-    //       .attr("r", 8)
-    //       .attr("fill", "#69b3a2");
 }
 
 d3.json("./data.json").then(data => {
