@@ -1,3 +1,4 @@
+let rootData = null;
 // set the dimensions and margins of the graph
 var margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
@@ -26,6 +27,7 @@ var y = d3.scaleLinear()
 var yAxis = svg.append("g")
   .attr("class", "myYaxis")
 
+
 const enterLines = (ent) => {
   ent.append("line")
     .attr("class", "myLine")
@@ -39,45 +41,61 @@ const enterLines = (ent) => {
       .attr("stroke", "grey")
 }
 
-// A function that create / update the plot for a given variable:
-function update(selectedVar) {
-  thisVar = selectedVar
-  // Parse the Data
-  d3.json("./data.json").then(data => {
 
+function updateLines(upd){
+  upd.call(upd => upd.transition().duration(500)
+    .attr("y2", d => y(d[thisVar]))
+  )
+}
+
+
+const prepChartElements = (parent, srcData) => {
+
+  console.log('srcData')
+  console.log(srcData)
+  
+  // variable u: map data to existing circle
+    var dataJoin = parent.selectAll(".myLine")
+      .data(srcData, d => d.group)
+
+    // update lines
+    dataJoin.join(enterLines, updateLines)
+
+    // // variable u: map data to existing circle
+    // var circleDataJoin = parent.selectAll("circle")
+    //   .data(srcData)
+    // // update bars
+    // circleDataJoin.enter()
+    //   .append("circle")
+    //     .attr("cx", d => x(d.group))
+    //     .attr("cy", d => y(d[thisVar]))
+    //     .attr("r", 0)
+    //   .merge(circleDataJoin)
+    //     .transition()
+    //     .duration(500)
+    //       .attr("r", 8)
+    //       .attr("fill", "#69b3a2");
+}
+
+d3.json("./data.json").then(data => {
+  rootData = data
     // X axis
     x.domain(data.map(function(d) { return d.group; }))
     xAxis.transition().duration(1000).call(d3.axisBottom(x))
 
     // Add Y axis
-    y.domain([0, d3.max(data, function(d) { return +d[selectedVar] }) ]);
+    y.domain([0, d3.max(data, function(d) { return +d[thisVar || 'var1'] }) ]);
     yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
-    // variable u: map data to existing circle
-    var dataJoin = svg.selectAll(".myLine")
-      .data(data)
+    // Initialize plot
+    update('var1')
+})
 
-    // update lines
-    dataJoin.join(enterLines)
+// A function that create / update the plot for a given variable:
+function update(selectedVar) {
+  thisVar = selectedVar
+  // Parse the Data
 
-    // variable u: map data to existing circle
-    var u = svg.selectAll("circle")
-      .data(data)
-    // update bars
-    u
-      .enter()
-      .append("circle")
-        .attr("cx", d => x(d.group))
-        .attr("cy", d => y(d[selectedVar]))
-        .attr("r", 0)
-      .merge(u)
-        .transition()
-        .duration(500)
-          .attr("r", 8)
-          .attr("fill", "#69b3a2");
-  })
+    prepChartElements(svg, rootData)
 
 }
-
-// Initialize plot
-update('var1')
