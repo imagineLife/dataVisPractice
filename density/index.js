@@ -1,39 +1,52 @@
-var margin = {top: 10, right: 30, bottom: 30, left: 40},
-    width = 460 - margin.left - margin.right,
+const margin = {top: 10, right: 30, bottom: 30, left: 40},
+    width = 460 ,
     height = 400 - margin.top - margin.bottom;
-
+    const wLM = width - margin.left - margin.right
+    const hLM = height - margin.top - margin.bottom
 // append the svg object to the body of the page
 var svg = d3.select("#chartDiv")
   .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width )
+    .attr("height", height)
 
 const gWrapper = svg.append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//placeholders, updated with data;
+let hexbin, colorScale;
+
+const enterHB = (e) => {
+  e.append("path")
+    .attrs({
+      "d": hexbin.hexagon(),
+      "transform": function(d) { return "translate(" + d.x + "," + d.y + ")"; },
+      "fill": function(d) { return colorScale(d.length); },
+      "stroke": "black",
+      "stroke-width": "0.1"
+  })
+}
 
 // read data
 d3.json("./data.json").then(data => {
 
   let dataXtent = d3.extent(data, d => d.x)
-  // Add X axis
+  let dataYtent = d3.extent(data, d => d.y)
+
+  //set scales
   var xScale = d3.scaleLinear()
     .domain([dataXtent[0] * .95, dataXtent[1] * 1.05])
-    .range([ 0, width ]);
+    .range([ 0, wLM ]);
 
-  const xAxisObj = d3.axisBottom(xScale)
-
-  gWrapper.append("g")
-    .attr("transform", `translate(0,${height})`)
-    .call(xAxisObj);
-
-  // Add Y axis
   var yScale = d3.scaleLinear()
-    .domain([5, 20])
-    .range([ height, 0 ]);
+    .domain([dataYtent[0] * .95, dataYtent[1] * 1.05])
+    .range([ hLM, 0 ]);
 
+  //add axis objects    
+  const xAxisObj = d3.axisBottom(xScale)
   const yAxisObj = d3.axisLeft(yScale)
-  
+  gWrapper.append("g")
+    .attr("transform", `translate(0,${hLM})`)
+    .call(xAxisObj);
   gWrapper.append("g")
     .call(yAxisObj);
 
@@ -42,16 +55,18 @@ d3.json("./data.json").then(data => {
   data.forEach(function(d) {
     inputForHexbinFun.push( [xScale(d.x), yScale(d.y)] )  // Note that we had the transform value of X and Y !
   })
+
+  let numberOfColors = inputForHexbinFun.length / 100
   
   // Prepare a color palette
-  var color = d3.scaleLinear()
-      .domain([0, 600]) // Number of points in the bin?
+  colorScale = d3.scaleLinear()
+      .domain([0, numberOfColors])
       .range(["transparent",  "#69b3a2"])
 
-  // Compute the hexbin data
-  var hexbin = d3.hexbin()
-    .radius(9) // size of the bin in px
-    .extent([ [0, 0], [width, height] ])
+  // Compute the hexbin data, update the hexbin var
+  hexbin = d3.hexbin()
+    .radius(9) // size of the bin in px, takes some guessing...
+    .extent([ [0, 0], [wLM, hLM] ])
 
   const hexedData = hexbin(inputForHexbinFun)
 
@@ -60,20 +75,13 @@ d3.json("./data.json").then(data => {
       .attr("id", "clip")
     .append("rect")
       .attrs({
-        "width": width,
-        "height": height
+        "width": wLM,
+        "height": hLM
       })
 
   gWrapper.append("g")
     .attr("clip-path", "url(#clip)")
     .selectAll("path")
     .data(hexedData)
-    .enter().append("path")
-      .attrs({
-        "d": hexbin.hexagon(),
-        "transform": function(d) { return "translate(" + d.x + "," + d.y + ")"; },
-        "fill": function(d) { return color(d.length); },
-        "stroke": "black",
-        "stroke-width": "0.1"
-    })
+    .join(enterHB)
 })
