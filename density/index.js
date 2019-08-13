@@ -15,25 +15,26 @@ const gWrapper = svg.append("g")
 // read data
 d3.json("./data.json").then(data => {
 
+  let dataXtent = d3.extent(data, d => d.x)
   // Add X axis
-  var x = d3.scaleLinear()
-    .domain([5, 18])
+  var xScale = d3.scaleLinear()
+    .domain([dataXtent[0] * .95, dataXtent[1] * 1.05])
     .range([ 0, width ]);
   gWrapper.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(xScale));
 
   // Add Y axis
-  var y = d3.scaleLinear()
+  var yScale = d3.scaleLinear()
     .domain([5, 20])
     .range([ height, 0 ]);
   gWrapper.append("g")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(yScale));
 
   // Reformat the data: d3.hexbin() needs a specific format
   var inputForHexbinFun = []
   data.forEach(function(d) {
-    inputForHexbinFun.push( [x(d.x), y(d.y)] )  // Note that we had the transform value of X and Y !
+    inputForHexbinFun.push( [xScale(d.x), yScale(d.y)] )  // Note that we had the transform value of X and Y !
   })
 
   // Prepare a color palette
