@@ -7,18 +7,19 @@ var svg = d3.select("#chartDiv")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+
+const gWrapper = svg.append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
 // read data
-d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_for_density2d.csv").then(data => {
+d3.json("./data.json").then(data => {
 
   // Add X axis
   var x = d3.scaleLinear()
     .domain([5, 18])
     .range([ 0, width ]);
-  svg.append("g")
+  gWrapper.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 
@@ -26,7 +27,7 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
   var y = d3.scaleLinear()
     .domain([5, 20])
     .range([ height, 0 ]);
-  svg.append("g")
+  gWrapper.append("g")
     .call(d3.axisLeft(y));
 
   // Reformat the data: d3.hexbin() needs a specific format
@@ -46,20 +47,24 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
     .extent([ [0, 0], [width, height] ])
 
   // Plot the hexbins
-  svg.append("clipPath")
+  gWrapper.append("clipPath")
       .attr("id", "clip")
     .append("rect")
-      .attr("width", width)
-      .attr("height", height)
+      .attrs({
+        "width": width,
+        "height": height
+      })
 
-  svg.append("g")
+  gWrapper.append("g")
     .attr("clip-path", "url(#clip)")
     .selectAll("path")
     .data( hexbin(inputForHexbinFun) )
     .enter().append("path")
-      .attr("d", hexbin.hexagon())
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-      .attr("fill", function(d) { return color(d.length); })
-      .attr("stroke", "black")
-      .attr("stroke-width", "0.1")
+      .attrs({
+        "d": hexbin.hexagon(),
+        "transform": function(d) { return "translate(" + d.x + "," + d.y + ")"; },
+        "fill": function(d) { return color(d.length); },
+        "stroke": "black",
+        "stroke-width": "0.1"
+    })
 })
