@@ -20,23 +20,29 @@ d3.json("./data.json").then(data => {
   var xScale = d3.scaleLinear()
     .domain([dataXtent[0] * .95, dataXtent[1] * 1.05])
     .range([ 0, width ]);
+
+  const xAxisObj = d3.axisBottom(xScale)
+
   gWrapper.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale));
+    .attr("transform", `translate(0,${height})`)
+    .call(xAxisObj);
 
   // Add Y axis
   var yScale = d3.scaleLinear()
     .domain([5, 20])
     .range([ height, 0 ]);
+
+  const yAxisObj = d3.axisLeft(yScale)
+  
   gWrapper.append("g")
-    .call(d3.axisLeft(yScale));
+    .call(yAxisObj);
 
   // Reformat the data: d3.hexbin() needs a specific format
   var inputForHexbinFun = []
   data.forEach(function(d) {
     inputForHexbinFun.push( [xScale(d.x), yScale(d.y)] )  // Note that we had the transform value of X and Y !
   })
-
+  
   // Prepare a color palette
   var color = d3.scaleLinear()
       .domain([0, 600]) // Number of points in the bin?
@@ -46,6 +52,8 @@ d3.json("./data.json").then(data => {
   var hexbin = d3.hexbin()
     .radius(9) // size of the bin in px
     .extent([ [0, 0], [width, height] ])
+
+  const hexedData = hexbin(inputForHexbinFun)
 
   // Plot the hexbins
   gWrapper.append("clipPath")
@@ -59,7 +67,7 @@ d3.json("./data.json").then(data => {
   gWrapper.append("g")
     .attr("clip-path", "url(#clip)")
     .selectAll("path")
-    .data( hexbin(inputForHexbinFun) )
+    .data(hexedData)
     .enter().append("path")
       .attrs({
         "d": hexbin.hexagon(),
