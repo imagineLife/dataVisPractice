@@ -83,6 +83,10 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     // appendAxis(state.histGWrapper, yAxisObj, null)
 
 
+    const clipDims = {
+      "width": state.wLM,
+      "height": state.hLM
+    }
     /*
       HEXBIN
       Reformat the data: 
@@ -119,10 +123,7 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     state.hexGWrapper.append("clipPath")
         .attr("id", "clip")
       .append("rect")
-        .attrs({
-          "width": state.wLM,
-          "height": state.hLM
-        })
+        .attrs(clipDims)
 
     state.hexGWrapper.append("g")
       .attr("clip-path", "url(#clip)")
@@ -213,8 +214,8 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     state.histGWrapper.append("clipPath")
         .attr("id", "clip")
       .append("rect")
-        .attr("width", state.wLM)
-        .attr("height", state.hLM)
+        .attrs(clipDims);
+        
     state.histGWrapper.append("g")
         .attr("clip-path", "url(#clip)")
       .selectAll("myRect")
