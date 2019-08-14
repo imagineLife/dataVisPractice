@@ -7,7 +7,9 @@ let state = {
   hexbin: null, 
   colorScale: null,
   hexSVG: null,
-  hexGWrapper: null
+  hexGWrapper: null,
+  shadingSVG: null,
+  shadingGWrapper: null
 }
 
 const prepDoc = (divID, svgStorage, gStorage) => {
@@ -23,7 +25,6 @@ const prepDoc = (divID, svgStorage, gStorage) => {
 
     state[gStorage] = state[svgStorage].append("g")
       .attr("transform", `translate(${state.m.l},${state.m.t})`);
-
       res()
   })
 }
@@ -39,7 +40,9 @@ const enterHB = (e) => {
   })
 }
 
-prepDoc("#chartDiv", 'hexSVG', 'hexGWrapper').then(() => {
+prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
+.then(prepDoc("#shadingDiv", 'shadingSVG', 'shadingGWrapper'))
+.then(() => {
   // read data
   d3.json("./data.json").then(data => {
 
