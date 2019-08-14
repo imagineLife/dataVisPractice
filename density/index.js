@@ -5,7 +5,8 @@ let state = {
   hLM: null,
   m: {t: 10, r: 30, b: 30, l: 40},
   hexbin: null, 
-  colorScale: null,
+  hexColorScale: null,
+  shadingColorScale: null,
   hexSVG: null,
   hexGWrapper: null,
   shadingSVG: null,
@@ -34,10 +35,16 @@ const enterHB = (e) => {
     .attrs({
       "d": state.hexbin.hexagon(),
       "transform": function(d) { return "translate(" + d.x + "," + d.y + ")"; },
-      "fill": function(d) { return state.colorScale(d.length); },
+      "fill": function(d) { return state.hexColorScale(d.length); },
       "stroke": "black",
       "stroke-width": "0.1"
   })
+}
+
+const appendAxis = (parent, axisObj, trans) => {
+  parent.append("g")
+    .attr("transform", trans)
+    .call(axisObj);
 }
 
 prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
@@ -62,14 +69,16 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     const xAxisObj = d3.axisBottom(xScale)
     const yAxisObj = d3.axisLeft(yScale)
 
-    state.hexGWrapper.append("g")
-      .attr("transform", `translate(0,${state.hLM})`)
-      .call(xAxisObj);
-    
-    state.hexGWrapper.append("g")
-      .call(yAxisObj);
+
+    appendAxis(state.hexGWrapper, xAxisObj,`translate(0,${state.hLM})`)
+    appendAxis(state.hexGWrapper, yAxisObj, null)
+
+    appendAxis(state.shadingGWrapper, xAxisObj,`translate(0,${state.hLM})`)
+    appendAxis(state.shadingGWrapper, yAxisObj, null)
+
 
     /*
+      HEXBIN
       Reformat the data: 
       d3.hexbin() needs a specific format
       array of points
@@ -84,7 +93,7 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     let numberOfColors = inputForHexbinFun.length / 100
     
     // Prepare a color palette
-    state.colorScale = d3.scaleLinear()
+    state.hexColorScale = d3.scaleLinear()
         .domain([0, numberOfColors])
         .range(["transparent",  "#69b3a2"])
 
@@ -114,5 +123,31 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
       .selectAll("path")
       .data(hexedData)
       .join(enterHB)
+
+        /*
+      CONTOUR 
+    */
+
+    state.shadingColorScale = d3.scaleLinear()
+      .domain([0, 1]) // Points per square pixel.
+      .range(["white", "#69b3a2"])
+
+    // compute the density data
+    const densityData = d3.contourDensity()
+      .x(function(d) { return xScale(d.x); })
+      .y(function(d) { return yScale(d.y); })
+      .size([state.w, state.h])
+      .bandwidth(20)
+      (data)
+
+    // show the shape!
+    state.shadingSVG.insert("g", "g")
+      .selectAll("path")
+      .data(densityData)
+      .enter().append("path")
+        .attrs({
+          "d": d3.geoPath(),
+          "fill": d => state.shadingColorScale(d.value)
+        })
   })
 })
