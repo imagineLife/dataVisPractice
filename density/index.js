@@ -50,7 +50,13 @@ d3.json("./data.json").then(data => {
   gWrapper.append("g")
     .call(yAxisObj);
 
-  // Reformat the data: d3.hexbin() needs a specific format
+  /*
+    Reformat the data: 
+    d3.hexbin() needs a specific format
+    array of points
+    [ scaledX, scaledY ]
+  */
+   
   var inputForHexbinFun = []
   data.forEach(function(d) {
     inputForHexbinFun.push( [xScale(d.x), yScale(d.y)] )  // Note that we had the transform value of X and Y !
@@ -65,7 +71,12 @@ d3.json("./data.json").then(data => {
 
   // Compute the hexbin data, update the hexbin var
   hexbin = d3.hexbin()
-    .radius(9) // size of the bin in px, takes some guessing...
+    /*
+       size of the bin in px, takes some guessing...
+       12 makes bigger bins AND darker/brighter colors
+       6  makes smaller  "" AND lighter/duller  ""
+    */
+    .radius(9)
     .extent([ [0, 0], [wLM, hLM] ])
 
   const hexedData = hexbin(inputForHexbinFun)
