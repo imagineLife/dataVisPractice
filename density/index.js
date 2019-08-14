@@ -6,21 +6,22 @@ let state = {
   m: {t: 10, r: 30, b: 30, l: 40},
   hexbin: null, 
   colorScale: null,
-  svg: null,
-  gWrapper: null
+  hexSVG: null,
+  hexGWrapper: null
 }
-const prepDoc = () => {
+
+const prepDoc = (divID, svgStorage, gStorage) => {
   return new Promise((res, rej) => {
     state.wLM = state.w - state.m.l - state.m.r
     state.hLM = state.h - state.m.t - state.m.b
 
     // append the svg object to the body of the page
-    state.svg = d3.select("#chartDiv")
+    state[svgStorage] = d3.select(divID)
       .append("svg")
         .attr("width", state.w )
         .attr("height", state.h)
 
-    state.gWrapper = state.svg.append("g")
+    state[gStorage] = state[svgStorage].append("g")
       .attr("transform", `translate(${state.m.l},${state.m.t})`);
 
       res()
@@ -38,7 +39,7 @@ const enterHB = (e) => {
   })
 }
 
-prepDoc().then(() => {
+prepDoc("#chartDiv", 'hexSVG', 'hexGWrapper').then(() => {
   // read data
   d3.json("./data.json").then(data => {
 
@@ -57,10 +58,12 @@ prepDoc().then(() => {
     //add axis objects    
     const xAxisObj = d3.axisBottom(xScale)
     const yAxisObj = d3.axisLeft(yScale)
-    state.gWrapper.append("g")
+
+    state.hexGWrapper.append("g")
       .attr("transform", `translate(0,${state.hLM})`)
       .call(xAxisObj);
-    state.gWrapper.append("g")
+    
+    state.hexGWrapper.append("g")
       .call(yAxisObj);
 
     /*
@@ -95,7 +98,7 @@ prepDoc().then(() => {
     const hexedData = state.hexbin(inputForHexbinFun)
 
     // Plot the hexbins
-    state.gWrapper.append("clipPath")
+    state.hexGWrapper.append("clipPath")
         .attr("id", "clip")
       .append("rect")
         .attrs({
@@ -103,7 +106,7 @@ prepDoc().then(() => {
           "height": state.hLM
         })
 
-    state.gWrapper.append("g")
+    state.hexGWrapper.append("g")
       .attr("clip-path", "url(#clip)")
       .selectAll("path")
       .data(hexedData)
