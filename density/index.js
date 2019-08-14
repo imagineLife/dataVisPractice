@@ -9,6 +9,8 @@ let state = {
   shadingColorScale: null,
   hexSVG: null,
   hexGWrapper: null,
+  histoSVG: null,
+  histGWrapper: null,
   shadingSVG: null,
   shadingGWrapper: null
 }
@@ -49,6 +51,7 @@ const appendAxis = (parent, axisObj, trans) => {
 
 prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
 .then(prepDoc("#shadingDiv", 'shadingSVG', 'shadingGWrapper'))
+.then(prepDoc("#histoDiv", 'histoSVG', 'histGWrapper'))
 .then(() => {
   // read data
   d3.json("./data.json").then(data => {
@@ -75,6 +78,9 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
 
     appendAxis(state.shadingGWrapper, xAxisObj,`translate(0,${state.hLM})`)
     appendAxis(state.shadingGWrapper, yAxisObj, null)
+
+    // appendAxis(state.histGWrapper, xAxisObj,`translate(0,${state.hLM})`)
+    // appendAxis(state.histGWrapper, yAxisObj, null)
 
 
     /*
@@ -124,7 +130,9 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
       .data(hexedData)
       .join(enterHB)
 
-        /*
+    
+
+    /*
       CONTOUR 
     */
 
@@ -148,6 +156,78 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
         .attrs({
           "d": d3.geoPath(),
           "fill": d => state.shadingColorScale(d.value)
+        })
+
+
+
+    /*
+      HISTOGRAM
+    */
+
+    // Get max and min of data
+    var xLim = [4,18]
+    var yLim = [6,20]
+
+     // Add X axis
+    var histXScale = d3.scaleLinear()
+      .nice()
+      .domain(xLim)
+      .range([ 0, state.wLM ]);
+    state.histGWrapper.append("g")
+      .attr("transform", "translate(0," + state.hLM + ")")
+      .call(d3.axisBottom(histXScale));
+
+    // Add Y axis
+    var histYScale = d3.scaleLinear()
+      .nice()
+      .domain(yLim)
+      .range([ state.hLM, 0 ]);
+    state.histGWrapper.append("g")
+      .call(d3.axisLeft(histYScale));
+
+     // Reformat the data: d3.rectbin() needs a specific format
+    var inputForRectBinning = []
+    data.forEach(d => {
+      inputForRectBinning.push( [+d.x, +d.y] )  // Note that we had the transform value of X and Y !
+    })
+
+    // Compute the rectbin
+    var size = 0.5
+    var rectbinData = d3.rectbin()
+      .dx(size)
+      .dy(size)
+      (inputForRectBinning)
+
+    // Prepare a color palette
+    var color = d3.scaleLinear()
+        .domain([0, 350]) // Number of points in the bin?
+        .range(["transparent",  "#69a3b2"])
+
+    // What is the height of a square in px?
+    heightInPx = histYScale( yLim[1]-size )
+
+    // What is the width of a square in px?
+    var widthInPx = histXScale(xLim[0]+size)
+
+    // Now we can add the squares
+    state.histGWrapper.append("clipPath")
+        .attr("id", "clip")
+      .append("rect")
+        .attr("width", state.wLM)
+        .attr("height", state.hLM)
+    state.histGWrapper.append("g")
+        .attr("clip-path", "url(#clip)")
+      .selectAll("myRect")
+      .data(rectbinData)
+      .enter().append("rect")
+        .attrs({
+          "x": d => histXScale(d.x),
+          "y": d => histYScale(d.y) - heightInPx,
+          "width": widthInPx ,
+          "height": heightInPx ,
+          "fill": d => color(d.length),
+          "stroke": "black",
+          "stroke-width": "0.4"
         })
   })
 })
