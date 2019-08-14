@@ -12,7 +12,9 @@ let state = {
   histoSVG: null,
   histGWrapper: null,
   shadingSVG: null,
-  shadingGWrapper: null
+  shadingGWrapper: null,
+  ctDensitySVG: null,
+  ctDensityGWrapper: null
 }
 
 const prepDoc = (divID, svgStorage, gStorage) => {
@@ -52,6 +54,7 @@ const appendAxis = (parent, axisObj, trans) => {
 prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
 .then(prepDoc("#shadingDiv", 'shadingSVG', 'shadingGWrapper'))
 .then(prepDoc("#histoDiv", 'histoSVG', 'histGWrapper'))
+.then(prepDoc("#ctDensityDiv", 'ctDensitySVG', 'ctDensityGWrapper'))
 .then(() => {
   // read data
   d3.json("./data.json").then(data => {
@@ -79,8 +82,8 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     appendAxis(state.shadingGWrapper, xAxisObj,`translate(0,${state.hLM})`)
     appendAxis(state.shadingGWrapper, yAxisObj, null)
 
-    // appendAxis(state.histGWrapper, xAxisObj,`translate(0,${state.hLM})`)
-    // appendAxis(state.histGWrapper, yAxisObj, null)
+    appendAxis(state.ctDensityGWrapper, xAxisObj,`translate(0,${state.hLM})`)
+    appendAxis(state.ctDensityGWrapper, yAxisObj, null)
 
 
     const clipDims = {
@@ -134,7 +137,7 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
     
 
     /*
-      CONTOUR 
+      CONTOUR DENSITY
     */
 
     state.shadingColorScale = d3.scaleLinear()
@@ -215,7 +218,7 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
         .attr("id", "clip")
       .append("rect")
         .attrs(clipDims);
-        
+
     state.histGWrapper.append("g")
         .attr("clip-path", "url(#clip)")
       .selectAll("myRect")
@@ -230,5 +233,30 @@ prepDoc("#hexDiv", 'hexSVG', 'hexGWrapper')
           "stroke": "black",
           "stroke-width": "0.4"
         })
+
+  
+    /*
+      CONTOUR DENSITY
+    */
+    // compute the density data
+    const ctDensity = d3.contourDensity()
+      .x(d => xScale(d.x))   // x and y = column name in .csv input data
+      .y(d => yScale(d.y))
+      .size([state.wLM, state.hLM])
+      .bandwidth(20)    // smaller = more precision in lines = more lines
+      (data)
+
+    // Add the contour: several "path"
+    state.ctDensityGWrapper
+      .selectAll("path")
+      .data(ctDensity)
+      .enter()
+      .append("path")
+      .attrs({
+        "d": d3.geoPath(),
+        "fill": "none",
+        "stroke": "#69b3a2",
+        "stroke-linejoin": "round"
+      })
   })
 })
