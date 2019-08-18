@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Density</title>
+    <script src="../../../d3.v4.min.js"></script>
+    <script src="../../../d3-selection-multi.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0"></script>
+
+
+    <!-- <link rel="stylesheet" href="./index.css"> -->
+    <style>
+    .node rect {
+      cursor: move;
+      fill-opacity: .9;
+      shape-rendering: crispEdges;
+    }
+     
+    .node text {
+      pointer-events: none;
+      text-shadow: 0 1px 0 #fff;
+    }
+     
+    .link {
+      fill: none;
+      stroke: #000;
+      stroke-opacity: .2;
+    }
+     
+    .link:hover {
+      stroke-opacity: .5;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>Sankey</h1>
+    <div id="chartDiv"></div>
+    <script src='./index.js'/>
+  </body>
+</html>
