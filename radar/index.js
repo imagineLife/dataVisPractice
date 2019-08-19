@@ -17,7 +17,7 @@ const buildConfig = (passedOpts) => {
 	 dotRadius: 4,
 	 webRingOpacity: 0.1,
 	 seriesStrokeW: 2,
-	 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
+	 // roundStrokes: false,
 	 color: d3.scaleOrdinal(d3.schemeCategory10)	//Color function
 	};
 	
@@ -32,7 +32,7 @@ const buildConfig = (passedOpts) => {
 }
 
 //global place-holders
-let radius, rScale, cfg, frmt, maxCircleValue, angleSlice;
+let radius, rScale, radarLine, cfg, frmt, maxCircleValue, angleSlice;
 
 const getMaxArrVal = (arr, key) => {
 	return d3.max(arr.map(arrItem => arrItem[key]))
@@ -108,6 +108,74 @@ const enterAxis = e => {
 	    "stroke": "white",
 	    "stroke-width": "2px"
 	  })
+
+	//Append the labels at each axis
+	axisG.append("text")
+		.attrs({
+			"text-anchor": "middle",
+			"class": "legend",
+			"dy": "0.35em",
+			"x": (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.cos(angleSlice*i - Math.PI/2),
+			"y": (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.sin(angleSlice*i - Math.PI/2)
+		})
+		
+		.style("font-size", "11px")
+		.text(d => d)
+		.call(wrap, cfg.maxLabelLengthInPx);
+}
+
+const enterNestedBlobDots = e => {
+	e.append("circle")
+		.attrs({
+			"class": "radarCircle",
+			"r": cfg.dotRadius,
+			"cx": (d,i) => rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2),
+			"cy": (d,i) => rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2)
+		})
+		.styles({
+			"fill": (d,i,j) => cfg.color(j),
+			"fill-opacity": 0.8
+		});
+}
+
+const enterDataBlobs = e => {
+	let blobG = e.append("g")
+		.attr("class", "radarWrapper");
+
+	//Append the backgrounds
+	blobG.append("path")
+		.attr("class", "radarArea")
+		.attr("d", function(d,i) { return radarLine(d); })
+		.style("fill", function(d,i) { return cfg.color(i); })
+		.style("fill-opacity", cfg.seriesOpacity)
+		.on('mouseover', function (d,i){
+			//Dim all blobs
+			d3.selectAll(".radarArea")
+				.transition().duration(200)
+				.style("fill-opacity", 0.1); 
+			//Bring back the hovered over blob
+			d3.select(this)
+				.transition().duration(200)
+				.style("fill-opacity", 0.7);	
+		})
+		.on('mouseout', function(){
+			//Bring back all blobs
+			d3.selectAll(".radarArea")
+				.transition().duration(200)
+				.style("fill-opacity", cfg.seriesOpacity);
+		});
+
+	//Create the outlines	
+	blobG.append("path")
+		.attr("class", "radarStroke")
+		.attr("d", function(d,i) { return radarLine(d); })
+		.style("stroke-width", cfg.seriesStrokeW + "px")
+		.style("stroke", function(d,i) { return cfg.color(i); })
+		.style("fill", "none")
+		.style("filter" , "url(#glow)");
+
+	let nestedBlobDots = blobG.selectAll('circle').data((d,i) => d);
+	nestedBlobDots.join(enterNestedBlobDots)
 }
 
 function buildChart(id, data, options) {
@@ -147,21 +215,9 @@ function buildChart(id, data, options) {
 	var axisDataJoin = axisGrid.selectAll(".axis-g")
 		.data(axisNameArr)
 		axisDataJoin.join(enterAxis)
-
-
-	//Append the labels at each axis
-	// axis.append("text")
-	// 	.attr("class", "legend")
-	// 	.style("font-size", "11px")
-	// 	.attr("text-anchor", "middle")
-	// 	.attr("dy", "0.35em")
-	// 	.attr("x", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.cos(angleSlice*i - Math.PI/2))
-	// 	.attr("y", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.sin(angleSlice*i - Math.PI/2))
-	// 	.text(d => d)
-	// 	.call(wrap, cfg.maxLabelLengthInPx);
 	
 	//The radial line function
-	var radarLine = d3.radialLine()
+	radarLine = d3.radialLine()
 		// .interpolate("linear-closed")
 		.radius(d => rScale(d.value))
 		.angle((d,i) => i*angleSlice);
@@ -171,58 +227,9 @@ function buildChart(id, data, options) {
 	}
 				
 	//Create a wrapper for the blobs	
-	var blobWrapper = gWrapper.selectAll(".radarWrapper")
-		.data(data)
-		.enter().append("g")
-		.attr("class", "radarWrapper");
-			
-	//Append the backgrounds	
-	blobWrapper
-		.append("path")
-		.attr("class", "radarArea")
-		.attr("d", function(d,i) { return radarLine(d); })
-		.style("fill", function(d,i) { return cfg.color(i); })
-		.style("fill-opacity", cfg.seriesOpacity)
-		.on('mouseover', function (d,i){
-			//Dim all blobs
-			d3.selectAll(".radarArea")
-				.transition().duration(200)
-				.style("fill-opacity", 0.1); 
-			//Bring back the hovered over blob
-			d3.select(this)
-				.transition().duration(200)
-				.style("fill-opacity", 0.7);	
-		})
-		.on('mouseout', function(){
-			//Bring back all blobs
-			d3.selectAll(".radarArea")
-				.transition().duration(200)
-				.style("fill-opacity", cfg.seriesOpacity);
-		});
-		
-	//Create the outlines	
-	blobWrapper.append("path")
-		.attr("class", "radarStroke")
-		.attr("d", function(d,i) { return radarLine(d); })
-		.style("stroke-width", cfg.seriesStrokeW + "px")
-		.style("stroke", function(d,i) { return cfg.color(i); })
-		.style("fill", "none")
-		.style("filter" , "url(#glow)");		
-	
-	//Append the circles
-	blobWrapper.selectAll(".radarCircle")
-		.data((d,i) => d)
-		.enter().append("circle")
-		.attrs({
-			"class": "radarCircle",
-			"r": cfg.dotRadius,
-			"cx": (d,i) => rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2),
-			"cy": (d,i) => rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2)
-		})
-		.styles({
-			"fill": (d,i,j) => cfg.color(j),
-			"fill-opacity": 0.8
-		});
+	var blobWrapperDataJoin = gWrapper.selectAll(".radarWrapper")
+		.data(data);
+		blobWrapperDataJoin.join(enterDataBlobs)//.enter()
 
 	/////////////////////////////////////////////////////////
 	//////// Append invisible circles for tooltip ///////////
@@ -251,7 +258,7 @@ function buildChart(id, data, options) {
 			tooltip
 				.attr('x', newX)
 				.attr('y', newY)
-				.text(Format(d.value))
+				.text(frmt(d.value))
 				.transition().duration(200)
 				.style('opacity', 1);
 		})
@@ -263,41 +270,8 @@ function buildChart(id, data, options) {
 	//Set up the small tooltip for when you hover over a circle
 	var tooltip = gWrapper.append("text")
 		.attr("class", "tooltip")
-		.style("opacity", 0);
-	
-	/////////////////////////////////////////////////////////
-	/////////////////// Helper Function /////////////////////
-	/////////////////////////////////////////////////////////
-
-	//Taken from http://bl.ocks.org/mbostock/7555321
-	//Wraps SVG text	
-	function wrap(text, width) {
-	  text.each(function() {
-		var text = d3.select(this),
-			words = text.text().split(/\s+/).reverse(),
-			word,
-			line = [],
-			lineNumber = 0,
-			lineHeight = 1.4, // ems
-			y = text.attr("y"),
-			x = text.attr("x"),
-			dy = parseFloat(text.attr("dy")),
-			tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-			
-		while (word = words.pop()) {
-		  line.push(word);
-		  tspan.text(line.join(" "));
-		  if (tspan.node().getComputedTextLength() > width) {
-			line.pop();
-			tspan.text(line.join(" "));
-			line = [word];
-			tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-		  }
-		}
-	  });
-	}//wrap	
-	
-}//buildChart
+		.style("opacity", 0);	
+}
 
 let state = {
 	margin : {t: 100, r: 100, b: 100, l: 100},
@@ -319,6 +293,34 @@ var radarChartOptions = {
 
 var color = d3.scaleOrdinal()
 	.range(["#EDC951","#CC333F","#00A0B0"]);
+
+//Taken from http://bl.ocks.org/mbostock/7555321
+//Wraps SVG text	
+function wrap(text, width) {
+  text.each(function() {
+	var text = d3.select(this),
+		words = text.text().split(/\s+/).reverse(),
+		word,
+		line = [],
+		lineNumber = 0,
+		lineHeight = 1.4, // ems
+		y = text.attr("y"),
+		x = text.attr("x"),
+		dy = parseFloat(text.attr("dy")),
+		tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+		
+	while (word = words.pop()) {
+	  line.push(word);
+	  tspan.text(line.join(" "));
+	  if (tspan.node().getComputedTextLength() > width) {
+		line.pop();
+		tspan.text(line.join(" "));
+		line = [word];
+		tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+	  }
+	}
+  });
+}//wrap	
 
 d3.json('./data.json').then(data => {
 	//Call function to draw the Radar chart
