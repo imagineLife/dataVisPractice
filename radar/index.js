@@ -31,6 +31,9 @@ const buildConfig = (passedOpts) => {
 	return resConfig
 }
 
+//global place-holders
+let radius, cfg, Format, maxCircleValue;
+
 const getMaxArrVal = (arr, key) => {
 	return d3.max(arr.map(arrItem => arrItem[key]))
 }
@@ -59,17 +62,48 @@ const addGlow = (parent, name) => {
 		feMergeNode_2 = feMerge.append('feMergeNode').attr('in','SourceGraphic');
 }
 
+const enterAxisG = e => {
+	let chartG = e.append('g')
+		.attr('class', 'chart-g')
+
+	chartG.append("circle")
+		.attrs({
+			"class": "gridCircle",
+			"r": (d, i) => radius/cfg.levels*d
+		})
+		.styles({
+			"fill": "#CDCDCD",
+			"stroke": "#CDCDCD",
+			"fill-opacity": cfg.webRingOpacity,
+			"filter" : "url(#glow)"
+		})
+
+	//Text indicating at what % each level is
+	chartG.append("text")
+	   .attrs({
+	   	"class": "axisLabel",
+	   	"x": 4,
+	   	"y": d => -d*radius/cfg.levels,
+	   	"dy": "0.4em",
+	   	"fill": "#737373"
+	   })
+	   .style("font-size", "10px")
+	   .text((d) => Format(maxCircleValue * d/cfg.levels));
+}
+
 function buildChart(id, data, options) {
 	
-	let cfg = buildConfig(options)
+	cfg = buildConfig(options)
 	//If the supplied maxCircleValue is smaller than the actual one, replace by the max in the data
-	var maxCircleValue = Math.max(cfg.maxCircleValue, d3.max(data, dataItem =>  getMaxArrVal(dataItem, 'value')));
+	maxCircleValue = Math.max(cfg.maxCircleValue, d3.max(data, dataItem =>  getMaxArrVal(dataItem, 'value')));
 		
-	var axisNames = data[0].map((i, j) => i.axis),	//Names of each axis
-		numberOfAxis = axisNames.length,			//The number of different axes
-		radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
-		Format = d3.format('%'),			 	//Percentage formatting
+	var axisNameArr = data[0].map((i, j) => i.axis),	//Names of each axis
+		numberOfAxis = axisNameArr.length,			//The number of different axes
 		angleSlice = Math.PI * 2 / numberOfAxis;//The width in radians of each "slice"
+
+	//GLOBAL for now...
+	radius = Math.min(cfg.w/2, cfg.h/2); 	//Radius of the outermost circle
+	Format = d3.format('%');			 	//Percentage formatting
 		
 	//Scale for the radius
 	var rScale = d3.scaleLinear()
@@ -84,40 +118,16 @@ function buildChart(id, data, options) {
 	let filter = addGlow(gWrapper, 'glow');
 	
 	let arrofLevelNumbers = d3.range(1,(cfg.levels+1))
+	let reversedArrofLevelNumbers = arrofLevelNumbers.reverse()
 	
 	//Draw the background circles
-	axisGrid.selectAll(".levels")
-	   .data(arrofLevelNumbers.reverse())
-	   .enter()
-		.append("circle")
-		.attrs({
-			"class": "gridCircle",
-			"r": (d, i) => radius/cfg.levels*d
-		})
-		.styles({
-			"fill": "#CDCDCD",
-			"stroke": "#CDCDCD",
-			"fill-opacity": cfg.webRingOpacity,
-			"filter" : "url(#glow)"
-		})
-
-	//Text indicating at what % each level is
-	axisGrid.selectAll(".axisLabel")
-	   .data(d3.range(1,(cfg.levels+1)).reverse())
-	   .enter().append("text")
-	   .attrs({
-	   	"class": "axisLabel",
-	   	"x": 4,
-	   	"y": d => -d*radius/cfg.levels,
-	   	"dy": "0.4em",
-	   	"fill": "#737373"
-	   })
-	   .style("font-size", "10px")
-	   .text((d) => Format(maxCircleValue * d/cfg.levels));
+	let axisGDataJoin = axisGrid.selectAll(".chart-g")
+	  .data(reversedArrofLevelNumbers);
+	axisGDataJoin.join(enterAxisG)
 	
 	//Create the straight lines radiating outward from the center
 	var axis = axisGrid.selectAll(".axis")
-		.data(axisNames)
+		.data(axisNameArr)
 		.enter()
 		.append("g")
 		.attr("class", "axis");
