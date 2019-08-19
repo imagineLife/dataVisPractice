@@ -32,7 +32,7 @@ const buildConfig = (passedOpts) => {
 }
 
 //global place-holders
-let radius, cfg, Format, maxCircleValue;
+let radius, rScale, cfg, frmt, maxCircleValue, angleSlice;
 
 const getMaxArrVal = (arr, key) => {
 	return d3.max(arr.map(arrItem => arrItem[key]))
@@ -66,6 +66,7 @@ const enterAxisG = e => {
 	let chartG = e.append('g')
 		.attr('class', 'chart-g')
 
+	//web circles
 	chartG.append("circle")
 		.attrs({
 			"class": "gridCircle",
@@ -78,6 +79,7 @@ const enterAxisG = e => {
 			"filter" : "url(#glow)"
 		})
 
+	//web circle labels
 	//Text indicating at what % each level is
 	chartG.append("text")
 	   .attrs({
@@ -88,7 +90,24 @@ const enterAxisG = e => {
 	   	"fill": "#737373"
 	   })
 	   .style("font-size", "10px")
-	   .text((d) => Format(maxCircleValue * d/cfg.levels));
+	   .text((d) => `${frmt(maxCircleValue * d/cfg.levels * 100)}%`);
+}
+
+const enterAxis = e => {
+	let axisG = e.append("g")
+		.attr("class", "axis-g");
+
+	//Append the lines
+	axisG.append("line")
+	  .attrs({
+	    "x1": 0,
+	    "y1": 0,
+	    "x2": (d, i) => rScale(maxCircleValue*1.1) * Math.cos(angleSlice*i - Math.PI/2),
+	    "y2": (d, i) => rScale(maxCircleValue*1.1) * Math.sin(angleSlice*i - Math.PI/2),
+	    "class": "line",
+	    "stroke": "white",
+	    "stroke-width": "2px"
+	  })
 }
 
 function buildChart(id, data, options) {
@@ -96,17 +115,16 @@ function buildChart(id, data, options) {
 	cfg = buildConfig(options)
 	//If the supplied maxCircleValue is smaller than the actual one, replace by the max in the data
 	maxCircleValue = Math.max(cfg.maxCircleValue, d3.max(data, dataItem =>  getMaxArrVal(dataItem, 'value')));
-		
 	var axisNameArr = data[0].map((i, j) => i.axis),	//Names of each axis
-		numberOfAxis = axisNameArr.length,			//The number of different axes
-		angleSlice = Math.PI * 2 / numberOfAxis;//The width in radians of each "slice"
+		numberOfAxis = axisNameArr.length;			//The number of different axes
 
 	//GLOBAL for now...
 	radius = Math.min(cfg.w/2, cfg.h/2); 	//Radius of the outermost circle
-	Format = d3.format('%');			 	//Percentage formatting
+	frmt = d3.format(',.2');			 	//Percentage formatting
+	angleSlice = Math.PI * 2 / numberOfAxis;//The width in radians of each "slice"
 		
 	//Scale for the radius
-	var rScale = d3.scaleLinear()
+	rScale = d3.scaleLinear()
 		.range([0, radius])
 		.domain([0, maxCircleValue]);
 
@@ -120,40 +138,27 @@ function buildChart(id, data, options) {
 	let arrofLevelNumbers = d3.range(1,(cfg.levels+1))
 	let reversedArrofLevelNumbers = arrofLevelNumbers.reverse()
 	
-	//Draw the background circles
+	//background web-portion
 	let axisGDataJoin = axisGrid.selectAll(".chart-g")
 	  .data(reversedArrofLevelNumbers);
 	axisGDataJoin.join(enterAxisG)
 	
 	//Create the straight lines radiating outward from the center
-	var axis = axisGrid.selectAll(".axis")
+	var axisDataJoin = axisGrid.selectAll(".axis-g")
 		.data(axisNameArr)
-		.enter()
-		.append("g")
-		.attr("class", "axis");
-	
-	//Append the lines
-	axis.append("line")
-		.attrs({
-		  "x1": 0,
-		  "y1": 0,
-		  "x2": (d, i) => rScale(maxCircleValue*1.1) * Math.cos(angleSlice*i - Math.PI/2),
-		  "y2": (d, i) => rScale(maxCircleValue*1.1) * Math.sin(angleSlice*i - Math.PI/2),
-		  "class": "line",
-		  "stroke": "white",
-		  "stroke-width": "2px"
-		})
+		axisDataJoin.join(enterAxis)
+
 
 	//Append the labels at each axis
-	axis.append("text")
-		.attr("class", "legend")
-		.style("font-size", "11px")
-		.attr("text-anchor", "middle")
-		.attr("dy", "0.35em")
-		.attr("x", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.cos(angleSlice*i - Math.PI/2))
-		.attr("y", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.sin(angleSlice*i - Math.PI/2))
-		.text(d => d)
-		.call(wrap, cfg.maxLabelLengthInPx);
+	// axis.append("text")
+	// 	.attr("class", "legend")
+	// 	.style("font-size", "11px")
+	// 	.attr("text-anchor", "middle")
+	// 	.attr("dy", "0.35em")
+	// 	.attr("x", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.cos(angleSlice*i - Math.PI/2))
+	// 	.attr("y", (d, i) => rScale(maxCircleValue * cfg.labelRadiusPercentage) * Math.sin(angleSlice*i - Math.PI/2))
+	// 	.text(d => d)
+	// 	.call(wrap, cfg.maxLabelLengthInPx);
 	
 	//The radial line function
 	var radarLine = d3.radialLine()
