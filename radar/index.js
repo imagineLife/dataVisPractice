@@ -2,7 +2,6 @@
 /////////////// The Radar Chart Function ////////////////
 /////////////// Inspired by Nadieh Bremer ////////////////
 ////////////////// VisualCinnamon.com ///////////////////
-///////// who was Inspired by the code of alangrafu //////
 /////////////////////////////////////////////////////////
 
 const buildConfig = (passedOpts) => {
@@ -64,9 +63,7 @@ function buildChart(id, data, options) {
 	
 	let cfg = buildConfig(options)
 	//If the supplied maxCircleValue is smaller than the actual one, replace by the max in the data
-	var maxCircleValue = Math.max(cfg.maxCircleValue, d3.max(data, function(dataItem){
-		return getMaxArrVal(dataItem, 'value')
-	}));
+	var maxCircleValue = Math.max(cfg.maxCircleValue, d3.max(data, dataItem =>  getMaxArrVal(dataItem, 'value')));
 		
 	var axisNames = data[0].map((i, j) => i.axis),	//Names of each axis
 		numberOfAxis = axisNames.length,			//The number of different axes
@@ -151,8 +148,8 @@ function buildChart(id, data, options) {
 	//The radial line function
 	var radarLine = d3.radialLine()
 		// .interpolate("linear-closed")
-		.radius(function(d) { return rScale(d.value); })
-		.angle(function(d,i) {	return i*angleSlice; });
+		.radius(d => rScale(d.value))
+		.angle((d,i) => i*angleSlice);
 		
 	if(cfg.roundStrokes == true) {
 		radarLine.curve(d3.curveCardinalClosed);
@@ -199,14 +196,18 @@ function buildChart(id, data, options) {
 	
 	//Append the circles
 	blobWrapper.selectAll(".radarCircle")
-		.data(function(d,i) { return d; })
+		.data((d,i) => d)
 		.enter().append("circle")
-		.attr("class", "radarCircle")
-		.attr("r", cfg.dotRadius)
-		.attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
-		.attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
-		.style("fill", function(d,i,j) { return cfg.color(j); })
-		.style("fill-opacity", 0.8);
+		.attrs({
+			"class": "radarCircle",
+			"r": cfg.dotRadius,
+			"cx": (d,i) => rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2),
+			"cy": (d,i) => rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2)
+		})
+		.styles({
+			"fill": (d,i,j) => cfg.color(j),
+			"fill-opacity": 0.8
+		});
 
 	/////////////////////////////////////////////////////////
 	//////// Append invisible circles for tooltip ///////////
@@ -304,9 +305,7 @@ var radarChartOptions = {
 var color = d3.scaleOrdinal()
 	.range(["#EDC951","#CC333F","#00A0B0"]);
 
-d3.json('./data.json', (err, data) => {
-	if(err)
-		console.log(`err: ${err}`)
+d3.json('./data.json').then(data => {
 	//Call function to draw the Radar chart
 	buildChart("#chartDiv", data, radarChartOptions);
 })
