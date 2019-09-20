@@ -1,6 +1,6 @@
 //dummy data
-var dummy_data = 
-    [{
+var dummy_data = {
+  data: [{
       "month": "november",
       "year": {
         "average": {
@@ -45,9 +45,11 @@ var dummy_data =
         }
       }
     }]
+}
     
 var
 		//prepare initial stuff
+    srcData = dummy_data.data,
 		margin = {top: 20, right: 20, bottom: 80, left: 20},
     chart = d3.select('#chartDiv'),
     width = +chart.style('width').replace('px', '') - margin.left - margin.right,
@@ -61,9 +63,9 @@ var
 
 
     stripedPattern = (function(){
-      for(let i = 0; i < dummy_data.length; i++){
+      for(let i = 0; i < srcData.length; i++){
         //implement checker: check for real month
-        if(dummy_data[i].month==='february'){
+        if(srcData[i].month==='february'){
           return {monthName: 'february'};
         }
       }
@@ -76,7 +78,7 @@ var
     yBegin,
 
     //fetch the column headers
-    itemLookup= dummy_data[0],
+    itemLookup= srcData[0],
     years = d3.keys(itemLookup.year),
     items = d3.keys(itemLookup.year[years[0]]),
     columnHeaders = [],
@@ -97,8 +99,8 @@ var
     dataByMonthGroup = [];
 
     // console.log('%c - - - -', 'background-color: yellow; color: black;')
-    // console.log('dummy_data')
-    // console.log(dummy_data) 
+    // console.log('srcData')
+    // console.log(srcData) 
     // console.log('years')
     // console.log(years)
     // console.log('items')
@@ -112,7 +114,7 @@ var
     
     
 
-dummy_data.forEach((d, i) => {
+srcData.forEach((d, i) => {
   var tempData = {},
       curYear;
   tempData.monthName = d.month;
