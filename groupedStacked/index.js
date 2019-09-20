@@ -4,44 +4,44 @@ var dummy_data = {
       "month": "november",
       "year": {
         "average": {
-          "y": 75,
-          "y2": 6
+          "value": 75,
+          "variance": 6
         },
         "current": {
-          "y": 81,
+          "value": 81,
         }
       }
     }, {
       "month": "december",
       "year": {
         "average": {
-          "y": 72,
-          "y2": 4
+          "value": 72,
+          "variance": 4
         },
         "current": {
-          "y": 76
+          "value": 76
         }
       }
     }, {
       "month": "january",
       "year": {
         "average": {
-          "y": 70
+          "value": 70
         },
         "current": {
-          "y": 65,
-          "y2": 5
+          "value": 65,
+          "variance": 5
         }
       }
     },{
       "month": "february",
       "year": {
         "average": {
-          "y": 75,
-          "y2": 3
+          "value": 75,
+          "variance": 3
         },
         "current": {
-          "y": 78
+          "value": 78
         }
       }
     }]
@@ -101,10 +101,10 @@ var
     // console.log('%c - - - -', 'background-color: yellow; color: black;')
     // console.log('srcData')
     // console.log(srcData) 
-    // console.log('years')
-    // console.log(years)
-    // console.log('items')
-    // console.log(items)
+    console.log('years')
+    console.log(years)
+    console.log('items')
+    console.log(items)
     // console.log('columnHeaders')
     // console.log(columnHeaders)
     // console.log('innerColumns')
