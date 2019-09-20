@@ -1,8 +1,9 @@
 //dummy data
 var dummy_data = {
-  data: [{
+  data: [
+    {
       "month": "november",
-      "year": {
+      "columnType": {
         "average": {
           "value": 75,
           "variance": 6
@@ -13,7 +14,7 @@ var dummy_data = {
       }
     }, {
       "month": "december",
-      "year": {
+      "columnType": {
         "average": {
           "value": 72,
           "variance": 4
@@ -24,7 +25,7 @@ var dummy_data = {
       }
     }, {
       "month": "january",
-      "year": {
+      "columnType": {
         "average": {
           "value": 70
         },
@@ -35,7 +36,7 @@ var dummy_data = {
       }
     },{
       "month": "february",
-      "year": {
+      "columnType": {
         "average": {
           "value": 75,
           "variance": 3
@@ -44,7 +45,8 @@ var dummy_data = {
           "value": 78
         }
       }
-    }]
+    }
+  ]
 }
     
 var
@@ -61,16 +63,6 @@ var
 		.append('g')
 		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
 
-
-    stripedPattern = (function(){
-      for(let i = 0; i < srcData.length; i++){
-        //implement checker: check for real month
-        if(srcData[i].month==='february'){
-          return {monthName: 'february'};
-        }
-      }
-    })(),
-
     //d3 scale stuff
     x0 = d3.scaleBand().rangeRound([0, width]),
     x1 = d3.scaleBand(),
@@ -79,8 +71,8 @@ var
 
     //fetch the column headers
     itemLookup= srcData[0],
-    years = d3.keys(itemLookup.year),
-    items = d3.keys(itemLookup.year[years[0]]),
+    years = d3.keys(itemLookup.columnType),
+    items = d3.keys(itemLookup.columnType[years[0]]),
     columnHeaders = [],
     innerColumns = (function(){
       var result = {};
@@ -97,38 +89,18 @@ var
 
     //holder for the data obj rebuild
     dataByMonthGroup = [];
-
-    // console.log('%c - - - -', 'background-color: yellow; color: black;')
-    // console.log('srcData')
-    // console.log(srcData) 
-    console.log('years')
-    console.log(years)
-    console.log('items')
-    console.log(items)
-    // console.log('columnHeaders')
-    // console.log(columnHeaders)
-    // console.log('innerColumns')
-    // console.log(innerColumns)
-    // console.log('%c - - DONE - -', 'background-color: yellow; color: black;')
-    
-    
     
 
 srcData.forEach((d, i) => {
   var tempData = {},
       curYear;
   tempData.monthName = d.month;
-  if(d.month === stripedPattern.monthName){
-    chart
-      .select('svg')
-      .append('defs');
-  }
-  for(var key in d.year){
+  for(var key in d.columnType){
     if(curYear != key){
       curYear = key;
       tempData['totalValue-'+curYear] = 0;
     }
-    var holder = d.year[key];
+    var holder = d.columnType[key];
     for(var item in holder){
       tempData[item+'-'+key] = holder[item];
       tempData['totalValue-'+curYear] += parseInt(holder[item]);
@@ -158,7 +130,7 @@ dataByMonthGroup.forEach(function(d) {
             return name.substring(0, n != -1 ? n : name.length);
           })(),
           value: +d[name],
-          year: ic,
+          columnType: ic,
           yBegin: yBegin,
           yEnd: +d[name] + yBegin
         };
@@ -190,10 +162,10 @@ const bgdj = e => {
     .append("rect")
       .attrs({
         //coords
-        'x': d => x1(d.year)+1,
+        'x': d => x1(d.columnType)+1,
         'width': x1.bandwidth(),
         'class': d => {
-          return `item ${d.name} ${d.year}`
+          return `item ${d.name} ${d.columnType}`
         },
         'y': d => y(d.yEnd) || 0,
         'height': d => (y(d.yBegin) - y(d.yEnd) - 1) || 0
@@ -230,7 +202,7 @@ mouseEventMove = function(d){
   })
   .attr('class', 'stacked-bar-chart-tooltip')
   // .classed('stacked-bar-chart-tooltip', false)
-  .text(d.name+'('+d.year+')'+d.value)
+  .text(d.name+'('+d.columnType+')'+d.value)
 },
   mouseEventOut = function (){
     return tooltip.attr('class', 'stacked-bar-chart-tooltip-hidden');
