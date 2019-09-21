@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "xGroup": "november",
+      "valOrVar": "value",
+      "value": 75,
+      "xSeries": "average",
+      "y0": 0,
+      "y1": 75
+    },
+    {
+      "xGroup": "november",
+      "valOrVar": "variance",
+      "value": 6,
+      "xSeries": "average",
+      "y0": 75,
+      "y1": 81
+    },
+    {
+      "xGroup": "november",
+      "valOrVar": "value",
+      "value": 81,
+      "xSeries": "current",
+      "y0": 0,
+      "y1": 81
+    },
+    {
+      "xGroup": "december",
+      "valOrVar": "value",
+      "value": 72,
+      "xSeries": "average",
+      "y0": 0,
+      "y1": 72
+    },
+    {
+      "xGroup": "december",
+      "valOrVar": "variance",
+      "value": 4,
+      "xSeries": "average",
+      "y0": 72,
+      "y1": 76
+    },
+    {
+      "xGroup": "december",
+      "valOrVar": "value",
+      "value": 76,
+      "xSeries": "current",
+      "y0": 0,
+      "y1": 76
+    },
+    {
+      "xGroup": "january",
+      "valOrVar": "value",
+      "value": 70,
+      "xSeries": "average",
+      "y0": 0,
+      "y1": 70
+    },
+    {
+      "xGroup": "january",
+      "valOrVar": "value",
+      "value": 65,
+      "xSeries": "current",
+      "y0": 0,
+      "y1": 65
+    },
+    {
+      "xGroup": "january",
+      "valOrVar": "variance",
+      "value": 5,
+      "xSeries": "current",
+      "y0": 65,
+      "y1": 70
+    },
+    {
+      "xGroup": "february",
+      "valOrVar": "value",
+      "value": 75,
+      "xSeries": "average",
+      "y0": 0,
+      "y1": 75
+    },
+    {
+      "xGroup": "february",
+      "valOrVar": "variance",
+      "value": 3,
+      "xSeries": "average",
+      "y0": 75,
+      "y1": 78
+    },
+    {
+      "xGroup": "february",
+      "valOrVar": "value",
+      "value": 78,
+      "xSeries": "current",
+      "y0": 0,
+      "y1": 78
+    }
+  ],
+  "xSeries": ["average", "current"],
+  "stackTypes": ["value", "variance"],
+  "columnGroups": ["november", "december", "january", "february"],
+  "yDomain": [0, 81]
+}
