@@ -3,112 +3,99 @@ var dd = {
   data: [
     {
       "monthName": "november",
-      "columns": [
-        {
-          "name": "value",
-          "value": 75,
-          "columnType": "average",
-          "y0": 0,
-          "y1": 75
-        },
-        {
-          "name": "variance",
-          "value": 6,
-          "columnType": "average",
-          "y0": 75,
-          "y1": 81
-        },
-        {
-          "name": "value",
-          "value": 81,
-          "columnType": "current",
-          "y0": 0,
-          "y1": 81
-        }
-      ],
-      "total": 81
+      "name": "value",
+      "value": 75,
+      "columnType": "average",
+      "y0": 0,
+      "y1": 75
+    },
+    {
+      "monthName": "november",
+      "name": "variance",
+      "value": 6,
+      "columnType": "average",
+      "y0": 75,
+      "y1": 81
+    },
+    {
+      "monthName": "november",
+      "name": "value",
+      "value": 81,
+      "columnType": "current",
+      "y0": 0,
+      "y1": 81
     },
     {
       "monthName": "december",
-      "columns": [
-        {
-          "name": "value",
-          "value": 72,
-          "columnType": "average",
-          "y0": 0,
-          "y1": 72
-        },
-        {
-          "name": "variance",
-          "value": 4,
-          "columnType": "average",
-          "y0": 72,
-          "y1": 76
-        },
-        {
-          "name": "value",
-          "value": 76,
-          "columnType": "current",
-          "y0": 0,
-          "y1": 76
-        }
-      ],
-      "total": 76
+      "name": "value",
+      "value": 72,
+      "columnType": "average",
+      "y0": 0,
+      "y1": 72
+    },
+    {
+      "monthName": "december",
+      "name": "variance",
+      "value": 4,
+      "columnType": "average",
+      "y0": 72,
+      "y1": 76
+    },
+    {
+      "monthName": "december",
+      "name": "value",
+      "value": 76,
+      "columnType": "current",
+      "y0": 0,
+      "y1": 76
     },
     {
       "monthName": "january",
-      "variance-current": 5,
-      "columns": [
-        {
-          "name": "value",
-          "value": 70,
-          "columnType": "average",
-          "y0": 0,
-          "y1": 70
-        },
-        {
-          "name": "value",
-          "value": 65,
-          "columnType": "current",
-          "y0": 0,
-          "y1": 65
-        },
-        {
-          "name": "variance",
-          "value": 5,
-          "columnType": "current",
-          "y0": 65,
-          "y1": 70
-        }
-      ],
-      "total": 70
+      "name": "value",
+      "value": 70,
+      "columnType": "average",
+      "y0": 0,
+      "y1": 70
+    },
+    {
+      "monthName": "january",
+      "name": "value",
+      "value": 65,
+      "columnType": "current",
+      "y0": 0,
+      "y1": 65
+    },
+    {
+      "monthName": "january",
+      "name": "variance",
+      "value": 5,
+      "columnType": "current",
+      "y0": 65,
+      "y1": 70
     },
     {
       "monthName": "february",
-      "columns": [
-        {
-          "name": "value",
-          "value": 75,
-          "columnType": "average",
-          "y0": 0,
-          "y1": 75
-        },
-        {
-          "name": "variance",
-          "value": 3,
-          "columnType": "average",
-          "y0": 75,
-          "y1": 78
-        },
-        {
-          "name": "value",
-          "value": 78,
-          "columnType": "current",
-          "y0": 0,
-          "y1": 78
-        }
-      ],
-      "total": 78
+      "name": "value",
+      "value": 75,
+      "columnType": "average",
+      "y0": 0,
+      "y1": 75
+    },
+    {
+      "monthName": "february",
+      "name": "variance",
+      "value": 3,
+      "columnType": "average",
+      "y0": 75,
+      "y1": 78
+    },
+    {
+      "monthName": "february",
+      "name": "value",
+      "value": 78,
+      "columnType": "current",
+      "y0": 0,
+      "y1": 78
     }
   ],
   columnTypes: ['average', 'current'],
@@ -119,7 +106,6 @@ var dd = {
     
 var
 		//prepare initial stuff
-    srcData = dd.data,
 		margin = {top: 20, right: 20, bottom: 80, left: 20},
     chart = d3.select('#chartDiv'),
     width = +chart.style('width').replace('px', '') - margin.left - margin.right,
@@ -143,18 +129,11 @@ x1.domain(dd.columnTypes).rangeRound([0, (x0.bandwidth() * .5)]);
 y.domain(dd.yDomain);
 
 const barGroupEnterFn = e => {
-  let barGroups = e.append('g')
-  .attrs({
-    'class': d => `month-col ${d.monthName}`,
-    'transform': d => `translate(${x0(d.monthName) },0)`
-  });
 
-  let bars = barGroups.selectAll('rect')
-    .data(d => d.columns).enter()
-    .append("rect")
+  let bars = e.append("rect")
       .attrs({
         //coords
-        'x': d => x1(d.columnType)+1,
+        'x': d => d['columnType'] == 'average' ? x0(d.monthName) : x0(d.monthName) + x1.bandwidth(),//x1(d.columnType)+1,
         'width': x1.bandwidth(),
         'class': d => {
           return `item ${d.name} ${d.columnType}`
@@ -163,20 +142,36 @@ const barGroupEnterFn = e => {
         'height': d => (y(d.y0) - y(d.y1) - 1) || 0
       }).on('mousemove', d => mouseEventMove(d));
 
-  let barLabels = barGroups.append('g')
-  .attrs({
-    'class': 'legend-item',
-    'text-anchor': 'middle',
-    'transform': 'translate('+svg.select('.item').attr('width')+','+parseInt(height+margin.top)+')'
-  })
-  .append('text')
-  .text(d => d.monthName);
+  // let barLabels = barGroups.append('g')
+  // .attrs({
+  //   'class': 'legend-item',
+  //   'text-anchor': 'middle',
+  //   'transform': 'translate('+svg.select('.item').attr('width')+','+parseInt(height+margin.top)+')'
+  // })
+  // .append('text')
+  // .text(d => d.monthName);
 }
+
+const barLabelEnter = e => {
+  let labels = e.append('text')
+  .attrs({
+    'x': d => {
+      return x0(d) + x1.bandwidth()
+    },
+    y : height + 25,
+    'text-anchor': 'middle',
+    'fill': 'white'
+  }).text(d => d)
+}
+
 /*
-  Bar Groups
+  Bars
 */
-var barGroups = svg.selectAll(".month-col")
+var bars = svg.selectAll(".item")
 .data(dd.data).join(barGroupEnterFn)
+
+var barLabels = svg.selectAll('.barLabel')
+.data(dd.columnGroups).join(barLabelEnter)
 
 //events
 var tooltip = d3.select('body')
@@ -194,7 +189,7 @@ mouseEventMove = function(d){
   })
   .attr('class', 'stacked-bar-chart-tooltip')
   // .classed('stacked-bar-chart-tooltip', false)
-  .text(d.name+'('+d.columnType+')'+d.value)
+  .text(d.columnType+':'+d.value)
 },
   mouseEventOut = function (){
     return tooltip.attr('class', 'stacked-bar-chart-tooltip-hidden');
