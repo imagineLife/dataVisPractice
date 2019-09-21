@@ -42,12 +42,17 @@
   fill: steelblue;
 }
 
-.y2.average{
+.variance.average{
   fill: red;
 }
 
-.y2.current{
+.variance.current{
   fill: green;
+}
+
+.legend-item{
+  font-family: sans-serif;
+  fill: white
 }
 
 @keyframes dash {
