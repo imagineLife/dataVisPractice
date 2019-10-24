@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Gradient Practice</title>
+    <script src="../../../../d3.v5.min.js"></script>
+    <script src="../../../../d3-selection-multi.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <svg width="660" height="800">
+      
+      <defs>
+        <!-- Linear, blue-to-green -->
+        <linearGradient 
+          id="linear" 
+          x1="0%" 
+          y1="0%" 
+          x2="100%" 
+          y2="0%"
+        >
+          <stop 
+            offset="0%" 
+            stop-color="rgb(0,85,170)"
+          />
+          <stop 
+            offset="100%" 
+            stop-color="#0a5"
+          />
+        </linearGradient>
+
+        <linearGradient id="gradient1">
+          <stop 
+            id="stop1" 
+            offset="0%" 
+            stop-color="#05a"
+            stop-opacity="0.5" 
+          />
+          <stop 
+            id="stop2" 
+            offset="100%" 
+            stop-color="#0a5"
+          />
+        </linearGradient>
+        
+        <linearGradient 
+          id="gradient2" 
+          x1="0" 
+          x2="0" 
+          y1="0" 
+          y2="1"
+          xlink:href="#gradient1"
+        />
+      </defs>
+      
+      <rect 
+        x="10" 
+        y="10" 
+        width="300" 
+        height="50" 
+        fill="url(#linear)" 
+      />
+
+      <rect 
+        x="10" 
+        y="125" 
+        width="300" 
+        height="50" 
+        stroke="url(#linear)" 
+        stroke-width="3"
+        fill="none" 
+      />
+
+      <rect 
+        x="10" 
+        y="250" 
+        width="300" 
+        height="50" 
+        stroke="url(#gradient2)" 
+        stroke-width="3"
+        fill="none" 
+      />
+
+      <rect 
+        x="10" 
+        y="350" 
+        width="300" 
+        height="50" 
+        fill="url(#gradient2)" 
+      />
+    </svg>
+    <script src='./index.js'></script>
+  </body>
+</html>
