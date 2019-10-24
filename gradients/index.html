@@ -8,6 +8,13 @@
     <link rel="stylesheet" type="text/css" href="../../dark.css">
     <link rel="stylesheet" href="./index.css">
   </head>
+  <style type="text/css">
+    #rect1 { fill: url(#Gradient3); }
+    .stop1 { stop-color: red; }
+    .stop2 { stop-color: black; stop-opacity: 0; }
+    .stop3 { stop-color: blue; }
+  </style>
+ 
   <body>
     <svg width="660" height="800">
       
@@ -52,6 +59,18 @@
           y2="1"
           xlink:href="#gradient1"
         />
+
+        <linearGradient id="Gradient3">
+          <stop class="stop1" offset="0%"/>
+          <stop class="stop2" offset="50%"/>
+          <stop class="stop3" offset="100%"/>
+        </linearGradient>
+
+        <linearGradient id="Gradient4" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="red"/>
+          <stop offset="50%" stop-color="black" stop-opacity="0"/>
+          <stop offset="100%" stop-color="blue"/>
+        </linearGradient>
       </defs>
       
       <rect 
@@ -77,6 +96,15 @@
         y="250" 
         width="300" 
         height="50" 
+        fill="url(#gradient2)" 
+      />
+
+
+      <rect 
+        x="10" 
+        y="375" 
+        width="300" 
+        height="50" 
         stroke="url(#gradient2)" 
         stroke-width="3"
         fill="none" 
@@ -84,12 +112,45 @@
 
       <rect 
         x="10" 
-        y="350" 
+        y="500" 
         width="300" 
         height="50" 
-        fill="url(#gradient2)" 
+        fill="url(#Gradient3)" 
+      />
+
+      <rect 
+        x="10" 
+        y="625" 
+        width="300" 
+        height="50" 
+        stroke="url(#Gradient3)" 
+        stroke-width="3"
+        fill="none"
+      />
+
+      <rect 
+        x="350" 
+        y="120" 
+        rx="15" 
+        ry="15" 
+        width="100" 
+        height="100" 
+        fill="url(#Gradient3)" 
+      />
+      <rect 
+        x="350" 
+        y="240" 
+        rx="15" 
+        ry="15" 
+        width="100" 
+        height="100" 
+        fill="url(#Gradient4)"
       />
     </svg>
+
+    <div class="box v1"></div>
+    <div class="box second v2"></div>
+    <div class="box third v3"></div>
     <script src='./index.js'></script>
   </body>
 </html>
