@@ -8,15 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../dark.css">
     <link rel="stylesheet" href="./index.css">
   </head>
-  <style type="text/css">
-    #rect1 { fill: url(#Gradient3); }
-    .stop1 { stop-color: red; }
-    .stop2 { stop-color: black; stop-opacity: 0; }
-    .stop3 { stop-color: blue; }
-  </style>
- 
   <body>
-    <svg width="660" height="800">
+    <svg width="500" height="800">
       
       <defs>
         <!-- Linear, blue-to-green -->
@@ -76,7 +69,7 @@
       <rect 
         x="10" 
         y="10" 
-        width="300" 
+        width="150" 
         height="50" 
         fill="url(#linear)" 
       />
@@ -84,7 +77,7 @@
       <rect 
         x="10" 
         y="125" 
-        width="300" 
+        width="150" 
         height="50" 
         stroke="url(#linear)" 
         stroke-width="3"
@@ -94,7 +87,7 @@
       <rect 
         x="10" 
         y="250" 
-        width="300" 
+        width="150" 
         height="50" 
         fill="url(#gradient2)" 
       />
@@ -103,7 +96,7 @@
       <rect 
         x="10" 
         y="375" 
-        width="300" 
+        width="150" 
         height="50" 
         stroke="url(#gradient2)" 
         stroke-width="3"
@@ -113,7 +106,7 @@
       <rect 
         x="10" 
         y="500" 
-        width="300" 
+        width="150" 
         height="50" 
         fill="url(#Gradient3)" 
       />
@@ -121,7 +114,7 @@
       <rect 
         x="10" 
         y="625" 
-        width="300" 
+        width="150" 
         height="50" 
         stroke="url(#Gradient3)" 
         stroke-width="3"
@@ -149,8 +142,11 @@
     </svg>
 
     <div class="box v1"></div>
-    <div class="box second v2"></div>
-    <div class="box third v3"></div>
+    <div class="box second v2 a1"></div>
+    <div class="box third v2 a2"></div>
+    <div class="box fourth v2 a3"></div>
+    <div class="box fifth v2 a4"></div>
+    <div class="box sixth v2 a5"></div>
     <script src='./index.js'></script>
   </body>
 </html>

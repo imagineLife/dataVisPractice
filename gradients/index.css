@@ -1,7 +1,10 @@
-
+#rect1 { fill: url(#Gradient3); }
+.stop1 { stop-color: red; }
+.stop2 { stop-color: black; stop-opacity: 0; }
+.stop3 { stop-color: blue; }
 
 .box{
-	width: 250px;
+	width: 125px;
 	height: 50px;
 	display: inline-block;
 	top: 10px;
@@ -9,13 +12,23 @@
 }
 
 .second{
-	top: 75px;
-	height: 100px
+	top: 125px;
 }
 
 .third{
-	top: 200px;
-	height: 100px;
+	top: 250px;
+}
+
+.fourth{
+	top: 375px;
+}
+
+.fifth{
+	top: 500px;
+}
+
+.sixth{
+	top: 625px;
 }
 
 .v1{
@@ -28,7 +41,20 @@
   color: white;
   border-width: 3px;
   border-style: solid;
-  border-image: 
+}
+
+
+/*
+		BORDER IMAGE
+		border-image: source slice width outset repeat|initial|inherit;
+			SOURCE: The path to the image to be used as a border;
+			SLICE:  how to slice the border image;
+			WIDTH:  the width of the border image;
+			OUTSET: The amount by which the border image area extends beyond the border box;
+			border-image-repeat: repeat/initial/inherit: Whether the border image should be repeated, rounded or stretched;
+*/
+.a1{
+	border-image: 
     linear-gradient(
       to bottom, 
       red, 
@@ -36,11 +62,40 @@
     ) 1 100%;
 }
 
-.v3{
-	max-width: 250px;
-  padding: 1rem;
-  color: white;
-  border-width: 1px;
-  border-style: solid;
+.a2{
 	border-image: linear-gradient(red, blue) 27 / 35px;
+}
+
+.a3{
+	border-image:
+    linear-gradient(
+      to right, 
+      #fffdc2,
+      #fffdc2 15%,
+      #d7f0a2 15%,
+      #d7f0a2 85%,
+      #fffdc2 85%
+    ) 27 / 5px;
+}
+
+.a4{
+	border-image:
+		linear-gradient(
+			to right, 
+      red 30%, 
+      orange 30% 45%, 
+      yellow 45% 60%, 
+      green 60% 70%, 
+      blue 70%
+    ) 20 / 5px;
+}
+
+.a5{
+	border-image:
+		linear-gradient(
+			to bottom, 
+      black 40%,
+      rgba(0,0,0,0) 40% 60%, 
+      orange 60%
+    ) 27 / 5px;
 }
