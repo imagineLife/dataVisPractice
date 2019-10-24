@@ -1,0 +1,46 @@
+
+
+.box{
+	width: 250px;
+	height: 50px;
+	display: inline-block;
+	top: 10px;
+	position: absolute
+}
+
+.second{
+	top: 75px;
+	height: 100px
+}
+
+.third{
+	top: 200px;
+	height: 100px;
+}
+
+.v1{
+	border: 3px solid black
+}
+
+.v2{
+	max-width: 250px;
+  padding: 1rem;
+  color: white;
+  border-width: 3px;
+  border-style: solid;
+  border-image: 
+    linear-gradient(
+      to bottom, 
+      red, 
+      rgba(0, 0, 0, 0)
+    ) 1 100%;
+}
+
+.v3{
+	max-width: 250px;
+  padding: 1rem;
+  color: white;
+  border-width: 1px;
+  border-style: solid;
+	border-image: linear-gradient(red, blue) 27 / 35px;
+}
