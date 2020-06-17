@@ -1,4 +1,43 @@
 const loadData = async () => {
+
+  const pathFillFn = d => {
+
+      // Get data value
+      const value = d.properties.visited;
+
+      if (value) {
+      //If value exists…
+      return legendColorScale(value);
+      } else {
+      //If value is undefined…
+      return "rgb(213,222,217)";
+      }
+  }
+
+  const enterStates = e => {
+    e.append("path")
+    .attr("d", path)
+    .style("stroke", "#fff")
+    .style("stroke-width", "1")
+    .style("fill", pathFillFn);
+  }
+
+  const enterLegendBoxes = e => {
+    const boxG = e.append("g");
+    boxG.attr("transform", (d, i) => `translate(0,${i * 20})`)
+      .append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", legendColorScale);
+
+    boxG.append("text")
+      .data(legendData.map(d => d.txt))
+      .attr("x", 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .text(d => d);
+  }
+
   // Load GeoJSON data and merge with states data
   const json = await d3.json("./states-geojson.json")
 
@@ -15,53 +54,73 @@ const loadData = async () => {
 
       
   //Width and height of map
-  var width = 960;
-  var height = 500;
+  const width = 960;
+  const height = 500;
+  const midW = width / 2;
+  const midH = height/2;
+  const mapScale = 1000;
+  const legendData = [
+    {
+      color: "rgb(213,222,217)",
+      txt: "Cities Lived"
+    },
+    {
+      color: "rgb(69,173,168)",
+      txt: "States Lived"
+    },
+    {
+      color: "rgb(84,36,55)",
+      txt: "States Visited"
+    },
+    {
+      color: "rgb(217,91,67)",
+      txt: "Nada"
+    }
+  ]
 
   // D3 Projection
-  var projection = d3.geoAlbersUsa()
-             .translate([width/2, height/2])    // translate to center of screen
-             .scale([1000]);          // scale things down so see entire US
+  const projection = d3.geoAlbersUsa()
+   .translate([midW, midH])    // translate to center of screen
+   .scale([mapScale]);          // scale things down so see entire US
           
   // Define path generator
-  var path = d3.geoPath()               // path generator that will convert GeoJSON to SVG paths
-           .projection(projection);  // tell path generator to use albersUsa projection
+  const path = d3.geoPath()               // path generator that will convert GeoJSON to SVG paths
+    .projection(projection);  // tell path generator to use albersUsa projection
 
       
   // Define linear scale for output
-  var color = d3.scaleLinear()
-          .range(["rgb(213,222,217)","rgb(69,173,168)","rgb(84,36,55)","rgb(217,91,67)"]);
-
-  var legendText = ["Cities Lived", "States Lived", "States Visited", "Nada"];
+  const legendColorScale = d3
+    .scaleLinear()
+    .range(legendData.map(d => d.color))
+    .domain([0,1,2,3]); // setting the range of the input data
 
   //Create SVG element and append map to the SVG
-  var svg = d3.select("body")
+  const svg = d3.select("body")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
           
   // Append Div for tooltip to SVG
-  var div = d3.select("body")
+  const div = d3.select("body")
           .append("div")   
           .attr("class", "tooltip")               
           .style("opacity", 0);
 
   // Load in my states data!
   // d3.csv("stateslived.csv", function(data) {
-  color.domain([0,1,2,3]); // setting the range of the input data
 
   // Loop through each state data value in the .csv file
-  // for (var i = 0; i < data.length; i++) {
+  // for (const i = 0; i < data.length; i++) {
 
   // //   // Grab State Name
-  //   var dataState = data[i].state;
+  //   const dataState = data[i].state;
 
   // //   // Grab data value 
-  //   var dataValue = data[i].visited;
+  //   const dataValue = data[i].visited;
 
   //   // Find the corresponding state inside the GeoJSON
-  //   for (var j = 0; j < json.features.length; j++)  {
-  //     var jsonState = json.features[j].properties.name;
+  //   for (const j = 0; j < json.features.length; j++)  {
+  //     const jsonState = json.features[j].properties.name;
 
   //     if (dataState == jsonState) {
 
@@ -75,26 +134,8 @@ const loadData = async () => {
   // }
   
   // Bind the data to the SVG and create one path per GeoJSON feature
-  svg.selectAll("path")
-    .data(json.features)
-    .enter()
-    .append("path")
-    .attr("d", path)
-    .style("stroke", "#fff")
-    .style("stroke-width", "1")
-    .style("fill", d => {
-
-        // Get data value
-        var value = d.properties.visited;
-
-        if (value) {
-        //If value exists…
-        return color(value);
-        } else {
-        //If value is undefined…
-        return "rgb(213,222,217)";
-        }
-    });
+  const statePathsDJ = svg.selectAll("path").data(json.features)
+  statePathsDJ.join(enterStates)
 
      
   // Map the cities I have lived in!
@@ -134,28 +175,14 @@ const loadData = async () => {
   //            .style("opacity", 0);   
   //     });
   // });  
-          
-  var legend = d3.select("body").append("svg")
-              .attr("class", "legend")
-            .attr("width", 140)
-            .attr("height", 200)
-            .selectAll("g")
-            .data(color.domain().slice().reverse())
-            .enter()
-            .append("g")
-            .attr("transform", (d, i) => `translate(0,${i * 20})`);
 
-      legend.append("rect")
-          .attr("width", 18)
-          .attr("height", 18)
-          .style("fill", color);
-
-      legend.append("text")
-          .data(legendText)
-            .attr("x", 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .text(d => d);
+  const legendBox = d3.select("body").append("svg")
+    .attr("class", "legend")
+    .attr("width", 140)
+    .attr("height", 200)
+  const legendElementsDJ = legendBox.selectAll("g")
+    .data(legendColorScale.domain().slice().reverse())
+  legendElementsDJ.join(enterLegendBoxes)
   
 }
 
