@@ -30,9 +30,15 @@
   <script>
     const runProject = async () => {
 
+      const enterStates = e => {
+        e.append("path")
+        .attr("d", path)
+        .on("click", clicked)
+      }
+
       var width = 960,
           height = 500,
-          centered;
+          selectedState;
 
       var projection = d3.geoAlbersUsa()
           .scale(1070)
@@ -54,17 +60,18 @@
       var g = svg.append("g");
 
       const us = await d3.json("./../us-click-to-zoom.json")
+      const stateFeats = topojson.feature(us, us.objects.states).features
+      const meshedStateFeats = topojson.mesh(us, us.objects.states, (a, b) => a !== b);
+      
+      const statesDataJoin = g.append("g")
+        .attr("id", "states")
+        .selectAll("path")
+        .data(stateFeats);
 
-        g.append("g")
-            .attr("id", "states")
-          .selectAll("path")
-            .data(topojson.feature(us, us.objects.states).features)
-          .enter().append("path")
-            .attr("d", path)
-            .on("click", clicked);
+      statesDataJoin.join(enterStates);
 
         g.append("path")
-            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .datum(meshedStateFeats)
             .attr("id", "state-borders")
             .attr("d", path);
 
@@ -72,26 +79,29 @@
         var x, y, k;
         const centerX = width / 2
         const centerY = height / 2
-
-        if (d && centered !== d) {
+        const didNotClickCurrentState = selectedState !== d
+        if (d && didNotClickCurrentState) {
           var centroid = path.centroid(d);
+          console.log('centroid')
+          console.log(centroid)
+          
           x = centroid[0];
           y = centroid[1];
           k = 4;
-          centered = d;
+          selectedState = d;
         } else {
           x = width / 2;
           y = height / 2;
           k = 1;
-          centered = null;
+          selectedState = null;
         }
 
         //set class, pick-up orange color
         g.selectAll("path")
-          .classed("active", centered ? d => d === centered : false);
+          .classed("active", selectedState ? d => d === selectedState : false);
 
         g.transition()
-            .duration(750)
+            .duration(650)
             .attr("transform", `translate(${ centerX },${centerY}) scale(${k}) translate(${-x},${-y})`)
             // .style("stroke-width", .5 / k + "px");
       }
