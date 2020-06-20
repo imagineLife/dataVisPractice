@@ -3,7 +3,7 @@ const buildChart = async () => {
   const enterPlaces = e => {
     e.append("circle", ".pin")
     .attr("r", radius)
-    .attr("transform" d => {
+    .attr("transform", d => {
       const { location: { latitude, longitude}} = d
       return `translate(${ projection([ longitude,latitude ]) })`
     }) 
@@ -17,7 +17,7 @@ const buildChart = async () => {
     .attr("class", "area")
     .attr("fill","steelblue")
   }
-  
+
   const 
     width = 960, 
     height = 600,
@@ -36,8 +36,9 @@ const buildChart = async () => {
 
   const svg = d3.select("#map")
     .append("svg")
+    // .attr('id', 'svg-box');
     .attr("viewBox", "0 0 900 800")
-    .attr("preserveAspectRatio", "xMidYMid meet");
+    // .attr("preserveAspectRatio", "xMidYMid meet");  //not needed?!
   
   //fetch data
   const swiss = await d3.json("./geodata.json")
@@ -45,14 +46,17 @@ const buildChart = async () => {
 
   //destructure vals
   const {objects : { india } } = swiss
-  const cantons = topojson.feature(swiss, india);
-  const {features: cantosFeats } = cantos
+  
+  //no destructuring
+  // let cantons = topojson.feature(swiss, india);
+  let { features: cantosFeats } = topojson.feature(swiss, india);
 
   //canto datajoin 
   const group =svg.selectAll("g")
-    .data(cantosFeats)
+    .data(cantosFeats)  //without destructuring, would be (cantos.feautures)
     .join(enterGroups)
 
+  //dot-plot datajoin
   svg.selectAll(".pin")
     .data(places)
     .join(enterPlaces)
