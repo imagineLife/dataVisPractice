@@ -18,41 +18,16 @@ text {
   text-anchor: middle;
 }
 
-
-.d3-tip {
-        line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-        background: black;
-        color: #fff;
-        border-radius: 2px;
-        opacity: 0.001%;
-      }
-      .d3-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 10px;
-        width: 100%;
-        line-height: 1;
-        color: black;
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
-        opacity: 0.001%;
-      }
-
-      .d3-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
-        opacity: 0.001%;
-      }
-      .area:hover {
-        fill: brown;
-      }
+.area{
+  transition: all 200ms;
+}
+.area:hover {
+  fill: brown;
+}
       
 </style>
 <body>
-  <div id = "map" style = "float : left; min-width:320px;width :50%;height : 600px"></div>
+  <div id="map" style="max-width: 700px;">
+  </div>
 </body>
 <script src="./index.js"></script>
