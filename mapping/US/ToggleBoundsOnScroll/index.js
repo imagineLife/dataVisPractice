@@ -1,4 +1,31 @@
 const buildChart = async () => {
+
+  const enterCountries = e => {
+    e.append("path")
+      .attr("name", d => d.properties.name)
+      .attr("id", d => d.id)
+      .style('vector-effect', 'non-scaling-stroke')
+      .on('click', selected)
+      .on("mousemove", showTooltip)
+      .on("mouseout",  function(d,i) {
+          tooltip.classed("hidden", true);
+       })
+      .attr("d", path);
+  }
+
+  const enterStates = e => {
+    e.append("path")
+      .attr("name", function(d) { return d.properties.name;})
+      .attr("id", function(d) { return d.id;})
+      .style('vector-effect', 'non-scaling-stroke')
+      .on('click', selected)
+      .on("mousemove", showTooltip)
+      .on("mouseout",  function(d,i) {
+          tooltip.classed("hidden", true);
+       })
+      .attr("d", path);
+  }
+
   var width = 962,
       rotated = 90,
       height = 502;
@@ -58,21 +85,16 @@ const buildChart = async () => {
   //destructure countries && states from data
   const {objects: {countries, states}} = world
 
+  //topo-fy state data
+  const topoCountries = topojson.feature(world, countries).features
+  const topoStates = topojson.feature(world, states).features
+
     //countries
     g.append("g")
         .attr("class", "boundary")
       .selectAll("boundary")
-        .data(topojson.feature(world, countries).features)
-        .enter().append("path")
-        .attr("name", function(d) {return d.properties.name;})
-        .attr("id", function(d) { return d.id;})
-        .style('vector-effect', 'non-scaling-stroke')
-        .on('click', selected)
-        .on("mousemove", showTooltip)
-        .on("mouseout",  function(d,i) {
-            tooltip.classed("hidden", true);
-         })
-        .attr("d", path);
+        .data(topoCountries)
+        .join(enterCountries)
 
     usa = d3.select('#USA');
     canada = d3.select('#CAN');
@@ -81,20 +103,10 @@ const buildChart = async () => {
     g.append("g")
         .attr("class", "boundary state hidden")
       .selectAll("boundary")
-        .data(topojson.feature(world, states).features)
-        .enter().append("path")
-        .attr("name", function(d) { return d.properties.name;})
-        .attr("id", function(d) { return d.id;})
-        .style('vector-effect', 'non-scaling-stroke')
-        .on('click', selected)
-        .on("mousemove", showTooltip)
-        .on("mouseout",  function(d,i) {
-            tooltip.classed("hidden", true);
-         })
-        .attr("d", path);
+        .data(topoStates)
+        .join(enterStates)
 
     statesElements = d3.selectAll('.state');
-  // });
 
   function showTooltip(d) {
     label = d.properties.name;
