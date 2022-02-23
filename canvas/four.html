@@ -8,12 +8,17 @@
     
     <!-- STYLES -->
     <style>
+      * {
+        box-sizing: border-box;
+      }
       section.explain{
         display: block;
+        text-align: center;
       }
       section.explain > aside{
         width: 50%;
         display: inline-block;
+        text-align: left;
       }
     </style>
 
@@ -25,16 +30,19 @@
           ctx.fillRect(x0, x1, w, h);
         }
       }
+      function drawTriangle(ctx){
+        const width = 50;
+        const height = 75;
+        const start = { x: 25, y: 0 }
 
+        ctx.beginPath();
+        ctx.moveTo(width, start.x);   //50,25 left point
+        ctx.lineTo(height, width);    //75,50 bottom point
+        ctx.lineTo(height, start.y);  //75,0  top point
+        ctx.fill();
+
+      }
       function draw(itm) {
-        const canvas = document.getElementById(itm);
-        
-        // error-handling
-        const hasCanvas = canvas.getContext;
-        if (!hasCanvas) return; 
-
-        const ctx = canvas.getContext('2d');
-
         drawRect({
           x0: 25, 
           x1: 25, 
@@ -45,9 +53,19 @@
         })
         ctx.clearRect(45, 45, 60, 60)
       }
+      function run(itm){
+        const canvas = document.getElementById(itm);
+        
+        // error-handling
+        const hasCanvas = canvas.getContext;
+        if (!hasCanvas) return; 
+
+        const ctx = canvas.getContext('2d');
+        drawTriangle(ctx)
+      }
     </script>
  </head>
- <body onload="draw('first-canvas');">
+ <body onload="run('first-canvas');">
     <h1>A Canvas With Paths</h1>
     <section class="explain" id="first">
       <aside>
@@ -62,6 +80,13 @@
           <li>creating a path</li>
           <li>leverage "drawing commands" to draw the path</li> 
           <li>add styling to the path</li>
+        </ul>
+        <p>Functions to use to draw paths</p>
+        <ul>
+          <li>beginPath(): create a path</li>
+          <li>closePath(): Adds a straight line to a path</li>
+          <li>stroke()</li>
+          <li>fill()</li>
         </ul>
       </aside>
       <canvas 
