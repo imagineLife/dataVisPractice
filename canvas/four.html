@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Paths</title>
+    
+    <!-- STYLES -->
     <style>
       section.explain{
-        display: flex;
-        justify-content: space-evenly;
+        display: block;
+      }
+      section.explain > aside{
+        width: 50%;
+        display: inline-block;
       }
     </style>
+
+    <!-- JS -->
     <script type="application/javascript">
       function drawRect({x0, x1, w, h, fill, ctx}){
         if(fill){
@@ -20,9 +27,6 @@
       }
 
       function draw(itm) {
-        console.log('itm')
-        console.log(itm)
-        
         const canvas = document.getElementById(itm);
         
         // error-handling
@@ -47,7 +51,18 @@
     <h1>A Canvas With Paths</h1>
     <section class="explain" id="first">
       <aside>
-        Canvases can render paths.
+        <p>Canvases can render paths.</p>
+        <p>Paths are...</p>
+        <ul>
+          <li>a list of points</li>
+          <li>points connected by segments of lines</li>
+        </ul>
+        <p>Creating a path means...</p>
+        <ul>
+          <li>creating a path</li>
+          <li>leverage "drawing commands" to draw the path</li> 
+          <li>add styling to the path</li>
+        </ul>
       </aside>
       <canvas 
         id="first-canvas" 
