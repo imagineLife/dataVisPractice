@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paths And Arcs</title>
+    
+    <!-- STYLES -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      section.explain{
+        display: block;
+        text-align: center;
+      }
+      section.explain > aside{
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+      }
+    </style>
+
+    <!-- JS -->
+    <script type="application/javascript">
+      function drawRect({x0, x1, w, h, fill, ctx}){
+        if(fill){
+          ctx.fillStyle = fill;
+          ctx.fillRect(x0, x1, w, h);
+        }
+      }
+      function drawTriangle(ctx){
+        const tOne = {
+          pointOne: { x:50, y: 25 },
+          pointTwo: { x: 75, y: 50 },
+          pointThree: { x: 75, y: 0 }
+        }
+
+        const tTwo = {
+          pointOne: { x:50, y: 100 },
+          pointTwo: { x: 75, y: 125 },
+          pointThree: { x: 75, y: 75 }
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(tOne.pointOne.x, tOne.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tOne.pointTwo.x, tOne.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tOne.pointThree.x, tOne.pointThree.y);  //75,0  top point
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(tTwo.pointOne.x, tTwo.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tTwo.pointTwo.x, tTwo.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tTwo.pointThree.x, tTwo.pointThree.y);  //75,0  top point
+        ctx.fill();
+
+
+      }
+      function draw(itm) {
+        drawRect({
+          x0: 25, 
+          x1: 25, 
+          w: 100, 
+          h: 100, 
+          fill: 'rgb(125,30,60)', 
+          ctx
+        })
+        ctx.clearRect(45, 45, 60, 60)
+      }
+      function drawFace(ctx){
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+        ctx.moveTo(110, 75);
+        ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+        ctx.moveTo(65, 65);
+        ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+        ctx.moveTo(95, 65);
+        ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+        ctx.stroke();
+      }
+      
+      function run(itm){
+        const canvas = document.getElementById(itm);
+        
+        // error-handling
+        const hasCanvas = canvas.getContext;
+        if (!hasCanvas) return; 
+
+        const ctx = canvas.getContext('2d');
+        // drawTriangle(ctx)
+        drawFace(ctx)
+
+      }
+    </script>
+ </head>
+ <body onload="run('first-canvas');">
+    <h1>A Canvas With Paths and arcs</h1>
+    <section class="explain" id="first">
+      <aside>
+        <p>Canvases can render paths.</p>
+        </ul>
+      </aside>
+      <canvas 
+        id="first-canvas" 
+        width="350" 
+        height="350"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    
+  </body>
+</html>
