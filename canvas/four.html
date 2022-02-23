@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paths</title>
+    <style>
+      section.explain{
+        display: flex;
+        justify-content: space-evenly;
+      }
+    </style>
+    <script type="application/javascript">
+      function drawRect({x0, x1, w, h, fill, ctx}){
+        if(fill){
+          ctx.fillStyle = fill;
+          ctx.fillRect(x0, x1, w, h);
+        }
+      }
+
+      function draw(itm) {
+        console.log('itm')
+        console.log(itm)
+        
+        const canvas = document.getElementById(itm);
+        
+        // error-handling
+        const hasCanvas = canvas.getContext;
+        if (!hasCanvas) return; 
+
+        const ctx = canvas.getContext('2d');
+
+        drawRect({
+          x0: 25, 
+          x1: 25, 
+          w: 100, 
+          h: 100, 
+          fill: 'rgb(125,30,60)', 
+          ctx
+        })
+        ctx.clearRect(45, 45, 60, 60)
+      }
+    </script>
+ </head>
+ <body onload="draw('first-canvas');">
+    <h1>A Canvas With Paths</h1>
+    <section class="explain" id="first">
+      <aside>
+        Canvases can render paths.
+      </aside>
+      <canvas 
+        id="first-canvas" 
+        width="150" 
+        height="150"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    
+  </body>
+</html>
