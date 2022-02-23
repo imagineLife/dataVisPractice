@@ -31,15 +31,30 @@
         }
       }
       function drawTriangle(ctx){
-        const width = 50;
-        const height = 75;
-        const start = { x: 25, y: 0 }
+        const tOne = {
+          pointOne: { x:50, y: 25 },
+          pointTwo: { x: 75, y: 50 },
+          pointThree: { x: 75, y: 0 }
+        }
+
+        const tTwo = {
+          pointOne: { x:50, y: 100 },
+          pointTwo: { x: 75, y: 125 },
+          pointThree: { x: 75, y: 75 }
+        }
 
         ctx.beginPath();
-        ctx.moveTo(width, start.x);   //50,25 left point
-        ctx.lineTo(height, width);    //75,50 bottom point
-        ctx.lineTo(height, start.y);  //75,0  top point
+        ctx.moveTo(tOne.pointOne.x, tOne.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tOne.pointTwo.x, tOne.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tOne.pointThree.x, tOne.pointThree.y);  //75,0  top point
         ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(tTwo.pointOne.x, tTwo.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tTwo.pointTwo.x, tTwo.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tTwo.pointThree.x, tTwo.pointThree.y);  //75,0  top point
+        ctx.fill();
+
 
       }
       function draw(itm) {
@@ -91,8 +106,8 @@
       </aside>
       <canvas 
         id="first-canvas" 
-        width="150" 
-        height="150"
+        width="350" 
+        height="350"
         style="border: 1px solid #333;"
         >
       </canvas>
