@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>A Canvas With Context</title>
+    <script type="application/javascript">
+      function drawRect({x0, x1, y0, y1, fill, ctx}){
+        ctx.fillStyle = fill;
+        ctx.fillRect(x0, x1, y0, y1);
+      }
+      function draw() {
+        const canvas = document.getElementById('canvas');
+        
+        // error-handling
+        const hasCanvas = canvas.getContext;
+        if (!hasCanvas) return; 
+
+        const ctx = canvas.getContext('2d');
+
+        drawRect({
+          x0: 10, 
+          x1: 10, 
+          y0: 50, 
+          y1: 50, 
+          fill: 'rgb(200,0,0)', 
+          ctx
+        })
+
+        drawRect({
+          x0: 30, 
+          x1: 30, 
+          y0: 50, 
+          y1: 50, 
+          fill: 'rgba(0,0,200,.5)', 
+          ctx
+        })
+      }
+    </script>
+ </head>
+ <body onload="draw();">
+    <h1>A Canvas With some content</h1>
+    <canvas 
+      id="canvas" 
+      width="150" 
+      height="150"
+      style="border: 1px solid #333;"
+      >
+    </canvas>
+    <ul>
+      <li>Default dims are 300w x 150h</li>
+      <li>Requires a closing "canvas" tag, or else treats all following content as filler</li>
+    </ul>
+  </body>
+</html>
