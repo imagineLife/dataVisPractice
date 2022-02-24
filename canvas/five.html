@@ -12,14 +12,15 @@
         box-sizing: border-box;
       }
       section.explain{
-        display: block;
         text-align: center;
       }
-      section.explain > aside{
-        width: 50%;
-        display: inline-block;
+
+      section.explain > section{
         text-align: left;
+        width: 45%;
+        display: inline-block;
       }
+
     </style>
 
     <!-- JS -->
@@ -93,22 +94,36 @@
 
       }
     </script>
- </head>
- <body onload="run('first-canvas');">
+  </head>
+  <body onload="run('first-canvas');">
     <h1>A Canvas With Paths and arcs</h1>
     <section class="explain" id="first">
-      <aside>
-        <p>Canvases can render paths.</p>
+      <section>
+        <p>Canvases can render arcs.</p>
+        <p>Arcs have 2 methods: arc() and arcTo()</p>
+        <p>arc()</p>
+        <ul>
+          <li>adds a circular "arc" to a path</li>
+          <li>takes x, y, radius, startAngle, endAngle, counter-clockwise bool</li>
+          <ul>
+            <li>X: hz coord of arc CENTER</li>
+            <li>Y: vrt coord of arc CENTER</li>
+            <li>radius: must be positive</li>
+            <li>startAngle: in radians, measured from the "positive x-axis"</li>
+            <li>endAngle: in radians, angle at which the arc ends, measured from the "positive x-axis"</li>
+
+          </ul>
         </ul>
-      </aside>
-      <canvas 
-        id="first-canvas" 
-        width="350" 
-        height="350"
-        style="border: 1px solid #333;"
-        >
-      </canvas>
-    </section>
-    
+      </section>
+      <section>
+        <canvas 
+          id="first-canvas" 
+          width="350" 
+          height="350"
+          style="border: 1px solid #333;"
+          >
+        </canvas>
+      </section>
+    </section>  
   </body>
 </html>
