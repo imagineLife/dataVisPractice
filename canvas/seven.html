@@ -113,7 +113,7 @@
       }
 
       function drawCircle({x,y,radius, color, ctx}){
-        ctx.fillStyle = color;
+        ctx.fillStyle = color || 'rgb(25,25,25)';
         ctx.beginPath();
         ctx.arc(x,y,radius,0, 2* Math.PI);
         ctx.fill()
@@ -127,7 +127,7 @@
         drawCircle(control)
       }
 
-      function drawCurve(ctx, start,end,control, optFill, optDash){
+      function drawCurve(ctx, start,end,control, optFill, optDash, controlsArr){
         // Quadratic Bézier curve
         ctx.beginPath();
         if(optFill){
@@ -137,7 +137,14 @@
           ctx.setLineDash(optDash)
         }
         ctx.moveTo(start.x, start.y);
-        ctx.quadraticCurveTo(control.x, control.y, end.x, end.y);
+        if(!controlsArr){
+          ctx.quadraticCurveTo(control.x, control.y, end.x, end.y);
+        }
+        if(controlsArr){
+          controlsArr.forEach(ctrl => {
+            ctx.quadraticCurveTo(ctrl.x, ctrl.y, ctrl.end.x, ctrl.end.y);
+          })
+        }
         ctx.stroke();
       }
 
@@ -209,6 +216,43 @@
           drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
           drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
         }
+
+        if(itm === 'bezier-six' || itm === 'bezier-seven'){
+          const start = {x: 75, y: 25}
+          const ctrlOne = { x: 25, y: 25 , end: {x: 25, y:62.5 }}
+          const ctrlTwo = { x: 25, y: 100 , end: {x: 50, y:100 }}
+          const ctrlThree = { x: 50, y: 120 , end: {x: 30, y:125 }}
+          const ctrlFour = { x: 60, y: 120 , end: {x: 65, y:100 }}
+          const ctrlFive = { x: 125, y: 100 , end: {x: 125, y:62.5 }}
+          const ctrlSix = { x: 125, y: 25 , end: {x: 75, y:25 }}
+          const controlsArr = [ctrlOne, ctrlTwo, ctrlThree, ctrlFour, ctrlFive, ctrlSix];
+          drawCurve(ctx, start, null,null,null,null,controlsArr)
+
+          if(itm === 'bezier-seven'){
+            const pointsArr = []
+            controlsArr.forEach(c => {
+              const thisObj = {
+                x: c.x,
+                y: c.y
+              }
+              const endDot = {
+                x: c.end.x,
+                y: c.end.y,
+                end:true
+              }
+              pointsArr.push(thisObj)
+              pointsArr.push(endDot)
+            })
+
+            pointsArr.map(dot => drawCircle({
+              x: dot.x, 
+              y: dot.y, 
+              radius: dot.end ? 7 : 3, 
+              color: dot.end ? 'blue' : 'orange', 
+              ctx
+            }))
+          }
+        }
       }
     </script>
  </head>
@@ -218,6 +262,8 @@
    run('bezier-three');
    run('bezier-four');
    run('bezier-five');
+   run('bezier-six');
+   run('bezier-seven');
  ">
     <h1>Bezier Curves</h1>
     <section class="explain">
@@ -290,6 +336,36 @@
       </aside>
       <canvas 
         id="bezier-five" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, rendering some "speech bubbles" with quadraticCurveTo(). This...</p>
+        <ul>
+          <li>contains a "start" object with an x&y val</li>
+          <li>contains SIX "control" points that the bezier curve uses - each control point has a start x&y coord set and and end x&y coord set</li>
+          <li>in the next section, the bubble AND the ctrl points are rendered</li>
+        </ul>
+      </aside>
+      <canvas 
+        id="bezier-six" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+
+    <section class="explain">
+      <aside>
+        <p>Here, the same speech bubble as above WITH the control points rendered</p>
+      </aside>
+      <canvas 
+        id="bezier-seven" 
         width="400" 
         height="200"
         style="border: 1px solid #333;"
