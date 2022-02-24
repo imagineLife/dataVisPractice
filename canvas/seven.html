@@ -123,14 +123,19 @@
         // Start and end points
         drawCircle(start)
         drawCircle(end)
-
         // Control point
         drawCircle(control)
       }
 
-      function drawCurve(ctx, start,end,control){
+      function drawCurve(ctx, start,end,control, optFill, optDash){
         // Quadratic Bézier curve
         ctx.beginPath();
+        if(optFill){
+          ctx.strokeStyle = optFill
+        };
+        if(optDash){
+          ctx.setLineDash(optDash)
+        }
         ctx.moveTo(start.x, start.y);
         ctx.quadraticCurveTo(control.x, control.y, end.x, end.y);
         ctx.stroke();
@@ -182,12 +187,40 @@
           drawCurve(ctx, startingCircle, endingCircle, controlCircle);
           drawPoints(ctx, startingCircle, endingCircle, controlCircle)
         }
+        if(itm === 'bezier-three'){
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startingCircle, endingCircle, {...controlCircle, x:125});
+          drawPoints(ctx, startingCircle, endingCircle, {...controlCircle, x:125})
+        }
+        if(itm === 'bezier-four'){
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, {...controlCircle, x:125});
+          drawPoints(ctx, startingCircle, {...endingCircle, y: 180}, {...controlCircle, x:125})
+        }
+        if(itm === 'bezier-five'){
+          const ctrlOne = {...controlCircle, x: 125}
+          const ctrlTwo = {...controlCircle, x: 225, y: 100, color: 'rgb(200,0,0)'}
+          const ctrlThree = {...controlCircle, x: 340, y: 150, color: 'rgb(150,0,0)'}
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, {...controlCircle, x:125});
+          drawPoints(ctx, startingCircle, {...endingCircle, y: 180}, {...controlCircle, x:125})
+          drawCircle({...ctrlTwo})
+          drawCircle({...ctrlThree})
+          drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
+          drawCurve(ctx, startingCircle, {...endingCircle, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
+        }
       }
     </script>
  </head>
- <body onload="run('bezier-one'); run('bezier-two');">
+ <body onload="
+   run('bezier-one'); 
+   run('bezier-two'); 
+   run('bezier-three');
+   run('bezier-four');
+   run('bezier-five');
+ ">
     <h1>Bezier Curves</h1>
-    <section class="explain" id="first">
+    <section class="explain">
       <aside>
         <p>quadraticCurveTo() is used against the CanvasRenderingContext2D obj.</p>
         <p>This is used to render a quadractic curve to an existing path.</p>
@@ -213,12 +246,50 @@
         >
       </canvas>
     </section>
-    <section class="explain" id="first">
+    <section class="explain">
       <aside>
         <p>Here, the curve is written</p>
       </aside>
       <canvas 
         id="bezier-two" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, the control point is moved.</p>
+        <p>Notice the bezier curve does not "reach" the control point, but only moves about 1/2 way from source point(s) toward the control point in this example.</p>
+      </aside>
+      <canvas 
+        id="bezier-three" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, the endpoint is moved and the control point is "wide" again.</p>
+        <p>Notice the wides part of the curve "arc" is associated with the coordinates of the control point</p>
+      </aside>
+      <canvas 
+        id="bezier-four" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, some more examples of bezier curves, where the lines are "dashed" and the colored to match the anchor points, the "control" arc point.</p>
+      </aside>
+      <canvas 
+        id="bezier-five" 
         width="400" 
         height="200"
         style="border: 1px solid #333;"
