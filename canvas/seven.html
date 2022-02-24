@@ -118,43 +118,26 @@
         ctx.arc(x,y,radius,0, 2* Math.PI);
         ctx.fill()
       }
-      function drawPoints(ctx){
+      function drawPoints(ctx, start, end, control){
+        
         // Start and end points
-        drawCircle({
-          x: 50, 
-          y: 20,
-          radius: 5, 
-          color: 'lightblue',
-          ctx
-        })
-
-        drawCircle({
-          x: 50, 
-          y: 100,
-          radius: 5, 
-          color: 'darkblue',
-          ctx
-        })
-
+        drawCircle(start)
+        drawCircle(end)
 
         // Control point
-        drawCircle({
-          x: 230, 
-          y: 30,
-          radius: 5, 
-          color: 'red',
-          ctx
-        })
+        drawCircle(control)
       }
-      function drawCurve(ctx){
+
+      function drawCurve(ctx, start,end,control){
         // Quadratic Bézier curve
         ctx.beginPath();
-        ctx.moveTo(50, 20);
-        ctx.quadraticCurveTo(230, 30, 50, 100);
+        ctx.moveTo(start.x, start.y);
+        ctx.quadraticCurveTo(control.x, control.y, end.x, end.y);
         ctx.stroke();
       }
 
       function run(itm){
+
         const canvas = document.getElementById(itm);
         
         // error-handling
@@ -166,13 +149,38 @@
         // drawFace(ctx)
         // drawArcs(ctx)
 
+       
+       // 3 bezier-curve circles
+        const startingCircle = {
+          x: 50, 
+          y: 20,
+          radius: 5, 
+          color: 'lightblue',
+          ctx
+        }
+        const endingCircle = {
+          x: 50, 
+          y: 100,
+          radius: 5, 
+          color: 'darkblue',
+          ctx
+        }
+
+        const controlCircle = {
+          x: 230, 
+          y: 30,
+          radius: 5, 
+          color: 'red',
+          ctx
+        }
         // prepare points for bezier curves
         if(itm === 'bezier-one'){
-          drawPoints(ctx)
+          drawPoints(ctx, startingCircle, endingCircle, controlCircle)
         }
         if(itm === 'bezier-two'){
-          drawCurve(ctx);
-          drawPoints(ctx)
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startingCircle, endingCircle, controlCircle);
+          drawPoints(ctx, startingCircle, endingCircle, controlCircle)
         }
       }
     </script>
@@ -200,7 +208,7 @@
       <canvas 
         id="bezier-one" 
         width="400" 
-        height="400"
+        height="200"
         style="border: 1px solid #333;"
         >
       </canvas>
@@ -212,7 +220,7 @@
       <canvas 
         id="bezier-two" 
         width="400" 
-        height="400"
+        height="200"
         style="border: 1px solid #333;"
         >
       </canvas>
