@@ -112,19 +112,39 @@
         }
       }
 
+      function drawCircle({x,y,radius, color, ctx}){
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0, 2* Math.PI);
+        ctx.fill()
+      }
       function drawPoints(ctx){
         // Start and end points
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(50, 20, 5, 0, 2 * Math.PI);   // Start point
-        ctx.arc(50, 100, 5, 0, 2 * Math.PI);  // End point
-        ctx.fill();
+        drawCircle({
+          x: 50, 
+          y: 20,
+          radius: 5, 
+          color: 'lightblue',
+          ctx
+        })
+
+        drawCircle({
+          x: 50, 
+          y: 100,
+          radius: 5, 
+          color: 'darkblue',
+          ctx
+        })
+
 
         // Control point
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(230, 30, 5, 0, 2 * Math.PI);
-        ctx.fill();
+        drawCircle({
+          x: 230, 
+          y: 30,
+          radius: 5, 
+          color: 'red',
+          ctx
+        })
       }
       function drawCurve(ctx){
         // Quadratic Bézier curve
@@ -149,12 +169,15 @@
         // prepare points for bezier curves
         if(itm === 'bezier-one'){
           drawPoints(ctx)
-          drawCurve(ctx)
+        }
+        if(itm === 'bezier-two'){
+          drawCurve(ctx);
+          drawPoints(ctx)
         }
       }
     </script>
  </head>
- <body onload="run('bezier-one')">
+ <body onload="run('bezier-one'); run('bezier-two');">
     <h1>Bezier Curves</h1>
     <section class="explain" id="first">
       <aside>
@@ -187,7 +210,7 @@
         
       </aside>
       <canvas 
-        id="second-canvas" 
+        id="bezier-two" 
         width="400" 
         height="400"
         style="border: 1px solid #333;"
