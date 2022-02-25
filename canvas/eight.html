@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Curves with BezierCurveTo</title>
+    
+    <!-- STYLES -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      section.explain{
+        display: block;
+        text-align: center;
+      }
+      section.explain > aside{
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+      }
+    </style>
+
+    <!-- JS -->
+    <script type="application/javascript">
+      function drawRect({x0, x1, w, h, fill, ctx}){
+        if(fill){
+          ctx.fillStyle = fill;
+          ctx.fillRect(x0, x1, w, h);
+        }
+      }
+      function drawTriangle(ctx){
+        const tOne = {
+          pointOne: { x:50, y: 25 },
+          pointTwo: { x: 75, y: 50 },
+          pointThree: { x: 75, y: 0 }
+        }
+
+        const tTwo = {
+          pointOne: { x:50, y: 100 },
+          pointTwo: { x: 75, y: 125 },
+          pointThree: { x: 75, y: 75 }
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(tOne.pointOne.x, tOne.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tOne.pointTwo.x, tOne.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tOne.pointThree.x, tOne.pointThree.y);  //75,0  top point
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(tTwo.pointOne.x, tTwo.pointOne.y);   //50,25 left tOne.point
+        ctx.lineTo(tTwo.pointTwo.x, tTwo.pointTwo.y);    //75,50 bottom tOne.point
+        ctx.lineTo(tTwo.pointThree.x, tTwo.pointThree.y);  //75,0  top point
+        ctx.fill();
+
+
+      }
+      function draw(itm) {
+        drawRect({
+          x0: 25, 
+          x1: 25, 
+          w: 100, 
+          h: 100, 
+          fill: 'rgb(125,30,60)', 
+          ctx
+        })
+        ctx.clearRect(45, 45, 60, 60)
+      }
+      function drawFace(ctx){
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+        ctx.moveTo(110, 75);
+        ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+        ctx.moveTo(65, 65);
+        ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+        ctx.moveTo(95, 65);
+        ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+        ctx.stroke();
+      }
+      
+      function drawArcs(ctx){
+        const boxDims = { w: 400, h: 400};
+
+        const circlesPerCol = boxDims.w / 100 ;
+        const circlesPerRow = boxDims.h / 100
+        const gap = 10;
+
+        const circleDiameter = (boxDims.w / 4) - gap
+        const circleRad = circleDiameter / 2;
+        // loop through cols
+        for (let colIdx = 0; colIdx < circlesPerCol; colIdx++) {
+          // loop through rows
+          for (let rowIdx = 0; rowIdx < circlesPerRow; rowIdx++) {
+            
+            const x = circleRad + (rowIdx * circleDiameter) + (gap * rowIdx); // x coordinate
+            const y = circleRad + (colIdx * circleDiameter) + (gap * colIdx); // y coordinate
+            const startAngle = 0; // Starting point on circle
+            const endAngle = Math.PI + (Math.PI * rowIdx) / 2; // End point on circle
+            const counterclockwise = colIdx % 2 !== 0; // clockwise or counterclockwise
+
+            ctx.beginPath();
+            ctx.arc(x, y, circleRad, startAngle, endAngle, counterclockwise);
+
+            if (colIdx > 1) {
+              ctx.fill();
+            } else {
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function drawCircle({x,y,radius, color, ctx}){
+        ctx.fillStyle = color || 'rgb(25,25,25)';
+        ctx.beginPath();
+        ctx.arc(x,y,radius || 5 ,0, 2* Math.PI);
+        ctx.fill()
+      }
+      function drawPoints(ctx, pointsArr){
+        
+        // Start and end points
+        pointsArr.forEach(d => drawCircle({ctx, ...d}))
+      }
+
+      function drawCurve(ctx, start, end, controlsArr, optFill, optDash){
+        // Quadratic Bézier curve
+        ctx.beginPath();
+        if(optFill){
+          ctx.strokeStyle = optFill
+        };
+        if(optDash){
+          ctx.setLineDash(optDash)
+        }
+        ctx.moveTo(start.x, start.y);
+        
+        ctx.bezierCurveTo(controlsArr[0].x, controlsArr[0].y, controlsArr[1].x, controlsArr[1].y, end.x, end.y);
+        ctx.stroke();
+      }
+
+      function run(itm){
+
+        const canvas = document.getElementById(itm);
+        
+        // error-handling
+        const hasCanvas = canvas.getContext;
+        if (!hasCanvas) return; 
+
+        const ctx = canvas.getContext('2d');
+       
+       // 4 bezier Curve points
+        const startPt = {
+          x: 50, 
+          y: 20,
+          radius: 5, 
+          color: 'lightblue',
+          ctx
+        }
+
+        const ctrlPt1 = {
+          x: 230, y:30, color: 'cyan'
+        }
+
+        const ctrlPt2 = {
+          x: 150, y:80, color: 'cyan'
+        }
+
+        const endPt = { x:250, y:100 }
+        
+        // prepare points for bezier curves
+        if(itm === 'bezier-one'){
+          drawPoints(ctx, [startPt, ctrlPt1, ctrlPt2, endPt])
+        }
+        if(itm === 'bezier-two'){
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startPt, endPt, [ctrlPt1, ctrlPt2]);
+          drawPoints(ctx, [startPt, ctrlPt1, ctrlPt2, endPt])
+        }
+        if(itm === 'bezier-three'){
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startPt, endingCircle, {...controlCircle, x:125});
+          drawPoints(ctx, startPt, endingCircle, {...controlCircle, x:125})
+        }
+        if(itm === 'bezier-four'){
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125});
+          drawPoints(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125})
+        }
+        if(itm === 'bezier-five'){
+          const ctrlOne = {...controlCircle, x: 125}
+          const ctrlTwo = {...controlCircle, x: 225, y: 100, color: 'rgb(200,0,0)'}
+          const ctrlThree = {...controlCircle, x: 340, y: 150, color: 'rgb(150,0,0)'}
+          // curve "under" or "below" the dots
+          drawCurve(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125});
+          drawPoints(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125})
+          drawCircle({...ctrlTwo})
+          drawCircle({...ctrlThree})
+          drawCurve(ctx, startPt, {...endingCircle, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
+          drawCurve(ctx, startPt, {...endingCircle, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
+        }
+
+        if(itm === 'bezier-six' || itm === 'bezier-seven'){
+          const start = {x: 75, y: 25}
+          const ctrlOne = { x: 25, y: 25 , end: {x: 25, y:62.5 }}
+          const ctrlTwo = { x: 25, y: 100 , end: {x: 50, y:100 }}
+          const ctrlThree = { x: 50, y: 120 , end: {x: 30, y:125 }}
+          const ctrlFour = { x: 60, y: 120 , end: {x: 65, y:100 }}
+          const ctrlFive = { x: 125, y: 100 , end: {x: 125, y:62.5 }}
+          const ctrlSix = { x: 125, y: 25 , end: {x: 75, y:25 }}
+          const controlsArr = [ctrlOne, ctrlTwo, ctrlThree, ctrlFour, ctrlFive, ctrlSix];
+          drawCurve(ctx, start, null,null,null,null,controlsArr)
+
+          if(itm === 'bezier-seven'){
+            const pointsArr = []
+            controlsArr.forEach(c => {
+              const thisObj = {
+                x: c.x,
+                y: c.y
+              }
+              const endDot = {
+                x: c.end.x,
+                y: c.end.y,
+                end:true
+              }
+              pointsArr.push(thisObj)
+              pointsArr.push(endDot)
+            })
+
+            pointsArr.map(dot => drawCircle({
+              x: dot.x, 
+              y: dot.y, 
+              radius: dot.end ? 7 : 3, 
+              color: dot.end ? 'blue' : 'orange', 
+              ctx
+            }))
+          }
+        }
+      }
+    </script>
+ </head>
+ <!-- 
+   run('bezier-three');
+   run('bezier-four');
+   run('bezier-five');
+   run('bezier-six');
+   run('bezier-seven'); -->
+ <body onload="
+   run('bezier-one'); 
+   run('bezier-two'); 
+ ">
+    <h1>Bezier Curves</h1>
+    <section class="explain">
+      <aside>
+        <p>bezierCurveTo() is used against the CanvasRenderingContext2D obj.</p>
+        <p>This is used to render a bezier curve to an existing path.</p>
+        <p>this method differs from the quadraticCurveTo method in that the qudratic method requires 1 "control" point, and this bezier method requires 2 "control" points.</p>
+        <p><i>(Bezier Curves show smooth lines.)</i></p>
+        <p>this requires a few params: cp1x, cp1y, cp2x, cp2y, x, y:</p>
+        <ul>
+          <li>cp1x: x-axis coord of the FIRST control point</li>
+          <li>cp1y y-axis coord of the FIRST control point</li>
+          <li>cp2x: x-axis coord of the SECOND control point</li>
+          <li>cp2y y-axis coord of the SECOND control point</li>
+          <li>x: x-axis coord of end point</li>
+          <li>y: y-axis coord of end point</li>
+        </ul>
+        <p>Here, 3 points:</p>
+        <ul>
+          <li>LIGHTBLUE: the "starting" point of the curve</li>
+          <li>DARKBLUE: the "ending" point of the curve</li>
+          <li>DARKGREEN: the bezier "control" point</li>
+        </ul>
+      </aside>
+      <canvas 
+        id="bezier-one" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, the curve is written</p>
+      </aside>
+      <canvas 
+        id="bezier-two" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <!-- <section class="explain">
+      <aside>
+        <p>Here, the control point is moved.</p>
+        <p>Notice the bezier curve does not "reach" the control point, but only moves about 1/2 way from source point(s) toward the control point in this example.</p>
+      </aside>
+      <canvas 
+        id="bezier-three" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, the endpoint is moved and the control point is "wide" again.</p>
+        <p>Notice the wides part of the curve "arc" is associated with the coordinates of the control point</p>
+      </aside>
+      <canvas 
+        id="bezier-four" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, some more examples of bezier curves, where the lines are "dashed" and the colored to match the anchor points, the "control" arc point.</p>
+      </aside>
+      <canvas 
+        id="bezier-five" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+    <section class="explain">
+      <aside>
+        <p>Here, rendering some "speech bubbles" with quadraticCurveTo(). This...</p>
+        <ul>
+          <li>contains a "start" object with an x&y val</li>
+          <li>contains SIX "control" points that the bezier curve uses - each control point has a start x&y coord set and and end x&y coord set</li>
+          <li>in the next section, the bubble AND the ctrl points are rendered</li>
+        </ul>
+      </aside>
+      <canvas 
+        id="bezier-six" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section>
+
+    <section class="explain">
+      <aside>
+        <p>Here, the same speech bubble as above WITH the control points rendered</p>
+      </aside>
+      <canvas 
+        id="bezier-seven" 
+        width="400" 
+        height="200"
+        style="border: 1px solid #333;"
+        >
+      </canvas>
+    </section> -->
+    
+  </body>
+</html>
