@@ -172,32 +172,40 @@
         if(itm === 'bezier-one'){
           drawPoints(ctx, [startPt, ctrlPt1, ctrlPt2, endPt])
         }
+
+        // curve "under" or "below" the dots
         if(itm === 'bezier-two'){
-          // curve "under" or "below" the dots
           drawCurve(ctx, startPt, endPt, [ctrlPt1, ctrlPt2]);
           drawPoints(ctx, [startPt, ctrlPt1, ctrlPt2, endPt])
         }
+
+        // wider curve
         if(itm === 'bezier-three'){
-          // curve "under" or "below" the dots
-          drawCurve(ctx, startPt, endingCircle, {...controlCircle, x:125});
-          drawPoints(ctx, startPt, endingCircle, {...controlCircle, x:125})
+          const c1 = {...ctrlPt1, x: 320};
+          const c2 = {...ctrlPt2, x: 50}
+          drawCurve(ctx, startPt, endPt, [c1, c2]);
+          drawPoints(ctx, [startPt, c1, c2, endPt])
         }
+
+
+        // another funky curve
         if(itm === 'bezier-four'){
-          // curve "under" or "below" the dots
-          drawCurve(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125});
-          drawPoints(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125})
+          const c1 = { x: 20, y: 60 };
+          const c2 = {x: 180, y: 190}
+          drawCurve(ctx, startPt, endPt, [c1, c2]);
+          drawPoints(ctx, [startPt, c1, c2, endPt])
         }
         if(itm === 'bezier-five'){
           const ctrlOne = {...controlCircle, x: 125}
           const ctrlTwo = {...controlCircle, x: 225, y: 100, color: 'rgb(200,0,0)'}
           const ctrlThree = {...controlCircle, x: 340, y: 150, color: 'rgb(150,0,0)'}
           // curve "under" or "below" the dots
-          drawCurve(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125});
-          drawPoints(ctx, startPt, {...endingCircle, y: 180}, {...controlCircle, x:125})
+          drawCurve(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125});
+          drawPoints(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125})
           drawCircle({...ctrlTwo})
           drawCircle({...ctrlThree})
-          drawCurve(ctx, startPt, {...endingCircle, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
-          drawCurve(ctx, startPt, {...endingCircle, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
+          drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
+          drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
         }
 
         if(itm === 'bezier-six' || itm === 'bezier-seven'){
@@ -240,14 +248,16 @@
     </script>
  </head>
  <!-- 
-   run('bezier-three');
-   run('bezier-four');
+   
+   
    run('bezier-five');
    run('bezier-six');
    run('bezier-seven'); -->
  <body onload="
    run('bezier-one'); 
    run('bezier-two'); 
+   run('bezier-three');
+   run('bezier-four');
  ">
     <h1>Bezier Curves</h1>
     <section class="explain">
@@ -292,10 +302,10 @@
         >
       </canvas>
     </section>
-    <!-- <section class="explain">
+    <section class="explain">
       <aside>
         <p>Here, the control point is moved.</p>
-        <p>Notice the bezier curve does not "reach" the control point, but only moves about 1/2 way from source point(s) toward the control point in this example.</p>
+        <p>Notice the width of the "S" in the curve gets wider when the "control" points are farther from the "center" of the line.</p>
       </aside>
       <canvas 
         id="bezier-three" 
@@ -305,10 +315,10 @@
         >
       </canvas>
     </section>
+    
     <section class="explain">
       <aside>
-        <p>Here, the endpoint is moved and the control point is "wide" again.</p>
-        <p>Notice the wides part of the curve "arc" is associated with the coordinates of the control point</p>
+        <p>Here, the control points are both on one "side" of the curve.</p>
       </aside>
       <canvas 
         id="bezier-four" 
@@ -318,6 +328,7 @@
         >
       </canvas>
     </section>
+    <!-- 
     <section class="explain">
       <aside>
         <p>Here, some more examples of bezier curves, where the lines are "dashed" and the colored to match the anchor points, the "control" arc point.</p>
