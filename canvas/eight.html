@@ -196,16 +196,41 @@
           drawPoints(ctx, [startPt, c1, c2, endPt])
         }
         if(itm === 'bezier-five'){
-          const ctrlOne = {...controlCircle, x: 125}
-          const ctrlTwo = {...controlCircle, x: 225, y: 100, color: 'rgb(200,0,0)'}
-          const ctrlThree = {...controlCircle, x: 340, y: 150, color: 'rgb(150,0,0)'}
-          // curve "under" or "below" the dots
-          drawCurve(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125});
-          drawPoints(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125})
-          drawCircle({...ctrlTwo})
-          drawCircle({...ctrlThree})
-          drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
-          drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
+
+          // line one
+          // drawCurve(ctx, startPt, endPt, [ctrlPt1, ctrlPt2], 'cyan');
+          drawPoints(ctx, [startPt, endPt])
+          
+          // line two
+          const c1 = {...ctrlPt1, x: 320, color: 'red'};
+          const c2 = {...ctrlPt2, x: 50, color: 'red'};
+          drawCurve(ctx, startPt, endPt, [c1, c2], 'red', [5, 10]);
+          drawPoints(ctx, [c1, c2])
+
+
+          // line three
+          const c4 = {...ctrlPt1, x: 380, color: 'green'};
+          const c5 = {...ctrlPt2, x: 20, y: 180, color: 'green'};
+          drawCurve(ctx, startPt, endPt, [c4, c5], 'green', [3, 8]);
+          drawPoints(ctx, [c4, c5])
+
+
+          // line three
+          const c6 = {...ctrlPt1, x: 30, color: 'orange'};
+          const c7 = {...ctrlPt2, x: 100, y: 180, color: 'orange'};
+          drawCurve(ctx, startPt, endPt, [c6, c7], 'orange', [3, 8]);
+          drawPoints(ctx, [c6, c7])
+
+          // const ctrlOne = {...controlCircle, x: 125}
+          // const ctrlTwo = {...controlCircle, x: 225, y: 100, color: 'rgb(200,0,0)'}
+          // const ctrlThree = {...controlCircle, x: 340, y: 150, color: 'rgb(150,0,0)'}
+          // // curve "under" or "below" the dots
+          // drawCurve(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125});
+          // drawPoints(ctx, startPt, {...endPt, y: 180}, {...controlCircle, x:125})
+          // drawCircle({...ctrlTwo})
+          // drawCircle({...ctrlThree})
+          // drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlTwo, 'rgb(200,0,0)', [10,10])
+          // drawCurve(ctx, startPt, {...endPt, y: 180}, ctrlThree, 'rgb(150,0,0)', [3, 10])
         }
 
         if(itm === 'bezier-six' || itm === 'bezier-seven'){
@@ -248,9 +273,6 @@
     </script>
  </head>
  <!-- 
-   
-   
-   run('bezier-five');
    run('bezier-six');
    run('bezier-seven'); -->
  <body onload="
@@ -258,6 +280,7 @@
    run('bezier-two'); 
    run('bezier-three');
    run('bezier-four');
+   run('bezier-five');
  ">
     <h1>Bezier Curves</h1>
     <section class="explain">
@@ -328,7 +351,6 @@
         >
       </canvas>
     </section>
-    <!-- 
     <section class="explain">
       <aside>
         <p>Here, some more examples of bezier curves, where the lines are "dashed" and the colored to match the anchor points, the "control" arc point.</p>
@@ -341,6 +363,7 @@
         >
       </canvas>
     </section>
+    <!-- 
     <section class="explain">
       <aside>
         <p>Here, rendering some "speech bubbles" with quadraticCurveTo(). This...</p>
