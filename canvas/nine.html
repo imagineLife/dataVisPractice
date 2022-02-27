@@ -159,12 +159,13 @@
 
         const ctx = canvas.getContext('2d');
        
-       const w = 390;
-       const h = 190;
+       const w = 500;
+       const h = 500;
        const padding = 5;
 
-        roundedRect(ctx, padding, padding, w, h, 15);
-        roundedRect(ctx, padding * 2, padding * 2, w - (padding * 2), h - (padding * 2), 9);
+
+        roundedRect(ctx, padding, padding, w - (padding * 2), h - (padding * 2), 15);
+        roundedRect(ctx, padding * 2, padding * 2, w - (padding * 2) - 10, h - (padding * 2) - 10, 10);
         // roundedRect(ctx, 53, 53, 49, 33, 10);
         // roundedRect(ctx, 53, 119, 49, 16, 6);
         // roundedRect(ctx, 135, 53, 49, 33, 10);
@@ -232,12 +233,13 @@
     <h1>A PacMan UI</h1>
     <section class="explain">
       <aside>
-       
+       <p>Starting with a box and a few borders</p>
+
       </aside>
       <canvas 
         id="bezier-one" 
-        width="400" 
-        height="200"
+        width="500" 
+        height="500"
         style="border: 1px solid #333;"
         >
       </canvas>
