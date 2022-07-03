@@ -91,6 +91,9 @@ d3.csv("data.csv", type, (error, data) => {
   colorScale.domain(data.columns.slice(1));
 
   let stackRangeKeys = data.columns.slice(1);
+  console.log('STACKED data')
+  console.log(data)
+  
   let arrayOfSingleStackSeries = stack.keys(stackRangeKeys)(data);
 
   gObj.selectAll(".seriesClass")

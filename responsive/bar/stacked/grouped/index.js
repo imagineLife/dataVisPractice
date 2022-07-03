@@ -6,11 +6,8 @@ const wlm = w - margin.left - margin.right,
 
 const colorByYear = (d) => {
   switch(d.data.Year){
-    case "1990" :
-      return .25;
-      break;
-    case "2000":
-      return .55;
+    case 1990 :
+      return .5;
       break;
     default:
       return 1;
@@ -22,15 +19,14 @@ var svg = d3.select("#chartDiv").append('svg');
     svg.attr("height", h);
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var stateGroup = d3.scaleBand()
+var groupXScale = d3.scaleBand()
     .rangeRound([0, wlm])
     .paddingInner(0.1);
 
-var yearScale = d3.scaleBand()
+var singleBarXScale = d3.scaleBand()
     .padding(0.05);
 
-var yScale = d3.scaleLinear()
-    .rangeRound([hlm, 0]);
+var yScale = d3.scaleLinear().rangeRound([hlm, 0]);
   
 var colorScale = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -38,20 +34,18 @@ var colorScale = d3.scaleOrdinal()
 var d3StackFn = d3.stack()
     .offset(d3.stackOffsetExpand);
   
-d3.csv("data.csv", function(error, data) {
+d3.json("data.json", function(error, data) {
   if (error) throw error;
   
   data.forEach(d => d.Value = +d.Value)
   
-	// console.log("data", data);
-  
-  stateGroup.domain(data.map(d => d.State));
-  yearScale.domain(data.map(d => d.Year))
-    .rangeRound([0, stateGroup.bandwidth()])
+  groupXScale.domain(data.map(d => d.State));
+  singleBarXScale.domain(data.map(d => d.Year))
+    .rangeRound([0, groupXScale.bandwidth()])
   	.padding(0.2);
   
   colorScale.domain(data.map(d => d.AgeGroup))
-  var keys = colorScale.domain()
+  var barSectionNames = colorScale.domain()
   
   var groupData = d3.nest()
     .key(d => d.Year + d.State)
@@ -64,16 +58,9 @@ d3.csv("data.csv", function(error, data) {
     .entries(data)
   	.map(d => d.value);
   
-  // console.log("groupData", groupData)
-  
   var stackData = d3StackFn
-  	.keys(keys)(groupData)
+  	.keys(barSectionNames)(groupData)
   
-  // console.log("stackData", stackData)
-  
-  //y.domain([0, d3.max(data, function(d) { return d.Value; })]).nice();
-
-  console.log("keys", keys)
   
   var setofColoredBarsG = g.selectAll(".setOfBars")
     .data(stackData)
@@ -85,12 +72,12 @@ d3.csv("data.csv", function(error, data) {
     .data(function(d) { return d; })
     .enter().append("rect")
   		.attrs({
-        "class": "serie-rect",
-  		  "transform": d => `translate( ${stateGroup(d.data.State)},0)` ,
-        "x": d => yearScale(d.data.Year),
-        "y": d => yScale(d[1]),
+        "width": singleBarXScale.bandwidth(),
         "height": d => yScale(d[0]) - yScale(d[1]) ,
-        "width": yearScale.bandwidth(),
+        "y": d => yScale(d[1]),
+        "class": "serie-rect",
+  		  "x": d => singleBarXScale(d.data.Year),
+        "transform": d => `translate( ${groupXScale(d.data.State)},0)`,
         "fill-opacity": colorByYear
       })
   		.on("click", (d, i) => console.log("serie-rect click d", i, d));
@@ -100,7 +87,7 @@ d3.csv("data.csv", function(error, data) {
         "class": "axis",
         "transform": "translate(0," + hlm + ")"
       })
-      .call(d3.axisBottom(stateGroup));
+      .call(d3.axisBottom(groupXScale));
 
   g.append("g")
       .attr("class", "axis")

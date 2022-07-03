@@ -76,7 +76,7 @@ svgObj.attrs({
   "height" : resizedHeight
 });
 
-const stack = d3.stack();
+const d3Stack = d3.stack();
 
 
 // X-AXIS & Y-AXIS
@@ -96,15 +96,15 @@ const yAxisD3 = d3.axisLeft()
 d3.json("data.json", (error, data) => {
   if (error) throw error;
 
-    //columns are the column header row
+  //columns are the column header row
   data.forEach((d, i) => {
 
     //1. Get KEYS of json objects
     // These are the category names for the stacked pieces
     vars.stackedElementKeys = Object.keys(d);
-    console.log('vars.stackedElementKeys')
-    console.log(vars.stackedElementKeys)
-    console.log('- - - - -')
+    // console.log('vars.stackedElementKeys')
+    // console.log(vars.stackedElementKeys)
+    // console.log('- - - - -')
     vars.numberOfStackedPieces = vars.stackedElementKeys.slice(1).length;
     //2. placeholder for TOTAL stacked pieces value
     let singleBarTotal = 0;
@@ -118,19 +118,29 @@ d3.json("data.json", (error, data) => {
     }
 
     d.totalOfThisCategory =  singleBarTotal;
-
   })
+
+
+  console.log('AFTER LOOP data')
+  console.log(data)
+  
 
   data.sort((a, b) =>  b.totalOfThisCategory - a.totalOfThisCategory );
 
   xScale.domain(data.map((d) =>  d.cityName));
+  console.log('xScale.domain()')
+  console.log(xScale.domain())
+  
   yScale.domain([0, d3.max(data, (d) => d.totalOfThisCategory )]).nice();
   colorScale.domain(vars.stackedElementKeys.slice(1));
 
+  console.log('data')
+  console.log(data)
+  
   let stackRangeKeys = vars.stackedElementKeys.slice(1);
   console.log('stackRangeKeys')
   console.log(stackRangeKeys)
-  let arrayOfSingleStackSeries = stack.keys(stackRangeKeys)(data);
+  let arrayOfSingleStackSeries = d3Stack.keys(stackRangeKeys)(data);
     console.log('arrayOfSingleStackSeries')
     console.log(arrayOfSingleStackSeries)
     console.log('- - - - -')

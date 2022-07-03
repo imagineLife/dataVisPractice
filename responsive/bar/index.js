@@ -1,3 +1,5 @@
+console.log('here?!')
+
 // Build Variables
   const vars = {
     xLabel : 'War',
@@ -11,9 +13,10 @@
 // D3 select The elements & convert to vars
   let chartDiv = document.getElementById("chartDiv");
   let svg = d3.select(chartDiv).append("svg");
-  let gObj = svg.append('g');
+  let gObj = svg.append('g').attr('class', 'gWrapper');
   let bars = gObj.selectAll('rect');
   let checkBox = d3.select("input");
+
 
 //Tooltip
   let tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
@@ -53,7 +56,6 @@
       .attrs({
         'transform': `translate(0, ${heightLessMargins})`,
         'class': 'xAxisClass'
-
       });
 
 //attach another g as yAxisG to the 'parent' g
@@ -106,8 +108,7 @@ TRANSFORM the Axis Text
 
 
 // Parse through data,
-  d3.json('data.json', data => {
-
+d3.json('data.json').then(data => {
     data.sort((a, b) => b.TotalDeaths - a.TotalDeaths);
 
     first5 = data.slice(2,14);
@@ -135,7 +136,11 @@ TRANSFORM the Axis Text
       Put the DATA from D3
       into rectangles
     */
-    bars.data(first5)
+    const barsWithData = bars.data(first5)
+    console.log('barsWithData')
+    console.log(barsWithData)
+    
+    barsWithData
       .enter().append('rect')
         .attrs({
           'x' : d => xScale(d.WarName),
@@ -203,8 +208,6 @@ TRANSFORM the Axis Text
         .selectAll("g")
           .delay(delay);
     }
-
-
   });
 
 

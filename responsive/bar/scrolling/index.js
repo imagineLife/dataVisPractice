@@ -141,8 +141,9 @@ d3.json("npm.json", function(data){
     svg.call(d3Zoom).transition()
       .duration(2100)
       .call(d3Zoom.transform, d3.zoomIdentity
-          .scale(gWrapperWidth / (xScale(156) - xScale(144)))
-          .translate(-xScale(144), 0));
+        .scale(gWrapperWidth / (xScale(156) - xScale(144)))
+        .translate(-xScale(144), 0)
+      );
     // svg.call(d3Zoom);
 
 

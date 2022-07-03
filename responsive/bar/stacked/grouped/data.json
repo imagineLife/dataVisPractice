@@ -1,0 +1,506 @@
+[
+  {
+    "State": "CA",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 2704659
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 2677612
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 4499890
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 5489866
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 2159981
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 2635177
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 3853788
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 4624546
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 10604510
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 12513322
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 8819342
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 7937408
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 4114496
+  },
+  {
+    "State": "CA",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 4443656
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 2027307
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 2290857
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 3277946
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 2884592
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 1420518
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 1434723
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 2454721
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 2111060
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 7017731
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 6666844
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 5656528
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 7070660
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 2472223
+  },
+  {
+    "State": "TX",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 2472223
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 1208495
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 1087646
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 2141490
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 2655448
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 1058031
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 1227316
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 1999120
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 2159050
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 5355235
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 5622997
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 5120254
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 6349115
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 2607672
+  },
+  {
+    "State": "NY",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 2946669
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 1140516
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 1231757
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 1938695
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 2287660
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 925060
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 1063819
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 1607297
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 1446567
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 4782119
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 5977649
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 4746856
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 4556982
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 3187797
+  },
+  {
+    "State": "FL",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 3857234
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 894368
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 912255
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 1558919
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 1808346
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 725973
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 813090
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 1311479
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 1613119
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 3596343
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 4351575
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 3239173
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 2623730
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 1575308
+  },
+  {
+    "State": "IL",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 1811604
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "Under 5 Years",
+    "Year": 1990,
+    "Value": 737462
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "Under 5 Years",
+    "Year": 2000,
+    "Value": 781710
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 1990,
+    "Value": 1345341
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "5 to 13 Years",
+    "Year": 2000,
+    "Value": 1641316
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 1990,
+    "Value": 679201
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "14 to 17 Years",
+    "Year": 2000,
+    "Value": 624865
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 1990,
+    "Value": 1203944
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "18 to 24 Years",
+    "Year": 2000,
+    "Value": 1396575
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 1990,
+    "Value": 3157759
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "25 to 44 Years",
+    "Year": 2000,
+    "Value": 3220914
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 1990,
+    "Value": 3414001
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "45 to 64 Years",
+    "Year": 2000,
+    "Value": 3755401
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "65 Years and Over",
+    "Year": 1990,
+    "Value": 1910571
+  },
+  {
+    "State": "PA",
+    "AgeGroup": "65 Years and Over",
+    "Year": 2000,
+    "Value": 1872360
+  }
+]
