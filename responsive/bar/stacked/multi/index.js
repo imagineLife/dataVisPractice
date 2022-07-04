@@ -25,21 +25,34 @@ const vars = {
   margin : { left: 120, right: 70, top: 40, bottom: 110 },
 };
 
-//Add nodes to D3 selections
-const chartDiv = document.getElementById("chart");
-const svgObj = d3.select(chartDiv).append("svg");
-const gObj = appendGWithDims(svgObj, 'gObj', `translate( ${vars.margin.left}, ${vars.margin.top})`)
-// const width = 600 - vars.margin.left - vars.margin.right;
-// const height = 500 - vars.margin.top - vars.margin.bottom;
-//Tooltip
-const tooltipDiv = d3.select("body").append("div").attr("class", "toolTip");
+function setupElements({ elementId }) {
+  // D3 select The elements & convert to vars
+  let chartDiv = document.getElementById(elementId);
+  let svg = d3.select(chartDiv).append('svg');
+  let gObj = svg.append('g');
+  let bars = gObj.selectAll('rect');
+
+  //Tooltip
+  let tooltipDiv = d3.select('body').append('div').attr('class', 'toolTip');
+
+  return {
+    chartDiv,
+    svg,
+    gObj,
+    bars,
+    tooltipDiv,
+  };
+}
+const { chartDiv, svg: svgObj, bars, tooltipDiv} = setupElements({ elementId: 'chart' });
+
+const gObj = appendGWithDims(svgObj, 'gObj', `translate( ${vars.margin.left}, ${vars.margin.top})`);
 
 //build d3 scales
 const xScale = d3.scaleBand()
     .padding(0.3)
     .align(0.3);
 const yScale = d3.scaleLinear();
-const colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
 // Extract the width and height that was computed by CSS.
 // & calcualte dimensions less margins
@@ -79,8 +92,11 @@ const yAxisD3 = d3.axisLeft()
   // .tickFormat(10, "s")
   .tickSize(-widthLessMargins);
 
-d3.csv("data.csv", type, (error, data) => {
-  if (error) throw error;
+d3.csv("data.csv").then(data => {
+  let mapped = data.map(type)
+  console.log('mapped')
+  console.log(mapped)
+  
 
   data.sort((a, b) =>  b.totalOfThisCategory - a.totalOfThisCategory );
 
@@ -189,23 +205,18 @@ function filterObj(obj, val){
   return result
 }
 
-function type(d, i, columns) {
-  //columns equals an array of the column 'headers', here the stacked pieces keys
-  //["geo", "<5", "5-17", "18-34", "35-64", "65+"]
+function type(d, i, dataArr) {
+  // arr of keys from the first input data object
+  const dataColumns = Object.keys(dataArr[0]);
 
   singleBarTotal = 0; 
-  let NumberOfStackedPieces = columns.length;
-  console.log('NumberOfStackedPieces')
-  console.log(NumberOfStackedPieces)
-  console.log('- - - - -')
-  for (i = 1; i < NumberOfStackedPieces; ++i){
-    
-    let singleStackedPieceVal = d[columns[i]];
-
-    singleBarTotal += +singleStackedPieceVal;
+  let NumberOfStackedPieces = dataColumns.length;
+  for (colIdx = 1; colIdx < NumberOfStackedPieces; ++colIdx) {
+    const dataCategory = dataColumns[colIdx];
+    const dataVal = d[dataCategory];
+    singleBarTotal += +dataVal;
   }
-
-  d.totalOfThisCategory = singleBarTotal;
+    d.totalOfThisCategory = singleBarTotal;
   return d;
 }
 
