@@ -38,7 +38,7 @@ function makeAxisGWrapper(parent, transformation, className, axisObj){
   .call(axisObj);
 }
 
-function makeAxisLabel(parent, transformation, className, textVal){
+function makeAxisLabel({parent, transformation, className, textVal}){
   return parent.append("g")
   .attr('transform', transformation)
   .append('text')
@@ -51,7 +51,7 @@ function makeAxisLabel(parent, transformation, className, textVal){
 
 let xScale,yScale,gXObj, gYObj, d3xAxis, d3yAxis; 
 
-d3.json("npm.json", function(data){
+d3.json("npm.json").then(data => {
     
     var svg = d3.select("svg");
 
@@ -133,9 +133,20 @@ d3.json("npm.json", function(data){
       })
       .style('fill','steelblue')
 
-    let xAxisLabel = makeAxisLabel(gWrapper, `translate( ${ gWrapper.attr('width')/2 } , ${ svg.attr('height') * .9 } )`, 'xAxis label', 'Measure Number')
+    
+  let xAxisLabel = makeAxisLabel({
+    parent: gWrapper,
+    transformation: `translate( ${gWrapper.attr('width') / 2} , ${svg.attr('height') * 0.9} )`,
+    className: 'xAxis label',
+    textVal: 'Measure Number',
+  });
 
-    let yAxisLabel = makeAxisLabel(gWrapper, `translate( ${(-40)} , ${(+gWrapper.attr('height'))/2 }) rotate(270)`, 'yAxis label', 'Note Count')
+  let yAxisLabel = makeAxisLabel({
+    parent: gWrapper,
+    transformation: `translate( ${-40} , ${+gWrapper.attr('height') / 2}) rotate(270)`,
+    className: 'yAxis label',
+    textVal: 'Note Count'
+  });
 
     // Gratuitous intro zoom!
     svg.call(d3Zoom).transition()
