@@ -34,9 +34,7 @@ var colorScale = d3.scaleOrdinal()
 var d3StackFn = d3.stack()
     .offset(d3.stackOffsetExpand);
   
-d3.json("data.json", function(error, data) {
-  if (error) throw error;
-  
+d3.json("data.json").then(data => {
   data.forEach(d => d.Value = +d.Value)
   
   groupXScale.domain(data.map(d => d.State));
