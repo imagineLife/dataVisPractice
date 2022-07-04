@@ -1,9 +1,3 @@
-function makeLinearScale(domMin,domMax,rangeMin,rangeMax){
-  return d3.scaleLinear()
-        .domain([ domMin, domMax ])
-        .range([rangeMin, rangeMax]);
-}
-
 function zoomed() {  
   var rescaleXFn = d3.event.transform.rescaleX(xScale);
 
@@ -16,37 +10,6 @@ function zoomed() {
       "x" : (d) => rescaleXFn(d.measureNumber)-barWidth*.5,
       "width" : barWidth
     });
-}
-
-function makeClipPath(parent, id, w, h, cl){
-  return parent.append("clipPath")
-  .attr("id", id)
-  .append("rect")
-  .attrs({
-    "width":w,
-    "height" : h,
-    "class": cl
-  });
-}
-
-function makeAxisGWrapper(parent, transformation, className, axisObj){
-  return parent.append("g")
-  .attrs({
-    "transform" : transformation,
-    "class" : className
-  })
-  .call(axisObj);
-}
-
-function makeAxisLabel({parent, transformation, className, textVal}){
-  return parent.append("g")
-  .attr('transform', transformation)
-  .append('text')
-  .attrs({
-    'text-anchor' : 'middle',
-    'class' : className
-  })
-  .text(textVal);
 }
 
 let xScale,yScale,gXObj, gYObj, d3xAxis, d3yAxis; 
@@ -64,13 +27,6 @@ d3.json("npm.json").then(data => {
     var gWrapperHeight = svgHeight-margin.top-margin.bottom;
     var gWrapperWidth  = svgWidth-margin.left-margin.right;
 
-    data.forEach((d,i) => {
-      var maxY = d3.max(d,function(d){return +d.howMany;});
-      var minY = d3.min(d,function(d){return +d.howMany;});
-      var maxX = d3.max(d,function(d){return +d.measureNumber;});
-      var minX = d3.min(d,function(d){return +d.measureNumber;});
-    });   
-
     var gWrapper = svg.append("g")
         .attrs({
           "id" : "gWrapper",
@@ -82,7 +38,7 @@ d3.json("npm.json").then(data => {
     var clipObj = makeClipPath(gWrapper, "clipObj", gWrapperWidth, gWrapperHeight, 'clipClass');
 
     xScale = makeLinearScale(0, 160, 0,+gWrapper.attr("width"));
-
+    
     yScale = makeLinearScale( dataLimits.maxY*1.1, dataLimits.minY-(dataLimits.minY*0.1), 0,+gWrapper.attr("height"))
 
     var d3Zoom = d3.zoom()
@@ -108,9 +64,18 @@ d3.json("npm.json").then(data => {
 
     d3yAxis = d3.axisLeft(yScale);
 
-    gXObj = makeAxisGWrapper(gWrapper, `translate(0, ${gWrapper.attr('height')})`, 'axis axis--x', d3xAxis);
+    gXObj = makeAxisGWrapper({
+      parent: gWrapper,
+      transformation: `translate(0, ${gWrapper.attr('height')})`, className: 'axis axis--x',
+      axisObj: d3xAxis
+    });
 
-    let gXgYObjObj = makeAxisGWrapper(gWrapper, `translate(0, 0)`, 'axis axis--y', d3yAxis);
+  let gXgYObjObj = makeAxisGWrapper({
+    parent: gWrapper,
+    transform: `translate(0, 0)`,
+    className: 'axis axis--y',
+    axisObj: d3yAxis
+  });
     
     d3.selectAll(".axis--y > g.tick > line")
       .attr("x2",gWrapperWidth)
@@ -118,7 +83,16 @@ d3.json("npm.json").then(data => {
       .style("stroke","lightgrey");
 
     barWidth = ( xScale(2) - xScale(1) ) * .5;
-    
+    function barX(d) {
+      return xScale(d.measureNumber) - barWidth * .5
+    }
+    function barHeight(d) {
+      return gWrapperHeight - yScale(d.howMany);
+    }
+  function barY(d) {
+    return yScale(d.howMany)
+  }
+  
     var bars = gWrapper.selectAll("rect.bar")
       .data(data)    
       .enter()
@@ -126,14 +100,13 @@ d3.json("npm.json").then(data => {
       .attrs({
         "class" : 'barClass',
         "clip-path" :  'url(#clipObj)',
-        "x" : (d) => xScale(d.measureNumber)-barWidth*.5,
+        "x" : barX,
         "width" : barWidth,
-        "height" : (d) => gWrapperHeight-yScale(d.howMany),
-        "y" : (d) =>  yScale(d.howMany)
+        "height" : barHeight,
+        "y" : barY
       })
       .style('fill','steelblue')
 
-    
   let xAxisLabel = makeAxisLabel({
     parent: gWrapper,
     transformation: `translate( ${gWrapper.attr('width') / 2} , ${svg.attr('height') * 0.9} )`,
@@ -148,14 +121,16 @@ d3.json("npm.json").then(data => {
     textVal: 'Note Count'
   });
 
-    // Gratuitous intro zoom!
-    svg.call(d3Zoom).transition()
-      .duration(2100)
-      .call(d3Zoom.transform, d3.zoomIdentity
-        .scale(gWrapperWidth / (xScale(156) - xScale(144)))
-        .translate(-xScale(144), 0)
-      );
-    // svg.call(d3Zoom);
+    // intro zoom here
+    // svg.call(d3Zoom).transition()
+    //   .duration(2100)
+    //   .call(d3Zoom.transform, d3.zoomIdentity
+    //     .scale(gWrapperWidth / (xScale(156) - xScale(144)))
+    //     .translate(-xScale(144), 0)
+    //   );
+  
+  // simple zoom here
+    svg.call(d3Zoom);
 
 
 });
