@@ -13,7 +13,8 @@ const state = {
 
 let xAxisG = null,
     yAxisG = null,
-    xAxisG2 = null;
+    xAxisG2 = null,
+    brushAreaPath = null;
 
 let chartDiv = document.getElementById('chartDiv');
 // Extract the DIV width and height that was computed by CSS.
@@ -31,7 +32,7 @@ function makeArea(xScaleFn, y0val, yScaleFn){
   .y1(d => yScaleFn(d.price));
 }
 
-function appendG(parent, className, trans){
+function appendG({parent, className, trans}){
   return parent.append("g")
     .attrs({
       "class": className,
@@ -69,9 +70,9 @@ var zoomFn = d3.zoom()
     .on("zoom", zoomedFn);
 
 var areaFn = makeArea(bigAreaXScale, heightLessMargins, y)
-var area2Fn = makeArea(brushXScale, state.margin.top, y2)
+var brushArea = makeArea(brushXScale, state.margin.top, y2)
 
-svgObj.append("defs").append("clipPath")
+let clipPath = svgObj.append("defs").append("clipPath")
   .attr("id", "clip")
   .append("rect")
   .attrs({
@@ -79,12 +80,24 @@ svgObj.append("defs").append("clipPath")
     "height": heightLessMargins
   });
 
-var focusAreaG = appendG(svgObj, "focusAreaG", `translate(${state.margin.left},${state.margin.top})`)
+var focusAreaG = appendG({
+  parent: svgObj,
+  className: "focusAreaG",
+  trans: `translate(${state.margin.left},${state.margin.top})`
+})
 
-var brushGWrapper = appendG(svgObj, "brushGWrapper", `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`)
+var brushGWrapper = appendG({
+  parent: svgObj,
+  className: "brushGWrapper",
+  trans: `translate(${state.margin.left},${parentDivHeight - state.margin.top - state.margin.bottom})`
+})
 
-d3.csv("./data.csv", type, function(error, data) {
-  if (error) throw error;
+d3.csv("./data.csv").then(data => {
+  
+  let mapped = data.map(type);
+  console.log('mapped')
+  console.log(mapped)
+  
 
   bigAreaXScale.domain(d3.extent(data, d => d.date));
   y.domain([0, d3.max(data, d => d.price)]);
@@ -98,21 +111,29 @@ d3.csv("./data.csv", type, function(error, data) {
         "d": areaFn
       });
 
-  focusXaxisG = appendG(focusAreaG, "axis axis--x", `translate(0,${heightLessMargins})`).call(xAxisObj);
+  focusXaxisG = appendG({
+    parent: focusAreaG,
+    className: "axis axis--x",
+    trans: `translate(0,${heightLessMargins})`
+  }).call(xAxisObj);
 
   focusAreaG.append("g")
       .attr("class", "axis axis--y")
       .call(yAxis);
 
-  brushGWrapper.append("path")
+  brushAreaPath = brushGWrapper.append("path")
       .datum(data)
       .attrs({
         "class": "areaPath",
-        "d": area2Fn
+        "d": brushArea
     });
 
-  xAxisG2 = appendG(brushGWrapper, "axis axis--x", `translate(0,${state.margin.top})`)
-      .call(xAxisObj2);
+  xAxisG2 = appendG({
+    parent: brushGWrapper,
+    className: "axis axis--x",
+    trans: `translate(0,${state.margin.top})`
+  })
+    .call(xAxisObj2);
 
   brushGWrapper.append("g")
       .attr("class", "brush")
@@ -209,6 +230,11 @@ function type(d) {
              'y' : resizedHeightLessMargins * .1,
          })
          .call(xAxisObj2);
+
+       //update Area
+       brushAreaPath.attr("d", brushArea)
+
+       d3.select('.brush').call(brushFn)
 
    //     //Update the X-AXIS LABEL
    //     xAxisLabel
