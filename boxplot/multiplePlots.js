@@ -32,22 +32,39 @@ const gWrapper = svg.append('g').attrs({
 	transform: `translate(${state.m.l}, ${state.m.t})`
 })
 
-const prepData = (srcData) => {
-
-	const stats = d3.nest() // nest function allows to group the calculation per level of a factor
-    .key(function(d) { return d.Species;})
-    .rollup(function(d) {
-      q1 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.25)
-      median = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.5)
-      q3 = d3.quantile(d.map(function(g) { return g.Sepal_Length;}).sort(d3.ascending),.75)
-      interQuantileRange = q3 - q1
-      min = q1 - 1.5 * interQuantileRange
-      max = q3 + 1.5 * interQuantileRange
-      return({q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max})
+function getSpecies(d) { return d.Species }
+function getSepal(d) { return d.Sepal_Length }
+function mapAndSortSepals(d) {
+	return d.map(getSepal).sort(d3.ascending)
+}
+const prepData = (srcData) => {	
+  // nest function allows to group the calculation per level of a factor
+  const stats = d3
+    .nest()
+    .key(getSpecies)
+    .rollup(function (d) {
+      q1 = d3.quantile(
+        mapAndSortSepals(d),
+        0.25
+      );
+      median = d3.quantile(mapAndSortSepals(d), 0.5);
+			q3 = d3.quantile(mapAndSortSepals(d), 0.75);
+			
+      interQuantileRange = q3 - q1;
+      min = q1 - 1.5 * interQuantileRange;
+      max = q3 + 1.5 * interQuantileRange;
+      return {
+        q1,
+        median,
+        q3,
+        interQuantileRange,
+        min,
+        max,
+      };
     })
-    .entries(srcData)
+    .entries(srcData);
 
-    return stats
+  return stats;
 }
 
 function rectD(d) {
@@ -65,22 +82,27 @@ function lineY1(d) {
 function lineY2(d) {
 	return state.yScale(d.value.max);
 }
-const enterData = e => {
-	e.append('line')
-    .attrs({
-      x1: lineX,
-      x2: lineX,
-      y1: lineY1,
-      y2: lineY2,
-      stroke: `black`,
-    })
-    .style('width', 40);
 
-	// //append the boxes
+function rectY(d) {
+	return state.yScale(d.value.q3)
+}
+const enterFn = e => {
+
+	// the line
+	e.append('line')
+		.attrs({
+			x1: lineX,
+			x2: lineX,
+			y1: lineY1,
+			y2: lineY2,
+			stroke: `black`,
+		});
+
+	//append the boxes
 	e.append('rect')
 		.attrs({
 			x: rectD,
-			y: d => state.yScale(d.value.q3),
+			y: rectY,
 			height: d => state.yScale(d.value.q1) - state.yScale(d.value.q3),
 			width: state.boxW,
 			stroke: 'black'
@@ -126,10 +148,10 @@ async function runIt() {
       })
       .call(xAxisObj);
 
-    // //append central vertical box-plot line
+    //append central vertical box-plot line
     let dataJoin = gWrapper.selectAll('.vertical-lines').data(prepped);
 
-    dataJoin.join(enterData);
+    dataJoin.join(enterFn);
   } catch (e) {
     console.log('e');
     console.log(e);
