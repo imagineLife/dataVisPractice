@@ -9,10 +9,9 @@ const state = {
 	h: 450,
 	minData: 0,
 	maxData: n => Math.round(n * 1.1),
-	boxCenter: 0,
-	boxW: 0,
+	boxW: 100,
 	yScale: null,
-	xScale: null
+	xScale: null,
 }
 
 //dimensions, less-margins (Margin Convention)
@@ -51,21 +50,36 @@ const prepData = (srcData) => {
     return stats
 }
 
+function rectD(d) {
+	return state.xScale(d.key) - state.boxW / 2 + state.xScale.bandwidth() / 2;
+}
+
+function lineX(d) {
+	return state.xScale(d.key) + (state.xScale.bandwidth() / 2)
+}
+
+function lineY1(d) {
+	return state.yScale(d.value.min)
+}
+
+function lineY2(d) {
+	return state.yScale(d.value.max);
+}
 const enterData = e => {
 	e.append('line')
-		.attrs({
-			x1: d => state.xScale(d.key) + (state.xScale.bandwidth() / 2),
-			x2: d => state.xScale(d.key) + (state.xScale.bandwidth() / 2),
-			y1: d => state.yScale(d.value.min),
-			y2: d => state.yScale(d.value.max),
-			stroke: `black`
-		})
-		.style('width', 40)
+    .attrs({
+      x1: lineX,
+      x2: lineX,
+      y1: lineY1,
+      y2: lineY2,
+      stroke: `black`,
+    })
+    .style('width', 40);
 
 	// //append the boxes
 	e.append('rect')
 		.attrs({
-			x: d => (state.xScale(d.key) - (state.boxW/2)) + state.xScale.bandwidth() / 2,
+			x: rectD,
 			y: d => state.yScale(d.value.q3),
 			height: d => state.yScale(d.value.q1) - state.yScale(d.value.q3),
 			width: state.boxW,
@@ -85,39 +99,41 @@ const enterData = e => {
       .style("width", 80)
 }
 
-//load the data
-d3.csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv').then(prepData).then(resObj => {
-	
-	// //build y-Scale
-	state.yScale = d3.scaleLinear()
-		.domain([state.minData, 9])
-		.range([hLM, state.m.t])
+async function runIt() {
+  //load the data
+	const DATA_URL = 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv';
+  try {
+    const data = await d3.csv(DATA_URL);
+    const prepped = prepData(data);
 
-	//build x-scale
-	state.xScale = d3.scaleBand()
-		.domain(['setosa', 'versicolor', 'virginica'])
-		.range([0, state.w])
+    // //build y-Scale
+    state.yScale = d3.scaleLinear().domain([state.minData, 9]).range([hLM, state.m.t]);
 
-	//build axis objs
-	const yAxisObj = d3.axisLeft(state.yScale)
-	const xAxisObj = d3.axisBottom(state.xScale)
+    //build x-scale
+    state.xScale = d3.scaleBand().domain(['setosa', 'versicolor', 'virginica']).range([0, state.w]);
 
-	//append yAxis to gWrapper
-	gWrapper.call(yAxisObj)
-	gWrapper.append('g')
-		.attrs({
-			class: 'x-axis-g-wrapper',
-			transform: `translate(0, ${hLM})`
-		})
-		.call(xAxisObj)
+    //build axis objs
+    const yAxisObj = d3.axisLeft(state.yScale);
+    const xAxisObj = d3.axisBottom(state.xScale);
 
-	// //extra notes for the box?!
-	state.boxCenter = 200, state.boxW = 100;
-	
-	// //append central vertical box-plot line
-	let dataJoin = gWrapper.selectAll('.vertical-lines')
-	.data(resObj)
+    //append yAxis to gWrapper
+    gWrapper.call(yAxisObj);
+    gWrapper
+      .append('g')
+      .attrs({
+        class: 'x-axis-g-wrapper',
+        transform: `translate(0, ${hLM})`,
+      })
+      .call(xAxisObj);
 
-	dataJoin.join(enterData);
+    // //append central vertical box-plot line
+    let dataJoin = gWrapper.selectAll('.vertical-lines').data(prepped);
 
-})
+    dataJoin.join(enterData);
+  } catch (e) {
+    console.log('e');
+    console.log(e);
+  }
+}
+
+runIt()
